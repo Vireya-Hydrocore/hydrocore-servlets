@@ -4,23 +4,23 @@ import com.example.servletsvireya.model.Funcionario;
 import com.example.servletsvireya.util.Conexao;
 
 import java.sql.*;
-import java.sql.Date;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FuncionarioDAO {
 
     Conexao conexao;
 
-    public FuncionarioDAO (){
+    public FuncionarioDAO() {
         this.conexao = new Conexao();
     }
 
     // Método inserir()
 
-    public int inserirFuncionario(Funcionario funcionario){
+    public int inserirFuncionario(Funcionario funcionario) {
         Connection conn = conexao.conectar();
 
-        try(PreparedStatement pstmt = conn.prepareStatement("INSERT INTO funcionario (id, nome, email, data_admissao, data_nascimento, id_eta, id_cargo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")){
+        try (PreparedStatement pstmt = conn.prepareStatement("INSERT INTO funcionario (id, nome, email, data_admissao, data_nascimento, id_eta, id_cargo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
 
             pstmt.setInt(1, funcionario.getId());
             pstmt.setString(2, funcionario.getNome());
@@ -32,9 +32,9 @@ public class FuncionarioDAO {
 
             return pstmt.executeUpdate();
 
-        } catch (SQLException sqle){
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
             return -1;
-
         } finally {
             conexao.desconectar();
         }
@@ -42,16 +42,16 @@ public class FuncionarioDAO {
 
     // Método buscarFuncionario()
 
-    public List<Funcionario> buscarFuncionario(Funcionario funcionario){
+    public List<Funcionario> listarFuncionario(Funcionario funcionario) {
         List<Funcionario> funcionarios = new ArrayList<>();
         Connection conn = conexao.conectar();
 
-        try(PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Funcionario WHERE id = ?")){
+        try (PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Funcionario WHERE id = ?")) {
 
             pstmt.setInt(1, funcionario.getId());
             ResultSet rs = pstmt.executeQuery();
 
-            while (rs.next()){
+            while (rs.next()) {
                 funcionario.setId(rs.getInt("id"));
                 funcionario.setNome(rs.getString("nome"));
                 funcionario.setEmail(rs.getString("email"));
@@ -65,7 +65,8 @@ public class FuncionarioDAO {
             }
             return funcionarios;
 
-        } catch (SQLException sqle){
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
             return new ArrayList<>();
         } finally {
             conexao.desconectar();
@@ -74,9 +75,11 @@ public class FuncionarioDAO {
 
     // Método alterarFuncionario
 
-    public int alterarFuncionario(Funcionario funcionario){
+    public int alterarFuncionario(Funcionario funcionario) {
         Connection conn = conexao.conectar();
-        try(PreparedStatement pstmt = conn.prepareStatement("UPDATE Funcionario SET nome = ?, email = ?, data_admissao = ?, data_nascimento = ?, id_eta = ?, id_cargo = ?")){
+        String comando = "UPDATE Funcionario SET nome = ?, email = ?, data_admissao = ?, " +
+                "data_nascimento = ?, id_eta = ?, id_cargo = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
 
             pstmt.setString(1, funcionario.getNome());
             pstmt.setString(2, funcionario.getEmail());
@@ -85,48 +88,50 @@ public class FuncionarioDAO {
             pstmt.setInt(5, funcionario.getIdETA());
             pstmt.setInt(6, funcionario.getIdCargo());
 
-            return pstmt.executeUpdate();
-        }
-        catch (SQLException sqle){
+            if (pstmt.executeUpdate() > 0) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
             return -1;
-        }
-        finally {
+        } finally {
             conexao.desconectar();
         }
     }
 
 
     // Método remover()
-
-    public int removerFuncionario(Funcionario funcionario){
+    public int removerFuncionario(Funcionario funcionario) {
         Connection conn = conexao.conectar();
-
-        try(PreparedStatement pstmt = conn.prepareStatement("DELETE FROM ETA WHERE id = ?")){
+        String comando = "DELETE FROM ETA WHERE id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
 
             pstmt.setInt(1, funcionario.getId());
             return pstmt.executeUpdate();
-        }
-        catch (SQLException sqle){
+        } catch (SQLException sqle) {
             return -1;
-        }
-        finally {
+        } finally {
             conexao.desconectar();
         }
     }
 
     // Método removerDuplicadas ()
-
-    public int removerDuplicadas(){
+    public int removerDuplicadas() {
         Connection conn = conexao.conectar();
-        try(PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Funcionario id NOT IN (SELECT MIN(id) FROM ETA GROUP BY nome, email, data_admissao, data_nascimento, id_eta, id_cargo)")){
-
-            int qtdRemovida = pstmt.executeUpdate();
-            return qtdRemovida;
-        }
-        catch (SQLException sqle){
+        String comando = "DELETE FROM Funcionario id NOT IN (SELECT MIN(id) " +
+                "FROM ETA GROUP BY nome, email, data_admissao, data_nascimento, id_eta, id_cargo)";
+        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+            if (pstmt.executeUpdate() > 0) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
             return -1;
-        }
-        finally {
+        } finally {
             conexao.desconectar();
         }
     }
