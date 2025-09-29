@@ -11,26 +11,26 @@ import java.util.List;
 public class EstoqueDAO { //erik
     private final Conexao conexao = new Conexao(); //Para os métodos de conectar e desconectar
 
-    //Método para inserir um produto no estoque
-    public boolean inserirEstoque(Estoque estoque){
+    //Método para inserir um produto NO ESTOQUE
+    public int inserirEstoque(Estoque estoque) {
+        Connection conn = conexao.conectar(); //Conecta ao banco de dados
+        //Preparando String do comandoSQL
+        String comando = "INSERT INTO estoque(quantidade, data_validade, " +
+                "min_possiv_estocado, idEta, idProduto) VALUES(?, ?, ?, ?, ?)";
 
-        //Preparando o comando
-        String comandoSQL = "INSERT INTO estoque(quantidade, data_validade, min_possiv_estocado, idEta, idProduto) values(?, ?, ?, ?, ?)";
-
-        try (Connection conn = conexao.conectar(); PreparedStatement pstmt = conn.prepareStatement(comandoSQL)){
-
-            //Definindo os valores do comando
-
+        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+            //Setando valores usando a classe model
             pstmt.setInt(1, estoque.getQuantidade());
             pstmt.setDate(2, Date.valueOf(estoque.getData_validade()));
             pstmt.setInt(3, estoque.getMin_possiv_estocado());
             pstmt.setInt(4, estoque.getId_eta());
             pstmt.setInt(5, estoque.getId_produto());
 
-
-            //Retornando se alguma linha foi alterada
-            return pstmt.executeUpdate();
-          
+            if (pstmt.executeUpdate() > 0) { //Se modificar alguma linha
+                return 1; //Inserção bem sucedida
+            } else {
+                return 0; //Não foi possível inserir
+            }
         } catch (SQLException e) {
             e.printStackTrace(); //remover no final do projetoooooooo
             return -1; //Erro no banco de dados
@@ -41,28 +41,6 @@ public class EstoqueDAO { //erik
 
     //Método para remover um produto
     public int removerEstoque(Estoque estoque) {
-        //Estabelecendo conexão
-        String comandoSQL = "DELETE FROM estoque WHERE id = ?";
-
-        try (Connection conn = conexao.conectar(); PreparedStatement pstmt = conn.prepareStatement(comandoSQL)){
-
-            //Verificando se o produto existe
-            if (buscarPorId(estoque.getId()) == null){
-                return 0;
-            }
-
-            //Definindo os valores padrão
-            pstmt.setInt(1, estoque.getId());
-
-            pstmt.executeUpdate();
-            return 1;
-        } catch (SQLException e) {
-            return -1;
-        }
-    }
-
-    //Método alterar quantidade de estoque (pelo ID)
-    public int alterarEstoque(Estoque original, Estoque modificado) {
         Connection conn = conexao.conectar(); //Cria conexão com o banco
         String comando = "DELETE FROM estoque WHERE id = ?"; //Prepara o ocmando SQL para deletar o produto
 
@@ -141,7 +119,6 @@ public class EstoqueDAO { //erik
             return 0;
         }
 
-
         Connection conn = conexao.conectar(); //Criando conexão com o banco
         try (PreparedStatement pstmt = conn.prepareStatement(String.valueOf(comando))) {
 
@@ -167,7 +144,7 @@ public class EstoqueDAO { //erik
     //Método para buscar um produto NO ESTOQUE
     public List<Estoque> listarEstoque() {
         ResultSet rset = null; //Consulta da tabela
-        List<Estoque> estoque = new ArrayList<>();
+        List<Estoque> estoques = new ArrayList<>();
 
         Connection conn = conexao.conectar();
         //Prepara a consulta SQL para selecionar os produtos por ordem de ID
