@@ -77,7 +77,7 @@ public class EstoqueDAO { //erik
     }
 
     //Método alterar quantidade de estoque (pelo ID)
-    public int alterar(Estoque original, Estoque modificado){
+    public int alterarEstoque(Estoque original, Estoque modificado){
         List<Object> inputs = new ArrayList<>();
 
         //Criando uma String construtora

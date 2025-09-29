@@ -36,6 +36,6 @@ public class TesteMain {
 
         Estoque estoqueMod = new Estoque(id, quantidade, dataValidade, minPossivEstocado, idEta, idProduto);
 
-        estoqueDAO.alterar(estoqueOr, estoqueMod);
+        estoqueDAO.alterarEstoque(estoqueOr, estoqueMod);
     }
 }
