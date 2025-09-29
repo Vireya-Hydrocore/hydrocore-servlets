@@ -10,6 +10,7 @@ public class Conexao {
             .directory("C:\\Users\\eriksilva-ieg\\OneDrive - Instituto J&F\\Vireya\\ServletsVireya")
             .load();
 
+
     //Método para criar conexão com o banco
     public Connection conectar() {
         try {
