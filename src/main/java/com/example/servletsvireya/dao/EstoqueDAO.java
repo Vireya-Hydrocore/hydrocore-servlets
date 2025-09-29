@@ -140,6 +140,7 @@ public class EstoqueDAO { //erik
         }
     }
 
+
     //Método para buscar um produto NO ESTOQUE
     public List<Estoque> listarEstoque() {
         ResultSet rset = null; //Consulta da tabela

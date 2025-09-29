@@ -2,7 +2,6 @@ package com.example.servletsvireya.controller.estoque;
 
 import com.example.servletsvireya.dao.EstoqueDAO;
 import com.example.servletsvireya.model.Estoque;
-import com.example.servletsvireya.model.Produto;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
