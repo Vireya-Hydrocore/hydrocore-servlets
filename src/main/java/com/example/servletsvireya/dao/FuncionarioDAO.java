@@ -11,57 +11,58 @@ public class FuncionarioDAO {
 
     Conexao conexao;
 
-    public FuncionarioDAO() {
-        this.conexao = new Conexao();
-    }
 
     // Método inserir()
-
     public int inserirFuncionario(Funcionario funcionario) {
-        Connection conn = conexao.conectar();
+        Connection conn = conexao.conectar(); //Criando conexão com o banco
+        //Preparando o comandoSQL
+        String comandoSQL = "INSERT INTO funcionario (nome, email, data_admissao, data_nascimento, id_eta, id_cargo) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
 
-        try (PreparedStatement pstmt = conn.prepareStatement("INSERT INTO funcionario (id, nome, email, data_admissao, data_nascimento, id_eta, id_cargo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
-
-            pstmt.setInt(1, funcionario.getId());
+            //Definindo os valores do comando
             pstmt.setString(2, funcionario.getNome());
             pstmt.setString(3, funcionario.getEmail());
             pstmt.setDate(4, Date.valueOf(funcionario.getDataAdmissao()));
             pstmt.setDate(5, Date.valueOf(funcionario.getDataNascimento()));
-            pstmt.setInt(6, funcionario.getIdETA());
+            pstmt.setInt(6, funcionario.getIdEta());
             pstmt.setInt(7, funcionario.getIdCargo());
 
-            return pstmt.executeUpdate();
-
+            //Checando se alterou alguma linha
+            if (pstmt.executeUpdate() > 0) {
+                return 1; //Se sim, retorna 1
+            } else {
+                return 0;//Se não, retorna 0
+            }
         } catch (SQLException sqle) {
-            sqle.printStackTrace();
+            sqle.printStackTrace(); //Mostra o erro
             return -1;
         } finally {
-            conexao.desconectar();
+            conexao.desconectar(); //Desconecta do banco mesmo que passe por exceção
         }
     }
 
-    // Método buscarFuncionario()
 
+    // Método listarFuncionario()
     public List<Funcionario> listarFuncionario(Funcionario funcionario) {
-        List<Funcionario> funcionarios = new ArrayList<>();
+        List<Funcionario> funcionarios = new ArrayList<>(); //Instanciando uma lista de funcionarios
         Connection conn = conexao.conectar();
+        String comandoSQL = "SELECT * FROM funcionario WHERE id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Funcionario WHERE id = ?")) {
-
-            pstmt.setInt(1, funcionario.getId());
-            ResultSet rs = pstmt.executeQuery();
+        try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
+            pstmt.setInt(1, funcionario.getId());  //Definindo o parâmetro do comando
+            ResultSet rs = pstmt.executeQuery(); //Executa a consulta
 
             while (rs.next()) {
-                funcionario.setId(rs.getInt("id"));
-                funcionario.setNome(rs.getString("nome"));
+//                funcionario.setId(rs.getInt("id")); //nao precisa settar o id né?
+                funcionario.setNome(rs.getString("nome")); //pode pegar pelo numero da coluna ou pelo nome
                 funcionario.setEmail(rs.getString("email"));
                 funcionario.setDataAdmissao(rs.getDate("data_admissao").toLocalDate()); // .toLocalDate - Pega a data no SQL em tranforma em um LocalDate em Java
-                funcionario.setDataNascimento(rs.getDate("data_nascimento").toLocalDate()); // .toLocalDate - Pega a data no SQL em tranforma em um LocalDate em Java
+                funcionario.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
                 funcionario.setIdEta(rs.getInt("id_eta"));
                 funcionario.setIdCargo(rs.getInt("id_cargo"));
 
                 funcionarios.add(funcionario);
-
             }
             return funcionarios;
 
@@ -73,19 +74,18 @@ public class FuncionarioDAO {
         }
     }
 
-    // Método alterarFuncionario
 
+    // Método alterarFuncionario
     public int alterarFuncionario(Funcionario funcionario) {
         Connection conn = conexao.conectar();
-        String comando = "UPDATE Funcionario SET nome = ?, email = ?, data_admissao = ?, " +
+        String comandoSQL = "UPDATE funcionario SET nome = ?, email = ?, data_admissao = ?, " +
                 "data_nascimento = ?, id_eta = ?, id_cargo = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
             pstmt.setString(1, funcionario.getNome());
             pstmt.setString(2, funcionario.getEmail());
             pstmt.setDate(3, Date.valueOf(funcionario.getDataAdmissao()));
             pstmt.setDate(4, Date.valueOf(funcionario.getDataNascimento()));
-            pstmt.setInt(5, funcionario.getIdETA());
+            pstmt.setInt(5, funcionario.getIdEta());
             pstmt.setInt(6, funcionario.getIdCargo());
 
             if (pstmt.executeUpdate() > 0) {
@@ -105,12 +105,23 @@ public class FuncionarioDAO {
     // Método remover()
     public int removerFuncionario(Funcionario funcionario) {
         Connection conn = conexao.conectar();
-        String comando = "DELETE FROM ETA WHERE id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        String comandoSQL = "DELETE FROM funcionario WHERE id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
+
+            //Verificando se o funcionario existe
+//            if (buscarFuncionarioPorId(funcionario.getId()) == null){
+//                return 0;
+//            }
 
             pstmt.setInt(1, funcionario.getId());
-            return pstmt.executeUpdate();
+
+            if (pstmt.executeUpdate() > 0) {
+                return 1;
+            } else {
+                return 0;
+            }
         } catch (SQLException sqle) {
+            sqle.printStackTrace();
             return -1;
         } finally {
             conexao.desconectar();
@@ -120,9 +131,9 @@ public class FuncionarioDAO {
     // Método removerDuplicadas ()
     public int removerDuplicadas() {
         Connection conn = conexao.conectar();
-        String comando = "DELETE FROM Funcionario id NOT IN (SELECT MIN(id) " +
+        String comandoSQL = "DELETE FROM funcionario WHERE id NOT IN (SELECT MIN(id) " +
                 "FROM ETA GROUP BY nome, email, data_admissao, data_nascimento, id_eta, id_cargo)";
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
             if (pstmt.executeUpdate() > 0) {
                 return 1;
             } else {
