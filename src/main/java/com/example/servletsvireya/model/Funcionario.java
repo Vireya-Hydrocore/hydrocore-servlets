@@ -12,15 +12,14 @@ public class Funcionario {
 
     // Construtores
     public Funcionario(){}
-    public Funcionario(int id, String nome, String email, LocalDate dataAdmissao,
-                       LocalDate dataNascimento, int idETA, int idCargo){
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.dataAdmissao = dataAdmissao;
-        this.dataNascimento = dataNascimento;
-        this.idETA = idETA;
-        this.idCargo = idCargo;
+    public Funcionario(Funcionario funcionario){
+        this.id = funcionario.getId();
+        this.nome = funcionario.getNome();
+        this.email = funcionario.getEmail();
+        this.dataAdmissao = funcionario.getDataAdmissao();
+        this.dataNascimento = funcionario.getDataNascimento();
+        this.idETA = funcionario.getIdETA();
+        this.idCargo = funcionario.getIdCargo();
     }
 
     // Getters e Setters

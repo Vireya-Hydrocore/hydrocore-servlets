@@ -36,14 +36,13 @@ public class EtaDAO {
 
     // Método buscarETA()
 
-    // Método listar as ETAs
-    public List<Eta> listarETA(){
+    public List<Eta> buscarETA(){
         ResultSet rs = null;
         List<Eta> etas = new ArrayList<>();
 
-        Connection conn = conexao.conectar();
         String comando = "INSERT INTO ETA (id, nome, capacidade) VALUES (?, ?, ?)";
-        try(PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM ETA ORDER BY id")){
+        try(Connection conn = conexao.conectar(); PreparedStatement pstmt = conn.prepareStatement(comando)){
+
             rs = pstmt.executeQuery();
 
             while(rs.next()){
@@ -67,18 +66,15 @@ public class EtaDAO {
     }
 
 
-
-
-    // Método buscarTodasEtas()
-
+//    // Método buscarTodasEtas()
 //    public List<Eta> buscarTodasEtas() {
 //
 //        List<Eta> etas = new ArrayList<>();
-//        conexao.conectar();
+//        Connection conn = conexao.conectar();
 //
-//        try (PreparedStatement pstmt = conexao.prepareStatement("SELECT * FROM ETA")) {
+//        try (Statement stmt = conn.createStatement()) {
 //
-//            ResultSet rs = pstmt.executeQuery();
+//            ResultSet rs = stmt.executeQuery("SELECT * FROM ETA");
 //
 //            while (rs.next()) {
 //                Eta eta = new Eta();
@@ -93,7 +89,7 @@ public class EtaDAO {
 //            return etas;
 //        }
 //        catch (SQLException e) {
-//            return null;
+//            return new ArrayList<>();
 //        }
 //        finally {
 //            conexao.desconectar();

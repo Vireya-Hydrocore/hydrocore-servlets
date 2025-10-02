@@ -11,10 +11,10 @@ public class Eta {
 
     public Eta(){}
     public Eta(Eta eta){
-        this.id = id;
-        this.nome = nome;
-        this.capacidade = capacidade;
-        this.telefone = telefone;
+        this.id = eta.getId();
+        this.nome = eta.getNome();
+        this.capacidade = eta.getCapacidade();
+        this.telefone = eta.getTelefone();
     }
 
     // Getters e Setters
