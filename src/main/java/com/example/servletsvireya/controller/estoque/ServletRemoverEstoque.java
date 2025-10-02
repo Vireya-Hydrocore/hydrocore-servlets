@@ -24,6 +24,6 @@ public class ServletRemoverEstoque extends HttpServlet {
         estoque.setId(id);
 
         //Removendo produto do estoque
-        estoqueDAO.removerEstoque(estoque);
+        estoqueDAO.removerEmEstoque(estoque);
     }
 }

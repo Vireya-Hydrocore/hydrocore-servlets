@@ -21,7 +21,6 @@ public class AdminDAO{
             pstmt.setString(2, admin.getEmail());
             pstmt.setString(3, admin.getSenha());
 
-//            return pstmt.executeUpdate();
             if (pstmt.executeUpdate() > 0){
                 return 1;
             } else{

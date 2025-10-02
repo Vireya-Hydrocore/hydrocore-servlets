@@ -37,7 +37,7 @@ public class ServletInserirEstoque extends HttpServlet {
         estoque.setId_produto(idProduto);
 
         //Inserindo no estoque do banco de dados
-        estoqueDAO.inserirEstoque(estoque);
+        estoqueDAO.inserirEmEstoque(estoque);
 
         //Não precisa responder nada
     }
