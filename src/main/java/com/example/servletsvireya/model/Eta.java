@@ -6,15 +6,17 @@ public class Eta {
     private int capacidade;
     private String telefone;
 
+    private String cnpj;
+
 
     // Contrutores
 
     public Eta(){}
-    public Eta(Eta eta){
-        this.id = id;
+    public Eta(String nome, int capacidade, String telefone, String cnpj){
         this.nome = nome;
         this.capacidade = capacidade;
         this.telefone = telefone;
+        this.cnpj = cnpj;
     }
 
     // Getters e Setters
@@ -23,6 +25,8 @@ public class Eta {
     public String getNome(){ return this.nome; }
     public int getCapacidade(){ return this.capacidade; }
     public String getTelefone(){ return this.telefone; }
+
+    public String getCnpj(){return  this.cnpj;}
 
 
     public void setId(int id){ this.id = id; }
