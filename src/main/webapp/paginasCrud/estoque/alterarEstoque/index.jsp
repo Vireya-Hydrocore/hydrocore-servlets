@@ -11,5 +11,7 @@
     <title>Estoque</title>
 </head>
 <body>
+  <h1>Estoque</h1>
+  <a href="">Novo Estoque</a>
 </body>
 </html>

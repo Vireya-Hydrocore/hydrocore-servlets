@@ -154,7 +154,7 @@ public class ProdutoDAO {
         List<Produto> produtos = new ArrayList<>();
 
         Connection conn = conexao.conectar();
-        String comando = "SELECT * FROM produto ORDER BY id";
+        String comando = "SELECT * FROM produto ORDER BY nome"; //ordena em ordem alfabética
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             rset = pstmt.executeQuery(); //Executa a consulta com Query
 

@@ -44,6 +44,10 @@ public class ServletAlterarProduto extends HttpServlet {
 
         //Instanciando objetos da classe model Produto
         Produto original = produtoDAO.buscarPorId(id);
+        if (original == null) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Produto não encontrado.");
+            return;
+        }
 
         Produto modificado = new Produto();
         modificado.setId(id);
@@ -52,16 +56,17 @@ public class ServletAlterarProduto extends HttpServlet {
         modificado.setUnidadeMedida(req.getParameter("unidMedida"));
         modificado.setConcentracao(concentracao);
 
-
         //Alterando produto do sistema
         int resultado = produtoDAO.alterar(original, modificado);
 
-        if (resultado == 1){
-            //volta pra lista
-        } else if (resultado == 0){
-            //nada foi alterado
-        } else{
-            //tela de erro
+        if (resultado == 1) {
+            resp.sendRedirect(req.getContextPath() + "/servlet-listar-produto");
+        } else if (resultado == 0) {
+            req.setAttribute("mensagem", "Nenhuma alteração realizada.");
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/paginasCrud/produto/alterarProduto/index.jsp");
+            dispatcher.forward(req, resp);
+        } else {
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao alterar produto.");
         }
     }
 }

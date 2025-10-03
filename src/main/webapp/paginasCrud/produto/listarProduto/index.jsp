@@ -31,28 +31,39 @@
     <br><br>
     <table border="1">
         <thead>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Tipo</th>
-            <th>Unidade de Medida</th>
-            <th>Concentração</th>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Tipo</th>
+        <th>Unidade de Medida</th>
+        <th>Concentração</th>
+        <th>Ações</th>
         </thead>
         <tbody>
-            <% if (lista != null && !lista.isEmpty()){
-                for (int i=0; i<lista.size(); i++){ %>
-            <tr>
-                <td> <%= lista.get(i).getId() %> </td> <!-- simbolo de igual serve para pegar o valor de uma var. SEM ; -->
-                <td> <%= lista.get(i).getNome() %> </td>
-                <td> <%= lista.get(i).getTipo() %> </td>
-                <td> <%= lista.get(i).getUnidadeMedida() %> </td>
-                <td> <%= lista.get(i).getConcentracao() %> </td>
-            </tr>
-            <% }
-            } else { %>
-                <tr>
-                    <td colspan="5">Nenhum produto encontrado! </td>
-                </tr>
-            <% } %>
+        <% if (lista != null && !lista.isEmpty()) {
+            for (Produto p : lista) { %>
+        <tr>
+            <td><%= p.getId() %></td>
+            <td><%= p.getNome() %></td>
+            <td><%= p.getTipo() %></td>
+            <td><%= p.getUnidadeMedida() %></td>
+            <td><%= p.getConcentracao() %></td>
+            <td>
+                <!-- Botão Editar -->
+                <a href="${pageContext.request.contextPath}/servlet-alterar-produto?id=<%= p.getId() %>">Editar</a>
+                &nbsp;|&nbsp;
+                <!-- Botão Excluir -->
+                <a href="${pageContext.request.contextPath}/servlet-remover-produto?id=<%= p.getId() %>"
+                   onclick="return confirm('Tem certeza que deseja excluir este produto?');">
+                    Excluir
+                </a>
+            </td>
+        </tr>
+        <% }
+        } else { %>
+        <tr>
+            <td colspan="6">Nenhum produto encontrado!</td>
+        </tr>
+        <% } %>
         </tbody>
     </table>
 </body>

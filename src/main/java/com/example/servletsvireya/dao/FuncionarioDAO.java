@@ -47,7 +47,9 @@ public class FuncionarioDAO {
     public List<Funcionario> listarFuncionario(Funcionario funcionario) {
         List<Funcionario> funcionarios = new ArrayList<>(); //Instanciando uma lista de funcionarios
         Connection conn = conexao.conectar();
-        String comandoSQL = "SELECT * FROM funcionario WHERE id = ?";
+        String comandoSQL = "SELECT f.*, c.nome AS Cargo, e.nome AS Eta FROM funcionario f WHERE id = ?" +
+                "JOIN cargo c ON id = id_cargo" +
+                "JOIN eta e ON id = id_eta";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
             pstmt.setInt(1, funcionario.getId());  //Definindo o parâmetro do comando

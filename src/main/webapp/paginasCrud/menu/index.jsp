@@ -22,9 +22,9 @@
     <br><br>
     <a href="">Cargo - Em Breve</a>
     <br><br>
-    <a href="${pageContext.request.contextPath}/paginasCrud/produto/index.jsp">Produto</a>
+    <a href="${pageContext.request.contextPath}/ServletProduto?action=main">Produto</a>
     <br><br>
-    <a href="${pageContext.request.contextPath}/paginasCrud/estoque/index.jsp">Estoque</a>
+    <a href="${pageContext.request.contextPath}/ServletEstoque?action=main">Estoque</a>
     <br><br>
     <a href="">Eta - Em Breve</a>
     <br><br>

@@ -1,6 +1,6 @@
 package com.example.servletsvireya.dao;
 
-import com.example.servletsvireya.model.Estoque;
+import com.example.servletsvireya.dto.EstoqueDTO;
 import com.example.servletsvireya.util.Conexao;
 
 import java.sql.*;
@@ -12,8 +12,8 @@ public class EstoqueDAO { //erik
     private final Conexao conexao = new Conexao(); //Para os métodos de conectar e desconectar
 
 
-    //Método para inserir um produto NO ESTOQUE - Precisa verificar se o id do produto existe ?????????????
-    public int inserirEstoque(Estoque estoque) {
+    //Método para inserir um produto NO estoque - Precisa verificar se o id do produto existe ?????????????
+    public int inserirEstoque(EstoqueDTO estoqueDTO) {
         Connection conn = conexao.conectar(); //Conecta ao banco de dados
         //Preparando String do comandoSQL
         String comandoSQL = "INSERT INTO estoque(quantidade, data_validade, " +
@@ -21,11 +21,11 @@ public class EstoqueDAO { //erik
 
         try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
             //Settando valores usando a classe model
-            pstmt.setInt(1, estoque.getQuantidade());
-            pstmt.setDate(2, Date.valueOf(estoque.getDataValidade()));
-            pstmt.setInt(3, estoque.getMinPossivEstocado());
-            pstmt.setInt(4, estoque.getIdEta());
-            pstmt.setInt(5, estoque.getIdProduto());
+            pstmt.setInt(1, estoqueDTO.getQuantidade());
+            pstmt.setDate(2, Date.valueOf(estoqueDTO.getDataValidade()));
+            pstmt.setInt(3, estoqueDTO.getMinPossivEstocado());
+            pstmt.setInt(4, estoqueDTO.getIdEta());
+            pstmt.setInt(5, estoqueDTO.getIdProduto());
 
             if (pstmt.executeUpdate() > 0) { //Se modificar alguma linha
                 return 1; //Inserção bem sucedida
@@ -42,29 +42,17 @@ public class EstoqueDAO { //erik
 
 
     //Método para remover um produto
-    public int removerEstoque(Estoque estoque) {
+    public int removerEstoque(EstoqueDTO estoqueDTO) {
         Connection conn = conexao.conectar();
-        String comandoSQL = "DELETE FROM estoque WHERE id = ?";
+        String comandoSQL = "DELETE FROM estoqueDTO WHERE id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
-            pstmt.setInt(1, estoque.getId());
+            pstmt.setInt(1, estoqueDTO.getId());
 
 //            Verificando se o estoque existe
-            if (buscarPorId(estoque.getId()) == null){
+            if (buscarPorId(estoqueDTO.getId()) == null){
                 return 0; //Se não tiver, retorna 0
             }
-
-            //Verificar se o id_produto existe
-//            PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM estoque WHERE id_produto = ?");
-//            pstmt.setInt(1, estoque.getId());
-//            ResultSet rset = pstmt.executeQuery();
-//            rset.next();
-//
-//            if (rset.getInt(1) == 0) {
-//                rset.close(); //Fecha o rset
-//                return 0; //Não existe
-//            }
-//            rset.close(); //Fecha o rset se o ID existir
 
             if (pstmt.executeUpdate() > 0) {
                 return 1;
@@ -81,7 +69,7 @@ public class EstoqueDAO { //erik
 
 
     //Método para alterar o estoque
-    public int alterarEstoque(Estoque original, Estoque modificado) {
+    public int alterarEstoqueDTO(EstoqueDTO original, EstoqueDTO modificado) {
         List<Object> inputs = new ArrayList<>(); //Instanciando um List dos campos que talvez foram alterados
 
         String comandoSQL = "UPDATE estoque SET ";
@@ -147,10 +135,10 @@ public class EstoqueDAO { //erik
     }
 
 
-    //Método para listar os produtos NO ESTOQUE
-    public List<Estoque> listarEstoque() {
+    //Método para listar os produtos NO estoqueDTO
+    public List<EstoqueDTO> listarEstoque() {
         ResultSet rset = null; //Consulta da tabela
-        List<Estoque> estoques = new ArrayList<>(); //Instanciando uma lista de estoques
+        List<EstoqueDTO> estoques = new ArrayList<>(); //Instanciando uma lista de estoqueDTOs
         Connection conn = conexao.conectar();
 
         //Prepara a consulta SQL para selecionar os produtos
@@ -160,16 +148,16 @@ public class EstoqueDAO { //erik
 
             //Armazenar os valores em um List<>
             while (rset.next()) {
-                Estoque estoque = new Estoque(); //Instanciando um objeto Estoque
+                EstoqueDTO estoqueDTO = new EstoqueDTO(); //Instanciando um objeto estoqueDTO
 
-                estoque.setId(rset.getInt("id")); //Pega a primeira coluna do select (pode ser pelo index ou nome)
-                estoque.setQuantidade(rset.getInt("quantidade"));
-                estoque.setDataValidade(rset.getDate("data_validade").toLocalDate()); //Converte para LocalDate
-                estoque.setMinPossivEstocado(rset.getInt("min_possiv_estocado"));
-                estoque.setIdEta(rset.getInt("id_eta"));
-                estoque.setIdProduto(rset.getInt("id_produto"));
+                estoqueDTO.setId(rset.getInt("id")); //Pega a primeira coluna do select (pode ser pelo index ou nome)
+                estoqueDTO.setQuantidade(rset.getInt("quantidade"));
+                estoqueDTO.setDataValidade(rset.getDate("data_validade").toLocalDate()); //Converte para LocalDate
+                estoqueDTO.setMinPossivelEstocado(rset.getInt("min_possiv_estocado"));
+                estoqueDTO.setIdEta(rset.getInt("id_eta"));
+                estoqueDTO.setIdProduto(rset.getInt("id_produto"));
 
-                estoques.add(estoque); //Populando o List
+                estoques.add(estoqueDTO); //Populando o List
             }
             return estoques; //Retorna list contendo os produtos NO estoque
 
@@ -183,7 +171,7 @@ public class EstoqueDAO { //erik
 
 
     //Buscar pelo ID
-    public Estoque buscarPorId(int idProcurado) { //Seria um filtro né???
+    public EstoqueDTO buscarPorId(int idProcurado) { //Seria um filtro né???
         ResultSet rset = null; //Consulta da tabela
         Connection conn = conexao.conectar();
         String comando = "SELECT * FROM estoque WHERE id = ?";
@@ -196,19 +184,19 @@ public class EstoqueDAO { //erik
                 return null; //Não tem registro com esse id
             }
 
-            //Armazenar os valores em um objeto tipo estoque
+            //Armazenar os valores em um objeto tipo estoqueDTO
             //somente objeto pois nao existe id repetido
-            Estoque estoque = new Estoque();
+            EstoqueDTO estoqueDTO = new EstoqueDTO();
 
             if (rset.next()) {
-                estoque.setId(rset.getInt("id")); //Pega a primeira coluna do select (pode ser pelo index ou nome)
-                estoque.setQuantidade(rset.getInt("quantidade"));
-                estoque.setDataValidade(rset.getDate("data_validade").toLocalDate()); //Converte para LocalDate
-                estoque.setMinPossivEstocado(rset.getInt("min_possiv_estocado"));
-                estoque.setIdEta(rset.getInt("id_eta"));
-                estoque.setIdProduto(rset.getInt("id_produto"));
+                estoqueDTO.setId(rset.getInt("id")); //Pega a primeira coluna do select (pode ser pelo index ou nome)
+                estoqueDTO.setQuantidade(rset.getInt("quantidade"));
+                estoqueDTO.setDataValidade(rset.getDate("data_validade").toLocalDate()); //Converte para LocalDate
+                estoqueDTO.setMinPossivelEstocado(rset.getInt("min_possiv_estocado"));
+                estoqueDTO.setIdEta(rset.getInt("id_eta"));
+                estoqueDTO.setIdProduto(rset.getInt("id_produto"));
             }
-            return estoque; //Retorna contendo os produtos NO estoque
+            return estoqueDTO; //Retorna contendo os produtos NO estoque
 
         } catch (SQLException e) {
             e.printStackTrace();
