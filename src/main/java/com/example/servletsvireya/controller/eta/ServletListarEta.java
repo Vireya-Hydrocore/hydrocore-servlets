@@ -20,8 +20,8 @@ public class ServletListarEta extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 
-//        List<Eta> listaEtas = etaDAO.buscarTodasEtas();
-//        req.setAttribute("listaEtas", listaEtas);
+        List<Eta> listaEtas = etaDAO.buscarETA();
+        req.setAttribute("listaEtas", listaEtas);
 
         req.getRequestDispatcher("lista-etas.jsp").forward(req, resp);
     }

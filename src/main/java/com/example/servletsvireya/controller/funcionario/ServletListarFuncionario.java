@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +22,26 @@ public class ServletListarFuncionario extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-//        List<Funcionario> funcionarios = funcionarioDAO.buscarTodosFuncionarios();
-//        req.setAttribute("listaFuncionarios", funcionarios);
+        int id = Integer.parseInt(req.getParameter("id"));
+        String nome = req.getParameter("nome");
+        String email = req.getParameter("email");
+        LocalDate dataAdmissao = LocalDate.parse(req.getParameter("data_admissao"));
+        LocalDate dataNascimento = LocalDate.parse(req.getParameter("data_nascimento"));
+        int idEta = Integer.parseInt(req.getParameter("id_eta"));
+        int idCargo = Integer.parseInt(req.getParameter("id_cargo"));
+
+        Funcionario funcionario = new Funcionario();
+
+        funcionario.setId(id);
+        funcionario.setNome(nome);
+        funcionario.setEmail(email);
+        funcionario.setDataAdmissao(dataAdmissao);
+        funcionario.setDataNascimento(dataNascimento);
+        funcionario.setIdEta(idEta);
+        funcionario.setIdCargo(idCargo);
+
+        List<Funcionario> funcionarios = funcionarioDAO.buscarFuncionario(funcionario);
+        req.setAttribute("listaFuncionarios", funcionarios);
 
         req.getRequestDispatcher("lista-funcionarios.jsp").forward(req, resp);
 
