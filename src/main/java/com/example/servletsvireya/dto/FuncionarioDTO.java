@@ -1,7 +1,8 @@
-package com.example.servletsvireya.model;
+package com.example.servletsvireya.dto;
+
 import java.time.LocalDate;
 
-public class Funcionario {
+public class FuncionarioDTO {
     private int id; // Primary Key
     private String nome;
     private String email;
@@ -11,8 +12,8 @@ public class Funcionario {
     private int idCargo; // Foreign Key
 
     // Construtores
-    public Funcionario(){}
-    public Funcionario(int id, String nome, String email, LocalDate dataAdmissao,
+    public FuncionarioDTO(){}
+    public FuncionarioDTO(int id, String nome, String email, LocalDate dataAdmissao,
                        LocalDate dataNascimento, int idEta, int idCargo){
         this.id = id;
         this.nome = nome;

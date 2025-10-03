@@ -19,7 +19,7 @@ public class ServletRemoverEstoque extends HttpServlet {
         //Convertendo id de String para int
         int id = Integer.parseInt(idStr);
 
-        //Instanciando objeto model Estoque
+        //Instanciando objeto Estoque - tem que ser DTO???????
         Estoque estoque = new Estoque();
         estoque.setId(id);
 

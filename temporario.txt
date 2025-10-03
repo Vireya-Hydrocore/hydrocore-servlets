@@ -1,9 +1,0 @@
-heys devss, qria pedir umas coisas pra vcs em relação ao backend, tendo em vista como o Iara e outros projetos estão indo:
-
-- Os servlets de estoque e produto já estão no repositório do GitHub, em organizações, juntamente com suas classes model e dao. (faltam ajustes);
-- Clonem esse repositório, e , caso não rode, provavelmente é alguma coisa relacionada ao tomcat, maven, ou o Docker não está ligado. Mas vamos arrumando nos computadores de todos
-- Peço que commitem sempre oq forem mudar nos arquivos, estando atentos aos usar o comando git add <nomeArquivo>. é melhor de visualizar no GitHub. Ex: mudei uma váriavel na classe produtoDAO e adicionei um novo método em estoqueDAO. É recomendável que se adicione e faça os commits separadamente (jaja mando uma foto de como NÃO pode ficar);
-- Sempre especifiquem o que mudaram nos arquivos, tanto classes como documentos JSPs;
-- Quando forem realizar alguma operação no backend, usem a branch desenvolvimento para todos nós verificarmos o que foi feito antes de mandar para a main/principal (Ou podemos criar branches pra cada um de nós, igual na landingpage);
-- Coisinhas bestas/ajustes pequenos não precisam ser commitados na hora;
-- Avisem aq ou na escola sobre possíveis alterações, para discutirmos e evitarmos esforço sem necessidade
