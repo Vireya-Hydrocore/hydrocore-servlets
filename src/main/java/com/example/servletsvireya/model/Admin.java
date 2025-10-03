@@ -5,15 +5,12 @@ public class Admin {
     private String nome;
     private String email;
     private int idEta;
+    private String senha;
     public Admin(){}
-    public Admin(int id, String nome, String email, int idEta){
-        this.id = id;
+    public Admin(String nome, String email, String senha){
         this.nome = nome;
         this.email = email;
-        this.idEta = idEta;
-    }
-    public void setId(int id){
-        this.id = id;
+        this.senha = senha;
     }
     public void setNome(String nome){
         this.nome = nome;
@@ -21,8 +18,11 @@ public class Admin {
     public void setEmail(String email){
         this.email = email;
     }
-    public int getId(){
-        return this.id;
+    public void setSenha(String senha){
+        this.senha = senha;
+    }
+    public String getSenha(){
+        return this.senha;
     }
     public String getNome(){
         return this.nome;
@@ -33,4 +33,5 @@ public class Admin {
     public int getIdEta(){
         return this.idEta;
     }
+    public  int getId() {return this.id;}
 }

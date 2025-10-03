@@ -1,6 +1,8 @@
 package com.example.servletsvireya.controller.eta;
 
+import com.example.servletsvireya.dao.AdminDAO;
 import com.example.servletsvireya.dao.EtaDAO;
+import com.example.servletsvireya.model.Admin;
 import com.example.servletsvireya.model.Eta;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,36 +10,39 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
 @WebServlet(name = "ServletCadastrarEta", value = "/servlet-cadastrar-eta")
-
 public class ServletCadastrarEta extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-    @Override
-    protected void doPost (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Pegar os parâmetros que vieram do formulário JSP
-        int id = Integer.parseInt(req.getParameter("id"));
-        String nome = req.getParameter("nome");
-        int capacidade = Integer.parseInt(req.getParameter("capacidade"));
+        // Pegando dados do formulário
 
-        // Criar o objeto Eta
-        Eta eta = new Eta();
+        String nome = request.getParameter("nome");
+        String email = request.getParameter("email");
+        String cnpj = request.getParameter("cnpj");
+        String senha = request.getParameter("senha");
+        int capacidade = Integer.parseInt(request.getParameter("capacidade"));
+        String telefone = request.getParameter("telefone");
+        // Criando objeto Admin
 
-        eta.setNome(nome);
-        eta.setCapacidade(capacidade);
-        eta.setId(id);
+        cnpj = cnpj.replaceAll("\\D","");
+        telefone = telefone.replaceAll("\\D","");
 
-        // Salvar no banco via DAO
-        EtaDAO etaDAO = new EtaDAO();
-        int resultado = etaDAO.inserirETA((eta));
+        Admin admin = new Admin(nome,email,senha);
+        Eta eta = new Eta(nome,capacidade,telefone,cnpj);
+//        admin.setIdEta(idEta);
 
-        // Redirecionar ou mostrar mensagem
+        // Inserindo no banco via DAO
+        AdminDAO admDao = new AdminDAO();
+        EtaDAO etaDao = new EtaDAO();
+        int resultado = admDao.inserirAdmin(admin);
+        int resultadoEta = etaDao.inserirETA(eta);
+
+        // Checando resultado
         if (resultado > 0) {
-            // deu certo -> volta pra lista
-            resp.sendRedirect("lista-eta.jsp");
+            response.sendRedirect("sucesso.jsp"); //sucesso
         } else {
-            // deu errado -> manda pra uma página de erro
-            resp.sendRedirect("erro.jsp");
+            response.sendRedirect("erro.jsp"); //erro
         }
     }
 }

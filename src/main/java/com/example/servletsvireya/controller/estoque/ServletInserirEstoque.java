@@ -24,21 +24,26 @@ public class ServletInserirEstoque extends HttpServlet {
 
         //Convertendo para os valores adequados
         int quantidade = Integer.parseInt(quantidadeStr);
-        LocalDate dataValidade = LocalDate.parse(dataValidadeStr); //ta certo??
+        LocalDate dataValidade = LocalDate.parse(dataValidadeStr);
         int minPossivEstocado = Integer.parseInt(minPossivEstocadoStr);
         int idEta = Integer.parseInt(idEtaStr);
         int idProduto = Integer.parseInt(idProdutoStr);
 
-        //Instanciando objeto model Estoque
+        //Settando valores no objeto Estoque - tem que ser DTO???????
         estoque.setQuantidade(quantidade);
-        estoque.setData_validade(dataValidade);
-        estoque.setMin_possiv_estocado(minPossivEstocado);
-        estoque.setId_eta(idEta);
-        estoque.setId_produto(idProduto);
+        estoque.setDataValidade(dataValidade);
+        estoque.setMinPossivEstocado(minPossivEstocado);
+        estoque.setIdEta(idEta);
+        estoque.setIdProduto(idProduto);
 
         //Inserindo no estoque do banco de dados
-        estoqueDAO.inserirEstoque(estoque);
 
-        //Não precisa responder nada
+        int retorno = estoqueDAO.inserirEstoque(estoque);
+
+        if (retorno == 0){
+            //encaminha para pagina de erro
+        } else if (retorno == -1){
+            //é porque deu exceção
+        }
     }
 }

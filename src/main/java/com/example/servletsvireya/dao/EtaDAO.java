@@ -15,13 +15,13 @@ public class EtaDAO {
     // Método inserirEta()
     public int inserirETA(Eta eta){
         Connection conn = conexao.conectar();
-        String comando = "INSERT INTO ETA (id, nome, capacidade) VALUES (?, ?, ?)";
-
+        String comando = "INSERT INTO ETA (nome, capacidade, telefone, cnpj) " +
+                "VALUES (?, ?, ?, ?)";
         try(PreparedStatement pstmt = conn.prepareStatement(comando)){
-            pstmt.setInt(1, eta.getId());
-            pstmt.setString(2, eta.getNome());
-            pstmt.setInt(3, eta.getCapacidade());
-            pstmt.setString(4, eta.getTelefone());
+            pstmt.setString(1, eta.getNome());
+            pstmt.setInt(2, eta.getCapacidade());
+            pstmt.setString(3, eta.getTelefone());
+            pstmt.setString(4, eta.getCnpj());
 
             return pstmt.executeUpdate();
         }
@@ -39,10 +39,9 @@ public class EtaDAO {
     public List<Eta> buscarETA(){
         ResultSet rs = null;
         List<Eta> etas = new ArrayList<>();
-
         String comando = "INSERT INTO ETA (id, nome, capacidade) VALUES (?, ?, ?)";
+      
         try(Connection conn = conexao.conectar(); PreparedStatement pstmt = conn.prepareStatement(comando)){
-
             rs = pstmt.executeQuery();
 
             while(rs.next()){
