@@ -80,6 +80,7 @@ public class EstoqueDAO { //erik
     }
 
 
+
     //Método para alterar o estoque
     public int alterarEstoque(Estoque original, Estoque modificado) {
         List<Object> inputs = new ArrayList<>(); //Instanciando um List dos campos que talvez foram alterados

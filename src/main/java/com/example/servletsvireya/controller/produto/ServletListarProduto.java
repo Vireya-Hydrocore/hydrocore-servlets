@@ -12,6 +12,7 @@ import java.util.List;
 @WebServlet(name = "ServletListarProduto", value = "/servlet-listar-produto")
 public class ServletListarProduto extends HttpServlet {
     ProdutoDAO produtoDAO = new ProdutoDAO();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Criando um objeto que irá receber os dados do produto
