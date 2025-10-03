@@ -68,6 +68,7 @@ public class EstoqueDAO { //erik
     }
 
 
+
     //Método para alterar o estoque
     public int alterarEstoqueDTO(EstoqueDTO original, EstoqueDTO modificado) {
         List<Object> inputs = new ArrayList<>(); //Instanciando um List dos campos que talvez foram alterados

@@ -1,0 +1,222 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background-color: #EAF2FF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main {
+    display: flex;
+    width: 75%;
+    background-color: #fff;
+    height: 950px;
+    border-radius: 10px;
+    margin-top: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.container-esquerdo {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.logo img {
+    width: 40px;
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+input {
+    padding: 10px;
+    border: none;
+    border-bottom: 2px solid #d9d9d9;
+    margin-bottom: 20px;
+    font-size: 15px;
+    outline: none;
+    background: none;
+}
+
+.checkbox {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    font-size: 15px;
+    color: #000;
+}
+
+.checkbox input {
+    margin-right: 8px;
+    margin-top: 13px;
+}
+
+
+.botao {
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.botao:hover {
+    background: #222;
+}
+
+.login-text {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #444;
+    text-align: center;
+}
+
+.login-text a {
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.login-text a:hover {
+    text-decoration: underline;
+}
+
+.container-direito {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 20px;
+}
+
+.sobreposicao {
+    position: absolute;
+    color: #000;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    z-index: 1;
+}
+
+.sobreposicao img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    border-top-right-radius: 9px;
+    border-bottom-right-radius: 9px;
+}
+
+.celular {
+    text-align: center;
+    z-index: 2;
+    animation: float 3s ease-in-out infinite;
+}
+
+.celular img {
+    width: 350px;
+}
+
+.input-senha {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.input-senha input {
+    padding: 10px;
+    font-size: 15px;
+    flex: 1;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    margin-top: -20px;
+    cursor: pointer;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+    main {
+        flex-direction: column;
+        width: 75%;
+    }
+
+    .container-direito {
+        display: none;
+    }
+
+    .container-esquerdo {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    body {
+        padding: 10px;
+    }
+
+    main {
+        width: 75%;
+    }
+
+    .container-esquerdo {
+        padding: 25px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+}
+.erro {
+    color: red;
+    font-size: 14px;
+    margin-top: 4px;
+}

@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Conexao {
     Connection conn;
     Dotenv dotenv = Dotenv.configure()
-            .directory("C:\\Users\\eriksilva-ieg\\OneDrive - Instituto J&F\\Vireya\\ServletsVireya")
+            .directory("C:\\Users\\gabrielmasagao-ieg\\OneDrive - Instituto J&F\\Área de Trabalho\\Diciplinas técnicas\\POO\\vireya-backend")
             .load();
 
 
@@ -17,7 +17,7 @@ public class Conexao {
             //Informando o drive postgreSQL
             Class.forName("org.postgresql.Driver"); //Não obrigatório
 
-            conn = DriverManager.getConnection(
+            this.conn = DriverManager.getConnection(
                     Objects.requireNonNull(dotenv.get("DB_URL_LOCAL")),
                     dotenv.get("DB_USERNAME_LOCAL"),
                     dotenv.get("DB_PASSWORD_LOCAL")
@@ -36,7 +36,7 @@ public class Conexao {
             if (conn != null && !conn.isClosed()) { //Se a conexão estiver preenchida E aberta
                 //Fechando a conexão com o banco de dados
                 System.out.println("desconectou!");
-                conn.close();
+                this.conn.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
