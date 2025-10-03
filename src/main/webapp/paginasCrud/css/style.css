@@ -1,0 +1,293 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+header {
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.menu {
+    font-size: 22px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.logo {
+    color: #2AA0C4;
+    font-size: 20px;
+    margin-left: 125px;
+}
+
+.header-direito {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.area-restrita {
+    background: #2AA0C4;
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.logout {
+    background: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    background: black;
+    border-radius: 50%;
+}
+
+.sidebar {
+    background: #2AA0C4;
+    width: 200px;
+    height: 100vh;
+    position: fixed;
+    top: 60px;
+    left: -200px;
+    transition: left 0.3s ease;
+    padding-top: 20px;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li {
+    color: white;
+    padding: 12px 20px;
+    cursor: pointer;
+}
+
+.sidebar li:hover {
+    background: #003366;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.plano-de-fundo {
+    background: #f5f6f8;
+}
+
+main {
+    margin-left: 0;
+    padding: 20px;
+    min-height: calc(100vh - 60px);
+    transition: margin-left 0.3s ease;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.sidebar.open~main {
+    margin-left: 200px;
+}
+
+
+.cadastro,
+.lista,
+.informacoes {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+.cadastro h2,
+.lista h2,
+.informacoes h2 {
+    color: #001f54;
+    margin-bottom: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.box {
+    background: #f1f1f1;
+    border-radius: 6px;
+    padding: 15px;
+}
+
+.cheia {
+    grid-column: span 2;
+}
+
+.box h3 {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.box p {
+    font-size: 13px;
+}
+
+.link {
+    color: #187bcd;
+    font-weight: bold;
+}
+
+.ativo {
+    color: green;
+    font-weight: bold;
+}
+
+form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.campos {
+    display: flex;
+    flex-direction: column;
+}
+
+.campos label {
+    font-size: 13px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.campos input,
+.campos select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.acoes {
+    grid-column: span 2;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.botao-cancelar {
+    background: #ddd;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.botao-salvar {
+    background: #2AA0C4;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+table th,
+table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    font-size: 14px;
+}
+
+table th {
+    background: #f0f0f0;
+}
+
+.botao-editar {
+    background: #187bcd;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.botao-excluir {
+    background: #ff5c5c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.botao-editar:hover {
+    background: #0f5c9d;
+    transform: scale(1.05);
+    transition: all 0.2s ease-in-out;
+}
+
+.botao-excluir:hover {
+    background: #e04848;
+    transform: scale(1.05);
+    transition: all 0.2s ease-in-out;
+}
+
+.botao-salvar:hover {
+    background: #0f3c7a;
+    transform: scale(1.05);
+    transition: all 0.4s ease-in-out;
+}
+
+.area-restrita:hover {
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+    background: #001f54;
+}
+
+.topo-lista {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.botao-adicionar {
+    background: #2AA0C4;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.botao-adicionar:hover {
+    background: #001f54;
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+}
