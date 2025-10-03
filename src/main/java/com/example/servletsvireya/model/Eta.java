@@ -24,7 +24,6 @@ public class Eta {
     public int getCapacidade(){ return this.capacidade; }
     public String getTelefone(){ return this.telefone; }
 
-
     public void setId(int id){ this.id = id; }
     public void setNome(String nome){ this.nome = nome; }
     public void setCapacidade(int capacidade){ this.capacidade = capacidade; }

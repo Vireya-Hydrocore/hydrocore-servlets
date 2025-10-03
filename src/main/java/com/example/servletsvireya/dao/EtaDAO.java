@@ -15,15 +15,15 @@ public class EtaDAO {
     // Método inserirEta()
     public int inserirETA(Eta eta){
         Connection conn = conexao.conectar();
-        String comando = "INSERT INTO ETA (id, nome, capacidade) " +
-                "VALUES (?, ?, ?)";
+        String comando = "INSERT INTO ETA (id, nome, capacidade) VALUES (?, ?, ?)";
+
         try(PreparedStatement pstmt = conn.prepareStatement(comando)){
             pstmt.setInt(1, eta.getId());
             pstmt.setString(2, eta.getNome());
             pstmt.setInt(3, eta.getCapacidade());
             pstmt.setString(4, eta.getTelefone());
 
-            return pstmt.executeUpdate(); //
+            return pstmt.executeUpdate();
         }
         catch (SQLException sqle){
             sqle.printStackTrace();
@@ -57,10 +57,12 @@ public class EtaDAO {
             }
             return etas;
 
-        }catch (SQLException sqle){
+        }
+        catch (SQLException sqle){
             sqle.printStackTrace();
             return new ArrayList<>();
-        }finally {
+        }
+        finally {
             conexao.desconectar();
         }
     }
@@ -130,10 +132,12 @@ public class EtaDAO {
             } else {
                 return 0;
             }
-        } catch (SQLException sqle){
+        }
+        catch (SQLException sqle){
             sqle.printStackTrace();
             return -1;
-        } finally {
+        }
+        finally {
             conexao.desconectar();
         }
     }
