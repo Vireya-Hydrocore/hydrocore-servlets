@@ -12,11 +12,12 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/ServletProduto", "/main", "/select", "/update", "/delete"}, name = "ServletProduto")
 public class ServletProduto extends HttpServlet {
 
-    ProdutoDAO produtoDAO = new ProdutoDAO();
+    private ProdutoDAO produtoDAO = new ProdutoDAO();
 
+    // GET
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("action"); //
+        String action = req.getParameter("action");
 
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
@@ -27,14 +28,16 @@ public class ServletProduto extends HttpServlet {
 
         try {
             switch (action) {
-                case "main": //Tela principal
+                case "main":
                     produtos(req, resp);
                     break;
                 case "select":
                     listarProduto(req, resp);
                     break;
+                case "delete":
+                    removerProduto(req, resp);
+                    break;
                 default:
-                    //volta para a página de cadastro
                     resp.sendRedirect(req.getContextPath() + "/paginasCrud/produto/index.jsp");
             }
         } catch (Exception e) {
@@ -43,7 +46,7 @@ public class ServletProduto extends HttpServlet {
         }
     }
 
-    //doPost redireciona para o doGet (para não ficar visível na URL)
+    // POST
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
@@ -52,9 +55,9 @@ public class ServletProduto extends HttpServlet {
             case "create":
                 inserirProduto(req, resp);
                 break;
-//            case "select":
-//                listarProduto(req, resp);
-//                break;
+            case "update":
+                alterarProduto(req, resp);
+                break;
             case "delete":
                 removerProduto(req, resp);
                 break;
@@ -63,53 +66,87 @@ public class ServletProduto extends HttpServlet {
         }
     }
 
-    //Listar produtos
+    // MÉTODOS AUXILIARES
     protected void produtos(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        resp.sendRedirect("/paginasCrud/produto/produto.jsp"); //atualiza a pagina
-        //Criando um objeto que irá receber os dados do produto
         List<Produto> lista = produtoDAO.listarProduto();
-
-        //Encaminhar lista ao documento index.jsp
         req.setAttribute("produtos", lista);
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/produto/index.jsp"); //
+        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/produto/index.jsp");
         rd.forward(req, resp);
     }
 
-    //Inserir Produto
     protected void inserirProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //Pegar os valores
-        String nome = req.getParameter("nome"); // Dá para simplificar !!!
-        String tipo = req.getParameter("tipo");
-        String unidadeMedida = req.getParameter("unidadeMedida");
-        double concentracao = Double.parseDouble(req.getParameter("concentracao")); //Já convertido de String para double
-
-        //Instanciando objeto da classe model Produto
         Produto produto = new Produto();
-        produto.setNome(nome);
-        produto.setTipo(tipo);
-        produto.setUnidadeMedida(unidadeMedida);
-        produto.setConcentracao(concentracao);
+        produto.setNome(req.getParameter("nome"));
+        produto.setTipo(req.getParameter("tipo"));
+        produto.setUnidadeMedida(req.getParameter("unidadeMedida"));
+        produto.setConcentracao(Double.parseDouble(req.getParameter("concentracao")));
 
-        //Inserindo no banco de dados
         int resultado = produtoDAO.cadastrarProduto(produto);
 
         if (resultado == 1) {
-            //Redireciona para o GET listar produtos
             resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=main");
         } else {
-            //manda pra pagina de erro
+            // Página de erro
         }
     }
 
-    //Editar produtos
     protected void listarProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Produto produto = new Produto();
-        //Recebimento do id do produto que será editado
         int id = Integer.parseInt(req.getParameter("id"));
-        //Settar variavel Produto
+        Produto produto = new Produto();
         produto.setId(id);
-        //Executar o metodo selecionarProduto()
         produtoDAO.selecionarProduto(produto);
+
+        req.setAttribute("produto", produto);
+        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/produto/alterarProduto/index.jsp");
+        rd.forward(req, resp);
+    }
+
+    protected void alterarProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 1️⃣ Pegar o ID do produto que está sendo alterado
+        int id = Integer.parseInt(req.getParameter("id"));
+
+        // 2️⃣ Buscar o produto antigo no banco
+        Produto produtoAntigo = new Produto();
+        produtoAntigo.setId(id);
+        produtoDAO.selecionarProduto(produtoAntigo);
+        // ← aqui o DAO preenche os campos do produto antigo com os dados do banco
+
+        // 3️⃣ Criar objeto produto novo com dados do formulário
+        Produto produtoNovo = new Produto();
+        produtoNovo.setId(id);
+        produtoNovo.setNome(req.getParameter("nome"));
+        produtoNovo.setTipo(req.getParameter("tipo"));
+        produtoNovo.setUnidadeMedida(req.getParameter("unidadeMedida"));
+        produtoNovo.setConcentracao(Double.parseDouble(req.getParameter("concentracao")));
+
+        // Chamar o DAO passando os dois objetos
+        int resultado = produtoDAO.alterar(produtoAntigo, produtoNovo);
+
+        // Tratar o resultado
+        if (resultado == 1) {
+            req.setAttribute("alteradoSucesso", true);
+            resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=main");
+        } else {
+            // Página de erro
+            resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=main");
+        }
+    }
+
+    protected void removerProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        Produto produto = new Produto();
+        produto.setId(id);
+        System.out.println(id);
+
+        int resultado = produtoDAO.removerProduto(produto);
+
+        if (resultado == 1) {
+            // Atualiza a lista de produtos na mesma página
+            produtos(req, resp);
+        } else {
+            // Página de erro
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+        }
     }
 
 

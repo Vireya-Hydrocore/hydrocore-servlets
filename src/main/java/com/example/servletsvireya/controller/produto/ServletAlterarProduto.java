@@ -19,7 +19,7 @@
 //
 //        int id = Integer.parseInt(req.getParameter("id"));
 //
-////        Produto produto = produtoDAO.buscarPorId(id);
+//        Produto produto = produtoDAO.buscarPorId(id);
 //
 //        if (produto != null) {
 //            req.setAttribute("produto", produto); //setta o atributo la no jsp
@@ -29,9 +29,9 @@
 //            resp.getWriter().println("Produto não encontrado.");
 //        }
 //    }
-//
-//
-//    // POST -> pega as informações depois de mudar
+
+
+    // POST -> pega as informações depois de mudar
 //    @Override
 //    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        //Pegar os valores

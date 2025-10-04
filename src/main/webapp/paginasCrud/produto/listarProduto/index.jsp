@@ -52,10 +52,13 @@
                 <a href="${pageContext.request.contextPath}/servlet-alterar-produto?id=<%= p.getId() %>">Editar</a>
                 &nbsp;|&nbsp;
                 <!-- Botão Excluir -->
-                <a href="${pageContext.request.contextPath}/servlet-remover-produto?id=<%= p.getId() %>"
-                   onclick="return confirm('Tem certeza que deseja excluir este produto?');">
-                    Excluir
-                </a>
+                <form action="<%= request.getContextPath() %>/ServletProduto" method="get" style="display:inline;">
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="id" value="<%= p.getId() %>">
+                    <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este produto?');">
+                        Excluir
+                    </button>
+                </form>
             </td>
         </tr>
         <% }

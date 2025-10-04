@@ -1,46 +1,54 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: eriksilva-ieg
-  Date: 11/09/2025
-  Time: 18:41
-  To change this template use File | Settings | File Templates.
---%>
-<%@page import="com.example.servletsvireya.model.Produto"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ page import="com.example.servletsvireya.model.Produto" %>
+<%
+  // Produto passado pelo servlet via request.setAttribute("produto", produto);
+  Produto produto = (Produto) request.getAttribute("produto");
+%>
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
-    <title>Área Restrita - Vireya</title>
-    <style>
-      h1, h2, form{
-        align-items: center;
-      }
-    </style>
+  <meta charset="UTF-8">
+  <title>Editar Produto</title>
+  <script>
+    function validarEdicao() {
+      let form = document.forms["frmEditar"];
+      if(form.nome.value.trim() === "") { alert("Preencha o nome"); form.nome.focus(); return false; }
+      if(form.tipo.value.trim() === "") { alert("Preencha o tipo"); form.tipo.focus(); return false; }
+      if(form.unidadeMedida.value.trim() === "") { alert("Preencha a unidade de medida"); form.unidadeMedida.focus(); return false; }
+      if(form.concentracao.value.trim() === "") { alert("Preencha a concentração"); form.concentracao.focus(); return false; }
+      form.submit();
+    }
+  </script>
 </head>
 <body>
+<h1>Editar Produto</h1>
 
-  <h1>Alterar Produto</h1>
-  <br>
-  <h2>Digite as informações que você quer mudar:</h2>
-  <br>
+<!-- Formulário envia para o servlet com POST -->
+<form name="frmEditar" action="<%= request.getContextPath() %>/ServletProduto" method="post">
+  <input type="hidden" name="action" value="update">
+  <input type="hidden" name="id" value="<%= produto.getId() %>">
 
-  <form action="${pageContext.request.contextPath}/servlet-alterar-produto" method="post">
-    <label for="id">ID: </label>
-    <input type="number" id="id" name="id" value="${produto.id}" readonly> <!--usando EL, aciona o metodo .getId(). mas podia ser scriplet tb-->
-    <br>
-    <label for="nome">Nome: </label>
-    <input type="text" id="nome" name="nome" value="${produto.nome}">
-    <br>
-    <label for="tipo">Tipo: </label>
-    <input type="text" id="tipo" name="tipo" value="${produto.tipo}">
-    <br>
-    <label for="unidMedida">Unidade de Medida: </label>
-    <input type="text" id="unidMedida" name="unidMedida" value="${produto.unidade_medida}">
-    <br>
-    <label for="concentracao">Concentração: </label>
-    <input type="number" id="concentracao" name="concentracao" value="${produto.concentracao}">
-    <br><br>
-    <button type="submit">Alterar</button>
+  <label for="nome">Nome:</label>
+  <input type="text" id="nome" name="nome" value="<%= produto.getNome() %>"><br><br>
 
-  </form>
+  <label for="tipo">Tipo:</label>
+  <select id="tipo" name="tipo">
+    <option value="Coagulante" <%= "Coagulante".equals(produto.getTipo()) ? "selected" : "" %>>Coagulante</option>
+    <option value="Floculante" <%= "Floculante".equals(produto.getTipo()) ? "selected" : "" %>>Floculante</option>
+    <option value="Outro" <%= "Outro".equals(produto.getTipo()) ? "selected" : "" %>>Outro</option>
+    <!-- Adicione outros tipos conforme seu banco -->
+  </select><br><br>
+
+  <label for="unidadeMedida">Unidade de Medida:</label>
+  <input type="text" id="unidadeMedida" name="unidadeMedida" value="<%= produto.getUnidadeMedida() %>"><br><br>
+
+  <label for="concentracao">Concentração:</label>
+  <input type="number" id="concentracao" name="concentracao" step="0.01" value="<%= produto.getConcentracao() %>"><br><br>
+
+  <button type="button" onclick="validarEdicao()">Salvar Alterações</button>
+</form>
+
+<!-- Botão para excluir -->
+
 </body>
 </html>

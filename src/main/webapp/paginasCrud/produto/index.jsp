@@ -7,6 +7,23 @@
 --%>
 <!-------------------- MENU PRODUTO ----------------------->
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Produtos</title>
+</head>
+<body>
+
+    <% Boolean alterado = (Boolean) request.getAttribute("alteradoSucesso"); %>
+    <% if (alterado != null && alterado) { %>
+<script>
+    window.onload = function() {
+        alert("✅ Produto alterado com sucesso!");
+    }
+</script>
+    <% } %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.example.servletsvireya.model.Produto" %>
 <%@ page import="java.util.List" %>
 <%
@@ -106,9 +123,13 @@
                         <a class="botao-editar" href="${pageContext.request.contextPath}/ServletProduto?action=select&id=<%= lista.get(i).getId() %>">Editar</a>
                         &nbsp;|&nbsp;
                         <!-- Botão Excluir -->
-                        <a class="botao-excluir" href="javascript: confirmar(<%= lista.get(i).getId() %>)">
-                            Excluir
-                        </a>
+                        <form action="<%= request.getContextPath() %>/ServletProduto" method="get" style="display:inline;">
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
+                            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este produto?');">
+                                Excluir
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 <% }
@@ -124,7 +145,6 @@
 </div>
 <!-- Script -->
 <script src="${pageContext.request.contextPath}/paginasCrud/scripts/validador.js"></script>
-  <script src="${pageContext.request.contextPath}/paginasCrud/scripts/confirmador.js"></script>
 <script>
     const menuBtn = document.getElementById("menu-toggle");
     const sidebar = document.getElementById("sidebar");

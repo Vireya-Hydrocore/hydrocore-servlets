@@ -48,6 +48,7 @@ public class ProdutoDAO {
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setInt(1, produto.getId());
+            System.out.println("ID recebido para exclusão: " + produto.getId());
 
             //Aqui precisa verificar se o id do produto existe !!!
 
@@ -56,6 +57,7 @@ public class ProdutoDAO {
             } else {
                 return 0;
             }
+
         } catch (SQLException sqle) {
             sqle.printStackTrace(); //remover no final do projetoooooooo
             return -1; //Para indicar erro no banco de dados
@@ -114,7 +116,7 @@ public class ProdutoDAO {
             comando.append("unidade_medida = ?, ");
         }
         if (concentracao != original.getConcentracao()) {
-            inputs.add(comando);
+            inputs.add(concentracao); // ✅ aqui colocamos o valor correto
             comando.append("concentracao = ?, ");
         }
 
