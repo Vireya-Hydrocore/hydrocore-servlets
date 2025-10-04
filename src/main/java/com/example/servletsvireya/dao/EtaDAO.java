@@ -13,14 +13,14 @@ public class EtaDAO {
     public EtaDAO(){ this.conexao = new Conexao(); }
 
     // Método inserirEta()
-    public int inserirETA(Eta eta){
+    public int inserirEta(Eta eta){
         Connection conn = conexao.conectar();
         String comando = "INSERT INTO ETA (nome, capacidade, telefone, cnpj) " +
                 "VALUES (?, ?, ?, ?)";
         try(PreparedStatement pstmt = conn.prepareStatement(comando)){
             pstmt.setString(1, eta.getNome());
-            pstmt.setInt(2, eta.getCapacidade());
-            pstmt.setString(3, eta.getTelefone());
+//            pstmt.setInt(2, eta.getCapacidade());
+//            pstmt.setString(3, eta.getTelefone());
             pstmt.setString(4, eta.getCnpj());
 
             return pstmt.executeUpdate();
@@ -103,8 +103,8 @@ public class EtaDAO {
         try(PreparedStatement pstmt = conn.prepareStatement("UPDATE ETA SET nome = ?, capacidade = ? WHERE id = ?")){
 
             pstmt.setString(1, eta.getNome());
-            pstmt.setInt(2, eta.getCapacidade());
-            pstmt.setString(3, eta.getTelefone());
+//            pstmt.setInt(2, eta.getCapacidade());
+//            pstmt.setString(3, eta.getTelefone());
             pstmt.setInt(4, eta.getId());
 
             return pstmt.executeUpdate();

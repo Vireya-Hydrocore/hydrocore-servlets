@@ -181,39 +181,30 @@ public class ProdutoDAO {
 
 
     //Buscar pelo ID
-    public Produto buscarPorId(int idProcurado) { //Seria um filtro né???
+    public Produto selecionarProduto(Produto produto) { //Seria um filtro né???
         ResultSet rset = null; //Consulta da tabela
-        Produto produto = null;
-
         Connection conn = conexao.conectar();
-        //Prepara a consulta SQL para selecionar os produtos por ordem de ID
-        String comando = "SELECT * FROM estoque WHERE id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
-            pstmt.setInt(1, idProcurado);
-            rset = pstmt.executeQuery(); //Executa a consulta com Query
 
-            if (rset == null) {
-                return null; //Não tem registro com esse id
-            }
+        //Prepara a consulta SQL para selecionar os produtos por ordem de ID
+        String comando = "SELECT * FROM produto WHERE id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+            pstmt.setInt(1, produto.getId());
+            rset = pstmt.executeQuery(); //Executa a consulta com Query
 
             //Armazenar os valores em uma variável tipo produto
             //variavel pois nao existe id repetido
             if (rset.next()) {
-                int id = rset.getInt(1); //Pega a primeira coluna do select
-                String nome = rset.getString(2);
-                String tipo = rset.getString(3);
-                String unidade_medida = rset.getString(4);
-                double concentracao = rset.getDouble(5);
-
-                produto = new Produto(id, nome, tipo, unidade_medida, concentracao);
+//                int id = rset.getInt("id"); //Pega a primeira coluna do select
+                produto.setNome(rset.getString("nome"));
+                produto.setTipo(rset.getString("tipo"));
+                produto.setUnidadeMedida(rset.getString("unidade_medida"));
+                produto.setConcentracao(rset.getDouble("concentracao"));
             }
-            return produto; //Retorna contendo os produtos
-
         } catch (SQLException e) {
             e.printStackTrace();
-            return null; //Vazio
         } finally {
             conexao.desconectar();
         }
+        return produto; //se não encontrar, volta null
     }
 }

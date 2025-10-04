@@ -102,16 +102,14 @@
                     <td><%= lista.get(i).getUnidadeMedida() %></td>
                     <td><%= lista.get(i).getConcentracao() %></td>
                     <td>
-                        <form  method="post">
-                            <!-- Botão Editar -->
-                            <a class="botao-editar" href="${pageContext.request.contextPath}/select?id=<%= lista.get(i).getId() %>">Editar</a> <!-- Chama o servlet com action sendo select e envia o id -->
-                            &nbsp;|&nbsp;
-                            <!-- Botão Excluir -->
-                            <a class="botao-excluir" href="${pageContext.request.contextPath}/servlet-remover-produto?id=<%= lista.get(i).getId() %>"
-                               onclick="return confirm('Tem certeza que deseja excluir este produto?');">
-                                Excluir
-                            </a>
-                        </form>
+                        <!-- Botão Editar -->
+                        <a class="botao-editar" href="${pageContext.request.contextPath}/ServletProduto?action=select&id=<%= lista.get(i).getId() %>">Editar</a>
+                        &nbsp;|&nbsp;
+                        <!-- Botão Excluir -->
+                        <a class="botao-excluir" href="${pageContext.request.contextPath}/servlet-remover-produto?id=<%= lista.get(i).getId() %>"
+                           onclick="return confirm('Tem certeza que deseja excluir este produto?');">
+                            Excluir
+                        </a>
                     </td>
                 </tr>
                 <% }

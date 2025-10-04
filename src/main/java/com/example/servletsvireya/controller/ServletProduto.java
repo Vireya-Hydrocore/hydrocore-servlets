@@ -1,6 +1,5 @@
 package com.example.servletsvireya.controller;
 
-
 import com.example.servletsvireya.dao.ProdutoDAO;
 import com.example.servletsvireya.model.Produto;
 import jakarta.servlet.*;
@@ -100,9 +99,6 @@ public class ServletProduto extends HttpServlet {
         //Settar variavel Produto
         produto.setId(id);
         //Executar o metodo selecionarProduto()
-
-        produtoDAO.buscarPorId(id);
-
-        System.out.println(produto.getNome());
+        produtoDAO.selecionarProduto(produto);
     }
 }
