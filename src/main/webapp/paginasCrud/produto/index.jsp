@@ -106,8 +106,7 @@
                         <a class="botao-editar" href="${pageContext.request.contextPath}/ServletProduto?action=select&id=<%= lista.get(i).getId() %>">Editar</a>
                         &nbsp;|&nbsp;
                         <!-- Botão Excluir -->
-                        <a class="botao-excluir" href="${pageContext.request.contextPath}/servlet-remover-produto?id=<%= lista.get(i).getId() %>"
-                           onclick="return confirm('Tem certeza que deseja excluir este produto?');">
+                        <a class="botao-excluir" href="javascript: confirmar(<%= lista.get(i).getId() %>)">
                             Excluir
                         </a>
                     </td>
@@ -125,6 +124,7 @@
 </div>
 <!-- Script -->
 <script src="${pageContext.request.contextPath}/paginasCrud/scripts/validador.js"></script>
+  <script src="${pageContext.request.contextPath}/paginasCrud/scripts/confirmador.js"></script>
 <script>
     const menuBtn = document.getElementById("menu-toggle");
     const sidebar = document.getElementById("sidebar");

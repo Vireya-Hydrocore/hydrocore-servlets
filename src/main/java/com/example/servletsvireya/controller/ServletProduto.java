@@ -9,7 +9,7 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/ServletProduto", "/main", "/select"}, name = "ServletProduto")
+@WebServlet(urlPatterns = {"/ServletProduto", "/main", "/select", "/update", "/delete"}, name = "ServletProduto")
 public class ServletProduto extends HttpServlet {
 
     ProdutoDAO produtoDAO = new ProdutoDAO();
@@ -17,6 +17,13 @@ public class ServletProduto extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action"); //
+
+        // Proteção contra NullPointerException em switch de String
+        if (action == null) {
+            // comportamento padrão: listar produtos (ou redirecionar)
+            produtos(req, resp);
+            return;
+        }
 
         try {
             switch (action) {
@@ -48,6 +55,9 @@ public class ServletProduto extends HttpServlet {
 //            case "select":
 //                listarProduto(req, resp);
 //                break;
+            case "delete":
+                removerProduto(req, resp);
+                break;
             default:
                 resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=main");
         }
@@ -100,5 +110,26 @@ public class ServletProduto extends HttpServlet {
         produto.setId(id);
         //Executar o metodo selecionarProduto()
         produtoDAO.selecionarProduto(produto);
+    }
+
+
+    //Remover um produto
+    protected void removerProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Produto produto = new Produto();
+
+        //Recebimento do id do produto que será removido (validador.js)
+        int id = Integer.parseInt(req.getParameter("id"));
+        System.out.println("delete id=" + id);
+        //Settar variavel Produto
+        produto.setId(id);
+        //Executar o metodo removerProduto()
+        int resultado = produtoDAO.removerProduto(produto);
+
+        if(resultado == 1){
+            //Redireciona para o GET listar produtos
+            resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=main");
+        } else {
+            //pagina de erro
+        }
     }
 }
