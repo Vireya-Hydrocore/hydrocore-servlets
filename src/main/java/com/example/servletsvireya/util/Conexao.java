@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Conexao {
     Connection conn;
     Dotenv dotenv = Dotenv.configure()
-            .directory("C:\\Users\\gabrielmasagao-ieg\\OneDrive - Instituto J&F\\Área de Trabalho\\Diciplinas técnicas\\POO\\vireya-backend")
+            .directory("C:\\Users\\iagodiniz-ieg\\OneDrive - Instituto J&F\\Área de Trabalho\\Tech\\POO Modolo\\Servlet\\vireya-backend")
             .load();
 
 

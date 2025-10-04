@@ -6,7 +6,7 @@ import java.util.Date;
 public class EstoqueDTO {
     private int id;
     private int quantidade;
-    private LocalDate dataValidade;
+    private Date dataValidade;
     private Integer minPossivelEstocado;
     private int idProduto;
     private int idEta;
@@ -15,7 +15,7 @@ public class EstoqueDTO {
 
     //Construtores
     public EstoqueDTO() {}
-    public EstoqueDTO(int id, int quantidade, LocalDate dataValidade, Integer minPossivelEstocado,
+    public EstoqueDTO(int id, int quantidade, Date dataValidade, Integer minPossivelEstocado,
                       int idProduto, int idEta, String nomeProduto, String nomeEta) {
         this.id = id;
         this.quantidade = quantidade;
@@ -42,11 +42,16 @@ public class EstoqueDTO {
         this.quantidade = quantidade;
     }
 
-    public LocalDate getDataValidade() {
-        return this.dataValidade;
+    public Date getDataValidade() {
+        return dataValidade;
     }
-    public void setDataValidade(LocalDate dataValidade) {
+
+    public void setDataValidade(Date dataValidade) {
         this.dataValidade = dataValidade;
+    }
+
+    public Integer getMinPossivelEstocado() {
+        return minPossivelEstocado;
     }
 
     public Integer getMinPossivEstocado() {

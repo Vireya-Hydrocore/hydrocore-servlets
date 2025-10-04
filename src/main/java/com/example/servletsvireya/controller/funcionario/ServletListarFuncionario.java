@@ -40,7 +40,7 @@ public class ServletListarFuncionario extends HttpServlet {
         funcionario.setIdEta(idEta);
         funcionario.setIdCargo(idCargo);
 
-        List<Funcionario> funcionarios = funcionarioDAO.buscarFuncionario(funcionario);
+        List<Funcionario> funcionarios = funcionarioDAO.listarFuncionario(funcionario);
         req.setAttribute("listaFuncionarios", funcionarios);
 
         req.getRequestDispatcher("lista-funcionarios.jsp").forward(req, resp);

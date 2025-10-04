@@ -22,7 +22,7 @@ public class EstoqueDAO { //erik
         try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
             //Settando valores usando a classe model
             pstmt.setInt(1, estoqueDTO.getQuantidade());
-            pstmt.setDate(2, Date.valueOf(estoqueDTO.getDataValidade()));
+            pstmt.setDate(2, (Date) (estoqueDTO.getDataValidade()));
             pstmt.setInt(3, estoqueDTO.getMinPossivEstocado());
             pstmt.setInt(4, estoqueDTO.getIdEta());
             pstmt.setInt(5, estoqueDTO.getIdProduto());
@@ -78,7 +78,7 @@ public class EstoqueDAO { //erik
         //Pegando os valores do model do talvez modificado
         int id = modificado.getId();
         int quantidade = modificado.getQuantidade();
-        LocalDate dataValidade = modificado.getDataValidade();
+        Date dataValidade = (Date) modificado.getDataValidade();
         int minPossivEstocado = modificado.getMinPossivEstocado();
         int idEta = modificado.getIdEta();
         int idProduto = modificado.getIdProduto();
@@ -153,7 +153,7 @@ public class EstoqueDAO { //erik
 
                 estoqueDTO.setId(rset.getInt("id")); //Pega a primeira coluna do select (pode ser pelo index ou nome)
                 estoqueDTO.setQuantidade(rset.getInt("quantidade"));
-                estoqueDTO.setDataValidade(rset.getDate("data_validade").toLocalDate()); //Converte para LocalDate
+                estoqueDTO.setDataValidade(rset.getDate("data_validade")); //Converte para LocalDate
                 estoqueDTO.setMinPossivelEstocado(rset.getInt("min_possiv_estocado"));
                 estoqueDTO.setIdEta(rset.getInt("id_eta"));
                 estoqueDTO.setIdProduto(rset.getInt("id_produto"));
@@ -192,7 +192,7 @@ public class EstoqueDAO { //erik
             if (rset.next()) {
                 estoqueDTO.setId(rset.getInt("id")); //Pega a primeira coluna do select (pode ser pelo index ou nome)
                 estoqueDTO.setQuantidade(rset.getInt("quantidade"));
-                estoqueDTO.setDataValidade(rset.getDate("data_validade").toLocalDate()); //Converte para LocalDate
+                estoqueDTO.setDataValidade(rset.getDate("data_validade")); //Converte para LocalDate
                 estoqueDTO.setMinPossivelEstocado(rset.getInt("min_possiv_estocado"));
                 estoqueDTO.setIdEta(rset.getInt("id_eta"));
                 estoqueDTO.setIdProduto(rset.getInt("id_produto"));
@@ -206,4 +206,34 @@ public class EstoqueDAO { //erik
             conexao.desconectar();
         }
     }
+
+    public List<EstoqueDTO> listarEstoquePorEta(int id) {
+        List<EstoqueDTO> estoques = new ArrayList<>();
+        Connection conn = conexao.conectar();
+
+        try (PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Estoque WHERE id_eta = ?")) {
+            pstmt.setInt(1, id);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                EstoqueDTO e = new EstoqueDTO();
+
+                e.setId(rs.getInt("id"));
+                e.setQuantidade(rs.getInt("quantidade"));
+                e.setDataValidade(rs.getDate("data_validade"));
+                e.setMinPossivelEstocado(rs.getInt("min_possivel_estocado"));
+                e.setIdProduto(rs.getInt("id_produtos"));
+                estoques.add(e);
+            }
+
+
+            return estoques;
+        } catch (SQLException e) {
+            return new ArrayList<>(); //Lista vazia
+        } finally {
+            conexao.desconectar();
+        }
+    }
+
+
 }

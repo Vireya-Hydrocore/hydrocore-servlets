@@ -1,5 +1,6 @@
 package com.example.servletsvireya.controller;
 
+
 import com.example.servletsvireya.dao.ProdutoDAO;
 import com.example.servletsvireya.model.Produto;
 import jakarta.servlet.*;
@@ -45,9 +46,9 @@ public class ServletProduto extends HttpServlet {
             case "create":
                 inserirProduto(req, resp);
                 break;
-            case "select":
-                listarProduto(req, resp);
-                break;
+//            case "select":
+//                listarProduto(req, resp);
+//                break;
             default:
                 resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=main");
         }
@@ -93,8 +94,15 @@ public class ServletProduto extends HttpServlet {
 
     //Editar produtos
     protected void listarProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Produto produto = new Produto();
         //Recebimento do id do produto que será editado
-        String id = req.getParameter("id");
-        System.out.println(id);
+        int id = Integer.parseInt(req.getParameter("id"));
+        //Settar variavel Produto
+        produto.setId(id);
+        //Executar o metodo selecionarProduto()
+
+        produtoDAO.buscarPorId(id);
+
+        System.out.println(produto.getNome());
     }
 }

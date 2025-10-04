@@ -1,5 +1,6 @@
 package com.example.servletsvireya.dao;
 
+import com.example.servletsvireya.dto.AdminDTO;
 import com.example.servletsvireya.model.Admin;
 import com.example.servletsvireya.util.Conexao;
 
@@ -84,4 +85,52 @@ public class AdminDAO{
             conexao.desconectar();
         }
     }
+
+
+    public List<AdminDTO> listarAdminPorEta(int id) {
+        List<AdminDTO> admins = new ArrayList<>();
+        Connection conn = conexao.conectar();
+
+        try (PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Admin WHERE id_eta = ?")) {
+            pstmt.setInt(1, id);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                AdminDTO admin = new AdminDTO();
+
+                admin.setId(rs.getInt("id"));
+                admin.setNome(rs.getString("nome"));
+                admin.setEmail(rs.getString("email"));
+                admins.add(admin);
+            }
+
+
+            return admins;
+        } catch (SQLException e) {
+            return new ArrayList<>(); //Lista vazia
+        } finally {
+            conexao.desconectar();
+        }
+    }
+    public String ListarporEmail(String email) {
+        Connection conn = conexao.conectar();
+
+        try (PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Admin WHERE email= ?")) {
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()){
+                return (rs.getString("senha"));
+            }
+            else {
+                return null;
+            }
+
+
+        } catch (SQLException e) {//Lista vazia
+            return null;
+        } finally {
+            conexao.desconectar();
+        }
+    }
+
 }
