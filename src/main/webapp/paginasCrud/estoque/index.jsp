@@ -106,7 +106,9 @@
                     <td>
                         <!-- Botão Editar -->
                         <a class="botao-editar" href="${pageContext.request.contextPath}/ServletEstoque?action=selectEstoque&id=<%= lista.get(i).getId() %>">Editar</a>
+
                         &nbsp;|&nbsp;
+
                         <!-- Botão Excluir -->
                         <form action="<%= request.getContextPath() %>/ServletEstoque" method="get" style="display:inline;">
                             <input type="hidden" name="action" value="deleteEstoque">
