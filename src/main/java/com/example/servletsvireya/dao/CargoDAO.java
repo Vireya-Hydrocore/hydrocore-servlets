@@ -107,4 +107,21 @@ public class CargoDAO {
             return cargos;
         }
     }
+
+    public Integer buscarIdPorNome(String nomeCargo)  {
+        Connection conn= conexao.conectar();
+        String sql = "SELECT id FROM cargo WHERE nome = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, nomeCargo);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            } else {
+                return null;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

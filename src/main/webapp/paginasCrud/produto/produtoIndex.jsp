@@ -26,8 +26,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.example.servletsvireya.model.Produto" %>
 <%@ page import="java.util.List" %>
-<%
-    List<Produto> lista = (List<Produto>) request.getAttribute("produtos");
+<%@ page import="com.example.servletsvireya.dto.ProdutoDTO" %>
+    <%
+    List<ProdutoDTO> lista = (List<ProdutoDTO>) request.getAttribute("produtos");
 %>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -36,7 +37,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produtos</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/styleProduto.css">
 </head>
 
 <body>
@@ -64,34 +65,48 @@
         <!-- CADASTRO DE PRODUTOS -->
         <section class="cadastro">
             <h2>Cadastro de Produtos</h2>
-            <form name="frmProduto" action="${pageContext.request.contextPath}/ServletProduto" method="post">
+            <form name="frmProduto" action="${pageContext.request.contextPath}/ServletProduto" method="post" onsubmit="return validar();">
                 <div class="campos">
-                    <input type="hidden" name="action" value="create"> <!-- envia esse parametro para o servlet ver q é create-->
+                    <input type="hidden" name="action" value="createProduto"> <!-- envia esse parametro para o servlet ver q é create-->
 
                     <label>Nome do Produto</label>
                     <input type="text" name="nome" placeholder="Ex: Cloro Líquido">
                 </div>
+
                 <div class="campos">
                     <label>Categoria</label>
-                    <!--                        <select>-->
-                    <!--                            <option>Floculante</option>-->
-                    <!--                            <option>Coagulante</option>-->
-                    <!--                            <option>Outro</option>-->
-                    <!--                        </select>-->
-                    <input type="text" name="tipo" placeholder="tipo">
+                    <select name="tipo">
+                        <option value="">Selecione a categoria</option>
+                        <option value="Coagulante">Coagulante</option>
+                        <option value="Floculante">Floculante</option>
+                        <option value="Oxidante">Oxidante</option>
+                        <option value="Desinfetante">Desinfetante</option>
+                        <option value="Ajuste de pH">Ajuste de pH</option>
+                    </select>
                 </div>
+
                 <div class="campos">
                     <label>Unidade de Medida</label>
-                    <input type="text" name="unidadeMedida" placeholder="Ex: mg/L">
+                    <select name="unidadeMedida">
+                        <option value="">Selecione a unidade</option>
+                        <option value="kg">kg</option>
+                        <option value="g">g</option>
+                        <option value="L">L</option>
+                        <option value="mL">mL</option>
+                        <option value="mg/L">mg/L</option>
+                        <option value="µg/L">µg/L</option>
+                    </select>
                 </div>
+
                 <div class="campos">
-                    <label>Concentração</label> <!-- Preço???????-->
-                    <input type="number" name="concentracao" placeholder="Ex: 25.50">
+                    <label>Concentração (%)</label>
+                    <input type="number" name="concentracao" step="0.01" placeholder="Ex: 25.50">
                 </div>
+
                 <div class="acoes">
                     <button type="button" class="botao-cancelar">Cancelar</button>
                     <!--                        <button type="submit" class="botao-salvar">Salvar</button>-->
-                    <input type="button" value="Salvar" class="botao-salvar" onclick="validar()">
+                    <input type="submit" value="Salvar" class="botao-salvar">
                 </div>
             </form>
         </section>
@@ -120,13 +135,14 @@
                     <td><%= lista.get(i).getConcentracao() %></td>
                     <td>
                         <!-- Botão Editar -->
-                        <a class="botao-editar" href="${pageContext.request.contextPath}/ServletProduto?action=select&id=<%= lista.get(i).getId() %>">Editar</a>
+                        <a class="botao-editar" href="${pageContext.request.contextPath}/ServletProduto?action=updateProduto&id=<%= lista.get(i).getId() %>">Editar</a>
+
                         &nbsp;|&nbsp;
                         <!-- Botão Excluir -->
                         <form action="<%= request.getContextPath() %>/ServletProduto" method="get" style="display:inline;">
-                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="action" value="deleteProduto">
                             <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
-                            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este produto?');">
+                            <button class="botao-excluir" type="submit" onclick="return confirm('Tem certeza que deseja excluir este produto?');">
                                 Excluir
                             </button>
                         </form>
@@ -153,6 +169,6 @@
         sidebar.classList.toggle("open");
     });
 </script>
-  
+
 </body>
 </html>
