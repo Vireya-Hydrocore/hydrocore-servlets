@@ -148,25 +148,4 @@ public class ServletProduto extends HttpServlet {
             req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
         }
     }
-
-
-    //Remover um produto
-    protected void removerProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Produto produto = new Produto();
-
-        //Recebimento do id do produto que será removido (validador.js)
-        int id = Integer.parseInt(req.getParameter("id"));
-        System.out.println("delete id=" + id);
-        //Settar variavel Produto
-        produto.setId(id);
-        //Executar o metodo removerProduto()
-        int resultado = produtoDAO.removerProduto(produto);
-
-        if(resultado == 1){
-            //Redireciona para o GET listar produtos
-            resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=main");
-        } else {
-            //pagina de erro
-        }
-    }
 }

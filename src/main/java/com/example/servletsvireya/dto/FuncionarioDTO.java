@@ -7,6 +7,7 @@ public class FuncionarioDTO {
     private int id;
     private String nome;
     private String email;
+    private String senha;
     private LocalDate dataAdmissao;
     private LocalDate dataNascimento;
     private int idEta; // Foreign Key
@@ -48,6 +49,13 @@ public class FuncionarioDTO {
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public LocalDate getDataAdmissao() {

@@ -24,7 +24,7 @@
     <br><br>
     <a href="${pageContext.request.contextPath}/ServletProduto?action=main">Produto</a>
     <br><br>
-    <a href="${pageContext.request.contextPath}/ServletEstoque?action=main">Estoque</a>
+    <a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">Estoque</a>
     <br><br>
     <a href="${pageContext.request.contextPath}/paginasCrud/eta/index.jsp">Eta - Em Breve</a>
     <br><br>
