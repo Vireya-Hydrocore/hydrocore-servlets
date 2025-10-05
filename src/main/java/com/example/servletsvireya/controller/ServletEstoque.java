@@ -147,7 +147,7 @@ public class ServletEstoque extends HttpServlet {
         // Tratar o resultado
         if (resultado == 1) {
 //            req.setAttribute("alteradoSucesso", true);
-            resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainEstoque");
+            resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque");
         } else {
             // Página de erro
 //            resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=main");
