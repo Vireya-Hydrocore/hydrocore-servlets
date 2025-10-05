@@ -72,10 +72,13 @@ public class EstoqueDAO { //erik
     // Método alterar (update)
     public int alterarEstoque(EstoqueDTO estoqueDTO) {
         Connection conn = conexao.conectar();
-        String comando = "UPDATE estoque SET quantidade, min_possivel_estocado WHERE id = ?";
+        String comando = "UPDATE estoque SET quantidade = ?, data_validade = ?, min_possivel_estocado = ? WHERE id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
-            pstmt.setInt(1, estoqueDTO.getId());
+            pstmt.setInt(1, estoqueDTO.getQuantidade());
+            pstmt.setDate(2, (Date) estoqueDTO.getDataValidade());
+            pstmt.setInt(3, estoqueDTO.getMinPossivelEstocado());
+            pstmt.setInt(4, estoqueDTO.getId());
 
             if (pstmt.executeUpdate() > 0) {
                 return 1;
