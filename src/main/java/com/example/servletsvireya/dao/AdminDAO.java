@@ -16,12 +16,16 @@ public class AdminDAO {
 
     public int inserirAdmin(AdminDTO adminDTO) {
         Connection conn = conexao.conectar();
-        String comando = "INSERT INTO admin (nome, email,senha) VALUES (?, ?, ?)";
+        String comando = "INSERT INTO admin (nome, email,senha, id_eta) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setString(1, adminDTO.getNome());
             pstmt.setString(2, adminDTO.getEmail());
+            if (adminDTO.getSenha().length() > 30){
+                return 0;
+            }
             pstmt.setString(3, adminDTO.getSenha());
+            pstmt.setInt(4, adminDTO.getIdEta());
 
             if (pstmt.executeUpdate() > 0) {
                 return 1;

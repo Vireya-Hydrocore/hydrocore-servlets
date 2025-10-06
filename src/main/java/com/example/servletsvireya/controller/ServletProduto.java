@@ -38,7 +38,7 @@ public class ServletProduto extends HttpServlet {
                     removerProduto(req, resp);
                     break;
                 default:
-                    resp.sendRedirect(req.getContextPath() + "/paginasCrud/produto/index.jsp");
+                    resp.sendRedirect(req.getContextPath() + "/paginasCrud/produto/produtoIndex.jsp");
             }
         } catch (Exception e) {
             System.out.println("EXCEÇÃO");
@@ -70,7 +70,7 @@ public class ServletProduto extends HttpServlet {
     protected void produtos(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Produto> lista = produtoDAO.listarProduto();
         req.setAttribute("produtos", lista);
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/produto/index.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/produto/produtoIndex.jsp");
         rd.forward(req, resp);
     }
 
@@ -97,7 +97,7 @@ public class ServletProduto extends HttpServlet {
         produtoDAO.selecionarProduto(produto);
 
         req.setAttribute("produto", produto);
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/produto/alterarProduto/index.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/produto/produtoAlterar.jsp");
         rd.forward(req, resp);
     }
 

@@ -25,7 +25,7 @@ public class ServletAdmin extends HttpServlet {
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
             // comportamento padrão: listar admins (ou redirecionar)
-//            admins(req, resp);
+//            admins(req, resp); //mudar nome
             return;
         }
 
@@ -89,7 +89,7 @@ public class ServletAdmin extends HttpServlet {
     protected void inserirAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         AdminDTO adminDTO = new AdminDTO();
 
-        adminDTO.setNome("nome");
+        adminDTO.setNome(req.getParameter("nome"));
         adminDTO.setEmail(req.getParameter("email"));
         adminDTO.setSenha(req.getParameter("senha")); ///////
         adminDTO.setIdEta(1); //para teste
@@ -117,7 +117,7 @@ public class ServletAdmin extends HttpServlet {
         //Setar os atributos do formulário no adminDTO
         req.setAttribute("id", adminDTO.getId());
         req.setAttribute("nome", adminDTO.getNome());
-        req.setAttribute("email", adminDTO.getSenha());
+        req.setAttribute("email", adminDTO.getEmail());
         req.setAttribute("senha", adminDTO.getSenha());
         //Encaminhar ao documento alterarAdmin.jsp
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/admin/alterarAdmin.jsp");
@@ -131,6 +131,7 @@ public class ServletAdmin extends HttpServlet {
         //Settando o id e os atributos em um objeto DTO
         AdminDTO adminDTO = new AdminDTO();
         adminDTO.setId(id);
+        adminDTO.setNome(req.getParameter("nome"));
         adminDTO.setEmail(req.getParameter("email"));
         adminDTO.setSenha(req.getParameter("senha"));
 
@@ -143,7 +144,7 @@ public class ServletAdmin extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin");
         } else {
             // Página de erro
-//            resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin");
+            resp.sendRedirect("/paginasCrud/erro.jsp");
         }
     }
 

@@ -49,7 +49,7 @@
 
     <section class="cadastro">
       <h2>Cadastro de Admins</h2>
-      <form name="frmAdmin" action="${pageContext.request.contextPath}/ServletAdmin" method="post" onsubmit="return validar();">
+      <form name="frmAdmin" action="${pageContext.request.contextPath}/ServletAdmin" method="post" onsubmit="return validarAdmin();">
         <div class="campos">
           <input type="hidden" name="action" value="createAdmin"> <!-- envia esse parâmetro para o servlet ver q é create-->
 
@@ -64,7 +64,7 @@
 
         <div class="campos">
           <label>Senha</label>
-          <input type="password" name="senha" placeholder="xxxxxxxxx">
+          <input type="password" name="senha" maxlength="30" placeholder="xxxxxxxxx">
         </div>
 
         <div class="acoes">
@@ -101,7 +101,7 @@
             &nbsp;|&nbsp;
 
             <!-- Botão Excluir -->
-            <form action="<%= request.getContextPath() %>/ServletAdmin" method="get" style="display:inline;">
+            <form action="<%= request.getContextPath() %>/ServletAdmin" method="post" style="display:inline;">
               <input type="hidden" name="action" value="deleteAdmin">
               <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
               <button class="botao-excluir" type="submit" onclick="return confirm('Tem certeza que deseja excluir este admin?');">

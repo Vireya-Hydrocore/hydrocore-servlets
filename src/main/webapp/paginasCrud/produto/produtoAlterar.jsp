@@ -1,18 +1,23 @@
 <%--
   Created by IntelliJ IDEA.
   User: eriksilva-ieg
-  Date: 05/10/2025
-  Time: 20:16
+  Date: 06/10/2025
+  Time: 14:03
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--
+  Página: produtoAlterar.jsp
+  Autor: Erik Silva
+  Data: 06/10/2025
+  Descrição: Formulário de alteração de produto
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Alterar Admin</title>
+    <title>Alterar Produto</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,16 +46,11 @@
             margin-bottom: 5px;
             font-weight: bold;
         }
-        .campos input {
+        .campos input,
+        .campos select {
             width: 100%;
             padding: 8px;
             border: 1px solid #bbb;
-            border-radius: 6px;
-        }
-        .campos-readonly input{
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #E00;
             border-radius: 6px;
         }
         .acoes {
@@ -73,31 +73,43 @@
 <body>
 
 <div class="form-container">
-    <h2>Alterar Admin</h2>
+    <h2>Alterar Produto</h2>
 
-    <form action="${pageContext.request.contextPath}/ServletAdmin" method="post">
-        <input type="hidden" name="action" value="updateAdmin"> <!-- Servlet enxerga que o action é updateEstoque -->
+    <form action="${pageContext.request.contextPath}/ServletProduto" method="post">
+        <!-- O servlet vai identificar a ação pelo nome -->
+        <input type="hidden" name="action" value="update">
 
-        <div class="campos-readonly">
+        <!-- ID do produto -->
+        <div class="campos">
             <label>ID</label>
-            <input type="number" name="id" value="${id}" readonly>
+            <input type="number" name="id" value="${produto.id}" readonly>
         </div>
 
+        <!-- Nome -->
         <div class="campos">
             <label>Nome</label>
-            <input type="text" name="nome" value="${nome}" required>
+            <input type="text" name="nome" value="${produto.nome}" required>
         </div>
 
+        <!-- Tipo -->
         <div class="campos">
-            <label>E-mail</label>
-            <input type="email" name="email" value="${email}" required>
+            <label>Tipo</label>
+            <input type="text" name="tipo" value="${produto.tipo}" required>
         </div>
 
+        <!-- Unidade de Medida -->
         <div class="campos">
-            <label>Senha</label>
-            <input type="password" name="senha" value="${senha}" required>
+            <label>Unidade de Medida</label>
+            <input type="text" name="unidadeMedida" value="${produto.unidadeMedida}" required>
         </div>
 
+        <!-- Concentração -->
+        <div class="campos">
+            <label>Concentração</label>
+            <input type="number" step="0.01" name="concentracao" value="${produto.concentracao}" required>
+        </div>
+
+        <!-- Botão -->
         <div class="acoes">
             <input type="submit" value="Salvar Alterações">
         </div>

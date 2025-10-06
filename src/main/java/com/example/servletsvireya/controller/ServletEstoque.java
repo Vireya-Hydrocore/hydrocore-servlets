@@ -27,17 +27,17 @@ public class ServletEstoque extends HttpServlet {
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
             // comportamento padrão: listar estoques (ou redirecionar)
-//            estoques(req, resp);
+            listarEstoquePorEta(req, resp); //mudar para listarEstoque Por Eta
             return;
         }
 
         try {
             switch (action) {
                 case "mainEstoque":
-                    estoques(req, resp);
+                    listarEstoquePorEta(req, resp);
                     break;
                 case "selectEstoque":
-                    listarEstoque(req, resp);
+                    listarEstoquePorEta(req, resp);
                     break;
                 default:
                     resp.sendRedirect(req.getContextPath() + "/paginasCrud/estoque/indexEstoque.jsp");
@@ -58,7 +58,7 @@ public class ServletEstoque extends HttpServlet {
                 inserirEstoque(req, resp);
                 break;
             case "updateEstoque":
-                alterarEstoque(req, resp);
+                buscarEstoque(req, resp);
                 break;
             case "deleteEstoque":
                 removerEstoque(req, resp);
@@ -70,7 +70,7 @@ public class ServletEstoque extends HttpServlet {
 
     // MÉTODOS AUXILIARES
     //LISTA POR ETA
-    protected void estoques(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void listarEstoquePorEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // ⚠ Por enquanto, fixo para testes
         int idEta = 1;
 
@@ -80,7 +80,6 @@ public class ServletEstoque extends HttpServlet {
         // int idEta = adminLogado.getIdEta();
 
         List<EstoqueDTO> lista = estoqueDAO.listarEstoquePorEta(idEta);
-        System.out.println(lista);
 
         req.setAttribute("estoques", lista);
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/estoque/indexEstoque.jsp");
@@ -109,7 +108,7 @@ public class ServletEstoque extends HttpServlet {
     }
 
 
-    protected void listarEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void buscarEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Recebimento do id do estoque que será editado
         int id = Integer.parseInt(req.getParameter("id"));
         //Setar a variavel Estoque
@@ -162,7 +161,7 @@ public class ServletEstoque extends HttpServlet {
 
         if (resultado == 1) {
             // Atualiza a lista de produtos na mesma página
-            estoques(req, resp);
+            listarEstoquePorEta(req, resp);
         } else {
             // Página de erro
 //            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
