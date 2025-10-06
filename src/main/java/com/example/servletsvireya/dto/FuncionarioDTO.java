@@ -19,7 +19,7 @@ public class FuncionarioDTO {
     }
 
     public FuncionarioDTO(int id, String nome, String email, Date dataAdmissao,
-                          Date dataNascimento, String nomeCargo, int idEta, String senha) {
+                          Date dataNascimento, String nomeCargo, int idEta, String senha, int idCargo) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -28,6 +28,7 @@ public class FuncionarioDTO {
         this.nomeCargo = nomeCargo;
         this.idEta= idEta;
         this.senha= senha;
+        this.idCargo=idCargo;
     }
 
     //Getters e Setters

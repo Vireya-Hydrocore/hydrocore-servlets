@@ -4,7 +4,15 @@ public class CargoDTO {
     private int id;
     private String nome;
     private Integer acesso;
+    private Integer idEta;
 
+    public Integer getIdEta() {
+        return idEta;
+    }
+
+    public void setIdEta(Integer idEta) {
+        this.idEta = idEta;
+    }
 
     public int getId() {
         return id;

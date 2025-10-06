@@ -75,19 +75,23 @@ public class FuncionarioDAO {
     // ✅ ALTERAR FUNCIONÁRIO
     public int alterarFuncionario(FuncionarioDTO funcionario) {
         Connection conn = conexao.conectar();
-        CargoDAO cargo = new CargoDAO();
-        Integer cargoId = cargo.buscarIdPorNome(funcionario.getNomeCargo());
-        String comandoSQL = " UPDATE funcionario SET nome = ?, email = ?, data_admissao = ?, data_nascimento = ?, id_eta = ?, id_cargo = ?, senha= ? WHERE id = ?";
+        String comandoSQL = " UPDATE funcionario SET nome = ?, email = ?, data_admissao = ?, data_nascimento = ?, id_cargo = ?, senha= ? WHERE id = ?";
+        String delete= "DELETE FROM tarefa WHERE id_funcionario= ?" ;
+        try(PreparedStatement pstmt2 = conn.prepareStatement(delete)) {
+            pstmt2.setInt(1, funcionario.getId());
+            pstmt2.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
 
         try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
             pstmt.setString(1, funcionario.getNome());
             pstmt.setString(2, funcionario.getEmail());
             pstmt.setDate(3, new java.sql.Date(funcionario.getDataAdmissao().getTime()));
             pstmt.setDate(4, new java.sql.Date(funcionario.getDataNascimento().getTime()));
-            pstmt.setInt(5, funcionario.getIdEta());
-            pstmt.setInt(6, cargoId);
-            pstmt.setString(7, funcionario.getSenha());
-            pstmt.setInt(8, funcionario.getId()); // WHERE id = ?
+            pstmt.setInt(5, funcionario.getIdCargo());
+            pstmt.setString(6, funcionario.getSenha());
+            pstmt.setInt(7, funcionario.getId()); // WHERE id = ?
 
             return (pstmt.executeUpdate() > 0) ? 1 : 0;
 
@@ -164,6 +168,32 @@ public class FuncionarioDAO {
 
         return funcionario; // retorna com os dados preenchidos ou vazio se não achou
     }
+
+
+    public FuncionarioDTO buscarPorId(int id) {
+        FuncionarioDTO funcionario = null;
+        String sql = "SELECT * FROM funcionario WHERE id = ?";
+        try (Connection conn = conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                funcionario = new FuncionarioDTO();
+                funcionario.setId(rs.getInt("id"));
+                funcionario.setNome(rs.getString("nome"));
+                funcionario.setEmail(rs.getString("email"));
+                funcionario.setSenha(rs.getString("senha"));
+                funcionario.setIdCargo(rs.getInt("id_cargo"));
+                funcionario.setIdEta(rs.getInt("id_eta"));
+                funcionario.setDataNascimento(rs.getDate("data_nascimento"));
+                funcionario.setDataAdmissao(rs.getDate("data_admissao"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return funcionario;
+    }
+
 
 
 }

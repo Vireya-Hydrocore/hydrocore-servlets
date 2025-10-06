@@ -3,11 +3,11 @@ package com.example.servletsvireya.model;
 public class Cargo {
     private int id;
     private String nome;
-    private String acesso;
+    private int acesso;
 
     //Construtores
     public Cargo(){};
-    public Cargo(int id, String nome, String acesso){
+    public Cargo(int id, String nome, int acesso){
         this.id = id;
         this.nome = nome;
         this.acesso = acesso;
@@ -28,10 +28,11 @@ public class Cargo {
         this.nome = nome;
     }
 
-    public String getAcesso(){
-        return this.acesso;
+    public int getAcesso() {
+        return acesso;
     }
-    public void setAcesso(String acesso){
+
+    public void setAcesso(int acesso) {
         this.acesso = acesso;
     }
 }

@@ -68,28 +68,24 @@
 
   <form action="${pageContext.request.contextPath}/ServletFuncionario" method="post">
     <input type="hidden" name="action" value="updateFuncionario">
-    <input type="hidden" name="id" value="<%= funcionario.getId() %>">
+    <input type="hidden" name="id" value="${funcionario.id}">
 
-    <div class="campos">
-      <label>Nome</label>
-      <input type="text" name="nome" value="<%= funcionario.getNome() %>" required>
-    </div>
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" value="${funcionario.nome}" required><br>
 
-    <div class="campos">
-      <label>Email</label>
-      <input type="email" name="email" value="<%= funcionario.getEmail() %>" required>
-    </div>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="${funcionario.email}" required><br>
 
-    <div class="campos">
-      <label>Cargo</label>
-      <input type="text" name="cargo" value="<%= funcionario.getNomeCargo() %>" required>
-      <!-- OBS: No servlet, você converte o nome do cargo para o ID correspondente -->
-    </div>
+    <label for="senha">Senha:</label>
+    <input type="password" id="senha" name="senha" value="${funcionario.senha}" required><br>
 
-    <div class="acoes">
-      <input type="submit" value="Salvar Alterações">
-    </div>
+    <label for="nomeCargo">Cargo:</label>
+    <input type="text" id="nomeCargo" name="nomeCargo"
+           value="${funcionario.nomeCargo}" required><br>
+
+    <button type="submit">Salvar</button>
   </form>
+
 </div>
 
 </body>

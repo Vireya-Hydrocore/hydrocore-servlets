@@ -80,7 +80,7 @@
     </a>
 
     <!-- Cargo (em breve) -->
-    <a href="#" class="disabled">Cargo - Em Breve</a>
+    <a href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">Cargo</a>
 
     <!-- Produto -->
     <a href="${pageContext.request.contextPath}/ServletProduto?action=mainProduto">

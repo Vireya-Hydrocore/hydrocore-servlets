@@ -13,115 +13,120 @@ import java.util.List;
 
 public class CargoDAO {
     private Conexao conexao = new Conexao();
-    //Método inserirCargo()
-    public int inserirCargo(Cargo cargo){
 
-        //Preparando o comando
-        String comandoSQL = "INSERT INTO Cargo(id, nome, acesso) VALUES (?,?,?)";
-        try (Connection conn = conexao.conectar(); PreparedStatement pstmt = conn.prepareStatement(comandoSQL)){
+    // ➕ INSERIR CARGO (agora inclui o id_eta)
+    public int inserirCargo(CargoDTO cargo) {
+        String comandoSQL = "INSERT INTO Cargo(nome, acesso, id_eta) VALUES (?, ?, ?)";
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
 
-            //Definindo os valores do comando
-            pstmt.setInt(1, cargo.getId());
-            pstmt.setString(2, cargo.getNome());
-            pstmt.setString(3, cargo.getAcesso());
+            pstmt.setString(1, cargo.getNome());
+            pstmt.setInt(2, cargo.getAcesso());
+            pstmt.setInt(3, cargo.getIdEta()); // novo campo
 
-            //Retornando quantas linhas foram alteradas
             return pstmt.executeUpdate();
-        } catch (SQLException e){
+        } catch (SQLException e) {
+            e.printStackTrace();
             return -1;
         }
     }
-    public int removerCargo(Cargo cargo){
+
+    public int removerCargo(CargoDTO cargo) {
         String comandoSQL = "DELETE FROM Cargo WHERE id = ?";
-        try (Connection conn = conexao.conectar(); PreparedStatement pstmt = conn.prepareStatement(comandoSQL)){
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
 
-            //Verificando se o cargo existe
-            if (buscarCargo(cargo.getId()) == null){
-                return 0;
-            }
-
-            //Definindo os valores do comando
             pstmt.setInt(1, cargo.getId());
-
             pstmt.executeUpdate();
             return 1;
         } catch (SQLException e) {
+            e.printStackTrace();
             return -1;
         }
     }
-    public List<Cargo> buscarCargo(int id){
+
+    public CargoDTO buscarCargo(int id) {
         String comandoSQL = "SELECT * FROM Cargo WHERE id = ?";
-        try (Connection conn = conexao.conectar(); PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
 
-            //Instanciando uma lista de cargos
-            List<Cargo> cargos = new ArrayList<>();
-
-            //Definindo os valores do comando
             pstmt.setInt(1, id);
-
             ResultSet rs = pstmt.executeQuery();
-            while (rs.next()){
-                //Instanciando um objeto Cargo
-                Cargo cargo = new Cargo();
 
-                //Settando os valores
-                cargo.setNome(rs.getString("NOME"));
-                cargo.setId(rs.getInt("ID"));
-                cargo.setAcesso(rs.getString("acesso"));
-
-                //Adicionando o objeto na lista
-                cargos.add(cargo);
+            if (rs.next()) {
+                CargoDTO cargo = new CargoDTO();
+                cargo.setId(rs.getInt("id"));
+                cargo.setNome(rs.getString("nome"));
+                cargo.setAcesso(rs.getInt("acesso"));
+                cargo.setIdEta(rs.getInt("id_eta")); // adiciona o id_eta também
+                return cargo;
             }
-            return cargos;
-        } catch (SQLException e){
-            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
-    public List<CargoDTO> listarCargoPorEta(int id) throws SQLException {
+    // 🔍 LISTAR CARGOS POR ETA (sem depender de funcionário)
+    public List<CargoDTO> listarCargoPorEta(int idEta) {
         List<CargoDTO> cargos = new ArrayList<>();
-        Connection conn = conexao.conectar();
+        String sql = "SELECT id, nome, acesso, id_eta FROM Cargo WHERE id_eta = ? ORDER BY nome";
 
+        try (Connection conn = conexao.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        String sql = "SELECT DISTINCT c.id, c.nome, c.acesso " +
-                "FROM cargo c " +
-                "JOIN funcionario f ON f.id_cargo = c.id " +
-                "WHERE f.id_eta = ? " +
-                "ORDER BY c.nome";
+            ps.setInt(1, idEta);
+            ResultSet rs = ps.executeQuery();
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    CargoDTO dto = new CargoDTO();
-                    dto.setId(rs.getInt("id"));
-                    dto.setNome(rs.getString("nome"));
-                    dto.setAcesso(rs.getInt("acesso"));
-                    cargos.add(dto);
-                }
+            while (rs.next()) {
+                CargoDTO dto = new CargoDTO();
+                dto.setId(rs.getInt("id"));
+                dto.setNome(rs.getString("nome"));
+                dto.setAcesso(rs.getInt("acesso"));
+                dto.setIdEta(rs.getInt("id_eta"));
+                cargos.add(dto);
             }
-        }catch (SQLException e){
+
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             conexao.desconectar();
-            return cargos;
         }
+        return cargos;
     }
 
-    public Integer buscarIdPorNome(String nomeCargo)  {
-        Connection conn= conexao.conectar();
-        String sql = "SELECT id FROM cargo WHERE nome = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+    public Integer buscarIdPorNome(String nomeCargo) {
+        Integer id = null;
+        String sql = "SELECT id FROM cargo WHERE LOWER(nome) = LOWER(?)";
+        try (Connection conn = conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, nomeCargo);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return rs.getInt("id");
-            } else {
-                return null;
+                id = rs.getInt("id");
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+        }
+        return id;
+    }
+
+    // ✏️ ALTERAR CARGO (agora também permite trocar o id_eta se precisar)
+    public int alterarCargo(CargoDTO cargo) {
+        String comandoSQL = "UPDATE Cargo SET nome = ?, acesso = ?, id_eta = ? WHERE id = ?";
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
+
+            pstmt.setString(1, cargo.getNome());
+            pstmt.setInt(2, cargo.getAcesso());
+            pstmt.setInt(3, cargo.getIdEta());
+            pstmt.setInt(4, cargo.getId());
+
+            return pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
         }
     }
 }

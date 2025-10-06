@@ -72,6 +72,7 @@ public class ServletFuncionario extends HttpServlet {
                 break;
             case "updateFuncionario":
                 alterarFuncionario(req,resp);
+                break;
 
             case "deleteFuncionario":
                 removerFuncionario(req, resp);
@@ -131,29 +132,31 @@ public class ServletFuncionario extends HttpServlet {
 
 
     protected void alterarFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        CargoDAO cargo = new CargoDAO();
-        String cargoNome = req.getParameter("nomeCargo");
-        Integer cargoId = cargo.buscarIdPorNome(cargoNome);
-        // 1️⃣ Pegar o ID do produto que está sendo alterado
         int id = Integer.parseInt(req.getParameter("id"));
-        FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
-        funcionarioDTO.setId(id);
-        funcionarioDTO.setNome(req.getParameter("nome"));
-        funcionarioDTO.setEmail(req.getParameter("email"));
-        funcionarioDTO.setSenha(req.getParameter("senha"));
-        funcionarioDTO.setIdCargo(cargoId);
-        // Chamar o DAO
-        int resultado = funcionarioDAO.alterarFuncionario(funcionarioDTO);
+        FuncionarioDTO antigo = funcionarioDAO.buscarPorId(id); // 🔹 busca o registro atual
 
-        // Tratar o resultado
+        CargoDAO cargoDAO = new CargoDAO();
+        String cargoNome = req.getParameter("nomeCargo");
+        Integer cargoId = cargoDAO.buscarIdPorNome(cargoNome);
+
+// Atualiza só o que foi alterado:
+        antigo.setNome(req.getParameter("nome"));
+        antigo.setEmail(req.getParameter("email"));
+        antigo.setSenha(req.getParameter("senha"));
+        antigo.setIdCargo(cargoId);
+
+// Chama o DAO pra atualizar:
+        int resultado = funcionarioDAO.alterarFuncionario(antigo);
+
+
         if (resultado == 1) {
             req.setAttribute("alteradoSucesso", true);
             resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario");
         } else {
-            // Página de erro
-//            resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=main");
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao alterar funcionário");
         }
     }
+
 
 
     protected void removerFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -162,7 +165,7 @@ public class ServletFuncionario extends HttpServlet {
 
         if (resultado == 1) {
             // Atualiza a lista de produtos na mesma página
-            listarFuncionarioPorEta(req, resp);
+            resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario");
         } else {
             // Página de erro
             req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
