@@ -21,7 +21,7 @@ public class AdminDAO {
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setString(1, adminDTO.getNome());
             pstmt.setString(2, adminDTO.getEmail());
-            if (adminDTO.getSenha().length() > 30){
+            if (adminDTO.getSenha().length() > 30) {
                 return 0;
             }
             pstmt.setString(3, adminDTO.getSenha());
@@ -74,7 +74,7 @@ public class AdminDAO {
             pstmt.setString(3, adminDTO.getSenha());
             pstmt.setInt(4, adminDTO.getId());
 
-            if (pstmt.executeUpdate() > 0){
+            if (pstmt.executeUpdate() > 0) {
                 return 1;
             } else {
                 return 0;
@@ -94,7 +94,7 @@ public class AdminDAO {
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setInt(1, adminDTO.getId());
 
-            if (pstmt.executeUpdate() > 0){
+            if (pstmt.executeUpdate() > 0) {
                 return 1;
             } else {
                 return 0;
@@ -157,4 +157,27 @@ public class AdminDAO {
 //            conexao.desconectar();
 //        }
 //    }
+
+    public Integer seLogar(String email, String senha) {
+        String sql = "SELECT id_eta FROM admin WHERE email = ? AND senha = ?";
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            pstmt.setString(2, senha);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("id_eta"); // retorna o id_eta do admin encontrado
+            } else {
+                return null; // login incorreto
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

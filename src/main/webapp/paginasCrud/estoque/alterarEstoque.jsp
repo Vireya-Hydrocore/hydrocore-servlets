@@ -13,56 +13,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Alterar Estoque</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .form-container {
-      background: #fff;
-      padding: 20px 30px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      width: 400px;
-    }
-    .form-container h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .campos {
-      margin-bottom: 15px;
-    }
-    .campos label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    .campos input {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #bbb;
-      border-radius: 6px;
-    }
-    .acoes {
-      text-align: center;
-      margin-top: 20px;
-    }
-    .acoes input[type="submit"] {
-      background-color: #4460F6;
-      color: #fff;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .acoes input[type="submit"]:hover {
-      background-color: #2f45b5;
-    }
-  </style>
+  <link href="${pageContext.request.contextPath}/paginasCrud/css/styleAlterar.css">
 </head>
 <body>
 

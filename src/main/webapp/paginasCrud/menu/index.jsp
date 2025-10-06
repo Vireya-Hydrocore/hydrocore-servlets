@@ -107,7 +107,27 @@
     <!-- Admin (em breve) -->
     <a href="#" class="disabled">Admin - Em Breve</a>
 </nav>
+<form action="${pageContext.request.contextPath}/ServletAdmin" method="post">
+    <!-- O servlet vai identificar a ação -->
+    <input type="hidden" name="action" value="logar">
 
+    <!-- Campo de E-mail -->
+    <div class="campos">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
+    </div>
+
+    <!-- Campo de Senha -->
+    <div class="campos">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+    </div>
+
+    <!-- Botão -->
+    <div class="acoes">
+        <input type="submit" value="Entrar">
+    </div>
+</form>
 <footer>
     © 2025 Vireya — Sistema de Gestão CRUD
 </footer>

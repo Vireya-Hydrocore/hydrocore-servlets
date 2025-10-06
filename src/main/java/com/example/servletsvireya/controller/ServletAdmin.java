@@ -11,7 +11,7 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/ServletAdmin", "/mainAdmin", "/createAdmin", "/selectAdmin", "/updateAdmin", "/deleteAdmin"}, name = "ServletAdmin")
+@WebServlet(urlPatterns = {"/ServletAdmin", "/mainAdmin", "/createAdmin", "/selectAdmin", "/updateAdmin", "/deleteAdmin", "/logar"}, name = "/ServletAdmin")
 public class ServletAdmin extends HttpServlet {
 
     private AdminDAO adminDAO = new AdminDAO();
@@ -25,16 +25,16 @@ public class ServletAdmin extends HttpServlet {
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
             // comportamento padrão: listar admins (ou redirecionar)
-//            admins(req, resp); //mudar nome
+            admins(req, resp); //mudar nome
             return;
         }
 
         try {
             switch (action) {
                 case "mainAdmin":
-                    admins(req, resp);
+                    admins(req, resp); //Listado por ETA
                     break;
-                case "selectAdmin":
+                case "selectAdmin": //Seleciona por id para alterar o Admin
                     buscarAdmin(req, resp);
                     break;
                 default:
@@ -51,7 +51,7 @@ public class ServletAdmin extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
 
-        //Não podem passar pela URL
+        //Não podem passar dados pela URL
         switch (action) {
             case "createAdmin":
                 inserirAdmin(req, resp);
@@ -61,6 +61,9 @@ public class ServletAdmin extends HttpServlet {
                 break;
             case "deleteAdmin":
                 removerAdmin(req, resp);
+                break;
+            case "logar":
+                logarAdmin(req, resp);
                 break;
             default:
                 resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin");
@@ -86,12 +89,14 @@ public class ServletAdmin extends HttpServlet {
         rd.forward(req, resp);
     }
 
+
+    //INSERIR ADMIN
     protected void inserirAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         AdminDTO adminDTO = new AdminDTO();
 
         adminDTO.setNome(req.getParameter("nome"));
         adminDTO.setEmail(req.getParameter("email"));
-        adminDTO.setSenha(req.getParameter("senha")); ///////
+        adminDTO.setSenha(req.getParameter("senha")); /////// criptografar
         adminDTO.setIdEta(1); //para teste
 
         int resultado = adminDAO.inserirAdmin(adminDTO);
@@ -101,18 +106,19 @@ public class ServletAdmin extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin");
         } else {
             // Página de erro
-            resp.sendRedirect("/paginasCrud/admin/erro.jsp");
+            resp.sendRedirect("/paginasCrud/erro.jsp");
         }
     }
 
 
+    //BUSCAR PARA REALIZAÇÃO DO UPDATE ------> arrumar metodo buscarPorId
     protected void buscarAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Recebimento do id do admin que será editado
         int id = Integer.parseInt(req.getParameter("id"));
         //Setar a variavel admin
         AdminDTO adminDTO = new AdminDTO();
         adminDTO.setId(id);
-        //executar o metodo buscarPorId
+        //Executar o método buscarPorId
         adminDAO.buscarPorId(adminDTO);
         //Setar os atributos do formulário no adminDTO
         req.setAttribute("id", adminDTO.getId());
@@ -124,6 +130,8 @@ public class ServletAdmin extends HttpServlet {
         rd.forward(req, resp);
     }
 
+
+    //ALTERA O ADMIN
     protected void alterarAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Pegando o ID do admin que está sendo alterado
         int id = Integer.parseInt(req.getParameter("id"));
@@ -138,16 +146,18 @@ public class ServletAdmin extends HttpServlet {
         // Chamar o método do DAO
         int resultado = adminDAO.alterarAdmin(adminDTO);
 
-        // Tratar o resultado
         if (resultado == 1) {
-//            req.setAttribute("alteradoSucesso", true);
+            //Redireciona para a listagem
             resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin");
         } else {
             // Página de erro
-            resp.sendRedirect("/paginasCrud/erro.jsp");
+            req.setAttribute("erro", "E-mail ou senha inválidos");
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
         }
     }
 
+
+    //REMOVER ADMIN
     protected void removerAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         AdminDTO adminDTO = new AdminDTO();
 
@@ -160,7 +170,30 @@ public class ServletAdmin extends HttpServlet {
             admins(req, resp);
         } else {
             // Página de erro
-//            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.setAttribute("erro", "Não foi possível remover este Admin");
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+        }
+    }
+
+
+    //LOGIN DO ADMIN
+    protected void logarAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String email = req.getParameter("email");
+        String senha = req.getParameter("senha");
+
+        Integer idEta = adminDAO.seLogar(email, senha);
+
+        if (idEta != null) {
+            HttpSession session = req.getSession();
+            session.setAttribute("idEta", idEta);
+            session.setAttribute("emailAdmin", email);
+
+            // Redireciona para página principal do admin
+            resp.sendRedirect(req.getContextPath() + "/ServletCargo?action=mainCargo"); //??????????
+        } else {
+            req.setAttribute("erroLogin", "E-mail ou senha incorretos.");
+            RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/menu/index.jsp");
+            rd.forward(req, resp);
         }
     }
 }

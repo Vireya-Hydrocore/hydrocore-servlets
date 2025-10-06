@@ -9,7 +9,7 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/ServletProduto", "/main", "/select", "/update", "/delete"}, name = "ServletProduto")
+@WebServlet(urlPatterns = {"/ServletProduto", "/mainProduto", "/selectProduto", "/updateProduto", "/deleteProduto"}, name = "ServletProduto")
 public class ServletProduto extends HttpServlet {
 
     private ProdutoDAO produtoDAO = new ProdutoDAO();
@@ -22,14 +22,14 @@ public class ServletProduto extends HttpServlet {
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
             // comportamento padrão: listar produtos (ou redirecionar)
-            produtos(req, resp);
+            listarProdutosPorEta(req, resp);
             return;
         }
 
         try {
             switch (action) {
                 case "main":
-                    produtos(req, resp);
+                    listarProdutosPorEta(req, resp);
                     break;
                 case "select":
                     listarProduto(req, resp);
@@ -67,7 +67,7 @@ public class ServletProduto extends HttpServlet {
     }
 
     // MÉTODOS AUXILIARES
-    protected void produtos(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void listarProdutosPorEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Produto> lista = produtoDAO.listarProduto();
         req.setAttribute("produtos", lista);
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/produto/produtoIndex.jsp");
@@ -142,7 +142,7 @@ public class ServletProduto extends HttpServlet {
 
         if (resultado == 1) {
             // Atualiza a lista de produtos na mesma página
-            produtos(req, resp);
+            listarProdutosPorEta(req, resp);
         } else {
             // Página de erro
             req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
