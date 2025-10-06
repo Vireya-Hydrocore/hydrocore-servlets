@@ -22,6 +22,8 @@ public class ServletCargo extends HttpServlet {
         String action = req.getParameter("action");
         if (action == null) action = "mainCargo";
 
+
+        //colocar try
         switch (action) {
             case "mainCargo":
                 listarCargoPorEta(req, resp);

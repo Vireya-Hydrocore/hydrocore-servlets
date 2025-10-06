@@ -133,4 +133,27 @@ public class AdminDAO{
         }
     }
 
+    public Integer seLogar(String email, String senha) {
+        String sql = "SELECT id_eta FROM admin WHERE email = ? AND senha = ?";
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            pstmt.setString(2, senha);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("id_eta"); // retorna o id_eta do admin encontrado
+            } else {
+                return null; // login incorreto
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

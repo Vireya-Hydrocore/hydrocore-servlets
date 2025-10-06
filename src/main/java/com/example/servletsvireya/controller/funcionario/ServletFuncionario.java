@@ -19,7 +19,6 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/ServletFuncionario", "/mainFuncionario", "/selectFuncionario", "/updateFuncionario", "/deleteFuncionario", "/editarFuncionario"}, name = "ServletFuncionario")
 public class ServletFuncionario extends HttpServlet {
-
     private FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
 
     // GET

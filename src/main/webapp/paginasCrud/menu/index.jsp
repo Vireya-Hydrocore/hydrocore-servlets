@@ -97,8 +97,22 @@
 
     <!-- Admin (em breve) -->
     <a href="#" class="disabled">Admin - Em Breve</a>
+
+
 </nav>
 
+<form action="${pageContext.request.contextPath}/ServletProduto" method="post">
+    <h2>Alterar Produto</h2>
+
+    <input type="hidden" name="action" value="updateProduto">
+    <input type="hidden" name="id" value="<%= produto.getId() %>">
+
+    <label>Nome</label>
+    <input type="text" name="nome" value="<%= produto.getNome() %>" required>
+
+    <label>Categoria</label>
+    <input type="text" name="tipo" value="<%= produto.getTipo() %>" required>
+</form>
 <footer>
     © 2025 Vireya — Sistema de Gestão CRUD
 </footer>
