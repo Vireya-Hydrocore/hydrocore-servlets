@@ -11,7 +11,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.servletsvireya.dto.AdminDTO" %>
 <%
-  // Recupera a lista de admins do request, que deve ser enviada pelo servlet
+  //Recupera a lista de admins do request, que deve ser enviada pelo servlet
   List<AdminDTO> lista = (List<AdminDTO>) request.getAttribute("admins");
 %>
 <!DOCTYPE html>
@@ -35,10 +35,10 @@
 
 <aside class="sidebar" id="sidebar">
   <ul>
-    <li><a href="/funcionarios.html">👨‍💼 Funcionários</a></li>
-    <li><a href="/estoque.html">📦 Estoque</a></li>
-    <li><a href="/produto.html">🧪 Produtos</a></li>
-    <li><a href="/cargo.html">📋 Cargo</a></li>
+    <li><a href="/ServletFuncionario?action=mainFuncionario">👨‍💼 Funcionários</a></li>
+    <li><a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">📦 Estoque</a></li>
+    <li><a href="${pageContext.request.contextPath}/ServletProduto?action=main">🧪 Produtos</a></li>
+    <li><a href="/paginasCrud/cargo">📋 Cargo</a></li> <!---------------------------------->
   </ul>
 </aside>
 
@@ -49,7 +49,7 @@
 
     <section class="cadastro">
       <h2>Cadastro de Admins</h2>
-      <form name="frmProduto" action="${pageContext.request.contextPath}/ServletAdmin" method="post" onsubmit="return validar();">
+      <form name="frmAdmin" action="${pageContext.request.contextPath}/ServletAdmin" method="post" onsubmit="return validar();">
         <div class="campos">
           <input type="hidden" name="action" value="createAdmin"> <!-- envia esse parâmetro para o servlet ver q é create-->
 

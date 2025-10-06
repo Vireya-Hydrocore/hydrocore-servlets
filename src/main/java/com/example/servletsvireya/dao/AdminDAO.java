@@ -43,7 +43,7 @@ public class AdminDAO {
             pstmt.setInt(1, adminDTO.getId());
             ResultSet rset = pstmt.executeQuery();
 
-            if (rset != null) {
+            if (rset.next()) {
                 adminDTO.setSenha(rset.getString("senha")); //Setta no mesmo objeto
                 adminDTO.setNome(rset.getString("nome"));
                 adminDTO.setEmail(rset.getString("email"));
@@ -120,6 +120,7 @@ public class AdminDAO {
                 admin.setNome(rs.getString("nome"));
                 admin.setEmail(rs.getString("email"));
                 admin.setSenha(rs.getString("senha"));
+                admin.setIdEta(rs.getInt("id_eta")); //tem que ser a mesma em cada
 
                 admins.add(admin); //Populando o list
             }
