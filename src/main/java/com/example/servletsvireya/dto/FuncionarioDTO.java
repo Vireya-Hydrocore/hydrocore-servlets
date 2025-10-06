@@ -8,25 +8,28 @@ public class FuncionarioDTO {
     private String nome;
     private String email;
     private String senha;
-    private LocalDate dataAdmissao;
-    private LocalDate dataNascimento;
+    private Date dataAdmissao;
+    private Date dataNascimento;
     private int idEta; // Foreign Key
+    private int idEta;
     private int idCargo; // Foreign Key
     private String nomeCargo;
-    private String nomeEta;
 
     //Construtores
     public FuncionarioDTO() {
     }
-    public FuncionarioDTO(int id, String nome, String email, LocalDate dataAdmissao,
-                          LocalDate dataNascimento, String nomeCargo, String nomeEta) {
+
+    public FuncionarioDTO(int id, String nome, String email, Date dataAdmissao,
+                          Date dataNascimento, String nomeCargo, int idEta, String senha, int idCargo) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.dataAdmissao = dataAdmissao;
         this.dataNascimento = dataNascimento;
         this.nomeCargo = nomeCargo;
-        this.nomeEta = nomeEta;
+        this.idEta= idEta;
+        this.senha= senha;
+        this.idCargo=idCargo;
     }
 
     //Getters e Setters
@@ -51,6 +54,8 @@ public class FuncionarioDTO {
         this.email = email;
     }
 
+    public Date getDataAdmissao() {
+        return dataAdmissao;
     public String getSenha() {
         return senha;
     }
@@ -61,26 +66,42 @@ public class FuncionarioDTO {
     public LocalDate getDataAdmissao() {
         return this.dataAdmissao;
     }
-    public void setDataAdmissao(LocalDate dataAdmissao) {
+
+    public void setDataAdmissao(Date dataAdmissao) {
         this.dataAdmissao = dataAdmissao;
     }
 
-    public LocalDate getDataNascimento() {
-        return this.dataNascimento;
+    public Date getDataNascimento() {
+        return dataNascimento;
     }
-    public void setDataNascimento(LocalDate dataNascimento) {
+
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
+    }
+
+
+    public int getIdCargo() {
+        return idCargo;
+    }
+
+    public void setIdCargo(int idCargo) {
+        this.idCargo = idCargo;
     }
 
     public String getNomeCargo() {
         return this.nomeCargo;
     }
+
     public void setNomeCargo(String nomeCargo) {
         this.nomeCargo = nomeCargo;
     }
 
-    public String getNomeEta() {
-        return this.nomeEta;
+    public int getIdEta() {
+        return idEta;
+    }
+
+    public void setIdEta(int idEta) {
+        this.idEta = idEta;
     }
     public void setNomeEta(String nomeEta) {
         this.nomeEta = nomeEta;

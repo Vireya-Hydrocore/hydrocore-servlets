@@ -18,9 +18,9 @@
 //        //Criando um objeto que irá receber os dados do estoque
 //        List<Estoque> estoqueList = estoqueDAO.listarEstoque();
 //
-//        //Encaminhar lista ao documento index.jsp
+//        //Encaminhar lista ao documento produtoAlterar.jsp
 //        req.setAttribute("estoque", estoqueList);
-//        RequestDispatcher rd = req.getRequestDispatcher("index.jsp"); //
+//        RequestDispatcher rd = req.getRequestDispatcher("produtoAlterar.jsp"); //
 //        rd.forward(req, resp);
 //    }
 //}

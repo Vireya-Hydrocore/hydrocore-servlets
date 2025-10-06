@@ -11,6 +11,8 @@
 <%
     // Recupera a lista de funcionarios do request, que deve ser enviada pelo servlet
     List<FuncionarioDTO> lista = (List<FuncionarioDTO>) request.getAttribute("funcionarios");
+
+    Boolean alterado = (Boolean) request.getAttribute("alteradoSucesso");
 %>
 <!DOCTYPE html>
 <html lang="pt-BR">

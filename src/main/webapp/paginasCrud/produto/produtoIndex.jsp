@@ -10,11 +10,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.example.servletsvireya.model.Produto" %>
 <%@ page import="java.util.List" %>
-<%
-    List<Produto> lista = (List<Produto>) request.getAttribute("produtos");
+<%@ page import="com.example.servletsvireya.dto.ProdutoDTO" %>
+    <%
+    List<ProdutoDTO> lista = (List<ProdutoDTO>) request.getAttribute("produtos");
 %>
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <title>Lista de Produtos</title>
@@ -47,7 +49,7 @@
             <h2>Cadastro de Produtos</h2>
             <form name="frmProduto" action="${pageContext.request.contextPath}/ServletProduto" method="post" onsubmit="return validar();">
                 <div class="campos">
-                    <input type="hidden" name="action" value="create"> <!-- envia esse parametro para o servlet ver q é create-->
+                    <input type="hidden" name="action" value="createProduto"> <!-- envia esse parametro para o servlet ver q é create-->
 
                     <label>Nome do Produto</label>
                     <input type="text" name="nome" placeholder="Ex: Cloro Líquido">
@@ -119,7 +121,7 @@
                         &nbsp;|&nbsp;
                         <!-- Botão Excluir -->
                         <form action="<%= request.getContextPath() %>/ServletProduto" method="get" style="display:inline;">
-                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="action" value="deleteProduto">
                             <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
                             <button class="botao-excluir" type="submit" onclick="return confirm('Tem certeza que deseja excluir este produto?');">
                                 Excluir
@@ -148,6 +150,6 @@
         sidebar.classList.toggle("open");
     });
 </script>
-  
+
 </body>
 </html>
