@@ -11,12 +11,11 @@ public class EstoqueDTO {
     private int idProduto;
     private int idEta;
     private String nomeProduto;
-    private String nomeEta;
 
     //Construtores
     public EstoqueDTO() {}
     public EstoqueDTO(int id, int quantidade, Date dataValidade, Integer minPossivelEstocado,
-                      int idProduto, int idEta, String nomeProduto, String nomeEta) {
+                      int idProduto, int idEta, String nomeProduto) {
         this.id = id;
         this.quantidade = quantidade;
         this.dataValidade = dataValidade;
@@ -24,7 +23,6 @@ public class EstoqueDTO {
         this.idProduto = idProduto;
         this.idEta = idEta;
         this.nomeProduto = nomeProduto;
-        this.nomeEta = nomeEta;
     }
 
     //Getters e Setters
@@ -50,11 +48,8 @@ public class EstoqueDTO {
         this.dataValidade = dataValidade;
     }
 
-    public Integer getMinPossivelEstocado() {
-        return minPossivelEstocado;
-    }
 
-    public Integer getMinPossivEstocado() {
+    public Integer getMinPossivelEstocado() {
         return this.minPossivelEstocado;
     }
     public void setMinPossivelEstocado(Integer minPossivelEstocado) {
@@ -77,7 +72,4 @@ public class EstoqueDTO {
     public void setNomeProduto(String nomeProduto) {
         this.nomeProduto = nomeProduto;
     }
-
-    public String getNomeEta() { return this.nomeEta; }
-    public void setNomeEta(String nomeEta) { this.nomeEta = nomeEta; }
 }

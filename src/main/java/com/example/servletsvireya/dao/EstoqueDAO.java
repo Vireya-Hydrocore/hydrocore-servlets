@@ -17,13 +17,13 @@ public class EstoqueDAO { //erik
         Connection conn = conexao.conectar(); //Conecta ao banco de dados
         //Preparando String do comandoSQL
         String comandoSQL = "INSERT INTO estoque(quantidade, data_validade, " +
-                "min_possiv_estocado, idEta, idProduto) VALUES(?, ?, ?, ?, ?)";
+                "min_possivel_estocado, id_eta, id_produtos) VALUES(?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
             //Settando valores usando a classe model
             pstmt.setInt(1, estoqueDTO.getQuantidade());
             pstmt.setDate(2, (Date) (estoqueDTO.getDataValidade()));
-            pstmt.setInt(3, estoqueDTO.getMinPossivEstocado());
+            pstmt.setInt(3, estoqueDTO.getMinPossivelEstocado());
             pstmt.setInt(4, estoqueDTO.getIdEta());
             pstmt.setInt(5, estoqueDTO.getIdProduto());
 
@@ -44,13 +44,13 @@ public class EstoqueDAO { //erik
     //Método para remover um produto
     public int removerEstoque(EstoqueDTO estoqueDTO) {
         Connection conn = conexao.conectar();
-        String comandoSQL = "DELETE FROM estoqueDTO WHERE id = ?";
+        String comandoSQL = "DELETE FROM estoque WHERE id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
             pstmt.setInt(1, estoqueDTO.getId());
 
 //            Verificando se o estoque existe
-            if (buscarPorId(estoqueDTO.getId()) == null){
+            if (buscarPorId(estoqueDTO) == null){
                 return 0; //Se não tiver, retorna 0
             }
 
@@ -69,61 +69,19 @@ public class EstoqueDAO { //erik
 
 
 
-    //Método para alterar o estoque
-    public int alterarEstoqueDTO(EstoqueDTO original, EstoqueDTO modificado) {
-        List<Object> inputs = new ArrayList<>(); //Instanciando um List dos campos que talvez foram alterados
+    // Método alterar (update)
+    public int alterarEstoque(EstoqueDTO estoqueDTO) {
+        Connection conn = conexao.conectar();
+        String comando = "UPDATE estoque SET quantidade = ?, data_validade = ?, min_possivel_estocado = ? WHERE id = ?";
 
-        String comandoSQL = "UPDATE estoque SET ";
-
-        //Pegando os valores do model do talvez modificado
-        int id = modificado.getId();
-        int quantidade = modificado.getQuantidade();
-        Date dataValidade = (Date) modificado.getDataValidade();
-        int minPossivEstocado = modificado.getMinPossivEstocado();
-        int idEta = modificado.getIdEta();
-        int idProduto = modificado.getIdProduto();
-
-        //Checando se foi modificado ou não, em relação ao original
-        if (quantidade != original.getQuantidade()) {
-            inputs.add(quantidade); //Adiciona o valor que foi modificado
-            comandoSQL += "quantidade = ?, "; //Concatena a string do comandoSQL
-        }
-        if (!dataValidade.equals(original.getDataValidade())) { //Não pode ser elseif
-            inputs.add(dataValidade);
-            comandoSQL += "data_validade = ?, ";
-        }
-        if (minPossivEstocado != original.getMinPossivEstocado()) {
-            inputs.add(minPossivEstocado);
-            comandoSQL += "min_possiv_estocado = ?, ";
-        }
-        if (idEta != original.getIdEta()) {
-            inputs.add(idEta);
-            comandoSQL += "id_eta = ?, ";
-        }
-        if (idProduto != original.getIdProduto()) {
-            inputs.add(idProduto);
-            comandoSQL += "id_produto = ?, ";
-        }
-
-        comandoSQL = comandoSQL.substring(0, comandoSQL.length() - 2); //Remove a ultima virgula
-
-        comandoSQL += " WHERE id = ?";
-        inputs.add(id);
-
-        if (inputs.size() <= 1) { //Não mudou nada
-            return 0;
-        }
-
-        Connection conn = conexao.conectar(); //Criando conexão com o banco
-        try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
-
-            //Settando valores
-            for (int i = 0; i < inputs.size(); i++) {
-                pstmt.setObject(i + 1, inputs.get(i)); //Object é o mais geral
-            }
+        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+            pstmt.setInt(1, estoqueDTO.getQuantidade());
+            pstmt.setDate(2, (Date) estoqueDTO.getDataValidade());
+            pstmt.setInt(3, estoqueDTO.getMinPossivelEstocado());
+            pstmt.setInt(4, estoqueDTO.getId());
 
             if (pstmt.executeUpdate() > 0) {
-                return 1; //Se modificou alguma linha
+                return 1;
             } else {
                 return 0;
             }
@@ -134,6 +92,7 @@ public class EstoqueDAO { //erik
             conexao.desconectar();
         }
     }
+
 
 
     //Método para listar os produtos NO estoqueDTO
@@ -154,9 +113,9 @@ public class EstoqueDAO { //erik
                 estoqueDTO.setId(rset.getInt("id")); //Pega a primeira coluna do select (pode ser pelo index ou nome)
                 estoqueDTO.setQuantidade(rset.getInt("quantidade"));
                 estoqueDTO.setDataValidade(rset.getDate("data_validade")); //Converte para LocalDate
-                estoqueDTO.setMinPossivelEstocado(rset.getInt("min_possiv_estocado"));
+                estoqueDTO.setMinPossivelEstocado(rset.getInt("min_possivel_estocado"));
                 estoqueDTO.setIdEta(rset.getInt("id_eta"));
-                estoqueDTO.setIdProduto(rset.getInt("id_produto"));
+                estoqueDTO.setIdProduto(rset.getInt("id_produtos"));
 
                 estoques.add(estoqueDTO); //Populando o List
             }
@@ -172,30 +131,23 @@ public class EstoqueDAO { //erik
 
 
     //Buscar pelo ID
-    public EstoqueDTO buscarPorId(int idProcurado) { //Seria um filtro né???
+    public EstoqueDTO buscarPorId(EstoqueDTO estoqueDTO) { //Seria um filtro né???
         ResultSet rset = null; //Consulta da tabela
         Connection conn = conexao.conectar();
         String comando = "SELECT * FROM estoque WHERE id = ?";
 
         try(PreparedStatement pstmt = conn.prepareStatement(comando)) {
-            pstmt.setInt(1, idProcurado);
+            pstmt.setInt(1, estoqueDTO.getId());
             rset = pstmt.executeQuery(); //Executa a consulta com Query
 
-            if (rset == null) {
-                return null; //Não tem registro com esse id
-            }
-
-            //Armazenar os valores em um objeto tipo estoqueDTO
+            //Armazenar os valores em no mesmo objeto tipo estoqueDTO
             //somente objeto pois nao existe id repetido
-            EstoqueDTO estoqueDTO = new EstoqueDTO();
-
             if (rset.next()) {
-                estoqueDTO.setId(rset.getInt("id")); //Pega a primeira coluna do select (pode ser pelo index ou nome)
-                estoqueDTO.setQuantidade(rset.getInt("quantidade"));
+                estoqueDTO.setQuantidade(rset.getInt("quantidade")); //Pega a primeira coluna do select (pode ser pelo index ou nome)
                 estoqueDTO.setDataValidade(rset.getDate("data_validade")); //Converte para LocalDate
-                estoqueDTO.setMinPossivelEstocado(rset.getInt("min_possiv_estocado"));
+                estoqueDTO.setMinPossivelEstocado(rset.getInt("min_possivel_estocado"));
                 estoqueDTO.setIdEta(rset.getInt("id_eta"));
-                estoqueDTO.setIdProduto(rset.getInt("id_produto"));
+                estoqueDTO.setIdProduto(rset.getInt("id_produtos"));
             }
             return estoqueDTO; //Retorna contendo os produtos NO estoque
 
@@ -210,14 +162,18 @@ public class EstoqueDAO { //erik
     public List<EstoqueDTO> listarEstoquePorEta(int id) {
         List<EstoqueDTO> estoques = new ArrayList<>();
         Connection conn = conexao.conectar();
+        String comando = "SELECT p.nome AS nome_produto, e.* FROM estoque e " +
+                "JOIN produto p ON e.id_produtos = p.id " +
+                "WHERE e.id_eta = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Estoque WHERE id_eta = ?")) {
+        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setInt(1, id);
 
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 EstoqueDTO e = new EstoqueDTO();
 
+                e.setNomeProduto(rs.getString("nome_produto"));
                 e.setId(rs.getInt("id"));
                 e.setQuantidade(rs.getInt("quantidade"));
                 e.setDataValidade(rs.getDate("data_validade"));
@@ -225,15 +181,13 @@ public class EstoqueDAO { //erik
                 e.setIdProduto(rs.getInt("id_produtos"));
                 estoques.add(e);
             }
-
-
             return estoques;
+
         } catch (SQLException e) {
+            e.printStackTrace();
             return new ArrayList<>(); //Lista vazia
         } finally {
             conexao.desconectar();
         }
     }
-
-
 }

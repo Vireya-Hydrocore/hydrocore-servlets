@@ -1,4 +1,13 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: eriksilva-ieg
+  Date: 09/09/2025
+  Time: 20:55
+  To change this template use File | Settings | File Templates.
+--%>
+
+<!------------------ MENU GERAL ------------------->
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -100,7 +109,11 @@
 
 
 </nav>
+<form action="${pageContext.request.contextPath}/ServletAdmin" method="post">
+    <!-- O servlet vai identificar a ação -->
+    <input type="hidden" name="action" value="logar">
 
+<<<<<<< HEAD
 <form action="${pageContext.request.contextPath}/ServletProduto" method="post">
     <h2>Alterar Produto</h2>
 
@@ -112,6 +125,24 @@
 
     <label>Categoria</label>
     <input type="text" name="tipo" value="<%= produto.getTipo() %>" required>
+=======
+    <!-- Campo de E-mail -->
+    <div class="campos">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
+    </div>
+
+    <!-- Campo de Senha -->
+    <div class="campos">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+    </div>
+
+    <!-- Botão -->
+    <div class="acoes">
+        <input type="submit" value="Entrar">
+    </div>
+>>>>>>> c47397cb1c3deaddd58fd219de45fc910e1f01dc
 </form>
 <footer>
     © 2025 Vireya — Sistema de Gestão CRUD

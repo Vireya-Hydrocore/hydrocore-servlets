@@ -7,22 +7,6 @@
 --%>
 <!-------------------- MENU PRODUTO ----------------------->
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Lista de Produtos</title>
-</head>
-<body>
-
-    <% Boolean alterado = (Boolean) request.getAttribute("alteradoSucesso"); %>
-    <% if (alterado != null && alterado) { %>
-<script>
-    window.onload = function() {
-        alert("✅ Produto alterado com sucesso!");
-    }
-</script>
-    <% } %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.example.servletsvireya.model.Produto" %>
 <%@ page import="java.util.List" %>
@@ -35,11 +19,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produtos</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/styleProduto.css">
+    <title>Lista de Produtos</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/style.css">
 </head>
-
 <body>
   <header>
       <button class="menu" id="menu-toggle">☰</button>
@@ -54,10 +36,10 @@
   <aside class="sidebar" id="sidebar">
       <ul>
           <li><a href="/index.html">📊 Informações</a></li>
-          <li><a href="/funcionarios.html">👨‍💼 Funcionarios</a></li>
-          <li><a href="/estoque.html">📦 Estoque</a></li>
-          <li><a href="/produto.html">🧪 Produtos</a></li>
-          <li><a href="/cargo.html">📋 Cargo</a></li>
+          <li><a href="/ServletFuncionario?action=mainFuncionario">👨‍💼 Funcionários</a></li>
+          <li><a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">📦 Estoque</a></li>
+          <li class="pagina-atual"><a>🧪 Produtos</a></li>
+          <li><a href="/paginasCrud/cargo">📋 Cargo</a></li> <!---------------------------------->
       </ul>
   </aside>
 <div class="plano-de-fundo">
@@ -100,12 +82,12 @@
 
                 <div class="campos">
                     <label>Concentração (%)</label>
-                    <input type="number" name="concentracao" step="0.01" placeholder="Ex: 25.50">
+                    <input type="number" name="concentracao" step="0.01" min="0.01" max="100" placeholder="Ex: 25.50">
                 </div>
 
                 <div class="acoes">
                     <button type="button" class="botao-cancelar">Cancelar</button>
-                    <!--                        <button type="submit" class="botao-salvar">Salvar</button>-->
+
                     <input type="submit" value="Salvar" class="botao-salvar">
                 </div>
             </form>
@@ -135,8 +117,7 @@
                     <td><%= lista.get(i).getConcentracao() %></td>
                     <td>
                         <!-- Botão Editar -->
-                        <a class="botao-editar" href="${pageContext.request.contextPath}/ServletProduto?action=updateProduto&id=<%= lista.get(i).getId() %>">Editar</a>
-
+                        <a class="botao-editar" href="${pageContext.request.contextPath}/ServletProduto?action=select&id=<%= lista.get(i).getId() %>">Editar</a>
                         &nbsp;|&nbsp;
                         <!-- Botão Excluir -->
                         <form action="<%= request.getContextPath() %>/ServletProduto" method="get" style="display:inline;">

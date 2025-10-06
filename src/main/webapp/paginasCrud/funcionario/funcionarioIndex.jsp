@@ -21,7 +21,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Funcionários</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/styleProduto.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/style.css">
 </head>
 
 <body>
@@ -135,9 +135,7 @@
                     <td><%= lista.get(i).getNomeCargo()%></td>
                     <td>
                         <!-- Botão Editar -->
-                        <a href="${pageContext.request.contextPath}/ServletFuncionario?action=editarFuncionario&id=<%= lista.get(i).getId() %>">
-                            Editar
-                        </a>
+                        <a class="botao-editar" href="${pageContext.request.contextPath}/ServletFuncionario?action=selectFuncionario&id=<%= lista.get(i).getId() %>">Editar</a>
                         &nbsp;|&nbsp;
                         <!-- Botão Excluir -->
                         <form action="<%= request.getContextPath() %>/ServletFuncionario" method="get" style="display:inline;">
