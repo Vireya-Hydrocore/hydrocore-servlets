@@ -7,7 +7,6 @@
 --%>
 <!---------------------- MENU ESTOQUE ------------------------>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.example.servletsvireya.model.Estoque" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.servletsvireya.dto.EstoqueDTO" %>
 <%
@@ -37,10 +36,10 @@
 
 <aside class="sidebar" id="sidebar">
     <ul>
-        <li><a href="/funcionarios.html">👨‍💼 Funcionários</a></li>
-        <li><a href="/estoque.html">📦 Estoque</a></li>
-        <li><a href="/produto.html">🧪 Produtos</a></li>
-        <li><a href="/cargo.html">📋 Cargo</a></li>
+        <li><a href="/ServletFuncionario?action=mainFuncionario">👨‍💼 Funcionários</a></li>
+        <li><a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">📦 Estoque</a></li>
+        <li><a href="${pageContext.request.contextPath}/ServletProduto?action=main">🧪 Produtos</a></li>
+        <li><a href="/paginasCrud/cargo">📋 Cargo</a></li> <!---------------------------------->
     </ul>
 </aside>
 
@@ -51,9 +50,9 @@
 
         <section class="cadastro">
             <h2>Cadastro de Estoque</h2>
-            <form name="frmProduto" action="${pageContext.request.contextPath}/ServletEstoque" method="post" onsubmit="return validar();">
+            <form name="frmEstoque" action="${pageContext.request.contextPath}/ServletEstoque" method="post" onsubmit="return validarEstoque();">
                 <div class="campos">
-                    <input type="hidden" name="action" value="createEstoque"> <!-- envia esse parametro para o servlet ver q é create-->
+                    <input type="hidden" name="action" value="createEstoque"> <!-- Envia esse parametro para o servlet ver que é create-->
 
                     <label>Quantidade</label>
                     <input type="number" name="quantidade" min="0" placeholder="Ex: 50">
@@ -113,7 +112,7 @@
                         <form action="<%= request.getContextPath() %>/ServletEstoque" method="get" style="display:inline;">
                             <input type="hidden" name="action" value="deleteEstoque">
                             <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
-                            <button class="botao-excluir" type="submit" onclick="return confirm('Tem certeza que deseja excluir este produto?');">
+                            <button class="botao-excluir" type="submit" onclick="return confirm('Tem certeza que deseja excluir este estoque?');">
                                 Excluir
                             </button>
                         </form>
@@ -122,7 +121,7 @@
                 <% }
                 } else { %>
                 <tr>
-                    <td colspan="6">Nenhum produto encontrado!</td>
+                    <td colspan="6">Nenhum estoque encontrado!</td>
                 </tr>
                 <% } %>
                 </tbody>
@@ -130,7 +129,7 @@
         </section>
     </main>
 </div>
-
+<script src="${pageContext.request.contextPath}/paginasCrud/scripts/validador.js"></script>
 <script>
     const menuBtn = document.getElementById("menu-toggle");
     const sidebar = document.getElementById("sidebar");

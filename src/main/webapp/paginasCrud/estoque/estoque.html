@@ -1,73 +1,144 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estoque</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pop-up CSS completo</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f0f0f0;
+  }
+
+  /* ======= Controle de visibilidade ======= */
+  #popup-toggle {
+    display: none;
+  }
+
+  /* ======= Fundo escurecido ======= */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Quando o checkbox estiver marcado, mostra o popup */
+  #popup-toggle:checked + .overlay {
+    opacity: 1;
+    visibility: visible;
+    animation: desaparecerOverlay 6s forwards ease-in-out;
+  }
+
+  /* ======= Caixa do popup ======= */
+  .popup {
+    background: white;
+    border-radius: 12px;
+    width: 320px;
+    text-align: center;
+    padding: 24px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: aparecerPopup 0.6s ease-out, sumirPopup 0.6s ease-in 5.4s forwards;
+  }
+
+  /* ======= Barra de progresso ======= */
+  .barra {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 6px;
+    background: #4CAF50;
+    border-radius: 12px 12px 0 0;
+    animation: progresso 6s linear forwards;
+  }
+
+  /* ======= Botão fechar ======= */
+  .fechar {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 20px;
+    color: #999;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  .fechar:hover {
+    color: #333;
+  }
+
+  /* ======= Animações ======= */
+  @keyframes aparecerPopup {
+    from { transform: scale(0.8); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+
+  @keyframes sumirPopup {
+    to { transform: scale(0.9); opacity: 0; }
+  }
+
+  @keyframes desaparecerOverlay {
+    to { opacity: 0; visibility: hidden; }
+  }
+
+  @keyframes progresso {
+    from { width: 100%; }
+    to { width: 0; }
+  }
+
+  /* ======= Texto ======= */
+  .popup h2 {
+    color: #4CAF50;
+    margin-top: 16px;
+  }
+
+  .popup p {
+    color: #333;
+    margin-bottom: 0;
+  }
+
+  /* ======= Clique fora para fechar ======= */
+  label.overlay-fechar {
+    position: fixed;
+    inset: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  /* Garante que o label de fechar fora não cubra o popup */
+  .popup, .fechar {
+    position: relative;
+    z-index: 10;
+  }
+
+</style>
 </head>
-
 <body>
-    <header>
-        <button class="menu" id="menu-toggle">☰</button>
-        <h1 class="logo">HydroCore</h1>
-        <div class="header-direito">
-            <button class="area-restrita">Área Restrita</button>
-            <button class="logout">Logout</button>
-            <div class="avatar"></div>
-        </div>
-    </header>
 
-    <aside class="sidebar" id="sidebar">
-        <ul>
-            <li><a href="/funcionarios.html">👨‍💼 Funcionários</a></li>
-            <li><a href="/estoque.html">📦 Estoque</a></li>
-            <li><a href="/produto.html">🧪 Produtos</a></li>
-            <li><a href="/cargo.html">📋 Cargo</a></li>
-        </ul>
-    </aside>
-    <div class="plano-de-fundo">
-        <main>
-            <section class="lista">
-                <h2>Estoque</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Produto</th>
-                            <th>Quantidade Atual</th>
-                            <th>Unidade</th>
-                            <th>Última Atualização</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Coagulante X</td>
-                            <td>120</td>
-                            <td>mL</td>
-                            <td>10/09/2025, 18:32:33</td>
-                            <td>
-                                <button class="botao-editar">Entrada</button>
-                                <button class="botao-excluir">Saída</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Floculante</td>
-                            <td>60</td>
-                            <td>Kg</td>
-                            <td>10/09/2025, 18:32:33</td>
-                            <td>
-                                <button class="botao-editar">Entrada</button>
-                                <button class="botao-excluir">Saída</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-        </main>
-    </div>
-    <script src="script.js"></script>
+<!-- Checkbox controlador -->
+<input type="checkbox" id="popup-toggle" checked>
+
+<!-- Fundo escuro (overlay) -->
+<div class="overlay">
+  <!-- Label invisível que cobre o fundo e fecha ao clicar fora -->
+  <label for="popup-toggle" class="overlay-fechar"></label>
+
+  <!-- Caixa do popup -->
+  <div class="popup">
+    <div class="barra"></div>
+    <label for="popup-toggle" class="fechar">×</label>
+    <h2>✅ Sucesso!</h2>
+    <p>Produto alterado com sucesso.</p>
+  </div>
+</div>
+
 </body>
-
 </html>

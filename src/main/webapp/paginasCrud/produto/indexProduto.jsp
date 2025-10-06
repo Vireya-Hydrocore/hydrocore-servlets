@@ -34,10 +34,10 @@
   <aside class="sidebar" id="sidebar">
       <ul>
           <li><a href="/index.html">📊 Informações</a></li>
-          <li><a href="/funcionarios.html">👨‍💼 Funcionarios</a></li>
-          <li><a href="/estoque.html">📦 Estoque</a></li>
-          <li><a href="/produto.html">🧪 Produtos</a></li>
-          <li><a href="/cargo.html">📋 Cargo</a></li>
+          <li><a href="/ServletFuncionario?action=mainFuncionario">👨‍💼 Funcionários</a></li>
+          <li><a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">📦 Estoque</a></li>
+          <li class="pagina-atual"><a>🧪 Produtos</a></li>
+          <li><a href="/paginasCrud/cargo">📋 Cargo</a></li> <!---------------------------------->
       </ul>
   </aside>
 <div class="plano-de-fundo">
@@ -85,7 +85,7 @@
 
                 <div class="acoes">
                     <button type="button" class="botao-cancelar">Cancelar</button>
-                    <!--                        <button type="submit" class="botao-salvar">Salvar</button>-->
+
                     <input type="submit" value="Salvar" class="botao-salvar">
                 </div>
             </form>

@@ -26,7 +26,7 @@ public class ServletEstoque extends HttpServlet {
 
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
-            // comportamento padrão: listar produtos (ou redirecionar)
+            // comportamento padrão: listar estoques (ou redirecionar)
 //            estoques(req, resp);
             return;
         }
@@ -40,7 +40,7 @@ public class ServletEstoque extends HttpServlet {
                     listarEstoque(req, resp);
                     break;
                 default:
-                    resp.sendRedirect(req.getContextPath() + "/paginasCrud/estoque/index.jsp");
+                    resp.sendRedirect(req.getContextPath() + "/paginasCrud/estoque/indexEstoque.jsp");
             }
         } catch (Exception e) {
             System.out.println("EXCEÇÃO");
@@ -83,7 +83,7 @@ public class ServletEstoque extends HttpServlet {
         System.out.println(lista);
 
         req.setAttribute("estoques", lista);
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/estoque/index.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/estoque/indexEstoque.jsp");
         rd.forward(req, resp);
     }
 
