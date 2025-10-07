@@ -109,7 +109,6 @@ main {
     margin-left: 200px;
 }
 
-
 .cadastro,
 .lista,
 .informacoes {
@@ -160,6 +159,7 @@ main {
 .ativo {
     color: green;
     font-weight: bold;
+    font-size: large;
 }
 
 form {
@@ -229,6 +229,7 @@ table th {
 }
 
 .botao-editar {
+    text-decoration: none;
     background: #187bcd;
     color: white;
     border: none;

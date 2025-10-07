@@ -1,4 +1,4 @@
-package com.example.servletsvireya.controller.cargo;
+package com.example.servletsvireya.controller;
 
 import com.example.servletsvireya.dao.CargoDAO;
 import com.example.servletsvireya.dto.CargoDTO;

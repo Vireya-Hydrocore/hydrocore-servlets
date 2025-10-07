@@ -38,10 +38,10 @@
 <aside class="sidebar" id="sidebar">
     <ul>
         <li><a href="/index.html">📊 Informações</a></li>
-        <li><a href="/funcionarios.html">👨‍💼 Funcionarios</a></li>
-        <li><a href="/estoque.html">📦 Estoque</a></li>
-        <li><a href="/produto.html">🧪 Produtos</a></li>
-        <li><a href="/cargo.html">📋 Cargo</a></li>
+        <li><a href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">👨‍💼 Funcionários</a></li>
+        <li><a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">📦 Estoque</a></li>
+        <li><a href="${pageContext.request.contextPath}/ServletProduto?action=mainProduto">🧪 Produtos</a></li>
+        <li class="ativo"><a href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">📋 Cargo</a></li>
     </ul>
 </aside>
 

@@ -36,10 +36,10 @@
 
 <aside class="sidebar" id="sidebar">
     <ul>
-        <li><a href="/ServletFuncionario?action=mainFuncionario">👨‍💼 Funcionários</a></li>
+        <li><a href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">👨‍💼 Funcionários</a></li>
         <li><a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">📦 Estoque</a></li>
-        <li><a href="${pageContext.request.contextPath}/ServletProduto?action=main">🧪 Produtos</a></li>
-        <li><a href="/paginasCrud/cargo">📋 Cargo</a></li> <!---------------------------------->
+        <li><a href="${pageContext.request.contextPath}/ServletProduto?action=mainProduto">🧪 Produtos</a></li>
+        <li><a href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">📋 Cargo</a></li>
     </ul>
 </aside>
 
@@ -55,7 +55,7 @@
                     <input type="hidden" name="action" value="createEstoque"> <!-- Envia esse parametro para o servlet ver que é create-->
 
                     <label>Quantidade</label>
-                    <input type="number" name="quantidade" min="0" placeholder="Ex: 50">
+                    <input type="number" name="quantidade" placeholder="Ex: 50">
                 </div>
 
                 <div class="campos">
@@ -109,7 +109,7 @@
                         &nbsp;|&nbsp;
 
                         <!-- Botão Excluir -->
-                        <form action="<%= request.getContextPath() %>/ServletEstoque" method="get" style="display:inline;">
+                        <form action="${pageContext.request.contextPath}/ServletEstoque" method="get" style="display:inline;">
                             <input type="hidden" name="action" value="deleteEstoque">
                             <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
                             <button class="botao-excluir" type="submit" onclick="return confirm('Tem certeza que deseja excluir este estoque?');">
