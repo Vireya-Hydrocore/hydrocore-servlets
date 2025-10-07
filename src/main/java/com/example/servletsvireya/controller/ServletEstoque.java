@@ -37,10 +37,10 @@ public class ServletEstoque extends HttpServlet {
                     listarEstoquePorEta(req, resp);
                     break;
                 case "selectEstoque":
-                    listarEstoquePorEta(req, resp);
+                    buscarEstoque(req, resp);
                     break;
                 default:
-                    resp.sendRedirect(req.getContextPath() + "/paginasCrud/estoque/indexEstoque.jsp");
+                    resp.sendRedirect(req.getContextPath() + "/paginasCrud/estoque/estoqueIndex.jsp");
             }
         } catch (Exception e) {
             System.out.println("EXCEÇÃO");
@@ -82,7 +82,7 @@ public class ServletEstoque extends HttpServlet {
         List<EstoqueDTO> lista = estoqueDAO.listarEstoquePorEta(idEta);
 
         req.setAttribute("estoques", lista);
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/estoque/indexEstoque.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/estoque/estoqueIndex.jsp");
         rd.forward(req, resp);
     }
 
@@ -104,6 +104,8 @@ public class ServletEstoque extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque");
         } else {
             // Página de erro
+            req.setAttribute("erro", "Não foi possível inserir esse estoque");
+            req.getRequestDispatcher("/paginasCrud/erro.jsp");
         }
     }
 

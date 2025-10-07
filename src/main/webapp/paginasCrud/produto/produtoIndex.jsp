@@ -8,10 +8,9 @@
 <!-------------------- MENU PRODUTO ----------------------->
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.example.servletsvireya.model.Produto" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.servletsvireya.dto.ProdutoDTO" %>
-    <%
+<%
     List<ProdutoDTO> lista = (List<ProdutoDTO>) request.getAttribute("produtos");
 %>
 <!DOCTYPE html>
@@ -20,7 +19,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista de Produtos</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/styleProduto.css">
 </head>
 <body>
   <header>
@@ -36,10 +35,10 @@
   <aside class="sidebar" id="sidebar">
       <ul>
           <li><a href="/index.html">📊 Informações</a></li>
-          <li><a href="/ServletFuncionario?action=mainFuncionario">👨‍💼 Funcionários</a></li>
+          <li><a href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">👨‍💼 Funcionários</a></li>
           <li><a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">📦 Estoque</a></li>
-          <li class="pagina-atual"><a>🧪 Produtos</a></li>
-          <li><a href="/paginasCrud/cargo">📋 Cargo</a></li> <!---------------------------------->
+          <li class="ativo"><a href="${pageContext.request.contextPath}/ServletProduto?action=mainProduto">🧪 Produtos</a></li>
+          <li><a href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">📋 Cargo</a></li>
       </ul>
   </aside>
 <div class="plano-de-fundo">
@@ -47,23 +46,20 @@
         <!-- CADASTRO DE PRODUTOS -->
         <section class="cadastro">
             <h2>Cadastro de Produtos</h2>
-            <form name="frmProduto" action="${pageContext.request.contextPath}/ServletProduto" method="post" onsubmit="return validar();">
+            <form name="frmProduto" action="${pageContext.request.contextPath}/ServletProduto" method="post" onsubmit="return validarProduto();">
                 <div class="campos">
-                    <input type="hidden" name="action" value="createProduto"> <!-- envia esse parametro para o servlet ver q é create-->
+                    <input type="hidden" name="action" value="createProduto"> <!-- Envia esse parametro para o servlet ver que action é create-->
 
                     <label>Nome do Produto</label>
                     <input type="text" name="nome" placeholder="Ex: Cloro Líquido">
                 </div>
 
                 <div class="campos">
-                    <label>Categoria</label>
+                    <label>Tipo</label>
                     <select name="tipo">
                         <option value="">Selecione a categoria</option>
                         <option value="Coagulante">Coagulante</option>
                         <option value="Floculante">Floculante</option>
-                        <option value="Oxidante">Oxidante</option>
-                        <option value="Desinfetante">Desinfetante</option>
-                        <option value="Ajuste de pH">Ajuste de pH</option>
                     </select>
                 </div>
 
@@ -82,7 +78,7 @@
 
                 <div class="campos">
                     <label>Concentração (%)</label>
-                    <input type="number" name="concentracao" step="0.01" min="0.01" max="100" placeholder="Ex: 25.50">
+                    <input type="number" name="concentracao" step="0.01" min="0.001" max="100" placeholder="Ex: 25.50">
                 </div>
 
                 <div class="acoes">
@@ -117,7 +113,7 @@
                     <td><%= lista.get(i).getConcentracao() %></td>
                     <td>
                         <!-- Botão Editar -->
-                        <a class="botao-editar" href="${pageContext.request.contextPath}/ServletProduto?action=select&id=<%= lista.get(i).getId() %>">Editar</a>
+                        <a class="botao-editar" href="${pageContext.request.contextPath}/ServletProduto?action=selectProduto&id=<%= lista.get(i).getId() %>">Editar</a>
                         &nbsp;|&nbsp;
                         <!-- Botão Excluir -->
                         <form action="<%= request.getContextPath() %>/ServletProduto" method="get" style="display:inline;">

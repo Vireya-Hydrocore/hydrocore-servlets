@@ -18,57 +18,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Alterar Produto</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .form-container {
-            background: #fff;
-            padding: 20px 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            width: 400px;
-        }
-        .form-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .campos {
-            margin-bottom: 15px;
-        }
-        .campos label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .campos input,
-        .campos select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #bbb;
-            border-radius: 6px;
-        }
-        .acoes {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .acoes input[type="submit"] {
-            background-color: #4460F6;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        .acoes input[type="submit"]:hover {
-            background-color: #2f45b5;
-        }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/styleAlterar.css">
 </head>
 <body>
 
@@ -76,11 +26,10 @@
     <h2>Alterar Produto</h2>
 
     <form action="${pageContext.request.contextPath}/ServletProduto" method="post">
-        <!-- O servlet vai identificar a ação pelo nome -->
-        <input type="hidden" name="action" value="update">
+        <input type="hidden" name="action" value="updateProduto">
 
         <!-- ID do produto -->
-        <div class="campos">
+        <div class="campos-readonly">
             <label>ID</label>
             <input type="number" name="id" value="${produto.id}" readonly>
         </div>
@@ -94,19 +43,31 @@
         <!-- Tipo -->
         <div class="campos">
             <label>Tipo</label>
-            <input type="text" name="tipo" value="${produto.tipo}" required>
+            <select name="tipo">
+                <option value="${produto.tipo}">${produto.tipo}</option>
+                <option value="Coagulante">Coagulante</option>
+                <option value="Floculante">Floculante</option>
+            </select>
         </div>
 
         <!-- Unidade de Medida -->
         <div class="campos">
             <label>Unidade de Medida</label>
-            <input type="text" name="unidadeMedida" value="${produto.unidadeMedida}" required>
+            <select name="unidadeMedida">
+                <option value="unidadeMedida">${produto.unidadeMedida}</option>
+                <option value="kg">kg</option>
+                <option value="g">g</option>
+                <option value="L">L</option>
+                <option value="mL">mL</option>
+                <option value="mg/L">mg/L</option>
+                <option value="µg/L">µg/L</option>
+            </select>
         </div>
 
         <!-- Concentração -->
         <div class="campos">
             <label>Concentração</label>
-            <input type="number" step="0.01" name="concentracao" value="${produto.concentracao}" required>
+            <input type="number" name="concentracao" value="${produto.concentracao}" required>
         </div>
 
         <!-- Botão -->
