@@ -70,6 +70,9 @@ public class ServletFuncionario extends HttpServlet {
             case "createFuncionario":
                 inserirFuncionario(req, resp);
                 break;
+//            case "selectFuncionario":
+//                selectFuncionario(req, resp);
+//                break;
             case "updateFuncionario":
                 alterarFuncionario(req,resp);
                 break;
@@ -81,9 +84,8 @@ public class ServletFuncionario extends HttpServlet {
         }
     }
 
+
     // MÉTODOS AUXILIARES
-
-
     protected void inserirFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         FuncionarioDTO funcionario = new FuncionarioDTO();
         CargoDAO cargo = new CargoDAO();
@@ -110,6 +112,7 @@ public class ServletFuncionario extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario");
         } else {
             // Página de erro
+            req.getRequestDispatcher("/paginasCrud/erro.jsp");
         }
     }
 

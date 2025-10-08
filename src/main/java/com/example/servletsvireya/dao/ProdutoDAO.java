@@ -12,76 +12,45 @@ import java.util.List;
 public class ProdutoDAO {
     private final Conexao conexao = new Conexao(); //Só para os método de conectar() e desconectar()
 
+
     //Método para cadastrar um produto no sistema
-    public int cadastrarProduto(Produto produto) {
+    public int cadastrarProduto(ProdutoDTO produtoDTO) {
         Connection conn = conexao.conectar();
-        PreparedStatement pstmtProduto = null;
-        PreparedStatement pstmtEstoque = null;
-        ResultSet generatedKeys = null;
+        ResultSet rset = null;
 
         String comandoProduto = "INSERT INTO produto (nome, tipo, unidade_medida, concentracao) VALUES (?, ?, ?, ?)";
-        String comandoEstoque = "INSERT INTO estoque (quantidade, data_validade, min_possivel_estocado, id_produtos, id_eta) VALUES (?, ?, ?, ?, ?)";
+        String comandoEstoque = "INSERT INTO estoque (quantidade, data_validade, min_possivel_estocado, id_produtos, id_eta) VALUES (0, '01-01-2100', 0, ?, ?)";
 
-        try {
-            // Desligar auto-commit para poder fazer transação
-            conn.setAutoCommit(false);
+        try (PreparedStatement pstmtProduto = conn.prepareStatement(comandoProduto);
+             PreparedStatement pstmtEstoque = conn.prepareStatement(comandoEstoque)){
+            pstmtProduto.setString(1, produtoDTO.getNome());
+            pstmtProduto.setString(2, produtoDTO.getTipo());
+            pstmtProduto.setString(3, produtoDTO.getUnidadeMedida());
+            pstmtProduto.setDouble(4, produtoDTO.getConcentracao());
 
-            // 1️⃣ Inserir Produto
-            pstmtProduto = conn.prepareStatement(comandoProduto, PreparedStatement.RETURN_GENERATED_KEYS);
-            pstmtProduto.setString(1, produto.getNome());
-            pstmtProduto.setString(2, produto.getTipo());
-            pstmtProduto.setString(3, produto.getUnidadeMedida());
-            pstmtProduto.setDouble(4, produto.getConcentracao());
-
-            int linhasAfetadas = pstmtProduto.executeUpdate();
-            if (linhasAfetadas == 0) {
-                conn.rollback();
-                return 0;
-            }
-
-            // 2️⃣ Pegar o ID gerado do produto
-            generatedKeys = pstmtProduto.getGeneratedKeys();
-            int idProdutoGerado = -1;
-            if (generatedKeys.next()) {
-                idProdutoGerado = generatedKeys.getInt(1);
+            //Pegando o ID gerado do produto
+            rset = pstmtProduto.getGeneratedKeys();
+            int idProdutoGerado = -1; //porque -1???
+            if (rset.next()) {
+                idProdutoGerado = rset.getInt(1);
             } else {
-                conn.rollback();
                 return 0;
             }
 
-            // 3️⃣ Inserir no estoque com quantidade 0
-            pstmtEstoque = conn.prepareStatement(comandoEstoque);
-            pstmtEstoque.setInt(1, 0); // quantidade
-            pstmtEstoque.setDate(2, java.sql.Date.valueOf(java.time.LocalDate.now().plusYears(5)));
-            // 👆 data_validade fictícia futura (pode mudar conforme sua regra)
-            pstmtEstoque.setInt(3, 0); // min_possivel_estocado
+            //Settando o id gerado no parâmetro
             pstmtEstoque.setInt(4, idProdutoGerado); // FK produto
             pstmtEstoque.setInt(5, 1); // id_eta fixo por enquanto (pode vir do formulário depois)
 
-            pstmtEstoque.executeUpdate();
-
-            // 4️⃣ Se tudo deu certo, confirmar a transação
-            conn.commit();
-            return 1;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            try {
-                conn.rollback(); // desfaz tudo se deu erro
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+            if (pstmtProduto.executeUpdate() > 0 && pstmtEstoque.executeUpdate() > 0){
+                return 1;
+            } else {
+                return 0;
             }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
             return -1;
         } finally {
-            try {
-                if (generatedKeys != null) generatedKeys.close();
-                if (pstmtProduto != null) pstmtProduto.close();
-                if (pstmtEstoque != null) pstmtEstoque.close();
-                conn.setAutoCommit(true);
-                conexao.desconectar();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            conexao.desconectar();
         }
     }
 
@@ -95,7 +64,7 @@ public class ProdutoDAO {
         try (PreparedStatement pstmt = conn.prepareStatement(comando);
              PreparedStatement pstmt2 = conn.prepareStatement(comando2)) {
             pstmt.setInt(1, produtoDTO.getId()); //No primeiro comando
-            pstmt.setInt(1, produtoDTO.getId()); //Segundo comando
+            pstmt2.setInt(1, produtoDTO.getId()); //Segundo comando
 
             if (pstmt.executeUpdate() > 0) {
                 return 1;
@@ -110,27 +79,6 @@ public class ProdutoDAO {
         }
     }
 
-    //Métodos para alterar concentração ////////Pode mudar né?
-//    public int alterarConcentracao(Produto produto) { //Altera a concentração (por ID)
-//        try {
-//            Connection conn = conexao.conectar();
-//
-//            PreparedStatement pstmt = conn.prepareStatement("UPDATE produto SET concentracao = ? WHERE id = ?");
-//            pstmt.setDouble(1, produto.getConcentracao());
-//            pstmt.setInt(2, produto.getId());
-//
-//            if (pstmt.executeUpdate() > 0) {
-//                return 1;
-//            } else {
-//                return 0;
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return -1;
-//        } finally {
-//            conexao.desconectar();
-//        }
-//    }
 
     //Altera unidade de medida do produto
     public int alterarProduto(ProdutoDTO produtoDTO) {

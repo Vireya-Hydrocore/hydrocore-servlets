@@ -80,13 +80,13 @@ public class ServletProduto extends HttpServlet {
     }
 
     protected void inserirProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Produto produto = new Produto();
-        produto.setNome(req.getParameter("nome"));
-        produto.setTipo(req.getParameter("tipo"));
-        produto.setUnidadeMedida(req.getParameter("unidadeMedida"));
-        produto.setConcentracao(Double.parseDouble(req.getParameter("concentracao")));
+        ProdutoDTO produtoDTO = new ProdutoDTO();
+        produtoDTO.setNome(req.getParameter("nome"));
+        produtoDTO.setTipo(req.getParameter("tipo"));
+        produtoDTO.setUnidadeMedida(req.getParameter("unidadeMedida"));
+        produtoDTO.setConcentracao(Double.parseDouble(req.getParameter("concentracao")));
 
-        int resultado = produtoDAO.cadastrarProduto(produto);
+        int resultado = produtoDAO.cadastrarProduto(produtoDTO);
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto");
