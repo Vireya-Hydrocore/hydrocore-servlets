@@ -94,7 +94,7 @@ public class ServletEstoque extends HttpServlet {
         String dataStr = req.getParameter("dataValidade");
         estoqueDTO.setDataValidade(java.sql.Date.valueOf(dataStr));
         estoqueDTO.setMinPossivelEstocado(Integer.parseInt(req.getParameter("minPossivelEstocado")));
-        estoqueDTO.setNomeProduto("nomeProduto");
+        estoqueDTO.setNomeProduto(req.getParameter("nomeProduto"));
         estoqueDTO.setIdEta(1); //para teste
         estoqueDTO.setIdProduto(34); //para teste
 

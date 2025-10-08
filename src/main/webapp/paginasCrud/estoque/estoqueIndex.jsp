@@ -40,6 +40,7 @@
         <li><a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">📦 Estoque</a></li>
         <li><a href="${pageContext.request.contextPath}/ServletProduto?action=mainProduto">🧪 Produtos</a></li>
         <li><a href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">📋 Cargo</a></li>
+        <li><a href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo"> Admin</a></li>
     </ul>
 </aside>
 

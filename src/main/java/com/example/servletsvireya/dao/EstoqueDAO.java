@@ -17,7 +17,7 @@ public class EstoqueDAO { //erik
         Connection conn = conexao.conectar(); //Conecta ao banco de dados
         //Preparando String do comandoSQL
         String comandoSQL = "INSERT INTO estoque(quantidade, data_validade, " +
-                "min_possivel_estocado, id_eta, id_produtos) VALUES(?, ?, ?, ?, ?)";
+                "min_possivel_estocado, id_eta, id_produto) VALUES(?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
             //Settando valores usando a classe model
@@ -115,7 +115,7 @@ public class EstoqueDAO { //erik
                 estoqueDTO.setDataValidade(rset.getDate("data_validade")); //Converte para LocalDate
                 estoqueDTO.setMinPossivelEstocado(rset.getInt("min_possivel_estocado"));
                 estoqueDTO.setIdEta(rset.getInt("id_eta"));
-                estoqueDTO.setIdProduto(rset.getInt("id_produtos"));
+                estoqueDTO.setIdProduto(rset.getInt("id_produto"));
 
                 estoques.add(estoqueDTO); //Populando o List
             }
@@ -147,7 +147,7 @@ public class EstoqueDAO { //erik
                 estoqueDTO.setDataValidade(rset.getDate("data_validade")); //Converte para LocalDate
                 estoqueDTO.setMinPossivelEstocado(rset.getInt("min_possivel_estocado"));
                 estoqueDTO.setIdEta(rset.getInt("id_eta"));
-                estoqueDTO.setIdProduto(rset.getInt("id_produtos"));
+                estoqueDTO.setIdProduto(rset.getInt("id_produto"));
             }
             return estoqueDTO; //Retorna contendo os produtos NO estoque
 
@@ -163,7 +163,7 @@ public class EstoqueDAO { //erik
         List<EstoqueDTO> estoques = new ArrayList<>();
         Connection conn = conexao.conectar();
         String comando = "SELECT p.nome AS nome_produto, e.* FROM estoque e " +
-                "JOIN produto p ON e.id_produtos = p.id " +
+                "JOIN produto p ON p.id = e.id_produto " +
                 "WHERE e.id_eta = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
@@ -178,7 +178,7 @@ public class EstoqueDAO { //erik
                 e.setQuantidade(rs.getInt("quantidade"));
                 e.setDataValidade(rs.getDate("data_validade"));
                 e.setMinPossivelEstocado(rs.getInt("min_possivel_estocado"));
-                e.setIdProduto(rs.getInt("id_produtos"));
+                e.setIdProduto(rs.getInt("id_produto"));
                 estoques.add(e);
             }
             return estoques;

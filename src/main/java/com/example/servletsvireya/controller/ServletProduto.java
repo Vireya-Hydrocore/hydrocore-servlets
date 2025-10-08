@@ -53,13 +53,13 @@ public class ServletProduto extends HttpServlet {
         String action = req.getParameter("action");
 
         switch (action) {
-            case "create":
+            case "createProduto":
                 inserirProduto(req, resp);
                 break;
-            case "update":
+            case "updateProduto":
                 alterarProduto(req, resp);
                 break;
-            case "delete":
+            case "deleteProduto":
                 removerProduto(req, resp);
                 break;
             default:
@@ -79,6 +79,7 @@ public class ServletProduto extends HttpServlet {
         rd.forward(req, resp);
     }
 
+
     protected void inserirProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProdutoDTO produtoDTO = new ProdutoDTO();
         produtoDTO.setNome(req.getParameter("nome"));
@@ -96,6 +97,7 @@ public class ServletProduto extends HttpServlet {
             req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
         }
     }
+
 
     protected void buscarProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Setta o id no ProdutoDTO
@@ -118,7 +120,7 @@ public class ServletProduto extends HttpServlet {
         produtoDTO.setNome(req.getParameter("nome"));
         produtoDTO.setTipo(req.getParameter("tipo"));
         produtoDTO.setUnidadeMedida(req.getParameter("unidadeMedida"));
-        produtoDTO.setConcentracao(Integer.parseInt(req.getParameter("concentracao")));
+        produtoDTO.setConcentracao(Double.parseDouble(req.getParameter("concentracao")));
 
         //Chamando o produtoDAO
         int resultado = produtoDAO.alterarProduto(produtoDTO);

@@ -78,7 +78,7 @@
 
                 <div class="campos">
                     <label>Concentração (%)</label>
-                    <input type="number" name="concentracao" step="0.01" min="0.001" max="100" placeholder="Ex: 25.50">
+                    <input type="number" name="concentracao" max="100" placeholder="Ex: 25.50">
                 </div>
 
                 <div class="acoes">

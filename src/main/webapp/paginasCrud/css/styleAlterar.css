@@ -1,11 +1,11 @@
 body {
-    font-family: Arial, sans-serif;
-    background: #f5f5f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+     font-family: Arial, sans-serif;
+     background: #f5f5f5;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     height: 100vh;
+ }
 .form-container {
     background: #fff;
     padding: 20px 30px;
@@ -17,6 +17,14 @@ body {
     text-align: center;
     margin-bottom: 20px;
 }
+.campos {
+    margin-bottom: 15px;
+}
+.campos label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
 .campos, .campos-readonly{
     margin-bottom: 15px;
 }
@@ -25,8 +33,7 @@ body {
     margin-bottom: 5px;
     font-weight: bold;
 }
-.campos input,
-.campos select {
+.campos input {
     width: 100%;
     padding: 8px;
     border: 1px solid #bbb;
@@ -39,7 +46,6 @@ body {
     border: 1px solid #e00;
     border-radius: 6px;
 }
-
 .acoes {
     text-align: center;
     margin-top: 20px;

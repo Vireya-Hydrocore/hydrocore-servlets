@@ -6,14 +6,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <title>Alterar Estoque</title>
-  <link href="${pageContext.request.contextPath}/paginasCrud/css/styleAlterar.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/styleAlterar.css">
 </head>
 <body>
 
@@ -23,7 +22,7 @@
   <form action="${pageContext.request.contextPath}/ServletEstoque" method="post">
     <input type="hidden" name="action" value="updateEstoque"> <!-- Servlet enxerga que o action é updateEstoque -->
 
-    <div class="campos">
+    <div class="campos-readonly">
       <label>ID</label>
       <input type="number" name="id" value="${id}" readonly>
     </div>
@@ -38,9 +37,9 @@
       <input type="date" name="dataValidade" value="${dataValidade}">
     </div>
 
-    <div class="campos">
+    <div class="campos-readonly">
       <label>Minímo possível estocado</label>
-      <input type="number" name="minPossivelEstocado" value="${minPossivelEstocado}" required>
+      <input type="number" name="minPossivelEstocado" value="${minPossivelEstocado}" readonly>
     </div>
 
     <div class="acoes">
