@@ -1,7 +1,6 @@
 package com.example.servletsvireya.dto;
 
 import com.example.servletsvireya.model.Admin;
-import com.example.servletsvireya.model.Eta;
 
 public class AdminDTO {
     private int id;
