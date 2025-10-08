@@ -19,10 +19,14 @@ public class EtaDAO {
                 "VALUES (?, ?, ?, ?)";
         try(PreparedStatement pstmt = conn.prepareStatement(comando)){
             pstmt.setString(1, eta.getNome());
-//            pstmt.setInt(2, eta.getCapacidade());
-//            pstmt.setString(3, eta.getTelefone());
+            pstmt.setInt(2, eta.getCapacidade());
+            pstmt.setString(3, eta.getTelefone());
             pstmt.setString(4, eta.getCnpj());
-
+            ResultSet rs;
+            rs = pstmt.executeQuery();
+            if (rs.next()){
+                int id = rs.getInt("id");
+            }
             return pstmt.executeUpdate();
         }
         catch (SQLException sqle){
