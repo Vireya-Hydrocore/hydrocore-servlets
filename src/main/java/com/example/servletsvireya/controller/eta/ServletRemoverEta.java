@@ -1,6 +1,7 @@
 package com.example.servletsvireya.controller.eta;
 
 import com.example.servletsvireya.dao.EtaDAO;
+import com.example.servletsvireya.dto.EtaDTO;
 import com.example.servletsvireya.model.Eta;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,11 +24,11 @@ public class ServletRemoverEta extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
 
         // Cria um objeto Eta só com o id
-        Eta eta = new Eta();
-        eta.setId(id);
+        EtaDTO etaDTO = new EtaDTO();
+        etaDTO.setId(id);
 
         // Remove do BD
-        int removido = etaDAO.removerETA(eta);
+        int removido = etaDAO.removerEta(etaDTO);
 
         // Mensagem baseada no número de linhas removidas
         req.setAttribute("mensagem", removido > 0 ? "ETA removida com sucesso!" : "Erro ao remover ETA.");

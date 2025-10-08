@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Produto</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <button class="menu" id="menu-toggle">☰</button>
+        <h1 class="logo">HydroCore</h1>
+        <div class="avatar-container">
+            <div class="avatar" id="avatar">
+                <div class="dropdown" id="dropdown">
+                    <ul>
+                        <div>
+                            <button class="logout">
+                                <li><img src="/porta.png">Sair</li>
+                            </button>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+        <ul>
+            <a href="/index.html">
+                <li><img src="/imagem 9.png"> Informações</li>
+            </a>
+            <a href="/funcionarios.html">
+                <li><img src="/image 10.png"> Funcionarios</li>
+            </a>
+            <a href="/estoque.html">
+                <li><img src="/image 11.png"> Estoque</li>
+            </a>
+            <a href="/produto.html">
+                <li><img src="/image 12.png"> Produtos</li>
+            </a>
+            <a href="/cargo.html">
+                <li><img src="/image 13.png"> Cargo</li>
+            </a>
+        </ul>
+    </aside>
+
+    <div class="plano-de-fundo">
+        <main>
+            <section class="cadastro">
+                <h2>Cadastrar de Produto</h2>
+                <form>
+                    <div class="campos">
+                        <label>Nome do Produto</label>
+                        <input type="text" placeholder="Ex: Cloro Líquido">
+                    </div>
+                    <div class="campos">
+                        <label>Categoria</label>
+                        <select>
+                            <option>Floculante</option>
+                            <option>Coagulante</option>
+                            <option>Outro</option>
+                        </select>
+                    </div>
+                    <div class="campos">
+                        <label>Quantidade</label>
+                        <input type="number" placeholder="Ex: 100">
+                    </div>
+                    <div class="campos">
+                        <label>Preço Unitário (R$)</label>
+                        <input type="number" step="0.01" placeholder="Ex: 25.50">
+                    </div>
+                    <div class="acoes">
+                        <button type="button" class="botao-cancelar">Cancelar</button>
+                        <button type="submit" class="botao-salvar">Salvar</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>

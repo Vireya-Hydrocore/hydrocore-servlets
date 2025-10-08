@@ -1,14 +1,15 @@
 package com.example.servletsvireya.util;
-import io.github.cdimascio.dotenv.Dotenv;
+//import io.github.cdimascio.dotenv.Dotenv;
 
+import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
 
 public class Conexao {
     Connection conn;
-    Dotenv dotenv = Dotenv.configure()
-            .directory("C:\\Users\\gabrielmasagao-ieg\\OneDrive - Instituto J&F\\Área de Trabalho\\Diciplinas técnicas\\POO\\vireya-backend")
-            .load();
+    String url = "jdbc:postgresql://pg-26d1af5a-germinare-bf04.h.aivencloud.com:28190/fudErikdb";
+    String user = "avnadmin";
+    String pass = "AVNS_6laeJARLI53amL4NRl1";
 
 
     //Método para criar conexão com o banco
@@ -18,9 +19,9 @@ public class Conexao {
             Class.forName("org.postgresql.Driver"); //Não obrigatório
 
             this.conn = DriverManager.getConnection(
-                    Objects.requireNonNull(dotenv.get("DB_URL_LOCAL")),
-                    dotenv.get("DB_USERNAME_LOCAL"),
-                    dotenv.get("DB_PASSWORD_LOCAL")
+                    Objects.requireNonNull(url),
+                    user,
+                    pass
             );
             System.out.println("conectou!");
         } catch (SQLException | ClassNotFoundException e) {

@@ -1,12 +1,10 @@
 package com.example.servletsvireya.dao;
 
+import com.example.servletsvireya.dto.ProdutoDTO;
 import com.example.servletsvireya.model.Produto;
 import com.example.servletsvireya.util.Conexao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,42 +12,59 @@ import java.util.List;
 public class ProdutoDAO {
     private final Conexao conexao = new Conexao(); //Só para os método de conectar() e desconectar()
 
+
     //Método para cadastrar um produto no sistema
-    public int cadastrarProduto(Produto produto) { //Cadastra no sistema mas NÃO insere no estoque
-        Connection conn = conexao.conectar(); //Conecta ao banco de dados
-        //Prepara a String do comando SQL
-        String comando = "INSERT INTO produto(nome, tipo, unidade_medida, " +
-                "concentracao) values(?, ?, ?, ?)";
+    public int cadastrarProduto(ProdutoDTO produtoDTO) {
+        Connection conn = conexao.conectar();
+        ResultSet rset = null;
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
-            //Setando valores usando a classe model
-            pstmt.setString(1, produto.getNome());
-            pstmt.setString(2, produto.getTipo());
-            pstmt.setString(3, produto.getUnidadeMedida());
-            pstmt.setDouble(4, produto.getConcentracao());
+        String comandoProduto = "INSERT INTO produto (nome, tipo, unidade_medida, concentracao) VALUES (?, ?, ?, ?)";
+        String comandoEstoque = "INSERT INTO estoque (quantidade, data_validade, min_possivel_estocado, id_produtos, id_eta) VALUES (0, '01-01-2100', 0, ?, ?)";
 
-            if (pstmt.executeUpdate() > 0) { //Se modificar alguma linha
-                return 1; //Inserção bem sucedida
+        try (PreparedStatement pstmtProduto = conn.prepareStatement(comandoProduto);
+             PreparedStatement pstmtEstoque = conn.prepareStatement(comandoEstoque)){
+            pstmtProduto.setString(1, produtoDTO.getNome());
+            pstmtProduto.setString(2, produtoDTO.getTipo());
+            pstmtProduto.setString(3, produtoDTO.getUnidadeMedida());
+            pstmtProduto.setDouble(4, produtoDTO.getConcentracao());
+
+            //Pegando o ID gerado do produto
+            rset = pstmtProduto.getGeneratedKeys();
+            int idProdutoGerado = -1; //porque -1???
+            if (rset.next()) {
+                idProdutoGerado = rset.getInt(1);
             } else {
-                return 0; //Não foi possível inserir
+                return 0;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return -1; //Para indicar erro no banco de dados
+
+            //Settando o id gerado no parâmetro
+            pstmtEstoque.setInt(4, idProdutoGerado); // FK produto
+            pstmtEstoque.setInt(5, 1); // id_eta fixo por enquanto (pode vir do formulário depois)
+
+            if (pstmtProduto.executeUpdate() > 0 && pstmtEstoque.executeUpdate() > 0){
+                return 1;
+            } else {
+                return 0;
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            return -1;
         } finally {
-            conexao.desconectar(); //Por fim, mesmo que passe pela exceção, desconecta
+            conexao.desconectar();
         }
     }
 
+
     //Método para remover um produto
-    public int removerProduto(Produto produto) {
+    public int removerProduto(ProdutoDTO produtoDTO) {
         Connection conn = conexao.conectar(); //Cria conexão com o banco
-        String comando = "DELETE FROM produto WHERE id = ?";
+        String comando = "DELETE FROM estoque WHERE id_produtos = ?"; //Tem que deletar o que tiver relacionado também
+        String comando2 = "DELETE FROM produto WHERE id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
-            pstmt.setInt(1, produto.getId());
-
-            //Aqui precisa verificar se o id do produto existe !!!
+        try (PreparedStatement pstmt = conn.prepareStatement(comando);
+             PreparedStatement pstmt2 = conn.prepareStatement(comando2)) {
+            pstmt.setInt(1, produtoDTO.getId()); //No primeiro comando
+            pstmt2.setInt(1, produtoDTO.getId()); //Segundo comando
 
             if (pstmt.executeUpdate() > 0) {
                 return 1;
@@ -64,14 +79,18 @@ public class ProdutoDAO {
         }
     }
 
-    //Métodos para alterar concentração ////////Pode mudar né?
-    public int alterarConcentracao(Produto produto) { //Altera a concentração (por ID)
-        try {
-            Connection conn = conexao.conectar();
 
-            PreparedStatement pstmt = conn.prepareStatement("UPDATE produto SET concentracao = ? WHERE id = ?");
-            pstmt.setDouble(1, produto.getConcentracao());
-            pstmt.setInt(2, produto.getId());
+    //Altera unidade de medida do produto
+    public int alterarProduto(ProdutoDTO produtoDTO) {
+        Connection conn = conexao.conectar();
+        String comando = "UPDATE produto SET nome = ?, tipo = ?, unidade_medida = ?, concentracao = ? WHERE id = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+            pstmt.setString(1, produtoDTO.getNome());
+            pstmt.setString(2, produtoDTO.getTipo());
+            pstmt.setString(3, produtoDTO.getUnidadeMedida());
+            pstmt.setDouble(4, produtoDTO.getConcentracao());
+            pstmt.setInt(5, produtoDTO.getId());
 
             if (pstmt.executeUpdate() > 0) {
                 return 1;
@@ -86,132 +105,94 @@ public class ProdutoDAO {
         }
     }
 
-    //Altera unidade de medida do produto
-    public int alterar(Produto original, Produto modificado) {
-        List<Object> inputs = new ArrayList<>();
-
-        //Criando uma String construtora
-        StringBuilder comando = new StringBuilder("UPDATE produto SET ");
-
-        //Pegando os valores do model do talvez modificado
-        int id = modificado.getId();
-        String nome = modificado.getNome();
-        String tipo = modificado.getTipo();
-        String unidadeMedida = modificado.getUnidadeMedida();
-        double concentracao = modificado.getConcentracao();
-
-        //Checando se foi modificado ou não, em relação ao original
-        if (!nome.equals(original.getNome())) {
-            inputs.add(nome); //Adiciona o valor que foi modificado
-            comando.append("nome = ?, "); //Concatena a string do comandoSQL
-        }
-        if (!tipo.equals(original.getTipo())) { //Não pode ser elseif
-            inputs.add(tipo);
-            comando.append("tipo = ?, ");
-        }
-        if (!unidadeMedida.equals(original.getUnidadeMedida())) {
-            inputs.add(unidadeMedida);
-            comando.append("unidade_medida = ?, ");
-        }
-        if (concentracao != original.getConcentracao()) {
-            inputs.add(comando);
-            comando.append("concentracao = ?, ");
-        }
-
-        comando.setLength(comando.length() - 2); //Remove a ultima virgula
-
-        comando.append(" WHERE id = ?");
-        inputs.add(id);
-
-        if (inputs.size() <= 1) { //Não mudou nada
-            return 0;
-        }
-
-        Connection conn = conexao.conectar(); //Criando conexão com o banco
-        try (PreparedStatement pstmt = conn.prepareStatement(String.valueOf(comando))) {
-
-            //Settando valores
-            for (int i = 0; i < inputs.size(); i++) {
-                pstmt.setObject(i + 1, inputs.get(i));
-            }
-
-            if (pstmt.executeUpdate() > 0) {
-                return 1; //Se modificou alguma linha
-            } else {
-                return 0;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return -1;
-        } finally {
-            conexao.desconectar();
-        }
-    }
-
     //Método para listar produtos
-    public List<Produto> listarProduto() {
-        ResultSet rset = null; //Consulta da tabela
-        List<Produto> produtos = new ArrayList<>();
-
-        Connection conn = conexao.conectar();
-        String comando = "SELECT * FROM produto ORDER BY id";
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
-            rset = pstmt.executeQuery(); //Executa a consulta com Query
-
-            //Armazenar os valores em um List<>
-            while (rset.next()) {
-                int id = rset.getInt(1); //Pega a primeira coluna do select
-                String nome = rset.getString(2);
-                String tipo = rset.getString(3);
-                String unidadeMedida = rset.getString(4);
-                double concentracao = rset.getDouble(5);
-
-                //Populando o List
-                produtos.add(new Produto(id, nome, tipo, unidadeMedida, concentracao));
-            }
-            return produtos; //Retorna o List com os resultados
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return new ArrayList<>(); //Retorna lista vazia
-        } finally {
-            conexao.desconectar();
-        }
-    }
+//    public List<Produto> listarProduto() {
+//        ResultSet rset = null; //Consulta da tabela
+//        List<Produto> produtos = new ArrayList<>();
+//
+//        Connection conn = conexao.conectar();
+//        String comando = "SELECT * FROM produto ORDER BY nome"; //ordena em ordem alfabética
+//        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+//            rset = pstmt.executeQuery(); //Executa a consulta com Query
+//
+//            //Armazenar os valores em um List<>
+//            while (rset.next()) {
+//                int id = rset.getInt(1); //Pega a primeira coluna do select
+//                String nome = rset.getString(2);
+//                String tipo = rset.getString(3);
+//                String unidadeMedida = rset.getString(4);
+//                double concentracao = rset.getDouble(5);
+//
+//                //Populando o List
+//                produtos.add(new Produto(id, nome, tipo, unidadeMedida, concentracao));
+//            }
+//            return produtos; //Retorna o List com os resultados
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return new ArrayList<>(); //Retorna lista vazia
+//        } finally {
+//            conexao.desconectar();
+//        }
+//    }
 
 
     //Buscar pelo ID
-    public Produto buscarPorId(int idProcurado) { //Seria um filtro né???
+    public ProdutoDTO buscarPorId(ProdutoDTO produtoDTO) {
         ResultSet rset = null; //Consulta da tabela
-        Produto produto = null;
-
         Connection conn = conexao.conectar();
         //Prepara a consulta SQL para selecionar os produtos por ordem de ID
-        String comando = "SELECT * FROM estoque WHERE id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
-            pstmt.setInt(1, idProcurado);
-            rset = pstmt.executeQuery(); //Executa a consulta com Query
+        String comando = "SELECT * FROM produto WHERE id = ?";
 
-            if (rset == null) {
-                return null; //Não tem registro com esse id
-            }
+        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+            pstmt.setInt(1, produtoDTO.getId());
+            rset = pstmt.executeQuery(); //Executa a consulta com Query
 
             //Armazenar os valores em uma variável tipo produto
             //variavel pois nao existe id repetido
             if (rset.next()) {
-                int id = rset.getInt(1); //Pega a primeira coluna do select
-                String nome = rset.getString(2);
-                String tipo = rset.getString(3);
-                String unidade_medida = rset.getString(4);
-                double concentracao = rset.getDouble(5);
-
-                produto = new Produto(id, nome, tipo, unidade_medida, concentracao);
+//                int id = rset.getInt("id"); //Pega a primeira coluna do select
+                produtoDTO.setNome(rset.getString("nome"));
+                produtoDTO.setTipo(rset.getString("tipo"));
+                produtoDTO.setUnidadeMedida(rset.getString("unidade_medida"));
+                produtoDTO.setConcentracao(rset.getDouble("concentracao"));
             }
-            return produto; //Retorna contendo os produtos
+            return produtoDTO; //se não encontrar, volta null
+
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            return null;
+        } finally {
+            conexao.desconectar();
+        }
+    }
+
+    public List<ProdutoDTO> listarProdutoPorEta(int idEta) {
+        List<ProdutoDTO> produtos = new ArrayList<>();
+        Connection conn = conexao.conectar();
+        String sql = "SELECT DISTINCT p.id, p.nome, p.tipo, p.unidade_medida, p.concentracao " +
+                "FROM produto p\n" +
+                "JOIN estoque e ON e.id_produtos = p.id " +
+                "WHERE e.id_eta = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, idEta);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                ProdutoDTO dto = new ProdutoDTO();
+                dto.setId(rs.getInt("id"));
+                dto.setNome(rs.getString("nome"));
+                dto.setTipo(rs.getString("tipo"));
+                dto.setUnidadeMedida(rs.getString("unidade_medida"));
+                dto.setConcentracao(rs.getDouble("concentracao"));
+                produtos.add(dto);
+            }
+            return produtos; //Populando o list
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return null; //Vazio
+            return new ArrayList<>();
         } finally {
             conexao.desconectar();
         }
