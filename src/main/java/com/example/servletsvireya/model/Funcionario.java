@@ -12,6 +12,7 @@ public class Funcionario {
     private int idCargo; // Foreign Key
 
     // Construtores
+
     public Funcionario(){}
     public Funcionario(int id, String nome, String email, Date dataAdmissao,
                        Date dataNascimento, int idEta, int idCargo){
@@ -25,6 +26,7 @@ public class Funcionario {
     }
 
     // Getters e Setters
+
     public int getId() { return id; }
     public void setId (int id) { this.id = id; }
 
