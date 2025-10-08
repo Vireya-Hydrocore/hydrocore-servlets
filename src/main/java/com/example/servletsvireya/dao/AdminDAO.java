@@ -14,32 +14,20 @@ import java.util.List;
 public class AdminDAO {
     Conexao conexao = new Conexao();
 
-    public int inserirAdmin(Admin admin) {
+    public int inserirAdmin(AdminDTO adminDTO) {
         Connection conn = conexao.conectar();
         String comando = "INSERT INTO admin (nome, email,senha, id_eta) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
-            pstmt.setString(1, admin.getNome());
-            pstmt.setString(2, admin.getEmail());
-            pstmt.setString(3, admin.getSenha());
-            pstmt.setInt(4, admin.getIdEta());
+            pstmt.setString(1, adminDTO.getNome());
+            pstmt.setString(2, adminDTO.getEmail());
+            if (adminDTO.getSenha().length() > 30) {
+                return 0;
+            }
+            pstmt.setString(3, adminDTO.getSenha());
+            pstmt.setInt(4, adminDTO.getIdEta());
 
             if (pstmt.executeUpdate() > 0) {
-                ResultSet keys = pstmt.getGeneratedKeys();
-                if (keys.next()){
-                    int id = keys.getInt(1);
-                    String comandoSelect= "Select a.id, a.id_eta, e.nome AS nomeEta FROM admin a JOIN eta e ON a.id_eta = e.id WHERE a.id = ?";
-                    try (PreparedStatement pstmtJ = conn.prepareStatement(comandoSelect)){
-                        pstmtJ.setInt(1,id);
-                        ResultSet rs = pstmtJ.executeQuery();
-                        if (rs.next()){
-                            int idEta = rs.getInt("id_eta");
-                            String nomeEta = rs.getString("nome");
-
-                            AdminDTO adminDTO = new AdminDTO(id,admin,idEta, nomeEta);
-                        }
-                    }
-                }
                 return 1;
             } else {
                 return 0;

@@ -4,6 +4,7 @@ import com.example.servletsvireya.dao.AdminDAO;
 import com.example.servletsvireya.dao.EstoqueDAO;
 import com.example.servletsvireya.dto.AdminDTO;
 import com.example.servletsvireya.dto.EstoqueDTO;
+import com.example.servletsvireya.util.Validador;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -97,7 +98,14 @@ public class ServletAdmin extends HttpServlet {
         adminDTO.setNome(req.getParameter("nome"));
         adminDTO.setEmail(req.getParameter("email"));
         adminDTO.setSenha(req.getParameter("senha")); /////// criptografar
-        adminDTO.setIdEta(1); //para teste
+
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("idEta") == null) {
+            resp.sendRedirect(req.getContextPath() + "/paginasCrud/menu/logar.jsp");
+            return;
+        }
+        int idEta = (Integer) session.getAttribute("idEta");
+        adminDTO.setIdEta(idEta);
 
         int resultado = adminDAO.inserirAdmin(adminDTO);
 
@@ -180,20 +188,24 @@ public class ServletAdmin extends HttpServlet {
     protected void logarAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
         String senha = req.getParameter("senha");
+        if (Validador.validarSenha(senha).isEmpty()){
+            Integer idEta = adminDAO.seLogar(email, senha);
 
-        Integer idEta = adminDAO.seLogar(email, senha);
+            if (idEta != null) {
+                HttpSession session = req.getSession();
+                session.setAttribute("idEta", idEta);
+                session.setAttribute("emailAdmin", email);
 
-        if (idEta != null) {
-            HttpSession session = req.getSession();
-            session.setAttribute("idEta", idEta);
-            session.setAttribute("emailAdmin", email);
-
-            // Redireciona para página principal do admin
-            resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin"); //??????????
-        } else {
-            req.setAttribute("erroLogin", "E-mail ou senha incorretos.");
-            RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/menu/index.jsp");
-            rd.forward(req, resp);
+                // Redireciona para página principal do admin
+                resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin"); //??????????
+            } else {
+                req.setAttribute("erroLogin", "E-mail ou senha incorretos.");
+                RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/menu/index.jsp");
+                rd.forward(req, resp);
+            }
+        }else {
+            resp.sendRedirect(req.getContextPath()+"/paginasCrud/erroSenha.jsp");
         }
+
     }
 }
