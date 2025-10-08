@@ -5,9 +5,7 @@ public class Eta {
     private String nome;
     private int capacidade;
     private String telefone;
-
     private String cnpj;
-
 
     // Contrutores
 
@@ -20,17 +18,21 @@ public class Eta {
     }
 
     // Getters e Setters
+
     public int getId(){ return this.id; }
-    public String getNome(){ return this.nome; }
-    public int getCapacidade(){ return this.capacidade; }
-    public String getTelefone(){ return this.telefone; }
-    public String getCnpj(){return  this.cnpj;}
-    public int getCapacidade(){ return this.capacidade; }
-    public String getTelefone(){ return this.telefone; }
-    
     public void setId(int id){ this.id = id; }
+
+    public String getNome(){ return this.nome; }
     public void setNome(String nome){ this.nome = nome; }
-    public void setCnpj(String cnpj){this.cnpj = cnpj; }
+
+    public int getCapacidade(){ return this.capacidade; }
     public void setCapacidade(int capacidade){ this.capacidade = capacidade; }
+
+    public String getTelefone(){ return this.telefone; }
     public void setTelefone(String telefone){ this.telefone = telefone; }
+
+    public String getCnpj(){return  this.cnpj;}
+    public void setCnpj(String cnpj){this.cnpj = cnpj; }
+
+
 }

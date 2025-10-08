@@ -6,12 +6,14 @@ public class Admin {
     private String email;
     private int idEta;
     private String senha;
+
     public Admin(){}
     public Admin(String nome, String email, String senha){
         this.nome = nome;
         this.email = email;
         this.senha = senha;
     }
+
     public void setNome(String nome){
         this.nome = nome;
     }
@@ -21,6 +23,7 @@ public class Admin {
     public void setSenha(String senha){
         this.senha = senha;
     }
+
     public String getSenha(){
         return this.senha;
     }
