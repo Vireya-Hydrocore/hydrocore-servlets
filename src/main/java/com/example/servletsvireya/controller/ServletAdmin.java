@@ -189,7 +189,7 @@ public class ServletAdmin extends HttpServlet {
             session.setAttribute("emailAdmin", email);
 
             // Redireciona para página principal do admin
-            resp.sendRedirect(req.getContextPath() + "/ServletCargo?action=mainCargo"); //??????????
+            resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin"); //??????????
         } else {
             req.setAttribute("erroLogin", "E-mail ou senha incorretos.");
             RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/menu/index.jsp");

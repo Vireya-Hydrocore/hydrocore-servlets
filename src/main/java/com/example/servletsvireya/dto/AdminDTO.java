@@ -1,5 +1,7 @@
 package com.example.servletsvireya.dto;
 
+import com.example.servletsvireya.model.Admin;
+
 public class AdminDTO {
     private int id;
     private String nome;
@@ -11,11 +13,11 @@ public class AdminDTO {
     //Construtores
     public AdminDTO() {
     }
-    public AdminDTO(int id, String nome, String email, String senha, int idEta, String nomeEta) {
+    public AdminDTO(int id, Admin admin, int idEta, String nomeEta) {
         this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
+        this.nome = admin.getNome();
+        this.email = admin.getEmail();
+        this.senha = admin.getSenha();
         this.idEta = idEta;
         this.nomeEta = nomeEta;
     }

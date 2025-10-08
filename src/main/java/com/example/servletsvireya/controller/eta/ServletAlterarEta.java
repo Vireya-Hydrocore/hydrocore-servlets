@@ -1,6 +1,7 @@
 package com.example.servletsvireya.controller.eta;
 
 import com.example.servletsvireya.dao.EtaDAO;
+import com.example.servletsvireya.dto.EtaDTO;
 import com.example.servletsvireya.model.Eta;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,14 +22,14 @@ public class ServletAlterarEta extends HttpServlet {
         String nome = req.getParameter("nome");
         int capacidade = Integer.parseInt(req.getParameter("capacidade"));
 
-        Eta eta = new Eta();
+        EtaDTO etaDTO = new EtaDTO();
 
-        eta.setId(id);
-        eta.setNome(nome);
-        eta.setCapacidade(capacidade);
+        etaDTO.setId(id);
+        etaDTO.setNome(nome);
+        etaDTO.setCapacidade(capacidade);
 
         EtaDAO etaDAO = new EtaDAO();
-        int resultado = etaDAO.alterarETA(eta);
+        int resultado = etaDAO.alterarEta(etaDTO);
 
         if (resultado > 0){
             resp.sendRedirect("lista-eta.jsp");

@@ -105,7 +105,7 @@
     <a href="#" class="disabled">ETA - Em Breve</a>
 
     <!-- Admin (em breve) -->
-    <a href="#" class="disabled">Admin - Em Breve</a>
+    <a href="${pageContext.request.contextPath}/paginasCrud/admin/logar.jsp">Admin - Em Breve</a>
 </nav>
 <form action="${pageContext.request.contextPath}/ServletAdmin" method="post">
     <!-- O servlet vai identificar a ação -->

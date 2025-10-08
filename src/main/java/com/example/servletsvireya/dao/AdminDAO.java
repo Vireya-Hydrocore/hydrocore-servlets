@@ -159,7 +159,9 @@ public class AdminDAO {
 //    }
 
     public Integer seLogar(String email, String senha) {
-        String sql = "SELECT id_eta FROM admin WHERE email = ? AND senha = ?";
+        String sql = "SELECT a.*, e.nome AS nomeEta FROM admin a " +
+                "JOIN eta e on a.id_eta = e.id " +
+                "WHERE email = ? AND senha = ? ";
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -170,13 +172,20 @@ public class AdminDAO {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                return rs.getInt("id_eta"); // retorna o id_eta do admin encontrado
+                int id = rs.getInt("id");
+                int id_eta = rs.getInt("id_eta");
+                String nomeEta = rs.getString("nomeEta");
+                String nome = rs.getString("nome");
+                Admin admin = new Admin(nome,email,senha);
+                AdminDTO adminDTO = new AdminDTO(id,admin,id_eta,nomeEta);
+                return id_eta; // retorna o id_eta do admin encontrado
             } else {
+                System.out.println("passou");
                 return null; // login incorreto
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("excecao");
             return null;
         }
     }
