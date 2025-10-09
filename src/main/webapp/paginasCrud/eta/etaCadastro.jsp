@@ -93,6 +93,9 @@
         <label>Cnpj:</label>
         <input type="text" name="cnpj" required>
 
+        <label>Telefone</label>
+        <input type="text" name="telefone" required>
+
         <h3>Endereço</h3>
         <label>Rua:</label>
         <input type="text" name="rua" required>

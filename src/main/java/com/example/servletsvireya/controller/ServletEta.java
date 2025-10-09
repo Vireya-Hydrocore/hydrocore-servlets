@@ -70,6 +70,7 @@ public class ServletEta extends HttpServlet {
         etaDTO.setBairro(request.getParameter("bairro"));
         etaDTO.setCidade(request.getParameter("cidade"));
         etaDTO.setEstado(request.getParameter("estado"));
+        etaDTO.setTelefone(request.getParameter("telefone"));
         etaDTO.setCep(request.getParameter("cep"));
 
         // Cria DTO do Admin vinculado à ETA
