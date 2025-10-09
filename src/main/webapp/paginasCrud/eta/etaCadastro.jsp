@@ -85,13 +85,16 @@
         <input type="hidden" name="action" value="cadastrar">
 
         <label>Nome da ETA:</label>
-        <input type="text" name="nome" required>
+        <input type="text" name="nome" required id="name">
 
         <label>Capacidade (m³/dia):</label>
         <input type="number" name="capacidade" step="0.10" required>
 
         <label>Cnpj:</label>
-        <input type="text" name="cnpj" required>
+        <input type="text" name="cnpj" id="cnpj" required>
+
+        <label>Telefone</label>
+        <input type="text" name="telefone" id="telefone">
 
         <h3>Endereço</h3>
         <label>Rua:</label>
@@ -116,13 +119,21 @@
         <label>Email:</label>
         <input type="email" name="adminEmail" required>
 
-        <label>Senha:</label>
-        <input type="password" name="adminSenha" required>
+        <label for="senha">Senha</label>
+        <div class="input-senha">
+            <input type="password" id="senha" placeholder="Digite sua senha" name="senha" required
+                   pattern="^(?=.*[A-Z])(?=.*[!@#$%]).{8,}$"
+                   title="Tem que incluir pelo menos uma letra maiúscula e um caractere especial(!@#$%)">
+            <span class="password-toggle" id="togglePassword">
+                        <i class="fas fa-eye"></i>
+                    </span>
+        </div>
 
         <button type="submit">Cadastrar</button>
     </form>
 
 </div>
-
+<script src="${pageContext.request.contextPath}/paginasCrud/eta/script.js"></script>
+<script src="${pageContext.request.contextPath}/paginasCrud/eta/regex.js"></script>
 </body>
 </html>

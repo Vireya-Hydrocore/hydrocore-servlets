@@ -24,7 +24,7 @@ public class EtaDAO {
     // Método inserirEta()
     public int inserirEta(EtaDTO etaDTO) {
         Connection conn = conexao.conectar();
-        String comando = "INSERT INTO eta (nome, capacidade, telefone, cnpj) VALUES (?, ?, ?, ?)";
+        String comando = "INSERT INTO eta (nome, capacidade, telefone, cnpj,id_eta) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setString(1, etaDTO.getNome());

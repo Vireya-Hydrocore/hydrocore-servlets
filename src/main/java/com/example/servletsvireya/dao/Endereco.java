@@ -16,12 +16,12 @@ public class Endereco {
 
         try (PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
-            ps.setString(1, etaDTO.getBairroEndereco());
-            ps.setString(2, etaDTO.getCepEndereco());
-            ps.setString(3, etaDTO.getRuaEndereco());
-            ps.setString(4, etaDTO.getCidadeEndereco());
-            ps.setString(5, etaDTO.getEstadoEndereco());
-            ps.setInt(6, etaDTO.getNumeroEndereco());
+            ps.setString(1, etaDTO.getBairro());
+            ps.setString(2, etaDTO.getCep());
+            ps.setString(3, etaDTO.getRua());
+            ps.setString(4, etaDTO.getCidade());
+            ps.setString(5, etaDTO.getEstado());
+            ps.setInt(6, etaDTO.getNumero());
 
             if (ps.executeUpdate() > 0) {
                 try (ResultSet rs = ps.getGeneratedKeys()) {
