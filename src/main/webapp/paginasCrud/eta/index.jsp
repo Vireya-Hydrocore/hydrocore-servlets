@@ -28,7 +28,8 @@
       <span>HydroCore</span>
     </div>
     <h1>Criar Conta</h1>
-    <form id="form" action="${pageContext.request.contextPath}/servlet-alterar-eta" method="post">
+
+    <form id="form" action="${pageContext.request.contextPath}/servlet-cadastrar-eta" method="post">
       <label for="nome">Nome</label>
       <input type="text" id="nome" placeholder="Digite o nome da ETA" name="nome">
       <div id="erroNome" class="erro"></div>
@@ -67,9 +68,12 @@
         <input type="checkbox" id="termos">
         <label for="termos">Termos e Condições de Uso</label>
       </div>
+
       <button class="botao" type="submit">Cadastre-se</button>
+
       <p class="login-text">Já possui uma conta? <a href="#">Clique aqui</a></p>
     </form>
+
   </div>
   <div class="container-direito">
     <div class="sobreposicao">

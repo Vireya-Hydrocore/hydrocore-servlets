@@ -102,7 +102,7 @@
     </a>
 
     <!-- ETA (em breve) -->
-    <a href="#" class="disabled">ETA - Em Breve</a>
+    <a href="${pageContext.request.contextPath}/paginasCrud/eta/index.jsp">ETA - Em Breve</a>
 
     <!-- Admin (em breve) -->
     <a href="${pageContext.request.contextPath}/paginasCrud/admin/logar.jsp">Admin - Em Breve</a>

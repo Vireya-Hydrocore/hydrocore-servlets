@@ -7,10 +7,11 @@ public class Admin {
     private int idEta;
     private String senha;
     public Admin(){}
-    public Admin(String nome, String email, String senha){
+    public Admin(String nome, String email, String senha,int idEta){
         this.nome = nome;
         this.email = email;
         this.senha = senha;
+        this.idEta = idEta;
     }
     public void setNome(String nome){
         this.nome = nome;

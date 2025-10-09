@@ -21,11 +21,9 @@ public class AdminDAO {
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setString(1, adminDTO.getNome());
             pstmt.setString(2, adminDTO.getEmail());
-            if (adminDTO.getSenha().length() > 30) {
-                return 0;
-            }
             pstmt.setString(3, adminDTO.getSenha());
             pstmt.setInt(4, adminDTO.getIdEta());
+
 
             if (pstmt.executeUpdate() > 0) {
                 return 1;
@@ -176,7 +174,8 @@ public class AdminDAO {
                 int id_eta = rs.getInt("id_eta");
                 String nomeEta = rs.getString("nomeEta");
                 String nome = rs.getString("nome");
-                Admin admin = new Admin(nome,email,senha);
+
+                Admin admin = new Admin(nome,email,senha,id_eta);
                 AdminDTO adminDTO = new AdminDTO(id,admin,id_eta,nomeEta);
                 return id_eta; // retorna o id_eta do admin encontrado
             } else {

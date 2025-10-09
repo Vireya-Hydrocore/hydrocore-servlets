@@ -16,27 +16,28 @@ public class EtaDAO {
     private final Conexao conexao = new Conexao();
 
     // Método inserirEta()
-    public int inserirEta(EtaDTO etaDTO) {
+    public int inserirEtaERetornarId(EtaDTO etaDTO) {
         Connection conn = conexao.conectar();
-        String comando = "INSERT INTO eta (nome, capacidade, telefone, cnpj) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO eta (nome, capacidade, cnpj, telefone,id_endereco) VALUES (?, ?, ?, ?,?) RETURNING id";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
-            pstmt.setString(1, etaDTO.getNome());
-            pstmt.setInt(2, etaDTO.getCapacidade());
-            pstmt.setString(3, etaDTO.getTelefone());
-            pstmt.setString(4, etaDTO.getCnpj());
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            if (pstmt.executeUpdate() > 0){
-                return 1;
-            } else {
-                return 0;
+            ps.setString(1, etaDTO.getNome());
+            ps.setInt(2, etaDTO.getCapacidade());
+            ps.setString(3, etaDTO.getCnpj());
+            ps.setString(4, etaDTO.getTelefone());
+            ps.setInt(5,4);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
             }
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            return -1;
-        } finally {
-            conexao.desconectar();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
+        return -1; // erro
     }
 
 
