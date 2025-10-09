@@ -97,7 +97,7 @@
     </a>
 
     <!-- Estoque -->
-    <a href="${pageContext.request.contextPath}/ServletEstoque?action=listar">
+    <a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">
         Estoque
     </a>
 

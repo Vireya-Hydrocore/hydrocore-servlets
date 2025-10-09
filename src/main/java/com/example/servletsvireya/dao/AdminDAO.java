@@ -172,13 +172,13 @@ public class AdminDAO {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                int id = rs.getInt("id");
-                int id_eta = rs.getInt("id_eta");
-                String nomeEta = rs.getString("nomeEta");
-                String nome = rs.getString("nome");
-                Admin admin = new Admin(nome,email,senha);
-                AdminDTO adminDTO = new AdminDTO(id,admin,id_eta,nomeEta);
-                return id_eta; // retorna o id_eta do admin encontrado
+                AdminDTO adminDTO = new AdminDTO();
+                adminDTO.setId(rs.getInt("id"));
+                int idEta = rs.getInt("id_eta"); //preciso do idEta
+                adminDTO.setNomeEta(rs.getString("nomeEta"));
+                adminDTO.setNome(rs.getString("nome"));
+
+                return idEta; // retorna o id_eta do admin encontrado
             } else {
                 System.out.println("passou");
                 return null; // login incorreto
