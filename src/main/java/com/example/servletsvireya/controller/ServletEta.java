@@ -73,6 +73,7 @@ public class ServletEta extends HttpServlet {
         etaDTO.setTelefone(request.getParameter("telefone"));
         etaDTO.setCep(request.getParameter("cep"));
 
+
         // Cria DTO do Admin vinculado à ETA
         AdminDTO adminDTO = new AdminDTO();
         adminDTO.setNome(nomeEta);
