@@ -14,7 +14,7 @@ public class ProdutoDAO {
 
 
     //Método para cadastrar um produto no sistema
-    public int cadastrarProduto(ProdutoDTO produtoDTO) {
+    public int cadastrarProduto(ProdutoDTO produtoDTO, int idEta) {
         Connection conn = conexao.conectar();
         ResultSet rset = null;
 
@@ -45,11 +45,13 @@ public class ProdutoDAO {
 
             //Settando o id gerado no parâmetro
             pstmtEstoque.setInt(1, idProdutoGerado); // FK produto
-            pstmtEstoque.setInt(2, 1); // id_eta fixo por enquanto (pode vir do formulário depois)
+            pstmtEstoque.setInt(2, idEta); // id_eta fixo por enquanto (pode vir do formulário depois)
 
             if (pstmtEstoque.executeUpdate() > 0){
+                System.out.println("pstmtEstoque 1");
                 return 1; //Conseguiu criar estoque também
             } else {
+                System.out.println("nao2");
                 return 0;
             }
         } catch (SQLException sqle) {
@@ -202,5 +204,27 @@ public class ProdutoDAO {
         } finally {
             conexao.desconectar();
         }
+    }
+
+    public int buscarIdPorNome(String nome) {
+        Connection conn = conexao.conectar();
+        int id = -1; // valor padrão caso não encontre
+        String sql = "SELECT id FROM produto WHERE nome = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, nome); // busca exata
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conexao.desconectar();
+        }
+        return id;
+
     }
 }

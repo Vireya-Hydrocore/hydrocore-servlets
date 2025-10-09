@@ -72,7 +72,13 @@ public class ServletEstoque extends HttpServlet {
     //LISTA POR ETA
     protected void listarEstoquePorEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // ⚠ Por enquanto, fixo para testes
-        int idEta = 1;
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("idEta") == null) {
+            resp.sendRedirect(req.getContextPath() + "/paginasCrud/eta/etaIndex.jsp");
+            return;
+        }
+        int idEta =  (Integer) session.getAttribute("idEta");
+
 
         // ✅ No futuro, isso aqui pega da sessão:
         // HttpSession session = req.getSession();
@@ -94,9 +100,20 @@ public class ServletEstoque extends HttpServlet {
         String dataStr = req.getParameter("dataValidade");
         estoqueDTO.setDataValidade(java.sql.Date.valueOf(dataStr));
         estoqueDTO.setMinPossivelEstocado(Integer.parseInt(req.getParameter("minPossivelEstocado")));
-        estoqueDTO.setNomeProduto(req.getParameter("nomeProduto"));
-        estoqueDTO.setIdEta(1); //para teste
-        estoqueDTO.setIdProduto(34); //para teste
+        String nomeProduto=req.getParameter("nomeProduto");
+        estoqueDTO.setNomeProduto(nomeProduto);
+        ProdutoDAO produtdao= new ProdutoDAO();
+        int idProduto= produtdao.buscarIdPorNome(nomeProduto);
+
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("idEta") == null) {
+            resp.sendRedirect(req.getContextPath() + "/paginasCrud/eta/etaIndex.jsp");
+            return;
+        }
+        int idEta =  (Integer) session.getAttribute("idEta");
+        estoqueDTO.setIdEta(idEta); //para teste
+
+        estoqueDTO.setIdProduto(idProduto); //para teste
 
         int resultado = estoqueDAO.inserirEstoque(estoqueDTO);
 
@@ -166,7 +183,7 @@ public class ServletEstoque extends HttpServlet {
             listarEstoquePorEta(req, resp);
         } else {
             // Página de erro
-//            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+//            req.getR;equestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
         }
     }
 }

@@ -1,47 +1,98 @@
 <%--
   Created by IntelliJ IDEA.
-  User: eriksilva-ieg
-  Date: 08/10/2025
-  Time: 09:06
+  User: iagodiniz-ieg
+  Date: 07/10/2025
+  Time: 06:51
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!--
-Arquivo: login.html
-Descrição: Página de login simples que envia email e senha via POST para /login
--->
-<!doctype html>
-<html lang="pt-BR">
+<%--
+  Created by IntelliJ IDEA.
+  User: iagodiniz-ieg
+  Date: 06/10/2025
+  Time: 21:10
+  To change this template use File | Settings | File Templates.
+--%>
+<%--
+  Created by IntelliJ IDEA.
+  User: eriksilva-ieg
+  Date: 08/10/2025
+  Time: 21:30
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login - Sistema</title>
+  <meta charset="UTF-8">
+  <title>Página de Login</title>
   <style>
-    body { font-family: Arial, sans-serif; background:#f5f5f5; }
-    .container { width:360px; margin:80px auto; background:#fff; padding:24px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
-    h1 { font-size:20px; margin-bottom:12px; }
-    label { display:block; margin-top:8px; font-size:13px; }
-    input[type="email"], input[type="password"] { width:100%; padding:10px; margin-top:6px; box-sizing:border-box; border:1px solid #ccc; border-radius:4px; }
-    button { margin-top:16px; width:100%; padding:10px; border:0; border-radius:6px; cursor:pointer; font-weight:600; }
-    .btn-primary { background:#2b6cb0; color:white; }
-    .error { color:#b00020; margin-top:8px; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-container {
+      background-color: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 320px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+    input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0 20px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #2d89ef;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #1b5fa7;
+    }
+    .erro {
+      color: red;
+      text-align: center;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
-<div class="container">
-  <h1>Entrar</h1>
-  <form id="loginForm" method="post" action="${pageContext.request.contextPath}/ServletAdmin?action=logar">
-    <label for="email">E-mail</label>
-    <input id="email" name="email" type="email" required autocomplete="email" placeholder="seu@exemplo.com">
+<div class="login-container">
+  <h2>Login</h2>
 
-    <label for="password">Senha</label>
-    <input id="password" name="senha" type="password" required autocomplete="current-password"  placeholder="Senha123@">
+  <%
+    String erro = (String) request.getAttribute("erro");
+    if (erro != null) {
+  %>
+  <div class="erro"><%= erro %></div>
+  <% } %>
 
-    <button type="submit" class="btn-primary">Entrar</button>
-    <div id="message" class="error" role="alert" aria-live="polite"></div>
+  <form action="<%= request.getContextPath() %>/ServletAdmin?action=logar" method="post">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" placeholder="Digite seu email" required>
+
+    <label for="senha">Senha:</label>
+    <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+
+    <button type="submit">Entrar</button>
   </form>
 </div>
-
 </body>
 </html>
-

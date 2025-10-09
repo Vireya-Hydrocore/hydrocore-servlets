@@ -22,6 +22,8 @@ public class ServletCargo extends HttpServlet {
         String action = req.getParameter("action");
         if (action == null) action = "mainCargo";
 
+
+        //colocar try
         switch (action) {
             case "mainCargo":
                 listarCargoPorEta(req, resp);
@@ -59,7 +61,13 @@ public class ServletCargo extends HttpServlet {
 
     //Lista apenas cargos da ETA 1 (fixo por enquanto)
     protected void listarCargoPorEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int idEta = 1; // temporário (poderá vir da sessão depois)
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("idEta") == null) {
+            resp.sendRedirect(req.getContextPath() + "/paginasCrud/eta/etaIndex.jsp");
+            return;
+        }
+        int idEta =  (Integer) session.getAttribute("idEta");
+//        int idEta = 1; // temporário (poderá vir da sessão depois)
         List<CargoDTO> lista = cargoDAO.listarCargoPorEta(idEta);
         req.setAttribute("cargo", lista);
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/cargo/cargoIndex.jsp");
@@ -82,8 +90,15 @@ public class ServletCargo extends HttpServlet {
         cargo.setNome(req.getParameter("nome"));
         cargo.setAcesso(Integer.parseInt(req.getParameter("acesso")));
 
+
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("idEta") == null) {
+            resp.sendRedirect(req.getContextPath() + "/paginasCrud/eta/etaIndex.jsp");
+            return;
+        }
+        int idEta =  (Integer) session.getAttribute("idEta");
         // Adicionando o ID da ETA (fixo por enquanto)
-        cargo.setIdEta(1);
+        cargo.setIdEta(idEta);
 
         int resultado = cargoDAO.inserirCargo(cargo);
         if (resultado > 0) {
