@@ -4,6 +4,7 @@ import com.example.servletsvireya.dao.AdminDAO;
 import com.example.servletsvireya.dao.EstoqueDAO;
 import com.example.servletsvireya.dto.AdminDTO;
 import com.example.servletsvireya.dto.EstoqueDTO;
+import com.example.servletsvireya.util.Validador;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -98,13 +99,15 @@ public class ServletAdmin extends HttpServlet {
         adminDTO.setEmail(req.getParameter("email"));
         adminDTO.setSenha(req.getParameter("senha")); /////// criptografar
 
+//        para teste
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("idEta") == null) {
             resp.sendRedirect(req.getContextPath() + "/paginasCrud/menu/logar.jsp");
             return;
         }
-        int idEta = (Integer) session.getAttribute("idEta");
+       int idEta =  (Integer) session.getAttribute("idEta");
         adminDTO.setIdEta(idEta);
+
 
         int resultado = adminDAO.inserirAdmin(adminDTO);
 
@@ -187,7 +190,6 @@ public class ServletAdmin extends HttpServlet {
     protected void logarAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
         String senha = req.getParameter("senha");
-
         Integer idEta = adminDAO.seLogar(email, senha);
 
         if (idEta != null) {
@@ -196,11 +198,12 @@ public class ServletAdmin extends HttpServlet {
             session.setAttribute("emailAdmin", email);
 
             // Redireciona para página principal do admin
-            resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin"); //??????????
+            resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta"); //??????????
         } else {
             req.setAttribute("erroLogin", "E-mail ou senha incorretos.");
             RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/menu/index.jsp");
             rd.forward(req, resp);
         }
     }
+
 }

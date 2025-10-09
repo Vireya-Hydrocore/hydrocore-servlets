@@ -10,7 +10,7 @@
 //import java.io.IOException;
 //import java.util.List;
 //
-//@WebServlet(urlPatterns = {"/ServletProduto"}, name = "ServletProduto") SERVLET DO IAGO
+//@WebServlet(urlPatterns = {"/ServletProduto"}, name = "ServletProduto")
 //public class ServletProduto extends HttpServlet {
 //
 //    private final ProdutoDAO produtoDAO = new ProdutoDAO();

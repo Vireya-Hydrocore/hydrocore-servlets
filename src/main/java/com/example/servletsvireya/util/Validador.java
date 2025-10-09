@@ -4,13 +4,11 @@ import java.util.ArrayList;
 
 public class Validador {
 
-    public static boolean ehPositivo(int valor){
-        return valor >= 0; //Zero conta como positivo
+    public static boolean ehPositivo(int valor) {
+        return valor >= 0; // Zero conta como positivo
     }
 
-    /*
-     * VALIDAÇÃO DE SENHA
-     */
+
     public static List<String> validarSenha(String senha) {
         List<String> erros = new ArrayList<>();
 
@@ -23,16 +21,18 @@ public class Validador {
             erros.add("A senha deve ter no mínimo 8 caracteres.");
         }
 
-        if (!senha.matches(".\\d.")) {
+        if (!senha.matches(".*\\d.*")) {
             erros.add("A senha deve conter pelo menos um número.");
         }
 
-        if (!senha.matches(".[^a-zA-Z0-9].")) {
+        if (!senha.matches(".*[A-Z].*")) {
+            erros.add("A senha deve conter pelo menos uma letra maiúscula.");
+        }
+
+        if (!senha.matches(".*[^a-zA-Z0-9].*")) {
             erros.add("A senha deve conter pelo menos um caractere especial.");
         }
+
         return erros;
     }
-
-
-
 }

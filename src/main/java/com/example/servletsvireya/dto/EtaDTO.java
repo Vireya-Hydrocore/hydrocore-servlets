@@ -1,17 +1,19 @@
 package com.example.servletsvireya.dto;
+
 public class EtaDTO{
     private int id; // Primary Key
     private String nome;
     private int capacidade;
     private String telefone;
+    private int idEndereco;
     private String cnpj;
-    private int idEndereco; // Foreign Key
-    private String bairroEndereco;
-    private String cepEndereco;
-    private String ruaEndereco;
-    private String cidadeEndereco;
-    private String estadoEndereco;
-    private int numeroEndereco;
+    private String bairro;
+    private String cep;
+    private String rua;
+    private String cidade;
+    private String estado;
+    private int numero;
+
 
 
     // Contrutores
@@ -24,23 +26,23 @@ public class EtaDTO{
         this.idEndereco = idEndereco;
         this.cnpj=cnpj;
     }
-    public EtaDTO(int id, String nome, int capacidade, String telefone, String cnpj, int idEndereco, String bairroEndereco, String cepEndereco, String ruaEndereco, String cidadeEndereco, String estadoEndereco, int numeroEndereco) {
+
+    public EtaDTO(int id, String nome, int capacidade, String telefone, int idEndereco, String cnpj, String bairro, String cep, String rua, String cidade, String estado, int numero) {
         this.id = id;
         this.nome = nome;
         this.capacidade = capacidade;
         this.telefone = telefone;
-        this.cnpj = cnpj;
         this.idEndereco = idEndereco;
-        this.bairroEndereco = bairroEndereco;
-        this.cepEndereco = cepEndereco;
-        this.ruaEndereco = ruaEndereco;
-        this.cidadeEndereco = cidadeEndereco;
-        this.estadoEndereco = estadoEndereco;
-        this.numeroEndereco = numeroEndereco;
+        this.cnpj = cnpj;
+        this.bairro = bairro;
+        this.cep = cep;
+        this.rua = rua;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.numero = numero;
     }
+// Getters e Setters
 
-
-    // Getters e Setters
     public int getId(){ return this.id; }
     public void setId(int id){ this.id = id; }
 
@@ -64,51 +66,51 @@ public class EtaDTO{
         this.cnpj = cnpj;
     }
 
-    public String getBairroEndereco() {
-        return bairroEndereco;
+    public String getBairro() {
+        return bairro;
     }
 
-    public void setBairroEndereco(String bairroEndereco) {
-        this.bairroEndereco = bairroEndereco;
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
     }
 
-    public String getCepEndereco() {
-        return cepEndereco;
+    public String getCep() {
+        return cep;
     }
 
-    public void setCepEndereco(String cepEndereco) {
-        this.cepEndereco = cepEndereco;
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 
-    public String getRuaEndereco() {
-        return ruaEndereco;
+    public String getRua() {
+        return rua;
     }
 
-    public void setRuaEndereco(String ruaEndereco) {
-        this.ruaEndereco = ruaEndereco;
+    public void setRua(String rua) {
+        this.rua = rua;
     }
 
-    public String getCidadeEndereco() {
-        return cidadeEndereco;
+    public String getCidade() {
+        return cidade;
     }
 
-    public void setCidadeEndereco(String cidadeEndereco) {
-        this.cidadeEndereco = cidadeEndereco;
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
     }
 
-    public String getEstadoEndereco() {
-        return estadoEndereco;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setEstadoEndereco(String estadoEndereco) {
-        this.estadoEndereco = estadoEndereco;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
-    public int getNumeroEndereco() {
-        return numeroEndereco;
+    public int getNumero() {
+        return numero;
     }
 
-    public void setNumeroEndereco(int numeroEndereco) {
-        this.numeroEndereco = numeroEndereco;
+    public void setNumero(int numero) {
+        this.numero = numero;
     }
 }

@@ -14,36 +14,44 @@ public class ProdutoDAO {
 
 
     //Método para cadastrar um produto no sistema
-    public int cadastrarProduto(ProdutoDTO produtoDTO) {
+    public int cadastrarProduto(ProdutoDTO produtoDTO, int idEta) {
         Connection conn = conexao.conectar();
         ResultSet rset = null;
 
         String comandoProduto = "INSERT INTO produto (nome, tipo, unidade_medida, concentracao) VALUES (?, ?, ?, ?)";
-        String comandoEstoque = "INSERT INTO estoque (quantidade, data_validade, min_possivel_estocado, id_produtos, id_eta) VALUES (0, '01-01-2100', 0, ?, ?)";
+        String comandoEstoque = "INSERT INTO estoque (quantidade, data_validade, min_possivel_estocado, id_produto, id_eta) VALUES (0, '01-01-2100', 0, ?, ?)";
 
-        try (PreparedStatement pstmtProduto = conn.prepareStatement(comandoProduto);
+        try (PreparedStatement pstmtProduto = conn.prepareStatement(comandoProduto, Statement.RETURN_GENERATED_KEYS); //Retorna o id gerado
              PreparedStatement pstmtEstoque = conn.prepareStatement(comandoEstoque)){
             pstmtProduto.setString(1, produtoDTO.getNome());
             pstmtProduto.setString(2, produtoDTO.getTipo());
             pstmtProduto.setString(3, produtoDTO.getUnidadeMedida());
             pstmtProduto.setDouble(4, produtoDTO.getConcentracao());
 
+            if (pstmtProduto.executeUpdate() == 0){
+                return 0; //Não conseguiu criar
+            }
+
             //Pegando o ID gerado do produto
             rset = pstmtProduto.getGeneratedKeys();
-            int idProdutoGerado = -1; //porque -1???
+            int idProdutoGerado = -1;
             if (rset.next()) {
                 idProdutoGerado = rset.getInt(1);
+                System.out.println("id: " + idProdutoGerado);
             } else {
+                System.out.println("nao");
                 return 0;
             }
 
             //Settando o id gerado no parâmetro
-            pstmtEstoque.setInt(4, idProdutoGerado); // FK produto
-            pstmtEstoque.setInt(5, 1); // id_eta fixo por enquanto (pode vir do formulário depois)
+            pstmtEstoque.setInt(1, idProdutoGerado); // FK produto
+            pstmtEstoque.setInt(2, idEta); // id_eta fixo por enquanto (pode vir do formulário depois)
 
-            if (pstmtProduto.executeUpdate() > 0 && pstmtEstoque.executeUpdate() > 0){
-                return 1;
+            if (pstmtEstoque.executeUpdate() > 0){
+                System.out.println("pstmtEstoque 1");
+                return 1; //Conseguiu criar estoque também
             } else {
+                System.out.println("nao2");
                 return 0;
             }
         } catch (SQLException sqle) {
@@ -170,9 +178,9 @@ public class ProdutoDAO {
     public List<ProdutoDTO> listarProdutoPorEta(int idEta) {
         List<ProdutoDTO> produtos = new ArrayList<>();
         Connection conn = conexao.conectar();
-        String sql = "SELECT DISTINCT p.id, p.nome, p.tipo, p.unidade_medida, p.concentracao " +
+        String sql = "SELECT DISTINCT p.* " +
                 "FROM produto p\n" +
-                "JOIN estoque e ON e.id_produtos = p.id " +
+                "JOIN estoque e ON p.id = e.id_produto " +
                 "WHERE e.id_eta = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -196,5 +204,27 @@ public class ProdutoDAO {
         } finally {
             conexao.desconectar();
         }
+    }
+
+    public int buscarIdPorNome(String nome) {
+        Connection conn = conexao.conectar();
+        int id = -1; // valor padrão caso não encontre
+        String sql = "SELECT id FROM produto WHERE nome = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, nome); // busca exata
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conexao.desconectar();
+        }
+        return id;
+
     }
 }

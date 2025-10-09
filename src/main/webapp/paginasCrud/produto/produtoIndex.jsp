@@ -13,34 +13,67 @@
 <%
     List<ProdutoDTO> lista = (List<ProdutoDTO>) request.getAttribute("produtos");
 %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.example.servletsvireya.dto.EtaDTO" %>
+
+<%
+    EtaDTO eta = (EtaDTO) request.getAttribute("eta");
+%>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Produtos</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/styleProduto.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HydroCore - Informações da ETA</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/style.css">
 </head>
-<body>
-  <header>
-      <button class="menu" id="menu-toggle">☰</button>
-      <h1 class="logo">HydroCore</h1>
-      <div class="header-direito">
-          <button class="area-restrita">Área Restrita</button>
-          <button class="logout">Sair</button>
-          <div class="avatar"></div>
-      </div>
-  </header>
 
-  <aside class="sidebar" id="sidebar">
-      <ul>
-          <li><a href="/index.html">📊 Informações</a></li>
-          <li><a href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">👨‍💼 Funcionários</a></li>
-          <li><a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">📦 Estoque</a></li>
-          <li class="ativo"><a href="${pageContext.request.contextPath}/ServletProduto?action=mainProduto">🧪 Produtos</a></li>
-          <li><a href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">📋 Cargo</a></li>
-      </ul>
-  </aside>
+<body>
+<header>
+    <button class="menu" id="menu-toggle">☰</button>
+    <h1 class="logo">HydroCore</h1>
+    <div class="avatar-container">
+        <div class="avatar" id="avatar">
+            <div class="dropdown" id="dropdown">
+                <ul>
+                    <div>
+                        <form action="${pageContext.request.contextPath}/ServletAdmin" method="post">
+                            <input type="hidden" name="action" value="logout">
+                            <button class="logout" type="submit">
+                                <li><img src="${pageContext.request.contextPath}/paginasCrud/img/porta.png">Sair</li>
+                            </button>
+                        </form>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+    <ul>
+        <a href="${pageContext.request.contextPath}/ServletEta?action=mainEta">
+            <li><img src="${pageContext.request.contextPath}/paginasCrud/img/imagem9.png"> Informações</li>
+        </a>
+        <a href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">
+            <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image10.png"> Funcionários</li>
+        </a>
+        <a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">
+            <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image11.png"> Estoque</li>
+        </a>
+        <a href="${pageContext.request.contextPath}/ServletProduto?action=mainProduto">
+            <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image12.png"> Produtos</li>
+        </a>
+        <a href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">
+            <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image13.png"> Cargo</li>
+        </a>
+        <a href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin">
+            <li><img src="${pageContext.request.contextPath}/paginasCrud/img/icons8-admin-settings-male-16.png"> Admin</li>
+        </a>
+    </ul>
+</aside>
+
 <div class="plano-de-fundo">
     <main>
         <!-- CADASTRO DE PRODUTOS -->
@@ -78,7 +111,7 @@
 
                 <div class="campos">
                     <label>Concentração (%)</label>
-                    <input type="number" name="concentracao" step="0.01" min="0.001" max="100" placeholder="Ex: 25.50">
+                    <input type="number" name="concentracao" max="100" placeholder="Ex: 25.50">
                 </div>
 
                 <div class="acoes">
@@ -137,15 +170,6 @@
     </main>
 </div>
 <!-- Script -->
-<script src="${pageContext.request.contextPath}/paginasCrud/scripts/validador.js"></script>
-<script>
-    const menuBtn = document.getElementById("menu-toggle");
-    const sidebar = document.getElementById("sidebar");
-
-    menuBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("open");
-    });
-</script>
-
+<script src="${pageContext.request.contextPath}/paginasCrud/scripts/script.js"></script>
 </body>
 </html>

@@ -53,13 +53,13 @@ public class ServletProduto extends HttpServlet {
         String action = req.getParameter("action");
 
         switch (action) {
-            case "create":
+            case "createProduto":
                 inserirProduto(req, resp);
                 break;
-            case "update":
+            case "updateProduto":
                 alterarProduto(req, resp);
                 break;
-            case "delete":
+            case "deleteProduto":
                 removerProduto(req, resp);
                 break;
             default:
@@ -69,7 +69,13 @@ public class ServletProduto extends HttpServlet {
 
     // MÉTODOS AUXILIARES
     protected void listarPorEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<ProdutoDTO> lista = produtoDAO.listarProdutoPorEta(1); //idEta provisório
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("idEta") == null) {
+            resp.sendRedirect(req.getContextPath() + "/paginasCrud/eta/etaIndex.jsp");
+            return;
+        }
+        int idEta =  (Integer) session.getAttribute("idEta");
+        List<ProdutoDTO> lista = produtoDAO.listarProdutoPorEta(idEta); //idEta provisório
 
         //Devolve a lista de produtos encontrados
         req.setAttribute("produtos", lista);
@@ -79,6 +85,7 @@ public class ServletProduto extends HttpServlet {
         rd.forward(req, resp);
     }
 
+
     protected void inserirProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ProdutoDTO produtoDTO = new ProdutoDTO();
         produtoDTO.setNome(req.getParameter("nome"));
@@ -86,7 +93,14 @@ public class ServletProduto extends HttpServlet {
         produtoDTO.setUnidadeMedida(req.getParameter("unidadeMedida"));
         produtoDTO.setConcentracao(Double.parseDouble(req.getParameter("concentracao")));
 
-        int resultado = produtoDAO.cadastrarProduto(produtoDTO);
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("idEta") == null) {
+            resp.sendRedirect(req.getContextPath() + "/paginasCrud/eta/etaIndex.jsp");
+            return;
+        }
+        int idEta =  (Integer) session.getAttribute("idEta");
+
+        int resultado = produtoDAO.cadastrarProduto(produtoDTO,idEta );
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto");
@@ -96,6 +110,7 @@ public class ServletProduto extends HttpServlet {
             req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
         }
     }
+
 
     protected void buscarProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Setta o id no ProdutoDTO
@@ -118,7 +133,7 @@ public class ServletProduto extends HttpServlet {
         produtoDTO.setNome(req.getParameter("nome"));
         produtoDTO.setTipo(req.getParameter("tipo"));
         produtoDTO.setUnidadeMedida(req.getParameter("unidadeMedida"));
-        produtoDTO.setConcentracao(Integer.parseInt(req.getParameter("concentracao")));
+        produtoDTO.setConcentracao(Double.parseDouble(req.getParameter("concentracao")));
 
         //Chamando o produtoDAO
         int resultado = produtoDAO.alterarProduto(produtoDTO);

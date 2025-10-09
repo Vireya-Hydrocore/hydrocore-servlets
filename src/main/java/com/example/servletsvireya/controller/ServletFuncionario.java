@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -103,7 +104,13 @@ public class ServletFuncionario extends HttpServlet {
             funcionario.setDataAdmissao(java.sql.Date.valueOf(dataStr));
         }
         funcionario.setSenha(req.getParameter("senha"));
-        funcionario.setIdEta(1);//FAZER LOGIN
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("idEta") == null) {
+            resp.sendRedirect(req.getContextPath() + "/paginasCrud/eta/etaIndex.jsp");
+            return;
+        }
+        int idEta =  (Integer) session.getAttribute("idEta");
+        funcionario.setIdEta(idEta);//FAZER LOGIN
         funcionario.setIdCargo(cargoId);
 
         int resultado = funcionarioDAO.inserirFuncionario(funcionario);
@@ -118,7 +125,13 @@ public class ServletFuncionario extends HttpServlet {
 
     protected void listarFuncionarioPorEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // ⚠️ Por enquanto, fixo para testes
-        int idEta = 1;
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("idEta") == null) {
+            resp.sendRedirect(req.getContextPath() + "/paginasCrud/eta/etaIndex.jsp");
+            return;
+        }
+        int idEta =  (Integer) session.getAttribute("idEta");
+
 
         // ✅ No futuro, isso aqui pega da sessão:
         // HttpSession session = req.getSession();
