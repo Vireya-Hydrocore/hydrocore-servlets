@@ -7,6 +7,15 @@
 --%>
 
 <!------------------ MENU GERAL ------------------->
+<%--
+  Created by IntelliJ IDEA.
+  User: eriksilva-ieg
+  Date: 09/09/2025
+  Time: 20:55
+  To change this template use File | Settings | File Templates.
+--%>
+
+<!------------------ MENU GERAL ------------------->
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -105,27 +114,12 @@
     <a href="#" class="disabled">ETA - Em Breve</a>
 
     <!-- Admin (em breve) -->
-    <a href="#" class="disabled">Admin - Em Breve</a>
-
-
+    <a href="${pageContext.request.contextPath}/paginasCrud/admin/logar.jsp">Admin - Em Breve</a>
 </nav>
 <form action="${pageContext.request.contextPath}/ServletAdmin" method="post">
     <!-- O servlet vai identificar a ação -->
     <input type="hidden" name="action" value="logar">
 
-<<<<<<< HEAD
-<form action="${pageContext.request.contextPath}/ServletProduto" method="post">
-    <h2>Alterar Produto</h2>
-
-    <input type="hidden" name="action" value="updateProduto">
-    <input type="hidden" name="id" value="<%= produto.getId() %>">
-
-    <label>Nome</label>
-    <input type="text" name="nome" value="<%= produto.getNome() %>" required>
-
-    <label>Categoria</label>
-    <input type="text" name="tipo" value="<%= produto.getTipo() %>" required>
-=======
     <!-- Campo de E-mail -->
     <div class="campos">
         <label for="email">E-mail</label>
@@ -142,7 +136,6 @@
     <div class="acoes">
         <input type="submit" value="Entrar">
     </div>
->>>>>>> c47397cb1c3deaddd58fd219de45fc910e1f01dc
 </form>
 <footer>
     © 2025 Vireya — Sistema de Gestão CRUD

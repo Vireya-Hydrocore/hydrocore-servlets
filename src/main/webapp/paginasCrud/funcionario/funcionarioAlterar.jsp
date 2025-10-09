@@ -67,7 +67,7 @@
   <h2>Alterar Funcionário</h2>
 
   <form action="${pageContext.request.contextPath}/ServletFuncionario" method="post">
-    <input type="hidden" name="action" value="updateFuncionario">
+    <input type="hidden" name="action" value="alterarFuncionario">
     <input type="hidden" name="id" value="${funcionario.id}">
 
     <label for="nome">Nome:</label>

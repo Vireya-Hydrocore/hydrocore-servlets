@@ -1,5 +1,5 @@
 package com.example.servletsvireya.dao;
-
+import com.example.servletsvireya.util.SenhaHash;
 import com.example.servletsvireya.dto.AdminDTO;
 import com.example.servletsvireya.model.Admin;
 import com.example.servletsvireya.util.Conexao;
@@ -159,27 +159,50 @@ public class AdminDAO {
     }
 
     public Integer seLogar(String email, String senha) {
-        String sql = "SELECT id_eta FROM admin WHERE email = ? AND senha = ?";
+        String sql = "SELECT id_eta, senha FROM admin WHERE email = ?";
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, email);
-            pstmt.setString(2, senha);
-
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                return rs.getInt("id_eta"); // retorna o id_eta do admin encontrado
-            } else {
-                return null; // login incorreto
+                String senhaBanco = rs.getString("senha");
+                if (SenhaHash.verificarSenha(senha, senhaBanco)) {
+                    return rs.getInt("id_eta"); // senha correta
+                }
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+
+        return null; // login incorreto
     }
+
+    public String buscarSenhaPorEmail(String email) {
+        String senha = null;
+        String sql = "SELECT senha FROM admin WHERE email = ?";
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    senha = rs.getString("senha");
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar senha por e-mail: " + e.getMessage());
+        }
+
+        return senha; // se não encontrar, retorna null
+    }
+
 }
 
 

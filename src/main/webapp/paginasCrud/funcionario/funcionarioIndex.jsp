@@ -33,9 +33,12 @@
             <div class="dropdown" id="dropdown">
                 <ul>
                     <div>
-                        <button class="logout">
-                            <li><img src="/porta.png">Sair</li>
-                        </button>
+                        <form action="${pageContext.request.contextPath}/ServletAdmin" method="post">
+                            <input type="hidden" name="action" value="logout">
+                            <button class="logout" type="submit">
+                                <li><img src="${pageContext.request.contextPath}/paginasCrud/img/porta.png">Sair</li>
+                            </button>
+                        </form>
                     </div>
                 </ul>
             </div>
@@ -45,20 +48,23 @@
 
 <aside class="sidebar" id="sidebar">
     <ul>
-        <a href="/index.html">
-            <li><img src="/imagem 9.png"> Informações</li>
+        <a href="${pageContext.request.contextPath}/ServletEta?action=mainEta">
+            <li><img src="${pageContext.request.contextPath}/paginasCrud/img/imagem9.png"> Informações</li>
         </a>
-        <a href="/funcionarios.html">
-            <li><img src="/image 10.png"> Funcionarios</li>
+        <a href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">
+            <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image10.png"> Funcionários</li>
         </a>
-        <a href="/estoque.html">
-            <li><img src="/image 11.png"> Estoque</li>
+        <a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">
+            <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image11.png"> Estoque</li>
         </a>
-        <a href="/produto.html">
-            <li><img src="/image 12.png"> Produtos</li>
+        <a href="${pageContext.request.contextPath}/ServletProduto?action=mainProduto">
+            <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image12.png"> Produtos</li>
         </a>
-        <a href="/cargo.html">
-            <li><img src="/image 13.png"> Cargo</li>
+        <a href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">
+            <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image13.png"> Cargo</li>
+        </a>
+        <a href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin">
+            <li><img src="${pageContext.request.contextPath}/paginasCrud/img/icons8-admin-settings-male-16.png"> Admin</li>
         </a>
     </ul>
 </aside>
@@ -158,7 +164,7 @@
         </section>
     </main>
 </div>
-<script src="/script.js"></script>
+<script src="${pageContext.request.contextPath}/paginasCrud/scripts/script.js"></script>
 </body>
 
 </html>
