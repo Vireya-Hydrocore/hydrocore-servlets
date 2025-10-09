@@ -157,11 +157,12 @@ public class EtaDAO {
             }
 
             // Inserir ETA e pegar o id gerado
-            String sqlEta = "INSERT INTO eta (nome, capacidade, cnpj, id_endereco) VALUES (?, ?, ?, ?) RETURNING id";
+            String sqlEta = "INSERT INTO eta (nome, capacidade, cnpj, id_endereco, telefone) VALUES (?, ?, ?, ?, ?) RETURNING id";
             pstmtEta = conn.prepareStatement(sqlEta);
             pstmtEta.setString(1, dto.getNome());
             pstmtEta.setDouble(2, dto.getCapacidade());
             pstmtEta.setString(3, dto.getCnpj());
+            pstmtEta.setString(5, dto.getTelefone());
             pstmtEta.setInt(4, idEndereco);
 
             //pego o id de eta para colocar em admin

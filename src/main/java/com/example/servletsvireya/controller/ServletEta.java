@@ -70,8 +70,10 @@ public class ServletEta extends HttpServlet {
         etaDTO.setBairro(request.getParameter("bairro"));
         etaDTO.setCidade(request.getParameter("cidade"));
         etaDTO.setEstado(request.getParameter("estado"));
+        etaDTO.setTelefone(request.getParameter("telefone"));
         etaDTO.setCep(request.getParameter("cep"));
         String regex = "\\D+";
+
 
         // Cria DTO do Admin vinculado à ETA
         AdminDTO adminDTO = new AdminDTO();
