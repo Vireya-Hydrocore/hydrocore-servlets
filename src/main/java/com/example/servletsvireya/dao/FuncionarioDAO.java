@@ -144,30 +144,34 @@ public class FuncionarioDAO {
     }
 
 
-    public FuncionarioDTO selecionarFuncionario(FuncionarioDTO funcionario) {
+    public FuncionarioDTO buscarPorId(FuncionarioDTO funcionario) { //por id
         ResultSet rset = null;
         Connection conn = conexao.conectar();
-
-        // SQL para buscar funcionário pelo ID
-        String comando = "SELECT f.*, c.nome AS nome_cargo " +
-                "FROM funcionario f " +
-                "JOIN cargo c ON f.id_cargo = c.id " +
+        String comando = "SELECT f.*, c.nome AS nome_cargo, e.nome AS nome_eta FROM funcionario f " +
+                "JOIN cargo c ON c.id = f.id_cargo " +
+                "JOIN eta e ON e.id = f.id_eta " +
                 "WHERE f.id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setInt(1, funcionario.getId());
             rset = pstmt.executeQuery();
 
+            if (rset == null){
+                return null;
+            }
+
             if (rset.next()) {
                 funcionario.setNome(rset.getString("nome"));
                 funcionario.setEmail(rset.getString("email"));
+                funcionario.setSenha(rset.getString("senha"));
                 funcionario.setDataAdmissao(rset.getDate("data_admissao"));
                 funcionario.setDataNascimento(rset.getDate("data_nascimento"));
                 funcionario.setIdEta(rset.getInt("id_eta"));
-                funcionario.setIdCargo(rset.getInt("id_cargo"));
                 funcionario.setNomeCargo(rset.getString("nome_cargo")); // campo extra do DTO
+                funcionario.setIdCargo(rset.getInt("id_cargo"));
+                funcionario.setNomeEta(rset.getString("nome_eta")); // campo extra do DTO
             }
-            return funcionario; // retorna com os dados preenchidos
+            return funcionario; // Retorna com os dados preenchidos no mesmo objeto DTO
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -178,31 +182,103 @@ public class FuncionarioDAO {
     }
 
 
-    public FuncionarioDTO buscarPorId(int id) {
-        FuncionarioDTO funcionario = null;
-        String sql = "SELECT * FROM funcionario WHERE id = ?";
+//    public FuncionarioDTO buscarPorId(int id) {
+//        FuncionarioDTO funcionario = null;
+//        String sql = "SELECT * FROM funcionario WHERE id = ?";
+//        try (Connection conn = conexao.conectar();
+//             PreparedStatement stmt = conn.prepareStatement(sql)) {
+//            stmt.setInt(1, id);
+//            ResultSet rs = stmt.executeQuery();
+//            if (rs.next()) {
+//                funcionario = new FuncionarioDTO();
+//                funcionario.setId(rs.getInt("id"));
+//                funcionario.setNome(rs.getString("nome"));
+//                funcionario.setEmail(rs.getString("email"));
+//                funcionario.setSenha(rs.getString("senha"));
+//                funcionario.setIdCargo(rs.getInt("id_cargo"));
+//                funcionario.setIdEta(rs.getInt("id_eta"));
+//                funcionario.setDataNascimento(rs.getDate("data_nascimento"));
+//                funcionario.setDataAdmissao(rs.getDate("data_admissao"));
+//            }
+//            return funcionario;
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return null;
+//        } finally {
+//            conexao.desconectar();
+//        }
+//    }
+
+    public List<FuncionarioDTO> listarFuncionarios() {
+        List<FuncionarioDTO> funcionarios = new ArrayList<>();
+        Connection conn = conexao.conectar();
+        String comandoSQL = "SELECT f.*, c.nome AS nome_cargo, e.nome AS nome_eta FROM Funcionario f " +
+                "JOIN cargo c ON f.id_cargo = c.id " +
+                "JOIN eta e ON f.id_eta = e.id " +
+                "ORDER BY f.nome";
+
+        try {
+           Statement pstmt = conn.createStatement();
+            ResultSet rs = pstmt.executeQuery(comandoSQL);
+
+
+            while (rs.next()) {
+                FuncionarioDTO func = new FuncionarioDTO();
+                func.setId(rs.getInt("id"));
+                func.setNome(rs.getString("nome"));
+                func.setEmail(rs.getString("email"));
+                func.setDataAdmissao(rs.getDate("data_admissao"));
+                func.setDataNascimento(rs.getDate("data_nascimento"));
+                func.setIdEta(rs.getInt("id_eta"));
+                func.setNomeEta(rs.getString("nome_eta"));
+                func.setIdCargo(rs.getInt("id_cargo"));
+                func.setSenha(rs.getString("senha"));
+                func.setNomeCargo(rs.getString("nome_cargo"));
+
+                funcionarios.add(func);
+            }
+            return funcionarios;
+
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            return new ArrayList<>();
+        } finally {
+            conexao.desconectar();
+        }
+    }
+
+
+    public List<FuncionarioDTO> buscarPorNome(String nome) {
+        List<FuncionarioDTO> lista = new ArrayList<>();
+        String sql = "SELECT f.*, e.nome AS nome_eta FROM funcionario f " +
+                "JOIN eta e ON e.id = f.id_eta " +
+                "WHERE LOWER(nome) = LOWER(?)";
+
         try (Connection conn = conexao.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
+
+            stmt.setString(1, nome);
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                funcionario = new FuncionarioDTO();
-                funcionario.setId(rs.getInt("id"));
-                funcionario.setNome(rs.getString("nome"));
-                funcionario.setEmail(rs.getString("email"));
-                funcionario.setSenha(rs.getString("senha"));
-                funcionario.setIdCargo(rs.getInt("id_cargo"));
-                funcionario.setIdEta(rs.getInt("id_eta"));
-                funcionario.setDataNascimento(rs.getDate("data_nascimento"));
-                funcionario.setDataAdmissao(rs.getDate("data_admissao"));
+
+            while (rs.next()) {
+                FuncionarioDTO dto = new FuncionarioDTO();
+                dto.setId(rs.getInt("id"));
+                dto.setNome(rs.getString("nome"));
+                dto.setEmail(rs.getString("email"));
+                dto.setDataAdmissao(rs.getDate("data_admissao"));
+                dto.setDataNascimento(rs.getDate("data_nascimento"));
+                dto.setSenha(rs.getString("senha"));
+                dto.setIdEta(rs.getInt("id_eta")); //precisa do id????????
+                dto.setNomeEta(rs.getString("nome_eta"));
+                dto.setIdCargo(rs.getInt("id_cargo"));
+                lista.add(dto);
             }
-            return funcionario;
+            return lista;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
-        } finally {
-            conexao.desconectar();
+            return new ArrayList<>();
         }
     }
 }

@@ -91,7 +91,10 @@
         <input type="number" name="capacidade" step="0.10" required>
 
         <label>Cnpj:</label>
-        <input type="text" name="cnpj" required>
+        <input type="text" name="cnpj" id="cnpj" required>
+
+        <label>Telefone</label>
+        <input type="text" name="telefone" id="telefone" required>
 
         <h3>Endereço</h3>
         <label>Rua:</label>
@@ -124,5 +127,7 @@
 
 </div>
 
+<script src="${pageContext.request.contextPath}/paginasCrud/eta/regex.js"></script>
+<script src="${pageContext.request.contextPath}/paginasCrud/eta/script.js"></script>
 </body>
 </html>

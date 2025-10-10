@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EstoqueDAO { //erik
-    private final Conexao conexao = new Conexao(); //Para os métodos de conectar e desconectar
 
+    private final Conexao conexao = new Conexao(); //Para os métodos de conectar e desconectar
 
     //Método para inserir um produto NO estoque - Precisa verificar se o id do produto existe ?????????????
     public int inserirEstoque(EstoqueDTO estoqueDTO) {
@@ -102,8 +102,9 @@ public class EstoqueDAO { //erik
         Connection conn = conexao.conectar();
 
         //Prepara a consulta SQL para selecionar os produtos
-        String comando = "SELECT e.*, eta.nome AS nome_eta FROM estoque e " +
-                "JOIN eta ON eta.id = e.id_eta";
+        String comando = "SELECT e.*, p.nome AS nome_produto, et.nome AS nome_eta FROM estoque e " +
+                "JOIN produto p ON p.id = e.id_produto "+
+                "JOIN eta et ON et.id= e.id_eta";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)){
             rset = pstmt.executeQuery(); //Executa a consulta com Query
@@ -118,6 +119,7 @@ public class EstoqueDAO { //erik
                 estoqueDTO.setMinPossivelEstocado(rset.getInt("min_possivel_estocado"));
                 estoqueDTO.setIdEta(rset.getInt("id_eta"));
                 estoqueDTO.setIdProduto(rset.getInt("id_produto"));
+                estoqueDTO.setNomeProduto(rset.getString("nome_produto"));
                 estoqueDTO.setNomeEta(rset.getString("nome_eta"));
 
                 estoques.add(estoqueDTO); //Populando o List
@@ -193,4 +195,37 @@ public class EstoqueDAO { //erik
             conexao.desconectar();
         }
     }
+
+
+    public List<EstoqueDTO> buscarPorNome(String nomeProduto) {
+        List<EstoqueDTO> lista = new ArrayList<>();
+        String sql = "SELECT e.*, eta.nome AS nome_eta FROM estoque e " +
+                "JOIN eta ON eta.id = e.id_eta " +
+                "WHERE LOWER(nome) LIKE LOWER(?)";
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + nomeProduto + "%");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                EstoqueDTO dto = new EstoqueDTO();
+                dto.setId(rs.getInt("id"));
+                dto.setNomeProduto(rs.getString("nome"));
+                dto.setQuantidade(rs.getInt("quantidade"));
+                dto.setDataValidade(rs.getDate("validade"));
+                dto.setMinPossivelEstocado(rs.getInt("min_possivel_estocado"));
+                dto.setIdProduto(rs.getInt("id_produto"));
+                dto.setNomeEta(rs.getString("nome_eta"));
+                lista.add(dto);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+
 }

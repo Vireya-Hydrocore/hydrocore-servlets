@@ -16,37 +16,46 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.List;
 
-@WebServlet(urlPatterns = {"/ServletEta", "/mainEta"})
+@WebServlet(urlPatterns = {"/ServletEta", "/mainEta"}, name = "ServletEta")
 public class ServletEta extends HttpServlet {
 
     private EtaDAO etaDAO = new EtaDAO();
 
-
     // GET
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        String action = request.getParameter("action");
+        String action = req.getParameter("action");
+        System.out.println(action);
 
-        if ("mainEta".equals(action)) { //não usei urlpatterns mais usei a comparação de ações
-            listarPorAdmin(request, response);
-        } else {
-            // Redireciona para login caso nenhuma ação seja passada
-            response.sendRedirect(request.getContextPath() + "/paginasCrud/menu/logar.jsp");//
+        // Proteção contra NullPointerException em switch de String
+        if (action == null) {
+            // comportamento padrão: listar admins (ou redirecionar)
+            listar(req, resp);
+            return;
+        }
+
+        switch (action){
+            case "mainEta":
+                listar(req, resp);
+                break;
+            default:
+                resp.sendRedirect(req.getContextPath() + "/paginasCrud/eta/etaIndex.jsp");
         }
     }
 
     // POST
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        String action = request.getParameter("action");
+        String action = req.getParameter("action");
 
         if ("cadastrar".equals(action)) {
-            cadastrarEta(request, response); //cadastro escondido que também compara ação
+            cadastrarEta(req, resp); //cadastro escondido que também compara ação
         }
     }
 
@@ -66,11 +75,18 @@ public class ServletEta extends HttpServlet {
         etaDTO.setCapacidade(Integer.parseInt(request.getParameter("capacidade")));
         etaDTO.setRua(request.getParameter("rua"));
         etaDTO.setNumero(Integer.parseInt(request.getParameter("numero")));
-        etaDTO.setCnpj(request.getParameter("cnpj"));
+        String cnpj = request.getParameter("cnpj");
+        String telefone = request.getParameter("telefone");
         etaDTO.setBairro(request.getParameter("bairro"));
         etaDTO.setCidade(request.getParameter("cidade"));
         etaDTO.setEstado(request.getParameter("estado"));
         etaDTO.setCep(request.getParameter("cep"));
+        String regex = "\\D";
+        String cnpjFormatado = cnpj.replaceAll(regex,"");
+        String telefoneFormatado = telefone.replaceAll(regex,"");
+        etaDTO.setCnpj(cnpjFormatado);
+        etaDTO.setTelefone(telefoneFormatado);
+
 
         // Cria DTO do Admin vinculado à ETA
         AdminDTO adminDTO = new AdminDTO();
@@ -112,29 +128,15 @@ public class ServletEta extends HttpServlet {
     // ======================
     // MÉTODO DE LISTAGEM DA ETA POR ADMIN LOGADO
     // ======================
-    private void listarPorAdmin(HttpServletRequest request, HttpServletResponse response)
+    private void listar(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         //listo a eta por admin, filtrando a tela inicial que mostra alguns dados da eta para que mostre apenas da eta em que o o admin faz parte
 
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("idEta") == null) {
-            response.sendRedirect(request.getContextPath() + "/paginasCrud/erroSenha.jsp");
-            return;
-        }
-
-        int idEta = (Integer) session.getAttribute("idEta");
-
-        // Cria DTO com o ID
-        EtaDTO etaDTO = new EtaDTO();
-        etaDTO.setId(idEta);
-
-        // Chama o DAO para preencher os dados
-        EtaDTO etaDTOS = etaDAO.buscarPorId(etaDTO);
+        List<EtaDTO> listEtas = etaDAO.listarEta();
 
         // Passa para o JSP
-        request.setAttribute("eta", etaDTOS);
-        RequestDispatcher rd = request.getRequestDispatcher("/paginasCrud/eta/etaIndex.jsp");
-        rd.forward(request, response);
+        req.setAttribute("etas", listEtas);
+        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/eta/etaIndex.jsp");
+        rd.forward(req, resp);
     }
-
 }

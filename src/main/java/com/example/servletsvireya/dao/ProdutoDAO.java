@@ -1,5 +1,6 @@
 package com.example.servletsvireya.dao;
 
+import com.example.servletsvireya.dto.EstoqueDTO;
 import com.example.servletsvireya.dto.ProdutoDTO;
 import com.example.servletsvireya.model.Produto;
 import com.example.servletsvireya.util.Conexao;
@@ -113,38 +114,37 @@ public class ProdutoDAO {
         }
     }
 
-    //Método para listar produtos
-//    public List<Produto> listarProduto() {
-//        ResultSet rset = null; //Consulta da tabela
-//        List<Produto> produtos = new ArrayList<>();
-//
-//        Connection conn = conexao.conectar();
-//        String comando = "SELECT * FROM produto ORDER BY nome"; //ordena em ordem alfabética
-//        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
-//            rset = pstmt.executeQuery(); //Executa a consulta com Query
-//
-//            //Armazenar os valores em um List<>
-//            while (rset.next()) {
-//                int id = rset.getInt(1); //Pega a primeira coluna do select
-//                String nome = rset.getString(2);
-//                String tipo = rset.getString(3);
-//                String unidadeMedida = rset.getString(4);
-//                double concentracao = rset.getDouble(5);
-//
-//                //Populando o List
-//                produtos.add(new Produto(id, nome, tipo, unidadeMedida, concentracao));
-//            }
-//            return produtos; //Retorna o List com os resultados
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return new ArrayList<>(); //Retorna lista vazia
-//        } finally {
-//            conexao.desconectar();
-//        }
-//    }
+//    Método para listar produtos
+    public List<ProdutoDTO> listarProduto() {
+        ResultSet rset = null; //Consulta da tabela
+        List<ProdutoDTO> produtos = new ArrayList<>();
+        Connection conn = conexao.conectar();
+        String comando = "SELECT DISTINCT ON (p.id) p.id, p.nome, p.tipo, p.unidade_medida, p.concentracao, eta.nome AS nome_eta FROM produto p JOIN estoque e ON p.id = e.id_produto JOIN eta ON eta.id = e.id_eta ORDER BY p.id;"; //ordena em ordem alfabética
 
+        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+            rset = pstmt.executeQuery(); //Executa a consulta com Query
 
+            //Armazenar os valores em um List<>
+            while (rset.next()) {
+                ProdutoDTO dto = new ProdutoDTO();
+                dto.setId(rset.getInt("id")); //Pega a primeira coluna do select
+                dto.setNome(rset.getString("nome"));
+                dto.setTipo(rset.getString("tipo"));
+                dto.setUnidadeMedida(rset.getString("unidade_medida"));
+                dto.setConcentracao(rset.getDouble("concentracao"));
+                dto.setNomeEta(rset.getString("nome_eta"));
+                //Populando o List
+                produtos.add(dto);
+            }
+            return produtos; //Retorna o List com os resultados
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>(); //Retorna lista vazia
+        } finally {
+            conexao.desconectar();
+        }
+    }
     //Buscar pelo ID
     public ProdutoDTO buscarPorId(ProdutoDTO produtoDTO) {
         ResultSet rset = null; //Consulta da tabela
@@ -225,6 +225,36 @@ public class ProdutoDAO {
             conexao.desconectar();
         }
         return id;
+    }
 
+    public List<ProdutoDTO> buscarPorNome(String nome) {
+        List<ProdutoDTO> lista = new ArrayList<>();
+        Connection conn = conexao.conectar();
+        String sql = "SELECT p.*, e.nome AS nome_eta FROM produto p " +
+                "JOIN estoque ON p.id = estoque.id_produto " +
+                "JOIN eta e ON e.id = estoque.id_eta " +
+                "WHERE LOWER(nome) = LOWER(?)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, nome);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                ProdutoDTO dto = new ProdutoDTO();
+                dto.setId(rs.getInt("id"));
+                dto.setNome(rs.getString("nome"));
+                dto.setTipo(rs.getString("tipo"));
+                dto.setUnidadeMedida(rs.getString("unidade_medida"));
+                dto.setConcentracao(rs.getDouble("concentracao"));
+                dto.setNomeEta(rs.getString("nome_eta")); //Faz JOIN com estoque e eta
+                lista.add(dto);
+            }
+           return lista;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 }

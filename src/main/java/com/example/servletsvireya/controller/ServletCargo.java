@@ -1,6 +1,7 @@
 package com.example.servletsvireya.controller;
 
 import com.example.servletsvireya.dao.CargoDAO;
+import com.example.servletsvireya.dao.EtaDAO;
 import com.example.servletsvireya.dto.CargoDTO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -26,7 +27,7 @@ public class ServletCargo extends HttpServlet {
         //colocar try
         switch (action) {
             case "mainCargo":
-                listarCargoPorEta(req, resp);
+                listarCargo(req, resp);
                 break;
             case "editarCargo":
                 abrirTelaEdicao(req, resp);
@@ -59,46 +60,35 @@ public class ServletCargo extends HttpServlet {
         }
     }
 
-    //Lista apenas cargos da ETA 1 (fixo por enquanto)
-    protected void listarCargoPorEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("idEta") == null) {
-            resp.sendRedirect(req.getContextPath() + "/paginasCrud/eta/etaIndex.jsp");
-            return;
-        }
-        int idEta =  (Integer) session.getAttribute("idEta");
-//        int idEta = 1; // temporário (poderá vir da sessão depois)
-        List<CargoDTO> lista = cargoDAO.listarCargoPorEta(idEta);
+    // 🔹 Lista apenas cargos da ETA 1 (fixo por enquanto)
+    protected void listarCargo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        List<CargoDTO> lista = cargoDAO.listarCargo();
         req.setAttribute("cargo", lista);
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/cargo/cargoIndex.jsp");
         rd.forward(req, resp);
     }
 
-
     protected void abrirTelaEdicao(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
         CargoDTO cargo = cargoDAO.buscarCargo(id);
-        req.setAttribute("cargoSelecionado", cargo);
+        req.setAttribute("CargoSelecionado", cargo);
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/cargo/cargoAlterar.jsp");
         rd.forward(req, resp);
     }
 
-
-    //Agora insere também o id_eta
+    // 🔹 Agora insere também o id_eta
     protected void inserirCargo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CargoDTO cargo = new CargoDTO();
+        EtaDAO etaDao= new EtaDAO();
         cargo.setNome(req.getParameter("nome"));
         cargo.setAcesso(Integer.parseInt(req.getParameter("acesso")));
 
 
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("idEta") == null) {
-            resp.sendRedirect(req.getContextPath() + "/paginasCrud/eta/etaIndex.jsp");
-            return;
-        }
-        int idEta =  (Integer) session.getAttribute("idEta");
+        String nomeEta= req.getParameter("nomeEta");
+        cargo.setIdEta(etaDao.buscarIdPorNome(nomeEta));
+        cargo.setNomeEta(nomeEta);
         // Adicionando o ID da ETA (fixo por enquanto)
-        cargo.setIdEta(idEta);
 
         int resultado = cargoDAO.inserirCargo(cargo);
         if (resultado > 0) {
@@ -113,8 +103,8 @@ public class ServletCargo extends HttpServlet {
 
         CargoDTO cargoNovo = new CargoDTO();
         cargoNovo.setId(id);
-        cargoNovo.setNome(req.getParameter("nomeCargo"));
-        cargoNovo.setAcesso(Integer.parseInt(req.getParameter("nivelAcesso")));
+        cargoNovo.setNome(req.getParameter("nome"));
+        cargoNovo.setAcesso(Integer.parseInt(req.getParameter("tipo")));
 
         // Mantendo o vínculo com a ETA 1 (ou poderia vir da sessão)
         cargoNovo.setIdEta(1);

@@ -98,6 +98,11 @@
                     <input type="text" name="nomeProduto" placeholder="Ex: Sulfato de alumínio">
                 </div>
 
+                <div class="campos">
+                    <label>Nome Eta</label>
+                    <input type="text" name="nomeEta" placeholder="Ex: ETA Central">
+                </div>
+
                 <div class="acoes">
                     <button type="button" class="botao-cancelar">Cancelar</button>
                     <input type="submit" value="Salvar" class="botao-salvar">
@@ -116,6 +121,7 @@
                 <th>Quantidade</th>
                 <th>Data Validade</th>
                 <th>Minímo Possível Estocado</th>
+                <th>ETA</th>
                 <th>Ações</th>
                 </thead>
                 <tbody>
@@ -127,6 +133,7 @@
                     <td><%= lista.get(i).getQuantidade() %></td>
                     <td><%= lista.get(i).getDataValidade() %></td>
                     <td><%= lista.get(i).getMinPossivelEstocado() %></td>
+                    <td><%= lista.get(i).getNomeEta() %></td>
                     <td>
                         <!-- Botão Editar -->
                         <a class="botao-editar" href="${pageContext.request.contextPath}/ServletEstoque?action=selectEstoque&id=<%= lista.get(i).getId() %>">Editar</a>

@@ -1,4 +1,4 @@
-<%--
+<%@ page import="com.example.servletsvireya.dto.EstoqueDTO" %><%--
   Created by IntelliJ IDEA.
   User: eriksilva-ieg
   Date: 05/10/2025

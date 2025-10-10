@@ -62,6 +62,7 @@ public class EtaDAO {
                 etaDTO.setNome(rset.getString("nome"));
                 etaDTO.setCapacidade(rset.getInt("capacidade"));
                 etaDTO.setTelefone(rset.getString("telefone"));
+                etaDTO.setCnpj(rset.getString("cnpj"));
 
                 //Populando o list
                 etas.add(etaDTO);
@@ -157,11 +158,12 @@ public class EtaDAO {
             }
 
             // Inserir ETA e pegar o id gerado
-            String sqlEta = "INSERT INTO eta (nome, capacidade, cnpj, id_endereco) VALUES (?, ?, ?, ?) RETURNING id";
+            String sqlEta = "INSERT INTO eta (nome, capacidade, cnpj, id_endereco, telefone) VALUES (?, ?, ?, ?, ?) RETURNING id";
             pstmtEta = conn.prepareStatement(sqlEta);
             pstmtEta.setString(1, dto.getNome());
             pstmtEta.setDouble(2, dto.getCapacidade());
             pstmtEta.setString(3, dto.getCnpj());
+            pstmtEta.setString(5, dto.getTelefone());
             pstmtEta.setInt(4, idEndereco);
 
             //pego o id de eta para colocar em admin
@@ -237,6 +239,58 @@ public class EtaDAO {
             conexao.desconectar();
         }
     }
+    public Integer buscarIdPorNome(String nome) {
+        Integer idEta = null;
+        String sql = "SELECT id FROM eta WHERE LOWER(nome) = LOWER(?)";
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nome);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                idEta = rs.getInt("id");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return idEta;
+    }
+
+
+    public EtaDTO buscarPorNome(String nome) {
+        EtaDTO eta = null;
+        String sql = "SELECT * FROM eta WHERE LOWER(nome) = LOWER(?)";
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nome);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                eta = new EtaDTO();
+                eta.setId(rs.getInt("id"));
+                eta.setNome(rs.getString("nome"));
+                eta.setCapacidade(rs.getInt("capacidade"));
+                eta.setTelefone(rs.getString("telefone"));
+                eta.setCnpj(rs.getString("cnpj"));
+                eta.setIdEndereco(rs.getInt("id_endereco"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return eta;
+    }
+
+
+
+
 }
 
 

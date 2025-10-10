@@ -1,8 +1,11 @@
 package com.example.servletsvireya.controller;
 
 import com.example.servletsvireya.dao.CargoDAO;
+import com.example.servletsvireya.dao.EtaDAO;
 import com.example.servletsvireya.dao.FuncionarioDAO;
 
+import com.example.servletsvireya.dto.CargoDTO;
+import com.example.servletsvireya.dto.EstoqueDTO;
 import com.example.servletsvireya.dto.FuncionarioDTO;
 import com.example.servletsvireya.model.Funcionario;
 import jakarta.servlet.RequestDispatcher;
@@ -23,35 +26,28 @@ public class ServletFuncionario extends HttpServlet {
 
     private FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
 
-    // GET
+    // ================================================================================
+    //         Método doGet (analisa o atributo action sem passar pela URL)
+    // ================================================================================
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
 
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
-            // comportamento padrão: listar produtos (ou redirecionar)
-            listarFuncionarioPorEta(req, resp);
+            // Comportamento padrão: listar funcionario (ou redirecionar)
+            listarFuncionarios(req, resp);
             return;
         }
 
         try {
             switch (action) {
                 case "mainFuncionario":
-                    listarFuncionarioPorEta(req, resp);
+                    listarFuncionarios(req, resp);
                     break;
-                case "deleteFuncionario":
-                    removerFuncionario(req, resp);
-                    break;
-                case "editarFuncionario":
-                    int id = Integer.parseInt(req.getParameter("id"));
-                    FuncionarioDTO funcionario = new FuncionarioDTO();
-                    funcionario.setId(id);
-                    funcionario = funcionarioDAO.selecionarFuncionario(funcionario);
-
-                    req.setAttribute("funcionario", funcionario);
-                    RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/funcionario/funcionarioAlterar.jsp");
-                    rd.forward(req, resp);
+                case "selectFuncionario":
+                    buscarFuncionario(req, resp);
                     break;
                 default:
                     resp.sendRedirect(req.getContextPath() + "/paginasCrud/funcionario/funcionarioIndex.jsp");
@@ -71,9 +67,6 @@ public class ServletFuncionario extends HttpServlet {
             case "createFuncionario":
                 inserirFuncionario(req, resp);
                 break;
-//            case "selectFuncionario":
-//                selectFuncionario(req, resp);
-//                break;
             case "updateFuncionario":
                 alterarFuncionario(req,resp);
                 break;
@@ -85,17 +78,27 @@ public class ServletFuncionario extends HttpServlet {
         }
     }
 
-
     // MÉTODOS AUXILIARES
+
+
+    // ===============================================================
+    //               Método para INSERIR o funcionário
+    // ================================================================
+
     protected void inserirFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         FuncionarioDTO funcionario = new FuncionarioDTO();
         CargoDAO cargo = new CargoDAO();
+        EtaDAO etadao= new EtaDAO();
         String cargoNome = req.getParameter("cargo");
         Integer cargoId = cargo.buscarIdPorNome(cargoNome);
-
+        String nomeEta= req.getParameter("nomeEta");
+        funcionario.setNomeEta(nomeEta);
+        funcionario.setIdEta(etadao.buscarIdPorNome(nomeEta));
         funcionario.setNome(req.getParameter("nome"));
         funcionario.setEmail(req.getParameter("email"));
+        funcionario.setEmail(req.getParameter("email"));
         String dataStr = req.getParameter("dataNascimento");
+
         if (dataStr != null && !dataStr.isEmpty()) {
             funcionario.setDataNascimento(java.sql.Date.valueOf(dataStr));
         }
@@ -104,13 +107,6 @@ public class ServletFuncionario extends HttpServlet {
             funcionario.setDataAdmissao(java.sql.Date.valueOf(dataStr));
         }
         funcionario.setSenha(req.getParameter("senha"));
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("idEta") == null) {
-            resp.sendRedirect(req.getContextPath() + "/paginasCrud/eta/etaIndex.jsp");
-            return;
-        }
-        int idEta =  (Integer) session.getAttribute("idEta");
-        funcionario.setIdEta(idEta);//FAZER LOGIN
         funcionario.setIdCargo(cargoId);
 
         int resultado = funcionarioDAO.inserirFuncionario(funcionario);
@@ -119,26 +115,11 @@ public class ServletFuncionario extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario");
         } else {
             // Página de erro
-            req.getRequestDispatcher("/paginasCrud/erro.jsp");
         }
     }
 
-    protected void listarFuncionarioPorEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // ⚠️ Por enquanto, fixo para testes
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("idEta") == null) {
-            resp.sendRedirect(req.getContextPath() + "/paginasCrud/eta/etaIndex.jsp");
-            return;
-        }
-        int idEta =  (Integer) session.getAttribute("idEta");
-
-
-        // ✅ No futuro, isso aqui pega da sessão:
-        // HttpSession session = req.getSession();
-        // AdminDTO adminLogado = (AdminDTO) session.getAttribute("adminLogado");
-        // int idEta = adminLogado.getIdEta();
-
-        List<com.example.servletsvireya.dto.FuncionarioDTO> lista = funcionarioDAO.listarFuncionariosPorEta(idEta);
+    protected void listarFuncionarios(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<FuncionarioDTO> lista = funcionarioDAO.listarFuncionarios();
 
         req.setAttribute("funcionarios", lista);
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/funcionario/funcionarioIndex.jsp");
@@ -146,33 +127,71 @@ public class ServletFuncionario extends HttpServlet {
     }
 
 
-    protected void alterarFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    // ===================================================================================
+    //   Método para BUSCAR o funcionário (mostra os VALORES ANTIGOS na tela de edição)
+    // ===================================================================================
+
+    protected void buscarFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //Recebimento do id do funcionario que será editado
         int id = Integer.parseInt(req.getParameter("id"));
-        FuncionarioDTO antigo = funcionarioDAO.buscarPorId(id); // 🔹 busca o registro atual
 
+        //Setar no objeto tipo DTO
+        FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
+        funcionarioDTO.setId(id);
+
+        //executar o metodo buscarPorId
+        funcionarioDAO.buscarPorId(funcionarioDTO); //No mesmo objeto, setta os valores encontrados
+
+        //Setar os atributos do funcionarioDTO no formulário
+        req.setAttribute("funcionario", funcionarioDTO);
+
+        //Encaminhar ao documento alterarFuncionario.jsp
+        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/funcionario/funcionarioAlterar.jsp");
+        rd.forward(req, resp);
+    }
+
+
+    // ===============================================================
+    //     Método para ALTERAR o funcionário (com os VALORES NOVOS)
+    // ===============================================================
+
+    protected void alterarFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        // Settando os valores no funcionarioDTO ---> ---> --> usuário não pode mudar a eta
+        FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
+        funcionarioDTO.setId(Integer.parseInt(req.getParameter("id")));
+        funcionarioDTO.setNome(req.getParameter("nome"));
+        funcionarioDTO.setEmail(req.getParameter("email"));
+        funcionarioDTO.setSenha(req.getParameter("senha"));
+        String dataAdmissao = req.getParameter("dataAdmissao"); //Conversão de String para Date
+        funcionarioDTO.setDataAdmissao(java.sql.Date.valueOf(dataAdmissao));
+        String dataNascimento = req.getParameter("dataNascimento"); //Aqui também
+        funcionarioDTO.setDataNascimento(java.sql.Date.valueOf(dataNascimento));
+        String nomeCargo = req.getParameter("nomeCargo");
+//        funcionarioDTO.setNomeEta(req.getParameter("nomeEta")); //Não muda
+
+        // Buscar o id do cargo pelo nome
         CargoDAO cargoDAO = new CargoDAO();
-        String cargoNome = req.getParameter("nomeCargo");
-        Integer cargoId = cargoDAO.buscarIdPorNome(cargoNome);
+        funcionarioDTO.setIdCargo(cargoDAO.buscarIdPorNome(nomeCargo)); //Nesse método é retornado o id do cargo
 
-// Atualiza só o que foi alterado:
-        antigo.setNome(req.getParameter("nome"));
-        antigo.setEmail(req.getParameter("email"));
-        antigo.setSenha(req.getParameter("senha"));
-        antigo.setIdCargo(cargoId);
+        // Chamar o DAO com o id já settado no DTO
+        int resultado = funcionarioDAO.alterarFuncionario(funcionarioDTO); //Dentro do objeto, é settado os atributos
 
-// Chama o DAO pra atualizar:
-        int resultado = funcionarioDAO.alterarFuncionario(antigo);
-
-
+        // Tratar o resultado
         if (resultado == 1) {
-            req.setAttribute("alteradoSucesso", true);
             resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario");
-        } else {
-            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao alterar funcionário");
+        }
+        else { // Página de erro
+            //Settando atributo que será pego no JSP
+            req.setAttribute("erro", "Não foi possível alterar o funcionário! Verifique os campos e tente novamente.");
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
         }
     }
 
 
+    // ===============================================================
+    //       Método para REMOVER o funcionário (pelo ID pego)
+    // ===============================================================
 
     protected void removerFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));

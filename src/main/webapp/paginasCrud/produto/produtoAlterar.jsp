@@ -1,23 +1,21 @@
-<%--
+<%@ page import="com.example.servletsvireya.dto.ProdutoDTO" %><%--
   Created by IntelliJ IDEA.
   User: eriksilva-ieg
   Date: 06/10/2025
   Time: 14:03
   To change this template use File | Settings | File Templates.
 --%>
-<%--
-  Página: produtoAlterar.jsp
-  Autor: Erik Silva
-  Data: 06/10/2025
-  Descrição: Formulário de alteração de produto
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%
+    ProdutoDTO produto = (ProdutoDTO) request.getAttribute("produto");
+%>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Alterar Produto</title>
+    <title>Produto</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/styleAlterar.css">
 </head>
 <body>
@@ -54,7 +52,7 @@
         <div class="campos">
             <label>Unidade de Medida</label>
             <select name="unidadeMedida">
-                <option value="unidadeMedida">${produto.unidadeMedida}</option>
+                <option value="${produto.unidadeMedida}">${produto.unidadeMedida}</option>
                 <option value="kg">kg</option>
                 <option value="g">g</option>
                 <option value="L">L</option>

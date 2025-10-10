@@ -9,9 +9,9 @@ public class EstoqueDTO {
     private Date dataValidade;
     private Integer minPossivelEstocado;
     private int idProduto;
-    private String nomeProduto;
     private int idEta;
     private String nomeEta;
+    private String nomeProduto;
 
     //Construtores
     public EstoqueDTO() {}
