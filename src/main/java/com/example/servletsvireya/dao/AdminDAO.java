@@ -1,5 +1,5 @@
 package com.example.servletsvireya.dao;
-import com.example.servletsvireya.util.SenhaHash;
+//import com.example.servletsvireya.util.SenhaHash;
 import com.example.servletsvireya.dto.AdminDTO;
 import com.example.servletsvireya.model.Admin;
 import com.example.servletsvireya.util.Conexao;
@@ -169,9 +169,9 @@ public class AdminDAO {
 
             if (rs.next()) {
                 String senhaBanco = rs.getString("senha");
-                if (SenhaHash.verificarSenha(senha, senhaBanco)) {
-                    return rs.getInt("id_eta"); // senha correta
-                }
+//                if (SenhaHash.verificarSenha(senha, senhaBanco)) {
+//                    return rs.getInt("id_eta"); // senha correta
+//                }
             }
 
         } catch (SQLException e) {

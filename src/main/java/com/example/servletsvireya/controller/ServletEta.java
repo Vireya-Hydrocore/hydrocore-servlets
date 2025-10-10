@@ -1,6 +1,6 @@
 package com.example.servletsvireya.controller;
 
-import com.example.servletsvireya.util.SenhaHash;
+//import com.example.servletsvireya.util.SenhaHash;
 
 
 import com.example.servletsvireya.dao.EtaDAO;
@@ -91,8 +91,8 @@ public class ServletEta extends HttpServlet {
         }
 
         // Se estiver tudo certo, criptografa e segue
-        String senhaCrip = SenhaHash.hashSenha(senhaDigitada);
-        adminDTO.setSenha(senhaCrip);
+//        String senhaCrip = SenhaHash.hashSenha(senhaDigitada);
+//        adminDTO.setSenha(senhaCrip);
 
 
         // Chama DAO

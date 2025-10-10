@@ -102,7 +102,9 @@ public class EstoqueDAO { //erik
         Connection conn = conexao.conectar();
 
         //Prepara a consulta SQL para selecionar os produtos
-        String comando = "SELECT * FROM estoque";
+        String comando = "SELECT e.*, eta.nome AS nome_eta FROM estoque e " +
+                "JOIN eta ON eta.id = e.id_eta";
+
         try (PreparedStatement pstmt = conn.prepareStatement(comando)){
             rset = pstmt.executeQuery(); //Executa a consulta com Query
 
@@ -116,6 +118,7 @@ public class EstoqueDAO { //erik
                 estoqueDTO.setMinPossivelEstocado(rset.getInt("min_possivel_estocado"));
                 estoqueDTO.setIdEta(rset.getInt("id_eta"));
                 estoqueDTO.setIdProduto(rset.getInt("id_produto"));
+                estoqueDTO.setNomeEta(rset.getString("nome_eta"));
 
                 estoques.add(estoqueDTO); //Populando o List
             }

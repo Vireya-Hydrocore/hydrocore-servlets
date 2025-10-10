@@ -34,7 +34,7 @@ public class ServletEstoque extends HttpServlet {
         try {
             switch (action) {
                 case "mainEstoque":
-                    listarEstoquePorEta(req, resp);
+                    listarEstoques(req, resp);
                     break;
                 case "selectEstoque":
                     buscarEstoque(req, resp);
@@ -58,7 +58,7 @@ public class ServletEstoque extends HttpServlet {
                 inserirEstoque(req, resp);
                 break;
             case "updateEstoque":
-                buscarEstoque(req, resp);
+                alterarEstoque(req, resp);
                 break;
             case "deleteEstoque":
                 removerEstoque(req, resp);
@@ -70,22 +70,9 @@ public class ServletEstoque extends HttpServlet {
 
     // MÉTODOS AUXILIARES
     //LISTA POR ETA
-    protected void listarEstoquePorEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // ⚠ Por enquanto, fixo para testes
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("idEta") == null) {
-            resp.sendRedirect(req.getContextPath() + "/paginasCrud/eta/etaIndex.jsp");
-            return;
-        }
-        int idEta =  (Integer) session.getAttribute("idEta");
+    protected void listarEstoques(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-
-        // ✅ No futuro, isso aqui pega da sessão:
-        // HttpSession session = req.getSession();
-        // AdminDTO adminLogado = (AdminDTO) session.getAttribute("adminLogado");
-        // int idEta = adminLogado.getIdEta();
-
-        List<EstoqueDTO> lista = estoqueDAO.listarEstoquePorEta(idEta);
+        List<EstoqueDTO> lista = estoqueDAO.listarEstoque();
 
         req.setAttribute("estoques", lista);
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/estoque/estoqueIndex.jsp");

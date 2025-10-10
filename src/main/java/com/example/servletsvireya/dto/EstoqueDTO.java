@@ -9,8 +9,9 @@ public class EstoqueDTO {
     private Date dataValidade;
     private Integer minPossivelEstocado;
     private int idProduto;
-    private int idEta;
     private String nomeProduto;
+    private int idEta;
+    private String nomeEta;
 
     //Construtores
     public EstoqueDTO() {}
@@ -65,6 +66,9 @@ public class EstoqueDTO {
 
     public int getIdEta() { return this.idEta; }
     public void setIdEta(int idEta) { this.idEta = idEta; }
+
+    public String getNomeEta() { return nomeEta; }
+    public void setNomeEta(String nomeEta) { this.nomeEta = nomeEta; }
 
     public String getNomeProduto() {
         return this.nomeProduto;
