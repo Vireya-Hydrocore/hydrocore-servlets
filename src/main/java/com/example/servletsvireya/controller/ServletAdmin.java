@@ -191,7 +191,6 @@ public class ServletAdmin extends HttpServlet {
         String email = req.getParameter("email");
         String senha = req.getParameter("senha");
         Integer idEta = adminDAO.seLogar(email, senha);
-
         if (idEta != null) {
             HttpSession session = req.getSession();
             session.setAttribute("idEta", idEta);

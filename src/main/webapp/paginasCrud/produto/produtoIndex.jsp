@@ -84,12 +84,12 @@
                     <input type="hidden" name="action" value="createProduto"> <!-- Envia esse parametro para o servlet ver que action é create-->
 
                     <label>Nome do Produto</label>
-                    <input type="text" name="nome" placeholder="Ex: Cloro Líquido">
+                    <input type="text" name="nome" placeholder="Ex: Cloro Líquido" required>
                 </div>
 
                 <div class="campos">
                     <label>Tipo</label>
-                    <select name="tipo">
+                    <select name="tipo" required>
                         <option value="">Selecione a categoria</option>
                         <option value="Coagulante">Coagulante</option>
                         <option value="Floculante">Floculante</option>
@@ -98,7 +98,7 @@
 
                 <div class="campos">
                     <label>Unidade de Medida</label>
-                    <select name="unidadeMedida">
+                    <select name="unidadeMedida" required>
                         <option value="">Selecione a unidade</option>
                         <option value="kg">kg</option>
                         <option value="g">g</option>
@@ -111,7 +111,7 @@
 
                 <div class="campos">
                     <label>Concentração (%)</label>
-                    <input type="number" name="concentracao" max="100" placeholder="Ex: 25.50">
+                    <input type="number" name="concentracao" max="100" placeholder="Ex: 25.50" required>
                 </div>
 
                 <div class="acoes">

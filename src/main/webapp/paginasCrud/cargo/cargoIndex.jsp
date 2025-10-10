@@ -85,7 +85,7 @@
 
                 <div class="campos">
                     <label>Nível de Acesso</label>
-                    <input type="number" name="acesso" placeholder="Ex: 1" required>
+                    <input type="number" name="acesso" placeholder="Ex: 1" min="0" required>
                 </div>
 
                 <div class="acoes">

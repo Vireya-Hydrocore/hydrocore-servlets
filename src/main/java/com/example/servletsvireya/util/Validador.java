@@ -12,7 +12,7 @@ public class Validador {
     public static List<String> validarSenha(String senha) {
         List<String> erros = new ArrayList<>();
 
-        if (senha == null || senha.isEmpty()) {
+        if (senha == null) {
             erros.add("A senha não pode estar vazia.");
             return erros;
         }
@@ -35,4 +35,23 @@ public class Validador {
 
         return erros;
     }
+    public static boolean ehVazio(String palavra){
+        return !palavra.equals("");
+    }
+    public static boolean ehNulloString(List<String> lista){
+        return !lista.isEmpty();
+    }
+    public static boolean ehNulloInt(List<Integer> lista){
+        return !lista.isEmpty();
+    }
+    public static boolean ehNulloClass(List<Class> lista){
+        return !lista.isEmpty();
+    }
+    public static boolean ehNulloObject(List<Object> lista){
+        return !lista.isEmpty();
+    }
+    public static boolean validarLength(String palavra,int quantidadeCaracteres){
+        return palavra.length() < quantidadeCaracteres;
+    }
+
 }

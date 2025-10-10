@@ -3,6 +3,7 @@ package com.example.servletsvireya.controller;
 import com.example.servletsvireya.dao.ProdutoDAO;
 import com.example.servletsvireya.dto.ProdutoDTO;
 import com.example.servletsvireya.model.Produto;
+import com.example.servletsvireya.util.Validador;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
