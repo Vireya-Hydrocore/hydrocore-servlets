@@ -1,5 +1,6 @@
 package com.example.servletsvireya.controller;
-
+import com.example.servletsvireya.dao.EtaDAO;
+import com.example.servletsvireya.util.SenhaHash;
 import com.example.servletsvireya.dao.AdminDAO;
 import com.example.servletsvireya.dao.EstoqueDAO;
 import com.example.servletsvireya.dto.AdminDTO;
@@ -26,14 +27,14 @@ public class ServletAdmin extends HttpServlet {
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
             // comportamento padrão: listar admins (ou redirecionar)
-            admins(req, resp); //mudar nome
+            listarAdmin(req, resp);
             return;
         }
 
         try {
             switch (action) {
                 case "mainAdmin":
-                    admins(req, resp); //Listado por ETA
+                    listarAdmin(req, resp);
                     break;
                 case "selectAdmin": //Seleciona por id para alterar o Admin
                     buscarAdmin(req, resp);
@@ -74,16 +75,9 @@ public class ServletAdmin extends HttpServlet {
     // MÉTODOS AUXILIARES
 
     //LISTA POR ETA
-    protected void admins(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // ⚠ Por enquanto, fixo para testes
-        int idEta = 1;
+    protected void listarAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        // ✅ No futuro, isso aqui pega da sessão:
-        // HttpSession session = req.getSession();
-        // AdminDTO adminLogado = (AdminDTO) session.getAttribute("adminLogado");
-        // int idEta = adminLogado.getIdEta();
-
-        List<AdminDTO> lista = adminDAO.listarAdminPorEta(idEta);
+        List<AdminDTO> lista = adminDAO.listarAdmin(); //Armazena numa lista
 
         req.setAttribute("admins", lista); //Setta a lista em um novo atributo
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/admin/indexAdmin.jsp");
@@ -94,20 +88,16 @@ public class ServletAdmin extends HttpServlet {
     //INSERIR ADMIN
     protected void inserirAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         AdminDTO adminDTO = new AdminDTO();
+        EtaDAO etaDAO= new EtaDAO();
 
         adminDTO.setNome(req.getParameter("nome"));
         adminDTO.setEmail(req.getParameter("email"));
-        adminDTO.setSenha(req.getParameter("senha")); /////// criptografar
+        String nomeEta = req.getParameter("nome_eta");
+        adminDTO.setIdEta(etaDAO.buscarIdPorNome(nomeEta));
+        adminDTO.setNomeEta(nomeEta);
 
-//        para teste
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("idEta") == null) {
-            resp.sendRedirect(req.getContextPath() + "/paginasCrud/menu/logar.jsp");
-            return;
-        }
-       int idEta =  (Integer) session.getAttribute("idEta");
-        adminDTO.setIdEta(idEta);
-
+        String senhacrip = SenhaHash.hashSenha(req.getParameter("senha"));
+        adminDTO.setSenha(senhacrip);
 
         int resultado = adminDAO.inserirAdmin(adminDTO);
 
@@ -177,7 +167,7 @@ public class ServletAdmin extends HttpServlet {
 
         if (resultado == 1) {
             // Atualiza a lista de produtos na mesma página
-            admins(req, resp);
+            listarAdmin(req, resp);
         } else {
             // Página de erro
             req.setAttribute("erro", "Não foi possível remover este Admin");

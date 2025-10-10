@@ -13,12 +13,13 @@ public class FuncionarioDTO {
     private int idEta; // Foreign Key
     private int idCargo; // Foreign Key
     private String nomeCargo;
+    private String nomeEta;
 
     //Construtores
     public FuncionarioDTO() {
     }
-
-    public FuncionarioDTO(int id, String nome, String email, String senha, Date dataAdmissao, Date dataNascimento, int idEta, int idCargo, String nomeCargo) {
+    public FuncionarioDTO(int id, String nome, String email, String senha, Date dataAdmissao,
+                          Date dataNascimento, int idEta, int idCargo, String nomeCargo, String nomeEta) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -28,6 +29,7 @@ public class FuncionarioDTO {
         this.idEta = idEta;
         this.idCargo = idCargo;
         this.nomeCargo = nomeCargo;
+        this.nomeEta = nomeEta;
     }
 
     //Getters e Setters
@@ -76,7 +78,6 @@ public class FuncionarioDTO {
     public int getIdCargo() {
         return idCargo;
     }
-
     public void setIdCargo(int idCargo) {
         this.idCargo = idCargo;
     }
@@ -84,7 +85,6 @@ public class FuncionarioDTO {
     public String getNomeCargo() {
         return this.nomeCargo;
     }
-
     public void setNomeCargo(String nomeCargo) {
         this.nomeCargo = nomeCargo;
     }
@@ -92,8 +92,14 @@ public class FuncionarioDTO {
     public int getIdEta() {
         return idEta;
     }
-
     public void setIdEta(int idEta) {
         this.idEta = idEta;
+    }
+
+    public String getNomeEta() {
+        return this.nomeEta;
+    }
+    public void setNomeEta(String nomeEta) {
+        this.nomeEta = nomeEta;
     }
 }

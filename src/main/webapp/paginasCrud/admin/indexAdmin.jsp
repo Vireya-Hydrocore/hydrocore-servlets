@@ -98,6 +98,11 @@
           <input type="password" name="senha" maxlength="30" placeholder="xxxxxxxxx">
         </div>
 
+        <div class="campos">
+          <label>ETA</label>
+          <input type="text" name="nomeEta" maxlength="30" placeholder="ETA Guarau">
+        </div>
+
         <div class="acoes">
           <button type="button" class="botao-cancelar">Cancelar</button>
           <input type="submit" value="Salvar" class="botao-salvar">
@@ -114,6 +119,7 @@
         <th>Nome</th>
         <th>Email</th>
         <th>Senha</th>
+        <th>ETA</th>
         <th>Ações</th>
         </thead>
         <tbody>
@@ -124,6 +130,7 @@
           <td><%= lista.get(i).getNome() %></td>
           <td><%= lista.get(i).getEmail() %></td>
           <td><%= lista.get(i).getSenha() %></td>
+          <td><%= lista.get(i).getNomeEta() %></td>
           <td>
             <a class="botao-editar" href="${pageContext.request.contextPath}/ServletAdmin?action=selectAdmin&id=<%= lista.get(i).getId() %>">Editar</a>
             &nbsp;|&nbsp;

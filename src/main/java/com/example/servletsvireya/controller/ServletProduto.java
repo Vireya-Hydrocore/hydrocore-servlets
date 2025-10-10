@@ -1,5 +1,6 @@
 package com.example.servletsvireya.controller;
 
+import com.example.servletsvireya.dao.EtaDAO;
 import com.example.servletsvireya.dao.ProdutoDAO;
 import com.example.servletsvireya.dto.ProdutoDTO;
 import com.example.servletsvireya.model.Produto;
@@ -24,14 +25,14 @@ public class ServletProduto extends HttpServlet {
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
             // comportamento padrão: listar produtos (ou redirecionar)
-            listarPorEta(req, resp);
+            listarProdutos(req, resp);
             return;
         }
 
         try {
             switch (action) {
                 case "mainProduto":
-                    listarPorEta(req, resp);
+                    listarProdutos(req, resp);
                     break;
                 case "selectProduto":
                     buscarProduto(req, resp);
@@ -69,18 +70,10 @@ public class ServletProduto extends HttpServlet {
     }
 
     // MÉTODOS AUXILIARES
-    protected void listarPorEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("idEta") == null) {
-            resp.sendRedirect(req.getContextPath() + "/paginasCrud/eta/etaIndex.jsp");
-            return;
-        }
-        int idEta =  (Integer) session.getAttribute("idEta");
-        List<ProdutoDTO> lista = produtoDAO.listarProdutoPorEta(idEta); //idEta provisório
+    protected void listarProdutos(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<ProdutoDTO> lista = produtoDAO.listarProduto();
 
-        //Devolve a lista de produtos encontrados
-        req.setAttribute("produtos", lista);
-
+        req.setAttribute("produtos", lista); //Devolve a lista de produtos encontrados
         //Envia para a página principal
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/produto/produtoIndex.jsp");
         rd.forward(req, resp);
@@ -88,20 +81,18 @@ public class ServletProduto extends HttpServlet {
 
 
     protected void inserirProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        EtaDAO etaDao= new EtaDAO();
         ProdutoDTO produtoDTO = new ProdutoDTO();
         produtoDTO.setNome(req.getParameter("nome"));
         produtoDTO.setTipo(req.getParameter("tipo"));
         produtoDTO.setUnidadeMedida(req.getParameter("unidadeMedida"));
         produtoDTO.setConcentracao(Double.parseDouble(req.getParameter("concentracao")));
 
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("idEta") == null) {
-            resp.sendRedirect(req.getContextPath() + "/paginasCrud/eta/etaIndex.jsp");
-            return;
-        }
-        int idEta =  (Integer) session.getAttribute("idEta");
+        String nomeEta= req.getParameter("nomeEta");
+        produtoDTO.setIdEta(etaDao.buscarIdPorNome(nomeEta));
+        produtoDTO.setNomeEta(nomeEta);
 
-        int resultado = produtoDAO.cadastrarProduto(produtoDTO,idEta );
+        int resultado = produtoDAO.cadastrarProduto(produtoDTO, produtoDTO.getIdEta());
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto");

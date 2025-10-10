@@ -88,6 +88,11 @@
                     <input type="number" name="acesso" placeholder="Ex: 1" min="0" required>
                 </div>
 
+                <div class="campos">
+                    <label>Nome ETA</label>
+                    <input type="text" name="nomeEta" placeholder="Ex: ETA Guarau" required>
+                </div>
+
                 <div class="acoes">
                     <button type="button" class="botao-cancelar">Cancelar</button>
                     <input type="submit" value="Salvar" class="botao-salvar">
@@ -112,6 +117,7 @@
                 <th>ID</th>
                 <th>Nome</th>
                 <th>Acesso</th>
+                <th>ETA</th>
                 <th>Ações</th>
                 </thead>
                 <tbody>
@@ -121,6 +127,7 @@
                     <td><%= c.getId() %></td>
                     <td><%= c.getNome() %></td>
                     <td><%= c.getAcesso() %></td>
+                    <td><%= c.getNomeEta() %></td>
                     <td>
                         <!-- Editar -->
                         <a class="botao-editar"

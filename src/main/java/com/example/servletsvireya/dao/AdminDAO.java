@@ -4,10 +4,7 @@ import com.example.servletsvireya.dto.AdminDTO;
 import com.example.servletsvireya.model.Admin;
 import com.example.servletsvireya.util.Conexao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,15 +105,15 @@ public class AdminDAO {
     }
 
 
-    public List<AdminDTO> listarAdminPorEta(int idEta) {
+    public List<AdminDTO> listarAdmin() {
         List<AdminDTO> admins = new ArrayList<>();
         Connection conn = conexao.conectar();
-        String comando = "SELECT * FROM admin WHERE id_eta = ?";
+        String comando = "SELECT a.*, e.nome AS nome_eta FROM admin a " +
+                "JOIN eta e ON e.id = a.id_eta";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
-            pstmt.setInt(1, idEta);
-
             ResultSet rs = pstmt.executeQuery();
+
             while (rs.next()) {
                 AdminDTO admin = new AdminDTO(); //Instanciando um objeto a cada while
 
@@ -125,6 +122,7 @@ public class AdminDAO {
                 admin.setEmail(rs.getString("email"));
                 admin.setSenha(rs.getString("senha"));
                 admin.setIdEta(rs.getInt("id_eta")); //tem que ser a mesma em cada
+                admin.setNomeEta(rs.getString("nome_eta"));
 
                 admins.add(admin); //Populando o list
             }
@@ -137,6 +135,7 @@ public class AdminDAO {
             conexao.desconectar();
         }
     }
+
 
     public String ListarporEmail(String email) {
         Connection conn = conexao.conectar();
@@ -158,8 +157,9 @@ public class AdminDAO {
         }
     }
 
+
     public Integer seLogar(String email, String senha) {
-        String sql = "SELECT id_eta, senha FROM admin WHERE email = ?";
+        String sql = "SELECT senha FROM admin WHERE email = ?";
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -202,6 +202,61 @@ public class AdminDAO {
 
         return senha; // se não encontrar, retorna null
     }
+
+    public List<AdminDTO> listarEtas() {
+        List<AdminDTO> admins = new ArrayList<>();
+        Connection conn = conexao.conectar();
+        String comando = "SELECT * FROM admin";
+
+        try{
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(comando);
+            while (rs.next()) {
+                AdminDTO admin = new AdminDTO(); //Instanciando um objeto a cada while
+
+                admin.setId(rs.getInt("id"));
+                admin.setNome(rs.getString("nome"));
+                admin.setEmail(rs.getString("email"));
+                admin.setSenha(rs.getString("senha"));
+                admin.setIdEta(rs.getInt("id_eta")); //tem que ser a mesma em cada
+
+                admins.add(admin); //Populando o list
+            }
+            return admins;
+
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            return new ArrayList<>(); //Lista vazia
+        } finally {
+            conexao.desconectar();
+        }
+    }
+
+
+    public Integer seLogarAreaRestrita(String email, String senha) {
+        String sql = "SELECT senha FROM admin WHERE email = ?";
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String senhaOriginal= SenhaHash.hashSenha("Vireya2025@");
+
+                if (SenhaHash.verificarSenha(senha, senhaOriginal)) {
+                    return rs.getInt("id_eta"); // senha correta
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null; // login incorreto
+    }
+
 
 }
 
