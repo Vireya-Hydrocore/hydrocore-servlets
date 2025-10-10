@@ -107,6 +107,11 @@
                     <input type="text" name="cargo" placeholder="Ex: Operador">
                 </div>
 
+                <div class="campos">
+                    <label>Nome ETA</label>
+                    <input type="text" name="nomeEta" placeholder="Ex: ETA Guarau">
+                </div>
+
                 <div class="acoes">
                     <button type="button" class="botao-cancelar">Cancelar</button>
                     <input type="submit" value="Salvar" class="botao-salvar">
@@ -126,6 +131,7 @@
                 <th>Data Admissão</th>
                 <th>Data Nascimento</th>
                 <th>Cargo</th>
+                <th>ETA</th>
                 <th>Ações</th>
                 </thead>
                 <tbody>
@@ -139,6 +145,7 @@
                     <td><%= lista.get(i).getDataAdmissao()%></td>
                     <td><%= lista.get(i).getDataNascimento()%></td>
                     <td><%= lista.get(i).getNomeCargo()%></td>
+                    <td><%= lista.get(i).getNomeEta()%></td>
                     <td>
                         <!-- Botão Editar -->
                         <a class="botao-editar" href="${pageContext.request.contextPath}/ServletFuncionario?action=selectFuncionario&id=<%= lista.get(i).getId() %>">Editar</a>

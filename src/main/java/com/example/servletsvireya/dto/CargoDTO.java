@@ -5,6 +5,7 @@ public class CargoDTO {
     private String nome;
     private Integer acesso;
     private Integer idEta;
+    private String nomeEta;
 
     public Integer getIdEta() {
         return idEta;
@@ -36,5 +37,13 @@ public class CargoDTO {
 
     public void setAcesso(Integer acesso) {
         this.acesso = acesso;
+    }
+
+    public String getNomeEta() {
+        return nomeEta;
+    }
+
+    public void setNomeEta(String nomeEta) {
+        this.nomeEta = nomeEta;
     }
 }

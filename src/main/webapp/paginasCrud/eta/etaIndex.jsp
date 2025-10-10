@@ -5,11 +5,13 @@
   Time: 17:56
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.example.servletsvireya.dto.EtaDTO" %>
 
+<!-------------------- MENU ETA ----------------------->
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.servletsvireya.dto.EtaDTO" %>
 <%
-  EtaDTO eta = (EtaDTO) request.getAttribute("eta");
+  List<EtaDTO> lista = (List<EtaDTO>) request.getAttribute("etas");
 %>
 
 <!DOCTYPE html>
@@ -17,7 +19,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HydroCore - Informações da ETA</title>
+  <title>HydroCore - ETAS</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/style.css">
 </head>
 
@@ -46,10 +48,10 @@
 <aside class="sidebar" id="sidebar">
   <ul>
     <a href="${pageContext.request.contextPath}/ServletEta?action=mainEta">
-      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/imagem9.png"> Informações</li>
+      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/imagem9.png"> ETAs</li>
     </a>
     <a href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">
-      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image10.png"> Funcionários</li>
+      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image10.png"> Funcionarios</li>
     </a>
     <a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">
       <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image11.png"> Estoque</li>
@@ -68,48 +70,55 @@
 
 <div class="plano-de-fundo">
   <main>
-    <section class="informacoes">
-      <h2>Informações da ETA</h2>
 
-      <div class="grid">
-        <div class="box">
-          <h3>Nome da ETA</h3>
-          <p><%= eta != null ? eta.getNome() : "Não informado" %></p>
-        </div>
+    <!-- LISTA DAS ETAS -->
 
-        <div class="box">
-          <h3>Capacidade</h3>
-          <p><%= eta != null ? eta.getCapacidade() + " m³" : "Não informado" %></p>
-        </div>
-
-        <div class="box cheia">
-          <h3>Endereço</h3>
-          <p>
-            <% if (eta != null) { %>
-            <%= eta.getRua() %>, <%= eta.getNumero() %> - <%= eta.getBairro() %> -
-            <%= eta.getCidade() %> - <%= eta.getEstado() %>, CEP <%= eta.getCep() %>
-            <% } else { %>
-            Não informado
-            <% } %>
-          </p>
-        </div>
-
-        <div class="box">
-          <h3>CNPJ</h3>
-          <p><%= eta != null ? eta.getCnpj() : "Não informado" %></p>
-        </div>
-
-        <div class="box-alterar">
-          <form action="${pageContext.request.contextPath}/ServletEta" method="get">
-            <input type="hidden" name="action" value="alterar">
-            <button class="botao-salvar" type="submit">Alterar</button>
-          </form>
-        </div>
-      </div>
+    <section class="lista">
+      <h2>Lista de Estacoes de Tratamento de Agua</h2>
+      <table>
+        <thead>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Capacidade</th>
+        <th>Telefone</th>
+        <th>CNPJ</th>
+        <th>Ações</th>
+        </thead>
+        <tbody>
+        <% if (lista != null && !lista.isEmpty()) {
+          for (int i=0; i < lista.size(); i++) { %>
+        <tr>
+          <td><%= lista.get(i).getId() %></td>
+          <td><%= lista.get(i).getNome() %></td>
+          <td><%= lista.get(i).getCapacidade() %></td>
+          <td><%= lista.get(i).getTelefone() %></td>
+          <td><%= lista.get(i).getCnpj() %></td>
+          <td>
+            <!-- Botão Editar -->
+            <a class="botao-editar" href="${pageContext.request.contextPath}/ServletEta?action=selectEta&id=<%= lista.get(i).getId() %>">Editar</a>
+            &nbsp;|&nbsp;
+            <!-- Botão Excluir -->
+            <form action="<%= request.getContextPath() %>/ServletEta" method="get" style="display:inline;">
+              <input type="hidden" name="action" value="deleteEta">
+              <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
+              <button class="botao-excluir" type="submit" onclick="return confirm('Tem certeza que deseja excluir essa ETA?');">
+                Excluir
+              </button>
+            </form>
+          </td>
+        </tr>
+        <% }
+        } else { %>
+        <tr>
+          <td colspan="6">Nenhuma ETA encontrada!</td>
+        </tr>
+        <% } %>
+        </tbody>
+      </table>
     </section>
   </main>
 </div>
-
+<!-- Script -->
 <script src="${pageContext.request.contextPath}/paginasCrud/scripts/script.js"></script>
 </body>
 </html>

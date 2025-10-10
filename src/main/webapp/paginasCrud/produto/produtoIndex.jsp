@@ -7,7 +7,6 @@
 --%>
 <!-------------------- MENU PRODUTO ----------------------->
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.servletsvireya.dto.ProdutoDTO" %>
 <%
@@ -113,6 +112,10 @@
                     <label>Concentração (%)</label>
                     <input type="number" name="concentracao" max="100" placeholder="Ex: 25.50">
                 </div>
+                <div class="campos">
+                    <label>Nome ETA</label>
+                    <input type="text" name="nomeEta" placeholder="Ex: ETA Central">
+                </div>
 
                 <div class="acoes">
                     <button type="button" class="botao-cancelar">Cancelar</button>
@@ -133,6 +136,7 @@
                 <th>Tipo</th>
                 <th>Unidade de Medida</th>
                 <th>Concentração</th>
+                <th>Nome ETA</th>
                 <th>Ações</th>
                 </thead>
                 <tbody>
@@ -144,6 +148,7 @@
                     <td><%= lista.get(i).getTipo() %></td>
                     <td><%= lista.get(i).getUnidadeMedida() %></td>
                     <td><%= lista.get(i).getConcentracao() %></td>
+                    <td><%= lista.get(i).getNomeEta() %></td>
                     <td>
                         <!-- Botão Editar -->
                         <a class="botao-editar" href="${pageContext.request.contextPath}/ServletProduto?action=selectProduto&id=<%= lista.get(i).getId() %>">Editar</a>

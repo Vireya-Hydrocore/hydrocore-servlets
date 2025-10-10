@@ -10,80 +10,69 @@
 <head>
   <meta charset="UTF-8">
   <title>Alterar Funcionário</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .form-container {
-      background: #fff;
-      padding: 20px 30px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      width: 400px;
-    }
-    .form-container h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .campos {
-      margin-bottom: 15px;
-    }
-    .campos label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    .campos input {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #bbb;
-      border-radius: 6px;
-    }
-    .acoes {
-      text-align: center;
-      margin-top: 20px;
-    }
-    .acoes input[type="submit"] {
-      background-color: #4460F6;
-      color: #fff;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .acoes input[type="submit"]:hover {
-      background-color: #2f45b5;
-    }
-  </style>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/styleAlterar.css">
 </head>
 <body>
 
 <div class="form-container">
-  <h2>Alterar Funcionário</h2>
+  <h2>Alterar Produto</h2>
 
-  <form action="${pageContext.request.contextPath}/ServletFuncionario" method="post">
-    <input type="hidden" name="action" value="alterarFuncionario">
-    <input type="hidden" name="id" value="${funcionario.id}">
+    <form action="${pageContext.request.contextPath}/ServletFuncionario" method="post">
+      <input type="hidden" name="action" value="updateFuncionario">
 
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" name="nome" value="${funcionario.nome}" required><br>
+      <!-- ID do funcionário -->
+      <div class="campos-readonly">
+        <label>ID</label>
+        <input type="number" name="id" value="${funcionario.id}" readonly>
+      </div>
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" value="${funcionario.email}" required><br>
+      <!-- Nome -->
+      <div class="campos">
+        <label>Nome</label>
+        <input type="text" name="nome" value="${funcionario.nome}" required>
+      </div>
 
-    <label for="senha">Senha:</label>
-    <input type="password" id="senha" name="senha" value="${funcionario.senha}" required><br>
+      <!-- Email -->
+      <div class="campos">
+        <label>E-mail</label>
+        <input type="email" name="email" value="${funcionario.email}">
+      </div>
 
-    <label for="nomeCargo">Cargo:</label>
-    <input type="text" id="nomeCargo" name="nomeCargo"
-           value="${funcionario.nomeCargo}" required><br>
+      <!-- Senha -->
+      <div class="campos">
+        <label>Senha</label>
+        <input type="password" name="senha" value="${funcionario.senha}">
+      </div>
 
-    <button type="submit">Salvar</button>
+      <!-- Data de Admissão -->
+      <div class="campos">
+        <label>Data de Admissão</label>
+        <input type="date" name="dataAdmissao" value="${funcionario.dataAdmissao}">
+      </div>
+
+
+      <!-- Data de Nascimento -->
+      <div class="campos">
+        <label>Data de Nascimento</label>
+        <input type="date" name="dataNascimento" value="${funcionario.dataNascimento}">
+      </div>
+
+      <!-- Cargo -->
+      <div class="campos">
+        <label>Cargo</label>
+        <input type="text" name="nomeCargo" value="${funcionario.nomeCargo}" required>
+      </div>
+
+      <!-- Nome ETA -->
+<%--      <div class="campos-readonly">--%>
+<%--        <label>ETA</label>--%>
+<%--        <input type="text" name="nomeEta" value="${funcionario.nomeEta}" readonly>--%>
+<%--      </div>--%>
+
+      <!-- Botão -->
+      <div class="acoes">
+        <input type="submit" value="Salvar Alterações">
+      </div>
   </form>
 
 </div>
