@@ -18,7 +18,11 @@ public class ServletAdmin extends HttpServlet {
 
     private AdminDAO adminDAO = new AdminDAO();
 
-    // GET
+
+    // ===============================================================
+    //                       Método doGet
+    // ===============================================================
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
@@ -48,7 +52,11 @@ public class ServletAdmin extends HttpServlet {
         }
     }
 
-    // POST
+
+    // ===============================================================
+    //                       Método doPost
+    // ===============================================================
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
