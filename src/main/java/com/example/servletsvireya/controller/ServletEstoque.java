@@ -20,7 +20,11 @@ public class ServletEstoque extends HttpServlet {
 
     private EstoqueDAO estoqueDAO = new EstoqueDAO();
 
-    // GET
+
+    // ===============================================================
+    //                       Método doGet
+    // ===============================================================
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
@@ -50,7 +54,11 @@ public class ServletEstoque extends HttpServlet {
         }
     }
 
-    // POST
+
+    // ===============================================================
+    //                       Método doPost
+    // ===============================================================
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
@@ -70,8 +78,14 @@ public class ServletEstoque extends HttpServlet {
         }
     }
 
-    // MÉTODOS AUXILIARES
-    //LISTA POR ETA
+
+    // ================== MÉTODOS AUXILIARES =========================
+
+
+    // ===============================================================
+    //                Método para LISTAR o estoque
+    // ===============================================================
+
     protected void listarEstoquePorEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<EstoqueDTO> lista = estoqueDAO.listarEstoque();
 
@@ -83,7 +97,7 @@ public class ServletEstoque extends HttpServlet {
 
     // ===============================================================
     //               Método para INSERIR o estoque
-    // ================================================================
+    // ===============================================================
 
     protected void inserirEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -148,7 +162,7 @@ public class ServletEstoque extends HttpServlet {
 
     // ===============================================================
     //     Método para ALTERAR o estoque (com os VALORES NOVOS)
-    // ================================================================
+    // ===============================================================
 
     protected void alterarEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -177,7 +191,7 @@ public class ServletEstoque extends HttpServlet {
 
     // ===============================================================
     //       Método para REMOVER o estoque (pelo ID pego)
-    // ================================================================
+    // ===============================================================
 
     protected void removerEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
