@@ -16,7 +16,11 @@ public class ServletProduto extends HttpServlet {
 
     private ProdutoDAO produtoDAO = new ProdutoDAO();
 
-    // GET
+
+    // ===============================================================
+    //                       Método doGet
+    // ===============================================================
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
@@ -48,7 +52,11 @@ public class ServletProduto extends HttpServlet {
         }
     }
 
-    // POST
+
+    // ===============================================================
+    //                       Método doPost
+    // ===============================================================
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
@@ -68,7 +76,14 @@ public class ServletProduto extends HttpServlet {
         }
     }
 
-    // MÉTODOS AUXILIARES
+
+    // ================== MÉTODOS AUXILIARES =========================
+
+
+    // ===============================================================
+    //                Método para LISTAR os produtos
+    // ===============================================================
+
     protected void listarProdutos(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<ProdutoDTO> lista = produtoDAO.listarProduto();
 
@@ -78,6 +93,10 @@ public class ServletProduto extends HttpServlet {
         rd.forward(req, resp);
     }
 
+
+    // ===============================================================
+    //               Método para INSERIR os produtos
+    // ===============================================================
 
     protected void inserirProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         EtaDAO etaDao= new EtaDAO();
@@ -115,6 +134,7 @@ public class ServletProduto extends HttpServlet {
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/produto/produtoAlterar.jsp");
         rd.forward(req, resp);
     }
+
 
 
     protected void alterarProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
