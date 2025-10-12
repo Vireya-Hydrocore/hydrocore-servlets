@@ -13,7 +13,7 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/ServletAdmin", "/mainAdmin", "/createAdmin", "/selectAdmin", "/updateAdmin", "/deleteAdmin", "/logar"}, name = "/ServletAdmin")
+@WebServlet(urlPatterns = {"/ServletAdmin", "/mainAdmin", "/createAdmin", "/selectAdmin", "/updateAdmin", "/deleteAdmin", "/logar", "/filtroAdmin", "/logarAdmin"}, name = "/ServletAdmin")
 public class ServletAdmin extends HttpServlet {
 
     private AdminDAO adminDAO = new AdminDAO();
@@ -42,6 +42,9 @@ public class ServletAdmin extends HttpServlet {
                     break;
                 case "selectAdmin": //Seleciona por id para alterar o Admin
                     buscarAdmin(req, resp);
+                    break;
+                case "filtroAdmin": //Seleciona por id para alterar o Admin
+                    filtroAdmin(req, resp);
                     break;
                 default:
                     resp.sendRedirect(req.getContextPath() + "/paginasCrud/admin/indexAdmin.jsp");
@@ -73,6 +76,9 @@ public class ServletAdmin extends HttpServlet {
                 removerAdmin(req, resp);
                 break;
             case "logar":
+                logar(req, resp);
+                break;
+            case "logarAdmin":
                 logarAdmin(req, resp);
                 break;
             default:
@@ -100,7 +106,7 @@ public class ServletAdmin extends HttpServlet {
 
         adminDTO.setNome(req.getParameter("nome"));
         adminDTO.setEmail(req.getParameter("email"));
-        String nomeEta = req.getParameter("nome_eta");
+        String nomeEta = req.getParameter("nomeEta");
         adminDTO.setIdEta(etaDAO.buscarIdPorNome(nomeEta));
         adminDTO.setNomeEta(nomeEta);
 
@@ -188,13 +194,9 @@ public class ServletAdmin extends HttpServlet {
     protected void logarAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
         String senha = req.getParameter("senha");
-        Integer idEta = adminDAO.seLogar(email, senha);
+        Boolean resultado = adminDAO.seLogarAreaRestrita(email, senha);
 
-        if (idEta != null) {
-            HttpSession session = req.getSession();
-            session.setAttribute("idEta", idEta);
-            session.setAttribute("emailAdmin", email);
-
+        if (resultado) {
             // Redireciona para página principal do admin
             resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta"); //??????????
         } else {
@@ -203,5 +205,28 @@ public class ServletAdmin extends HttpServlet {
             rd.forward(req, resp);
         }
     }
+    protected void filtroAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        List<AdminDTO> lista = adminDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"),req.getParameter("pesquisa")); //Armazena numa lista
+
+        req.setAttribute("admins", lista); //Setta a lista em um novo atributo
+        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/admin/indexAdmin.jsp");
+        rd.forward(req, resp);
+    }
+    protected void logar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String email = req.getParameter("email");
+        String senha = req.getParameter("senha");
+        Integer idAdmin = adminDAO.seLogar(email, senha);
+
+        if (idAdmin != null) {
+            // Redireciona para página principal do admin
+            resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta"); //??????????
+        } else {
+            req.setAttribute("erroLogin", "E-mail ou senha incorretos.");
+            RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/menu/index.jsp");
+            rd.forward(req, resp);
+        }
+    }
+
 
 }

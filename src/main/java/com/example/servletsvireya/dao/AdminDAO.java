@@ -1,9 +1,9 @@
 package com.example.servletsvireya.dao;
-//import com.example.servletsvireya.util.SenhaHash;
+import com.example.servletsvireya.util.SenhaHash;
 import com.example.servletsvireya.dto.AdminDTO;
 import com.example.servletsvireya.model.Admin;
 import com.example.servletsvireya.util.Conexao;
-import com.example.servletsvireya.util.SenhaHash;
+import io.github.cdimascio.dotenv.Dotenv;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,6 +11,11 @@ import java.util.List;
 
 public class AdminDAO {
     Conexao conexao = new Conexao();
+    private static final Dotenv dotenv = Dotenv.load();
+
+    private static final String ADMIN_EMAIL_AUTORIZADO = dotenv.get("ADMIN_EMAIL");
+    private static final String ADMIN_SENHA = dotenv.get("ADMIN_SENHA");
+    private static final String ADMIN_SENHA_HASH = SenhaHash.hashSenha(ADMIN_SENHA);
 
     public int inserirAdmin(AdminDTO adminDTO) {
         Connection conn = conexao.conectar();
@@ -19,7 +24,7 @@ public class AdminDAO {
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setString(1, adminDTO.getNome());
             pstmt.setString(2, adminDTO.getEmail());
-            if (adminDTO.getSenha().length() > 30) {
+            if (adminDTO.getSenha().length() > 60) {
                 return 0;
             }
             pstmt.setString(3, adminDTO.getSenha());
@@ -160,7 +165,7 @@ public class AdminDAO {
 
 
     public Integer seLogar(String email, String senha) {
-        String sql = "SELECT senha FROM admin WHERE email = ?";
+        String sql = "SELECT id, senha FROM admin WHERE email = ?"; // busca id do admin e senha
 
         try (Connection conn = conexao.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -170,9 +175,11 @@ public class AdminDAO {
 
             if (rs.next()) {
                 String senhaBanco = rs.getString("senha");
-//                if (SenhaHash.verificarSenha(senha, senhaBanco)) {
-//                    return rs.getInt("id_eta"); // senha correta
-//                }
+
+                // Verifica se a senha informada bate com a do banco
+                if (SenhaHash.verificarSenha(senha, senhaBanco)) {
+                    return rs.getInt("id"); // retorna o id do admin
+                }
             }
 
         } catch (SQLException e) {
@@ -181,6 +188,7 @@ public class AdminDAO {
 
         return null; // login incorreto
     }
+
 
     public String buscarSenhaPorEmail(String email) {
         String senha = null;
@@ -234,29 +242,57 @@ public class AdminDAO {
     }
 
 
-    public Integer seLogarAreaRestrita(String email, String senha) {
-        String sql = "SELECT senha FROM admin WHERE email = ?";
+    public boolean seLogarAreaRestrita(String email, String senha) {
+        // Apenas o seu email permitido
+        String emailPermitido = ADMIN_EMAIL_AUTORIZADO;
+        String senhaPermitida = ADMIN_SENHA; // ou carregue de um dotenv
+
+        // Confere se bate com os valores permitidos
+        if (email.equals(emailPermitido) && senha.equals(senhaPermitida)) {
+            return true; // login correto
+        } else {
+            return false; // login incorreto
+        }
+    }
+
+    public List<AdminDTO> filtroBuscaPorColuna(String coluna, String pesquisa) {
+        String tabela;
+        if (coluna.equalsIgnoreCase("nome_eta")) {
+            tabela = "ETA";
+            coluna = "NOME";
+        } else {
+            tabela = "ADMIN";
+        }
+        String sql =
+                "SELECT ADMIN.*, ETA.NOME AS nome_eta " +
+                        "FROM ADMIN " +
+                        "JOIN ETA ON ETA.id = ADMIN.id_eta " +
+                        "WHERE "+tabela+"." + coluna + " LIKE ?";
+
+        List<AdminDTO> lista = new ArrayList<>();
 
         try (Connection conn = conexao.conectar();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, email);
-            ResultSet rs = pstmt.executeQuery();
+            stmt.setString(1, "%" + pesquisa + "%");
+            ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                String senhaOriginal= SenhaHash.hashSenha("Vireya2025@");
-
-                if (SenhaHash.verificarSenha(senha, senhaOriginal)) {
-                    return rs.getInt("id_eta"); // senha correta
-                }
+            while (rs.next()) {
+                AdminDTO dto = new AdminDTO();
+                dto.setId(rs.getInt("id"));
+                dto.setNome(rs.getString("nome"));
+                dto.setEmail(rs.getString("email"));
+                dto.setSenha(rs.getString("senha"));
+                dto.setIdEta(rs.getInt("id_eta"));
+                dto.setNomeEta(rs.getString("nome_eta"));
+                lista.add(dto);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return null; // login incorreto
+        return lista;
     }
+
 
 
 }

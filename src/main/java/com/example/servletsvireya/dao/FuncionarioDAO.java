@@ -281,4 +281,54 @@ public class FuncionarioDAO {
             return new ArrayList<>();
         }
     }
+
+
+    public List<FuncionarioDTO> filtroBuscaPorColuna(String coluna, String pesquisa) {
+        String tabela;
+        if (coluna.equalsIgnoreCase("nome_eta")) {
+            tabela = "ETA";
+            coluna = "NOME";
+        } else if (coluna.equalsIgnoreCase("nome_cargo")) {
+            tabela = "CARGO";
+            coluna = "NOME";
+        } else {
+            tabela = "FUNCIONARIO";
+        }
+
+        String sql =
+                "SELECT f.*, e.nome AS nome_eta, c.nome AS nome_cargo " +
+                        "FROM funcionario f " +
+                        "JOIN eta e ON e.id = f.id_eta " +
+                        "JOIN cargo c ON c.id = f.id_cargo " +
+                        "WHERE " + tabela + "." + coluna + " LIKE ?";
+
+        List<FuncionarioDTO> lista = new ArrayList<>();
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + pesquisa + "%");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                FuncionarioDTO dto = new FuncionarioDTO();
+                dto.setId(rs.getInt("id"));
+                dto.setNome(rs.getString("nome"));
+                dto.setEmail(rs.getString("email"));
+                dto.setSenha(rs.getString("senha"));
+                dto.setDataAdmissao(rs.getDate("data_admissao"));
+                dto.setDataNascimento(rs.getDate("data_nascimento"));
+                dto.setIdCargo(rs.getInt("id_cargo"));
+                dto.setNomeCargo(rs.getString("nome_cargo"));
+                dto.setIdEta(rs.getInt("id_eta"));
+                dto.setNomeEta(rs.getString("nome_eta"));
+                lista.add(dto);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
 }
