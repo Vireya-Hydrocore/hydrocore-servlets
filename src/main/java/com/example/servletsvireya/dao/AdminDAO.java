@@ -3,6 +3,7 @@ package com.example.servletsvireya.dao;
 import com.example.servletsvireya.dto.AdminDTO;
 import com.example.servletsvireya.model.Admin;
 import com.example.servletsvireya.util.Conexao;
+import com.example.servletsvireya.util.SenhaHash;
 
 import java.sql.*;
 import java.util.ArrayList;
