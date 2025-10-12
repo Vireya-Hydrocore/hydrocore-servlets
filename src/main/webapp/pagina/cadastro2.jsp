@@ -38,10 +38,6 @@
         </div>
         <h1>Cadastrar Endereço</h1>
 
-        <%--
-        Este formulário vai para o Servlet de cadastro.
-        Altere o action conforme o nome do seu servlet e defina o método (POST recomendado).
-        --%>
         <form action="${pageContext.request.contextPath}/ServletEta" method="post" id="form-endereco">
             <input type="hidden" name="action" value="createEta">
 

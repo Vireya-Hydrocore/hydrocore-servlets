@@ -64,13 +64,13 @@
   <h2>Login</h2>
 
   <%
-    String erro = (String) request.getAttribute("erro");
+    String erro = (String) request.getAttribute("erroLogin");
     if (erro != null) {
   %>
   <div class="erro"><%= erro %></div>
   <% } %>
 
-  <form action="<%= request.getContextPath() %>/ServletAdmin?action=logarAdmin" method="post">
+  <form action="${pageContext.request.contextPath}/ServletLogin?action=logarAdmin" method="post">
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" placeholder="Digite seu email" required>
 

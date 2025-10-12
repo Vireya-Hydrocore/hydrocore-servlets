@@ -1,22 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: iagodiniz-ieg
-  Date: 07/10/2025
-  Time: 06:51
-  To change this template use File | Settings | File Templates.
---%>
-<%--
-  Created by IntelliJ IDEA.
-  User: iagodiniz-ieg
   Date: 06/10/2025
   Time: 21:10
-  To change this template use File | Settings | File Templates.
---%>
-<%--
-  Created by IntelliJ IDEA.
-  User: eriksilva-ieg
-  Date: 08/10/2025
-  Time: 21:30
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" %>
@@ -78,13 +64,13 @@
   <h2>Login</h2>
 
   <%
-    String erro = (String) request.getAttribute("erro");
+    String erro = (String) request.getAttribute("erroLogin");
     if (erro != null) {
   %>
   <div class="erro"><%= erro %></div>
   <% } %>
 
-  <form action="<%= request.getContextPath() %>/ServletAdmin?action=logar" method="post">
+  <form action="${pageContext.request.contextPath}/ServletLogin?action=logar" method="post">
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" placeholder="Digite seu email" required>
 
