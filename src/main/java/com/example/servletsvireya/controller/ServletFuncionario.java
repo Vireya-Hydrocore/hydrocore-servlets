@@ -22,14 +22,14 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/ServletFuncionario", "/mainFuncionario", "/createFuncionario", "/selectFuncionario", "/updateFuncionario", "/deleteFuncionario"}, name = "ServletFuncionario")
+@WebServlet(urlPatterns = {"/ServletFuncionario", "/mainFuncionario", "/createFuncionario", "/selectFuncionario", "/updateFuncionario", "/deleteFuncionario", "/filtroFuncionario"}, name = "ServletFuncionario")
 public class ServletFuncionario extends HttpServlet {
 
     private FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
 
 
     // ===============================================================
-    //            Método doGet (variáveis passam pela URL)
+    //            Método doGet (atributos passam pela URL)
     // ===============================================================
 
     @Override
@@ -48,10 +48,13 @@ public class ServletFuncionario extends HttpServlet {
             switch (action) {
                 case "mainFuncionario":
                     listarFuncionarios(req, resp);
+                    break;
                 case "selectFuncionario":
                     buscarFuncionario(req, resp);
+                    break;
                 case "filtroFuncionario":
-                    filtroFuncionario(req, resp);
+                    filtrarFuncionario(req, resp);
+                    break;
                 default:
                     resp.sendRedirect(req.getContextPath() + "/paginasCrud/funcionario/funcionarioIndex.jsp");
             }
@@ -62,20 +65,24 @@ public class ServletFuncionario extends HttpServlet {
 
 
     // ===============================================================
-    //            Método doPost (passam pelo servidor)
+    //          Método doPost (atributos passam pelo servidor)
     // ===============================================================
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String action = req.getParameter("action");
 
         switch (action) {
             case "createFuncionario":
                 inserirFuncionario(req, resp);
+                break;
             case "updateFuncionario":
                 alterarFuncionario(req,resp);
+                break;
             case "deleteFuncionario":
                 removerFuncionario(req, resp);
+                break;
             default:
                 resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario");
         }
@@ -91,9 +98,9 @@ public class ServletFuncionario extends HttpServlet {
 
     protected void listarFuncionarios(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<FuncionarioDTO> lista = funcionarioDAO.listarFuncionarios(); //Objetos retornados na query
+        List<FuncionarioDTO> lista = funcionarioDAO.listarFuncionarios(); //List de objetos retornados na query
 
-        req.setAttribute("funcionarios", lista); //Devolve a lista de produtos encontrados em um novo atributo
+        req.setAttribute("funcionarios", lista); //Devolve a lista de produtos encontrados em um novo atributo, para a pagina JSP
 
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/funcionario/funcionarioIndex.jsp"); //Envia para a página principal
         rd.forward(req, resp);
@@ -102,10 +109,10 @@ public class ServletFuncionario extends HttpServlet {
 
     // ===============================================================
     //               Método para INSERIR o funcionário
-    // ================================================================
+    // ===============================================================
 
     protected void inserirFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //Criado um DTO para armazenar os valores inseridos
+        //Criando um DTO para armazenar os valores inseridos
         FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
 
         CargoDAO cargoDAO = new CargoDAO(); //Para realizar a busca do id do cargo
@@ -138,7 +145,7 @@ public class ServletFuncionario extends HttpServlet {
         int resultado = funcionarioDAO.inserirFuncionario(funcionarioDTO);
 
         if (resultado == 1) {
-            resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario"); //Lista novamente os produtos se der certo
+            resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario"); //Lista novamente os funcionarios se der certo
         } else {
             req.setAttribute("erro", "Não foi possível inserir esse funcionário, Verifique os campos e tente novamente!"); //Setta um atributo com o erro
             req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp); //Vai para a página de erro
@@ -218,9 +225,12 @@ public class ServletFuncionario extends HttpServlet {
     }
 
 
+    // ===============================================================
+    //     Método para FILTRAR o funcionário (por coluna e valor)
+    // ===============================================================
 
-    protected void filtroFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<FuncionarioDTO> lista = funcionarioDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"),req.getParameter("pesquisa"));
+    protected void filtrarFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<FuncionarioDTO> lista = funcionarioDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
 
         req.setAttribute("funcionarios", lista);
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/funcionario/funcionarioIndex.jsp");

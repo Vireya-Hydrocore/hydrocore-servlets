@@ -37,10 +37,13 @@ public class ServletProduto extends HttpServlet {
             switch (action) {
                 case "mainProduto":
                     listarProdutos(req, resp);
+                    break;
                 case "selectProduto":
                     buscarProduto(req, resp);
+                    break;
                 case "filtroProduto":
                     filtroProduto(req, resp);
+                    break;
                 default:
                     resp.sendRedirect(req.getContextPath() + "/paginasCrud/produto/produtoIndex.jsp");
             }
@@ -61,10 +64,13 @@ public class ServletProduto extends HttpServlet {
         switch (action) {
             case "createProduto":
                 inserirProduto(req, resp);
+                break;
             case "updateProduto":
                 alterarProduto(req, resp);
+                break;
             case "deleteProduto":
                 removerProduto(req, resp);
+                break;
             default:
                 resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto");
         }
@@ -80,7 +86,7 @@ public class ServletProduto extends HttpServlet {
 
     protected void listarProdutos(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<ProdutoDTO> lista = produtoDAO.listarProduto(); //Objetos retornados na query
+        List<ProdutoDTO> lista = produtoDAO.listarProduto(); //List de objetos retornados na query
 
         req.setAttribute("produtos", lista); //Devolve a lista de produtos encontrados em um novo atributo
 
