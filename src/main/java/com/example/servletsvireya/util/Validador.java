@@ -8,9 +8,11 @@ public class Validador {
         return valor >= 0; //Zero conta como positivo
     }
 
-    /*
-     * VALIDAÇÃO DE SENHA
-     */
+
+    //
+    // VALIDAÇÃO DE SENHA
+    //
+
     public static List<String> validarSenha(String senha) {
         List<String> erros = new ArrayList<>();
 

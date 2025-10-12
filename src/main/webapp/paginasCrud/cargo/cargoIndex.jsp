@@ -10,8 +10,8 @@
 <%@ page import="com.example.servletsvireya.dto.CargoDTO" %>
 
 <%
-    List<CargoDTO> lista = (List<CargoDTO>) request.getAttribute("cargo");
-    Boolean alterado = (Boolean) request.getAttribute("alteradoSucesso");
+    List<CargoDTO> lista = (List<CargoDTO>) request.getAttribute("cargos");
+//    Boolean alterado = (Boolean) request.getAttribute("alteradoSucesso");
 %>
 
 <!DOCTYPE html>
@@ -122,13 +122,13 @@
                 </form>
             </section>
 
-            <% if (alterado != null && alterado) { %>
-            <script>
-                window.onload = function() {
-                    alert("✅ Cargo alterado com sucesso!");
-                }
-            </script>
-            <% } %>
+<%--            <% if (alterado != null && alterado) { %>--%>
+<%--            <script>--%>
+<%--                window.onload = function() {--%>
+<%--                    alert("✅ Cargo alterado com sucesso!");--%>
+<%--                }--%>
+<%--            </script>--%>
+<%--            <% } %>--%>
 
             <table>
                 <thead>
@@ -149,12 +149,12 @@
                     <td>
                         <!-- Editar -->
                         <a class="botao-editar"
-                           href="${pageContext.request.contextPath}/ServletCargo?action=editarCargo&id=<%= c.getId() %>">Editar</a>
+                           href="${pageContext.request.contextPath}/ServletCargo?action=selectCargo&id=<%= c.getId() %>">Editar</a>
 
                         &nbsp;|&nbsp;
 
                         <!-- Excluir -->
-                        <form action="<%= request.getContextPath() %>/ServletCargo" method="get" style="display:inline;">
+                        <form action="<%= request.getContextPath() %>/ServletCargo" method="post" style="display:inline;">
                             <input type="hidden" name="action" value="deleteCargo">
                             <input type="hidden" name="id" value="<%= c.getId() %>">
                             <button class="botao-excluir" type="submit"

@@ -9,7 +9,7 @@
 <%@ page import="com.example.servletsvireya.dto.CargoDTO" %>
 
 <%
-    CargoDTO cargo = (CargoDTO) request.getAttribute("cargoSelecionado");
+    CargoDTO cargo = (CargoDTO) request.getAttribute("cargo");
 %>
 
 <!DOCTYPE html>
@@ -75,13 +75,13 @@
 
     <form action="${pageContext.request.contextPath}/ServletCargo" method="post">
         <input type="hidden" name="action" value="updateCargo">
-        <input type="hidden" name="id" value="${cargoSelecionado.id}" readonly>
+        <input type="hidden" name="id" value="${cargo.id}" readonly>
 
         <label for="cargo">Nome do cargo:</label>
-        <input type="text" id="cargo" name="nomeCargo" value="${cargoSelecionado.nome}" required><br>
+        <input type="text" id="cargo" name="nomeCargo" value="${cargo.nome}" required><br>
 
         <label for="nivelAcesso">Nível de acesso:</label>
-        <input type="number" id="nivelAcesso" name="nivelAcesso"  value="${cargoSelecionado.acesso}" required><br>
+        <input type="number" id="nivelAcesso" name="nivelAcesso"  value="${cargo.acesso}" required><br>
 
         <button type="submit">Salvar</button>
     </form>

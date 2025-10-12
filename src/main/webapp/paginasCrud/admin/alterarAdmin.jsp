@@ -6,6 +6,11 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.example.servletsvireya.dto.AdminDTO" %>
+
+<%
+    AdminDTO admin = (AdminDTO) request.getAttribute("admin");
+%>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -75,26 +80,26 @@
     <h2>Alterar Admin</h2>
 
     <form action="${pageContext.request.contextPath}/ServletAdmin" method="post">
-        <input type="hidden" name="action" value="updateAdmin"> <!-- Servlet enxerga que o action é updateEstoque -->
+        <input type="hidden" name="action" value="updateAdmin"> <!-- Servlet enxerga que o action é updateAdmin -->
 
         <div class="campos-readonly">
             <label>ID</label>
-            <input type="number" name="id" value="${id}" readonly>
+            <input type="number" name="id" value="${admin.id}" readonly>
         </div>
 
         <div class="campos">
             <label>Nome</label>
-            <input type="text" name="nome" value="${nome}" required>
+            <input type="text" name="nome" value="${admin.nome}" required>
         </div>
 
         <div class="campos">
             <label>E-mail</label>
-            <input type="email" name="email" value="${email}" required>
+            <input type="email" name="email" value="${admin.email}" required>
         </div>
 
         <div class="campos">
             <label>Senha</label>
-            <input type="password" name="senha" value="${senha}" required>
+            <input type="password" name="senha" value="${admin.senha}" required>
         </div>
 
         <div class="acoes">
