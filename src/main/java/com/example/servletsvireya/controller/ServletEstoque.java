@@ -15,42 +15,49 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/ServletEstoque", "/mainEstoque", "/createEstoque", "/selectEstoque", "/updateEstoque", "/deleteEstoque"}, name = "ServletEstoque")
+@WebServlet(urlPatterns = {"/ServletEstoque", "/mainEstoque", "/createEstoque", "/selectEstoque", "/updateEstoque", "/deleteEstoque", "/filtroEstoque"}, name = "ServletEstoque")
 public class ServletEstoque extends HttpServlet {
 
     private EstoqueDAO estoqueDAO = new EstoqueDAO();
 
-    // GET
+
+    // ===============================================================
+    //            Método doGet (variáveis passam pela URL)
+    // ===============================================================
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("action");
-        System.out.println(action);
+
+        String action = req.getParameter("action"); //Vem com a ação do usuário
 
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
             // comportamento padrão: listar estoques (ou redirecionar)
-            listarEstoquePorEta(req, resp); //mudar para listarEstoque Por Eta
+            listarEstoque(req, resp);
             return;
         }
 
         try {
             switch (action) {
                 case "mainEstoque":
-                    listarEstoquePorEta(req, resp);
-                    break;
+                    listarEstoque(req, resp);
                 case "selectEstoque":
                     buscarEstoque(req, resp);
-                    break;
+                case "filtroEstoque":
+                    filtroEstoque(req, resp);
                 default:
                     resp.sendRedirect(req.getContextPath() + "/paginasCrud/estoque/estoqueIndex.jsp");
             }
         } catch (Exception e) {
-            System.out.println("EXCEÇÃO");
-            e.printStackTrace();
+            e.printStackTrace(); //Mostra a exceção possível
         }
     }
 
-    // POST
+
+    // ===============================================================
+    //            Método doPost (passam pelo servidor)
+    // ===============================================================
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
@@ -58,63 +65,64 @@ public class ServletEstoque extends HttpServlet {
         switch (action) {
             case "createEstoque":
                 inserirEstoque(req, resp);
-                break;
             case "updateEstoque":
                 alterarEstoque(req, resp);
-                break;
             case "deleteEstoque":
                 removerEstoque(req, resp);
-                break;
             default:
                 resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque");
         }
     }
 
-    // MÉTODOS AUXILIARES
-    //LISTA POR ETA
-    protected void listarEstoquePorEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<EstoqueDTO> lista = estoqueDAO.listarEstoque();
 
-        req.setAttribute("estoques", lista);
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/estoque/estoqueIndex.jsp");
+    // ================== MÉTODOS AUXILIARES =========================
+
+
+    // ===============================================================
+    //                Método para LISTAR o estoque
+    // ===============================================================
+
+    protected void listarEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        List<EstoqueDTO> lista = estoqueDAO.listarEstoque(); //Objetos retornados na query
+
+        req.setAttribute("estoques", lista); //Devolve a lista de produtos encontrados em um novo atributo
+
+        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/estoque/estoqueIndex.jsp"); //Envia para a página principal
         rd.forward(req, resp);
     }
 
 
     // ===============================================================
-    //               Método para INSERIR o estoque
+    //               Método para INSERIR um estoque
     // ================================================================
 
     protected void inserirEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        //Instanciando objeto DTO
+        //Criado um DTO para armazenar os valores inseridos
         EstoqueDTO estoqueDTO = new EstoqueDTO();
-        EtaDAO etaDao = new EtaDAO();
-
         estoqueDTO.setQuantidade(Integer.parseInt(req.getParameter("quantidade")));
         String dataStr = req.getParameter("dataValidade"); //Convertendo de String para Date
         estoqueDTO.setDataValidade(java.sql.Date.valueOf(dataStr));
         estoqueDTO.setMinPossivelEstocado(Integer.parseInt(req.getParameter("minPossivelEstocado")));
-        String nomeProduto=req.getParameter("nomeProduto");
-        estoqueDTO.setNomeProduto(nomeProduto);
-        ProdutoDAO produtdao= new ProdutoDAO();
-        int idProduto= produtdao.buscarIdPorNome(nomeProduto);
 
+        ProdutoDAO produtoDAO= new ProdutoDAO(); //Para realizar a busca do nome do produto
+        String nomeProduto = req.getParameter("nomeProduto");
+        int idProduto = produtoDAO.buscarIdPorNome(nomeProduto);
+        estoqueDTO.setIdProduto(idProduto);
+        estoqueDTO.setNomeProduto(nomeProduto);
+
+        EtaDAO etaDao = new EtaDAO(); //Realizar a busca do id da ETA
         String nomeEta= req.getParameter("nomeEta");
         estoqueDTO.setIdEta(etaDao.buscarIdPorNome(nomeEta));
         estoqueDTO.setNomeEta(nomeEta);
 
-
-        estoqueDTO.setIdProduto(idProduto); //para teste
-
         int resultado = estoqueDAO.inserirEstoque(estoqueDTO);
 
         if (resultado == 1) {
-            resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque");
+            resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque"); //Lista novamente os produtos se der certo
         } else {
-            // Página de erro
-            req.setAttribute("erro", "Não foi possível inserir esse estoque");
-            req.getRequestDispatcher("/paginasCrud/erro.jsp");
+            req.setAttribute("erro", "Não foi possível inserir esse estoque, Verifique os campos e tente novamente!"); //Setta um atributo com o erro
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
     }
 
@@ -124,21 +132,13 @@ public class ServletEstoque extends HttpServlet {
     // ================================================================================
 
     protected void buscarEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //Recebimento do id do estoque que será editado
-        int id = Integer.parseInt(req.getParameter("id"));
-
-        //Setar a variavel Estoque
+        //Settando o id no EstoqueDTO
         EstoqueDTO estoqueDTO = new EstoqueDTO();
-        estoqueDTO.setId(id);
+        estoqueDTO.setId(Integer.parseInt(req.getParameter("id")));
 
-        //executar o metodo buscarPorId
         estoqueDAO.buscarPorId(estoqueDTO); //No mesmo objeto, setta os valores encontrados
 
-        //Setar os atributos do formulário no estoqueDTO
-        req.setAttribute("id", estoqueDTO.getId());
-        req.setAttribute("quantidade", estoqueDTO.getQuantidade());
-        req.setAttribute("dataValidade", estoqueDTO.getDataValidade());
-        req.setAttribute("minPossivelEstocado", estoqueDTO.getMinPossivelEstocado());
+        req.setAttribute("estoque", estoqueDTO); //Setta em um novo atributo para o JSP pegar os valores
 
         //Encaminhar ao documento alterarEstoque.jsp
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/estoque/alterarEstoque.jsp");
@@ -151,7 +151,6 @@ public class ServletEstoque extends HttpServlet {
     // ================================================================
 
     protected void alterarEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         // Settando os valores no estoqueDTO ---> ---> --> usuário não pode mudar a eta
         EstoqueDTO estoqueDTO = new EstoqueDTO();
         estoqueDTO.setId(Integer.parseInt(req.getParameter("id")));
@@ -166,9 +165,7 @@ public class ServletEstoque extends HttpServlet {
         // Tratar o resultado
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque");
-        }
-        else { // Página de erro
-            //Settando atributo que será pego no JSP
+        } else {
             req.setAttribute("erro", "Não foi possível alterar o estoque! Verifique os campos e tente novamente.");
             req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
         }
@@ -180,21 +177,31 @@ public class ServletEstoque extends HttpServlet {
     // ================================================================
 
     protected void removerEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        //Instanciando objeto DTO
+        //Instanciando objeto DTO e settando o id para remoção
         EstoqueDTO estoqueDTO = new EstoqueDTO();
         estoqueDTO.setId(Integer.parseInt(req.getParameter("id")));
 
         int resultado = estoqueDAO.removerEstoque(estoqueDTO);
 
         if (resultado == 1) {
-            // Atualiza a lista de produtos na mesma página
-            listarEstoquePorEta(req, resp);
+            listarEstoque(req, resp);
         } else {
-            // Página de erro
-            //Settando atributo que será pego no JSP
-            req.setAttribute("erro", "Não foi possível remover o estoque! Tente novamente.");
+            req.setAttribute("erro", "Não foi possível remover o estoque, tente novamente mais tarde.");
             req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
         }
+    }
+
+
+    // ===============================================================
+    //        Método para FILTRAR o estoque (por coluna e valor)
+    // ===============================================================
+
+    protected void filtroEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //Armazena a query filtrada em um novo List
+        List<EstoqueDTO> lista = estoqueDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
+
+        req.setAttribute("estoques", lista);
+        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/estoque/estoqueIndex.jsp");
+        rd.forward(req, resp);
     }
 }

@@ -82,7 +82,7 @@
     <h2>Cadastro de ETA</h2>
 
     <form action="${pageContext.request.contextPath}/ServletEta" method="post">
-        <input type="hidden" name="action" value="cadastrar">
+        <input type="hidden" name="action" value="createEta">
 
         <label>Nome da ETA:</label>
         <input type="text" name="nome" required>
@@ -127,7 +127,7 @@
 
 </div>
 
-<script src="${pageContext.request.contextPath}/paginasCrud/eta/regex.js"></script>
-<script src="${pageContext.request.contextPath}/paginasCrud/eta/script.js"></script>
+<script src="${pageContext.request.contextPath}/paginasCrud/eta/js/regex.js"></script>
+<script src="${pageContext.request.contextPath}/paginasCrud/eta/js/script.js"></script>
 </body>
 </html>

@@ -27,21 +27,12 @@
 <header>
   <button class="menu" id="menu-toggle">☰</button>
   <h1 class="logo">HydroCore</h1>
-  <div class="avatar-container">
-    <div class="avatar" id="avatar">
-      <div class="dropdown" id="dropdown">
-        <ul>
-          <div>
-            <form action="${pageContext.request.contextPath}/ServletAdmin" method="post">
-              <input type="hidden" name="action" value="logout">
-              <button class="logout" type="submit">
-                <li><img src="${pageContext.request.contextPath}/paginasCrud/img/porta.png">Sair</li>
-              </button>
-            </form>
-          </div>
-        </ul>
-      </div>
-    </div>
+
+  <div class="logout-container">
+    <form action="${pageContext.request.contextPath}/ServletAdmin" method="post">
+      <input type="hidden" name="action" value="logout">
+      <a href="${pageContext.request.contextPath}/paginasCrud/admin/logarAdmin.jsp" class="logout-btn" type="submit" title="Sair">Sair</a>
+    </form>
   </div>
 </header>
 
@@ -74,7 +65,36 @@
     <!-- LISTA DAS ETAS -->
 
     <section class="lista">
-      <h2>Lista de Estacoes de Tratamento de Agua</h2>
+      <div class="filtro">
+        <!-- FILTRO DE ETAS -->
+        <h2>Lista de Estações de Tratamento de Água</h2>
+
+        <form action="${pageContext.request.contextPath}/ServletEta" method="get">
+          <input type="hidden" name="action" value="filtroEta">
+
+          <div class="campos">
+            <label>Coluna</label>
+            <select name="nome_coluna">
+              <option value="nome">Nome</option>
+              <option value="capacidade">Capacidade</option>
+              <option value="telefone">Telefone</option>
+              <option value="cnpj">CNPJ</option>
+              <option value="cep">CEP</option> <!--endereço-->
+            </select>
+          </div>
+
+          <div class="campos">
+            <label>Pesquisa</label>
+            <input type="text" name="pesquisa" placeholder="Digite o termo de busca...">
+          </div>
+
+          <div class="acoes">
+            <button type="submit" class="botao-salvar">Aplicar Filtro</button>
+          </div>
+
+        </form>
+      </div>
+
       <table>
         <thead>
         <th>ID</th>
@@ -82,6 +102,7 @@
         <th>Capacidade</th>
         <th>Telefone</th>
         <th>CNPJ</th>
+        <th>CEP</th>
         <th>Ações</th>
         </thead>
         <tbody>
@@ -93,6 +114,12 @@
           <td><%= lista.get(i).getCapacidade() %></td>
           <td><%= lista.get(i).getTelefone() %></td>
           <td><%= lista.get(i).getCnpj() %></td>
+          <td><%= lista.get(i).getCep() %></td>
+          <td style="display: none"><%= lista.get(i).getRua() %></td>
+          <td style="display: none"><%= lista.get(i).getBairro() %></td>
+          <td style="display: none"><%= lista.get(i).getCidade() %></td>
+          <td style="display: none"><%= lista.get(i).getEstado() %></td>
+          <td style="display: none"><%= lista.get(i).getNumero() %></td>
           <td>
             <!-- Botão Editar -->
             <a class="botao-editar" href="${pageContext.request.contextPath}/ServletEta?action=selectEta&id=<%= lista.get(i).getId() %>">Editar</a>

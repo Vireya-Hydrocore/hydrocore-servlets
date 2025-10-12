@@ -257,4 +257,77 @@ public class ProdutoDAO {
             return new ArrayList<>();
         }
     }
+
+    public List<ProdutoDTO> filtroBuscaPorColuna(String coluna, String pesquisa) {
+        String tabela;
+        String operador = "LIKE";
+        boolean numero = false;
+        boolean Double = false;
+
+        // Define de qual tabela e tipo de dado vem a coluna
+        switch (coluna.toLowerCase()) {
+            case "id":
+                tabela = "PRODUTO";
+                operador = "=";
+                numero = true;
+                break;
+
+            case "concentracao":
+                tabela = "PRODUTO";
+                operador = "=";
+                Double = true;
+                break;
+
+            case "nome_eta":
+                tabela = "ETA";
+                coluna = "NOME";
+                break;
+
+            default:
+                tabela = "PRODUTO";
+        }
+
+        // SQL com join para trazer nome da ETA
+        String sql =
+                "SELECT PRODUTO.*, ETA.NOME AS nome_eta " +
+                        "FROM PRODUTO " +
+                        "JOIN ESTOQUE ON ESTOQUE.id_produto = PRODUTO.id " +
+                        "JOIN ETA ON ETA.id = ESTOQUE.id_eta " +
+                        "WHERE " + tabela + "." + coluna + " " + operador + " ?";
+
+        List<ProdutoDTO> lista = new ArrayList<>();
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Define o tipo de dado corretamente
+            if (numero) {
+                stmt.setInt(1, Integer.parseInt(pesquisa));
+            } else if (Double) {
+                stmt.setDouble(1, java.lang.Double.parseDouble(pesquisa));
+            } else {
+                stmt.setString(1, "%" + pesquisa + "%");
+            }
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                ProdutoDTO dto = new ProdutoDTO();
+                dto.setId(rs.getInt("id"));
+                dto.setNome(rs.getString("nome"));
+                dto.setTipo(rs.getString("tipo"));
+                dto.setUnidadeMedida(rs.getString("unidade_medida"));
+                dto.setConcentracao(rs.getDouble("concentracao"));
+                dto.setNomeEta(rs.getString("nome_eta"));
+                lista.add(dto);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            System.out.println("valor invalido para número ou concentração");
+        }
+
+        return lista;
+    }
 }

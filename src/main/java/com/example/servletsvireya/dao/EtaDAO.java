@@ -4,6 +4,7 @@ package com.example.servletsvireya.dao;
 
 import com.example.servletsvireya.dto.AdminDTO;
 import com.example.servletsvireya.dto.EtaDTO;
+import com.example.servletsvireya.dto.ProdutoDTO;
 import com.example.servletsvireya.model.Eta;
 import com.example.servletsvireya.util.Conexao;
 
@@ -51,7 +52,9 @@ public class EtaDAO {
         List<EtaDTO> etas = new ArrayList<>();
 
         Connection conn = conexao.conectar();
-        String comando = "SELECT * FROM eta ORDER BY id";
+        String comando = "SELECT e.*, en.cep FROM eta e " +
+                "JOIN endereco en ON en.id = e.id_endereco " +
+                "ORDER BY id";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             rset = pstmt.executeQuery();
@@ -63,6 +66,7 @@ public class EtaDAO {
                 etaDTO.setCapacidade(rset.getInt("capacidade"));
                 etaDTO.setTelefone(rset.getString("telefone"));
                 etaDTO.setCnpj(rset.getString("cnpj"));
+                etaDTO.setCep(rset.getString("cep")); //Endereço
 
                 //Populando o list
                 etas.add(etaDTO);
@@ -78,26 +82,57 @@ public class EtaDAO {
     }
 
 
-    // Método alterarETA()
-    public int alterarETA(EtaDTO etaDTO) {
+    // Método alterarEta()
+    public int alterarEta(EtaDTO etaDTO) {
         Connection conn = conexao.conectar();
-        String comando = "UPDATE eta SET nome = ?, capacidade = ?, telefone = ? WHERE id = ?";
+        String comandoEta = "UPDATE eta SET nome = ?, capacidade = ?, telefone = ? WHERE id = ?"; //Não pode mudar cnpj
+        String comandoEndereco = "UPDATE endereco SET rua = ?, bairro = ?, cidade = ?, estado = ?, numero = ?, cep = ? WHERE id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
-            pstmt.setString(1, etaDTO.getNome());
-            pstmt.setInt(2, etaDTO.getCapacidade());
-            pstmt.setString(3, etaDTO.getTelefone());
-            pstmt.setInt(4, etaDTO.getId());
+        try (PreparedStatement pstmt = conn.prepareStatement(comandoEndereco);
+             PreparedStatement pstmt2 = conn.prepareStatement(comandoEta)) {
 
-            if (pstmt.executeUpdate() > 0) {
+            conn.setAutoCommit(false); //Tem que verificar se os dois atualizaram
+
+            //Primeiro altera endereço
+            pstmt.setString(1, etaDTO.getRua());
+            pstmt.setString(2, etaDTO.getBairro());
+            pstmt.setString(3, etaDTO.getCidade());
+            pstmt.setString(4, etaDTO.getEstado());
+            pstmt.setInt(5, etaDTO.getNumero());
+            pstmt.setString(6, etaDTO.getCep());
+            pstmt.setInt(7, etaDTO.getId()); //mesmo id
+
+            if (pstmt.executeUpdate() <= 0){
+                return 0;
+            }
+
+            //Em eta
+            pstmt2.setString(1, etaDTO.getNome());
+            pstmt2.setInt(2, etaDTO.getCapacidade());
+            pstmt2.setString(3, etaDTO.getTelefone());
+            pstmt2.setInt(4, etaDTO.getId()); //WHERE id = ?
+
+            if (pstmt2.executeUpdate() > 0) {
+                conn.commit(); //Deu certo
                 return 1;
             } else {
+                conn.rollback();
                 return 0;
             }
         } catch (SQLException sqle) {
             sqle.printStackTrace();
+            try {
+                if (conn != null) conn.rollback(); //Volta pois algum nao deu certo
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             return -1;
         } finally {
+            try {
+                if (conn != null) conn.setAutoCommit(true); //Setta true novamente
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             conexao.desconectar();
         }
     }
@@ -212,7 +247,7 @@ public class EtaDAO {
         ResultSet rset = null; //Consulta da tabela
         Connection conn = conexao.conectar();
         //Prepara a consulta SQL para selecionar os produtos por ordem de ID
-        String comando = "SELECT eta.*, endereco.rua, endereco.estado FROM eta " +
+        String comando = "SELECT eta.*, endereco.* FROM eta " +
                 "JOIN endereco on endereco.id = eta.id_endereco" +
                 " WHERE eta.id = ?";
 
@@ -228,7 +263,11 @@ public class EtaDAO {
                 etaDTO.setTelefone(rset.getString("telefone"));
                 etaDTO.setCnpj(rset.getString("cnpj"));
                 etaDTO.setRua(rset.getString("rua")); //endereço
+                etaDTO.setBairro(rset.getString("bairro"));
+                etaDTO.setCidade(rset.getString("cidade"));
                 etaDTO.setEstado(rset.getString("estado"));
+                etaDTO.setCep(rset.getString("cep"));
+                etaDTO.setNumero(Integer.parseInt(rset.getString("numero")));
             }
             return etaDTO; //se não encontrar, volta null
 
@@ -287,6 +326,1413 @@ public class EtaDAO {
 
         return eta;
     }
+
+
+    public List<EtaDTO> filtroBuscaPorColuna(String coluna, String pesquisa) {
+        String tabela;
+        String operador = "LIKE";
+        boolean numero = false; //Inteiro
+        boolean Double = false;
+
+        // Define de qual tabela e tipo de dado vem a coluna
+        switch (coluna.toLowerCase()) {
+            case "capacidade":
+                tabela = "eta";
+                operador = "=";
+                numero = true;
+                break;
+            case "cep":
+                tabela = "endereco";
+                operador = "LIKE";
+                numero = true;
+                break;
+            default:
+                tabela = "eta";
+        }
+
+        // SQL com join para trazer nome da ETA
+        String sql =
+                "SELECT eta.*, endereco.cep FROM eta " +
+                        "JOIN endereco ON endereco.id = eta.id_endereco" +
+                        "WHERE " + tabela + "." + coluna + " " + operador + " ?";
+
+        List<EtaDTO> lista = new ArrayList<>();
+        Connection conn = conexao.conectar();
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Define o tipo de dado corretamente
+            if (numero) {
+                stmt.setInt(1, Integer.parseInt(pesquisa));
+            } else { //É string
+                stmt.setString(1, "%" + pesquisa + "%");
+            }
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                EtaDTO dto = new EtaDTO();
+                dto.setId(rs.getInt("id"));
+                dto.setNome(rs.getString("nome"));
+                dto.setTelefone(rs.getString("telefone"));
+                dto.setCnpj(rs.getString("cnpj"));
+                dto.setCep(rs.getString("cep")); //endereço
+                lista.add(dto);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            System.out.println("valor inválido para número ou concentração");
+        }
+
+        return lista;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
