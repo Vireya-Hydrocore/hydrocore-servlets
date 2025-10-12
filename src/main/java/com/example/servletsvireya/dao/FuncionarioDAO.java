@@ -296,10 +296,10 @@ public class FuncionarioDAO {
         }
 
         String sql =
-                "SELECT f.*, e.nome AS nome_eta, c.nome AS nome_cargo " +
-                        "FROM funcionario f " +
-                        "JOIN eta e ON e.id = f.id_eta " +
-                        "JOIN cargo c ON c.id = f.id_cargo " +
+                "SELECT FUNCIONARIO.*, ETA.nome AS nome_eta, CARGO.nome AS nome_cargo " +
+                        "FROM FUNCIONARIO " +
+                        "JOIN ETA ON ETA.id = FUNCIONARIO.id_eta " +
+                        "JOIN CARGO ON CARGO.id = FUNCIONARIO.id_cargo " +
                         "WHERE " + tabela + "." + coluna + " LIKE ?";
 
         List<FuncionarioDTO> lista = new ArrayList<>();

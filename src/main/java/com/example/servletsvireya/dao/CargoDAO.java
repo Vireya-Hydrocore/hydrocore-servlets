@@ -43,26 +43,29 @@ public class CargoDAO {
         }
     }
 
-    public CargoDTO buscarCargo(int id) {
-        String comandoSQL = "SELECT * FROM Cargo WHERE id = ?";
-        try (Connection conn = conexao.conectar();
-             PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
+    public CargoDTO buscarPorId(CargoDTO cargoDTO) {
+        Connection conn = conexao.conectar();
+        String comandoSQL = "SELECT * FROM cargo WHERE id = ?";
 
-            pstmt.setInt(1, id);
+        try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
+
+            pstmt.setInt(1, cargoDTO.getId());
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                CargoDTO cargo = new CargoDTO();
-                cargo.setId(rs.getInt("id"));
-                cargo.setNome(rs.getString("nome"));
-                cargo.setAcesso(rs.getInt("acesso"));
-                cargo.setIdEta(rs.getInt("id_eta")); // adiciona o id_eta também
-                return cargo;
+                cargoDTO.setId(rs.getInt("id"));
+                cargoDTO.setNome(rs.getString("nome"));
+                cargoDTO.setAcesso(rs.getInt("acesso"));
+                cargoDTO.setIdEta(rs.getInt("id_eta")); // adiciona o id_eta também
             }
+            return cargoDTO;
+
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
+        } finally {
+            conexao.desconectar();
         }
-        return null;
     }
 
 //    // 🔍 LISTAR CARGOS POR ETA (sem depender de funcionário)
