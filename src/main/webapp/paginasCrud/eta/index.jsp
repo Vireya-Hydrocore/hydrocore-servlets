@@ -84,8 +84,8 @@
     </div>
   </div>
 </main>
-<script src="${pageContext.request.contextPath}/paginasCrud/eta/regex.js"></script>
-<script src="${pageContext.request.contextPath}/paginasCrud/eta/script.js"></script>
+<script src="${pageContext.request.contextPath}/paginasCrud/eta/js/regex.js"></script>
+<script src="${pageContext.request.contextPath}/paginasCrud/eta/js/script.js"></script>
 
 </body>
 </html>

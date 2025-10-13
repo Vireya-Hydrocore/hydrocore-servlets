@@ -1,6 +1,7 @@
 package com.example.servletsvireya.dao;
 
 import com.example.servletsvireya.dto.EstoqueDTO;
+import com.example.servletsvireya.dto.EtaDTO;
 import com.example.servletsvireya.util.Conexao;
 
 import java.sql.*;
@@ -50,7 +51,7 @@ public class EstoqueDAO { //erik
             pstmt.setInt(1, estoqueDTO.getId());
 
 //            Verificando se o estoque existe
-            if (buscarPorId(estoqueDTO) == null){
+            if (buscarPorId(estoqueDTO) == null) {
                 return 0; //Se não tiver, retorna 0
             }
 
@@ -66,7 +67,6 @@ public class EstoqueDAO { //erik
             conexao.desconectar();
         }
     }
-
 
 
     // Método alterar (update)
@@ -94,7 +94,6 @@ public class EstoqueDAO { //erik
     }
 
 
-
     //Método para listar os produtos NO estoqueDTO
     public List<EstoqueDTO> listarEstoque() {
         ResultSet rset = null; //Consulta da tabela
@@ -103,10 +102,10 @@ public class EstoqueDAO { //erik
 
         //Prepara a consulta SQL para selecionar os produtos
         String comando = "SELECT e.*, p.nome AS nome_produto, et.nome AS nome_eta FROM estoque e " +
-                "JOIN produto p ON p.id = e.id_produto "+
+                "JOIN produto p ON p.id = e.id_produto " +
                 "JOIN eta et ON et.id= e.id_eta";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)){
+        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             rset = pstmt.executeQuery(); //Executa a consulta com Query
 
             //Armazenar os valores em um List<>
@@ -141,7 +140,7 @@ public class EstoqueDAO { //erik
         Connection conn = conexao.conectar();
         String comando = "SELECT * FROM estoque WHERE id = ?";
 
-        try(PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setInt(1, estoqueDTO.getId());
             rset = pstmt.executeQuery(); //Executa a consulta com Query
 
@@ -228,4 +227,66 @@ public class EstoqueDAO { //erik
         return lista;
     }
 
+    public List<EstoqueDTO> filtroBuscaPorColuna(String coluna, String pesquisa) {
+        String tabela;
+        String operador = "LIKE";
+        boolean numero = false;
+
+        // Define de qual tabela e tipo de dado vem a coluna
+        if (coluna.equals("id") || coluna.equals("quantidade") || coluna.equals("min_possivel_estocado")) {
+            tabela = "ESTOQUE";
+            operador = "=";
+            numero = true;
+        } else if (coluna.equals("nome_produto")) {
+            tabela = "PRODUTO";
+            coluna = "NOME";
+        } else if (coluna.equals("nome_eta")) {
+            tabela = "ETA";
+            coluna = "NOME";
+        } else {
+            tabela = "ESTOQUE";
+        }
+
+        // SQL com JOINs para trazer produto e ETA
+        String sql =
+                "SELECT ESTOQUE.*, PRODUTO.NOME AS nome_produto, ETA.NOME AS nome_eta " +
+                        "FROM ESTOQUE " +
+                        "JOIN PRODUTO ON PRODUTO.id = ESTOQUE.id_produto " +
+                        "JOIN ETA ON ETA.id = ESTOQUE.id_eta " +
+                        "WHERE " + tabela + "." + coluna + " " + operador + " ?";
+
+        List<EstoqueDTO> lista = new ArrayList<>();
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Define o tipo de dado corretamente
+            if (numero) {
+                stmt.setInt(1, Integer.parseInt(pesquisa));
+            } else {
+                stmt.setString(1, "%" + pesquisa + "%");
+            }
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                EstoqueDTO dto = new EstoqueDTO();
+                dto.setId(rs.getInt("id"));
+                dto.setIdProduto(rs.getInt("id_produto"));
+                dto.setNomeProduto(rs.getString("nome_produto"));
+                dto.setQuantidade(rs.getInt("quantidade"));
+                dto.setDataValidade(rs.getDate("data_validade"));
+                dto.setMinPossivelEstocado(rs.getInt("min_possivel_estocado"));
+                dto.setIdEta(rs.getInt("id_eta"));
+                dto.setNomeEta(rs.getString("nome_eta"));
+                lista.add(dto);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            System.out.println("Valor inválido para número");
+        }
+
+        return lista;
+    }
 }

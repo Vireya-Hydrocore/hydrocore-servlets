@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 public class SenhaHash {
     // Gera o hash seguro da senha antes de salvar no banco (usa fator de custo 12)
     public static String hashSenha(String senhaPura){
-        return BCrypt.hashpw(senhaPura, BCrypt.gensalt(12));
+        return BCrypt.hashpw(senhaPura, BCrypt.gensalt(6));
     }
 
     // Verifica se a senha digitada confere com o hash armazenado no banco

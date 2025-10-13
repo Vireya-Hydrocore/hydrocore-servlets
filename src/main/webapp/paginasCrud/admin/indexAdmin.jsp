@@ -7,15 +7,6 @@
 --%>
 
 <!---------------------- MENU ADMIN ------------------------>
-<%--
-  Created by IntelliJ IDEA.
-  User: eriksilva-ieg
-  Date: 05/10/2025
-  Time: 20:03
-  To change this template use File | Settings | File Templates.
---%>
-
-<!---------------------- MENU ADMIN ------------------------>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.servletsvireya.dto.AdminDTO" %>
@@ -34,28 +25,19 @@
 <header>
   <button class="menu" id="menu-toggle">☰</button>
   <h1 class="logo">HydroCore</h1>
-  <div class="avatar-container">
-    <div class="avatar" id="avatar">
-      <div class="dropdown" id="dropdown">
-        <ul>
-          <li>
-            <form action="${pageContext.request.contextPath}/ServletAdmin" method="post">
-              <input type="hidden" name="action" value="logout">
-              <button class="logout" type="submit">
-                <span><img src="${pageContext.request.contextPath}/paginasCrud/img/porta.png">Sair</span>
-              </button>
-            </form>
-          </li>
-        </ul>
-      </div>
-    </div>
+
+  <div class="logout-container">
+    <form action="${pageContext.request.contextPath}/ServletAdmin" method="post">
+      <input type="hidden" name="action" value="logout">
+        <a href="${pageContext.request.contextPath}/paginasCrud/admin/logarAdmin.jsp" class="logout-btn" type="submit" title="Sair">Sair</a>
+    </form>
   </div>
 </header>
 
 <aside class="sidebar" id="sidebar">
   <ul>
     <a href="${pageContext.request.contextPath}/ServletEta?action=mainEta">
-      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/imagem9.png"> Informações</li>
+      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/imagem9.png"> ETAs</li>
     </a>
     <a href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">
       <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image10.png"> Funcionários</li>
@@ -111,8 +93,38 @@
     </section>
 
     <!-- LISTA DE ADMINS -->
+
     <section class="lista">
-      <h2>Lista de Admins</h2>
+      <div>
+        <!-- FILTRO DE ADMINS -->
+
+        <section class="filtro">
+        <h2>Lista de Admins</h2>
+
+          <form action="${pageContext.request.contextPath}/ServletAdmin" method="get">
+            <input type="hidden" name="action" value="filtroAdmin">
+
+            <div class="campos">
+              <label>Coluna</label>
+              <select name="nome_coluna">
+                <option value="nome">Nome</option>
+                <option value="email">E-mail</option>
+                <option value="nome_eta">ETA</option>
+              </select>
+            </div>
+
+            <div class="campos">
+              <label>Pesquisa</label>
+              <input type="text" name="pesquisa" placeholder="Digite o termo de busca...">
+            </div>
+
+            <div class="acoes">
+              <button type="submit" class="botao-salvar">Aplicar Filtro</button>
+            </div>
+          </form>
+        </section>
+      </div>
+
       <table>
         <thead>
         <th>ID</th>

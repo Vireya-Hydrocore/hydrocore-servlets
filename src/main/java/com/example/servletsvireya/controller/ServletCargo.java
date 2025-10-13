@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/ServletCargo", "/mainCargo", "/selectCargo", "/updateCargo", "/deleteCargo", "/editarCargo"}, name = "ServletCargo")
+@WebServlet(urlPatterns = {"/ServletCargo", "/mainCargo", "/selectCargo", "/updateCargo", "/deleteCargo", "/editarCargo", "/filtroCargo"}, name = "ServletCargo")
 public class ServletCargo extends HttpServlet {
     private final CargoDAO cargoDAO = new CargoDAO();
 
@@ -34,6 +34,9 @@ public class ServletCargo extends HttpServlet {
                 break;
             case "deleteCargo":
                 removerCargo(req, resp);
+                break;
+            case "filtroCargo":
+                filtroCargo(req, resp);
                 break;
             default:
                 resp.sendRedirect(req.getContextPath() + "/paginasCrud/cargo/cargoIndex.jsp");
@@ -127,5 +130,12 @@ public class ServletCargo extends HttpServlet {
         } else {
             req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
         }
+    }
+    protected void filtroCargo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        List<CargoDTO> lista = cargoDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
+        req.setAttribute("cargo", lista);
+        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/cargo/cargoIndex.jsp");
+        rd.forward(req, resp);
     }
 }

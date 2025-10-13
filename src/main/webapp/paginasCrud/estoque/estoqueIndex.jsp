@@ -27,28 +27,19 @@
 <header>
     <button class="menu" id="menu-toggle">☰</button>
     <h1 class="logo">HydroCore</h1>
-    <div class="avatar-container">
-        <div class="avatar" id="avatar">
-            <div class="dropdown" id="dropdown">
-                <ul>
-                    <div>
-                        <form action="${pageContext.request.contextPath}/ServletAdmin" method="post">
-                            <input type="hidden" name="action" value="logout">
-                            <button class="logout" type="submit">
-                                <li><img src="${pageContext.request.contextPath}/paginasCrud/img/porta.png">Sair</li>
-                            </button>
-                        </form>
-                    </div>
-                </ul>
-            </div>
-        </div>
+
+    <div class="logout-container">
+        <form action="${pageContext.request.contextPath}/ServletAdmin" method="post">
+            <input type="hidden" name="action" value="logout">
+            <a href="${pageContext.request.contextPath}/paginasCrud/admin/logarAdmin.jsp" class="logout-btn" type="submit" title="Sair">Sair</a>
+        </form>
     </div>
 </header>
 
 <aside class="sidebar" id="sidebar">
     <ul>
         <a href="${pageContext.request.contextPath}/ServletEta?action=mainEta">
-            <li><img src="${pageContext.request.contextPath}/paginasCrud/img/imagem9.png"> Informações</li>
+            <li><img src="${pageContext.request.contextPath}/paginasCrud/img/imagem9.png"> ETAs</li>
         </a>
         <a href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">
             <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image10.png"> Funcionários</li>
@@ -113,7 +104,35 @@
         <!-- LISTA DE ESTOQUES -->
 
         <section class="lista">
+
+            <section class="filtro">
             <h2>Lista de Produtos</h2>
+
+                <form action="${pageContext.request.contextPath}/ServletEstoque" method="get">
+                    <input type="hidden" name="action" value="filtroEstoque">
+
+                    <div class="campos">
+                        <label>Coluna</label>
+                        <select name="nome_coluna">
+                            <option value="nome_produto">Nome do Produto</option>
+                            <option value="quantidade">Quantidade</option>
+                            <option value="data_validade">Data de Validade</option>
+                            <option value="min_possivel_estocado">Mínimo Possível Estocado</option>
+                            <option value="nome_eta">ETA</option>
+                        </select>
+                    </div>
+
+                    <div class="campos">
+                        <label>Pesquisa</label>
+                        <input type="text" name="pesquisa" placeholder="Digite o termo de busca...">
+                    </div>
+
+                    <div class="acoes">
+                        <button type="submit" class="botao-salvar">Aplicar Filtro</button>
+                    </div>
+                </form>
+            </section>
+
             <table>
                 <thead>
                 <th>ID</th>

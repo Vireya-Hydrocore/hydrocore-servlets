@@ -1,10 +1,11 @@
-<%@ page import="com.example.servletsvireya.dto.ProdutoDTO" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: eriksilva-ieg
   Date: 06/10/2025
   Time: 14:03
   To change this template use File | Settings | File Templates.
 --%>
+<%@ page import="com.example.servletsvireya.dto.ProdutoDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%

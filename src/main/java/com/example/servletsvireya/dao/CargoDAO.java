@@ -194,4 +194,55 @@ public class CargoDAO {
         return cargos;
     }
 
+    public List<CargoDTO> filtroBuscaPorColuna(String coluna, String pesquisa) {
+        int novapesquisa = 0;
+        String tabela;
+        String operador = "LIKE"; // por padrão
+
+        if (coluna.equalsIgnoreCase("nome_eta")) {
+            tabela = "ETA";
+            coluna = "NOME";
+        } else if (coluna.equalsIgnoreCase("acesso")) {
+            tabela = "CARGO";
+            operador = "="; // muda o operador
+            novapesquisa = Integer.parseInt(pesquisa);
+        } else {
+            tabela = "CARGO";
+        }
+
+        String sql =
+                "SELECT CARGO.*, ETA.NOME AS nome_eta " +
+                        "FROM CARGO " +
+                        "JOIN ETA ON ETA.id = CARGO.id_eta " +
+                        "WHERE " + tabela + "." + coluna + " " + operador + " ?";
+
+        List<CargoDTO> lista = new ArrayList<>();
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            if (coluna.equalsIgnoreCase("acesso")) {
+                stmt.setInt(1, novapesquisa);
+            } else {
+                stmt.setString(1, "%" + pesquisa + "%");
+            }
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                CargoDTO dto = new CargoDTO();
+                dto.setId(rs.getInt("id"));
+                dto.setNome(rs.getString("nome"));
+                dto.setAcesso(rs.getInt("acesso"));
+                dto.setIdEta(rs.getInt("id_eta"));
+                dto.setNomeEta(rs.getString("nome_eta"));
+                lista.add(dto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+
 }
