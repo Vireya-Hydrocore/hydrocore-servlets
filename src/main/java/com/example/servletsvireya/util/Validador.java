@@ -1,17 +1,37 @@
 package com.example.servletsvireya.util;
 import java.util.List;
 import java.util.ArrayList;
+import java.time.LocalDate;
 
 public class Validador {
 
-    public static boolean ehPositivo(int valor){
-        return valor >= 0; //Zero conta como positivo
+    // GERAIS
+
+    public static boolean ehPositivo(int valor) {
+        return valor >= 0; // Zero conta como positivo
     }
 
+    public static boolean naoVazio(String texto) {
+        return texto != null && !texto.trim().isEmpty();
+    }
 
-    //
+    public static boolean validarEmail(String email) {
+        return email != null && email.matches("^[\\w-.]+@[\\w-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    public static boolean validarTelefone(String telefone) {
+        return telefone != null && telefone.matches("^\\(?\\d{2}\\)?\\s?9?\\d{4}-?\\d{4}$");
+    }
+
+    public static boolean validarCNPJ(String cnpj) {
+        return cnpj != null && cnpj.matches("^\\d{14}$");
+    }
+
+    public static boolean validarData(LocalDate data) {
+        return data != null && !data.isAfter(LocalDate.now().plusYears(100));
+    }
+
     // VALIDAÇÃO DE SENHA
-    //
 
     public static List<String> validarSenha(String senha) {
         List<String> erros = new ArrayList<>();
@@ -36,6 +56,67 @@ public class Validador {
         if (!senha.matches(".*[^a-zA-Z0-9].*")) {
             erros.add("A senha deve conter pelo menos um caractere especial.");
         }
+
+        return erros;
+    }
+
+    // VALIDAÇÕES ESPECÍFICAS
+
+    public static List<String> validarAdmin(String nome, String email, String senha) {
+        List<String> erros = new ArrayList<>();
+
+        if (!naoVazio(nome))
+            erros.add("O nome do administrador não pode estar vazio.");
+
+        if (!validarEmail(email))
+            erros.add("O e-mail informado é inválido.");
+
+        erros.addAll(validarSenha(senha));
+
+        return erros;
+    }
+
+    public static List<String> validarCargo(String nome, int acesso) {
+        List<String> erros = new ArrayList<>();
+
+        if (!naoVazio(nome))
+            erros.add("O nome do cargo não pode estar vazio.");
+
+        if (!ehPositivo(acesso))
+            erros.add("O nível de acesso deve ser um número positivo.");
+
+        return erros;
+    }
+
+    public static List<String> validarEta(String nome, int capacidade, String telefone, String cnpj) {
+        List<String> erros = new ArrayList<>();
+
+        if (!naoVazio(nome))
+            erros.add("O nome da ETA não pode estar vazio.");
+
+        if (!ehPositivo(capacidade))
+            erros.add("A capacidade deve ser positiva.");
+
+        if (!validarTelefone(telefone))
+            erros.add("Telefone inválido.");
+
+        if (!validarCNPJ(cnpj))
+            erros.add("CNPJ inválido.");
+
+        return erros;
+    }
+
+    public static List<String> validarProduto(String nome, String tipo, double concentracao) {
+        List<String> erros = new ArrayList<>();
+
+        if (!naoVazio(nome))
+            erros.add("O nome do produto não pode estar vazio.");
+
+        if (!naoVazio(tipo))
+            erros.add("O tipo do produto não pode estar vazio.");
+
+        if (concentracao <= 0)
+            erros.add("A concentração deve ser maior que zero.");
 
         return erros;
     }

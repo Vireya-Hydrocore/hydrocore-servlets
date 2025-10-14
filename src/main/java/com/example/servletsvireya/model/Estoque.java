@@ -1,6 +1,4 @@
 package com.example.servletsvireya.model;
-
-import java.sql.Date;
 import java.time.LocalDate;
 
 public class Estoque {

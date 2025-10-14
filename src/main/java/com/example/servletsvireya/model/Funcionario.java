@@ -1,5 +1,4 @@
 package com.example.servletsvireya.model;
-import java.time.LocalDate;
 import java.util.Date;
 
 public class Funcionario {
@@ -37,7 +36,7 @@ public class Funcionario {
     public void setEmail(String email) { this.email = email; }
 
     public Date getDataAdmissao() {
-        return dataAdmissao;
+        return this.dataAdmissao;
     }
 
     public void setDataAdmissao(Date dataAdmissao) {
@@ -45,7 +44,7 @@ public class Funcionario {
     }
 
     public Date getDataNascimento() {
-        return dataNascimento;
+        return this.dataNascimento;
     }
 
     public void setDataNascimento(Date dataNascimento) {
