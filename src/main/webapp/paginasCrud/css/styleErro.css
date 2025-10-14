@@ -1,0 +1,48 @@
+body {
+    margin-top: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f2f2f2;
+}
+
+#principal {
+    background-color: white;
+    width: 700px;
+    border-radius: 15px;
+    height: 450px;
+    box-shadow: 0px 4px 15px rgb(0,0,0,0.15);
+}
+
+div {
+    background-color: midnightblue;
+    padding: 15px;
+    border-radius: 15px 15px 0 0; /* arredonda só o topo */
+}
+
+h1 {
+    margin: 0;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+p {
+    text-align: center;
+    margin-top: 100px;
+    font-family: Arial, sans-serif;
+    font-size: 27px;
+}
+
+button {
+    background-color: midnightblue;
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    display: block;
+    margin: 50px auto 0 auto; /* centralizado */
+    cursor: pointer;
+    border: none;
+    margin-top: 120px;
+    font-size: medium;
+}

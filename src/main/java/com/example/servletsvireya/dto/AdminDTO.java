@@ -1,16 +1,31 @@
 package com.example.servletsvireya.dto;
 
+import com.example.servletsvireya.model.Admin;
+
 public class AdminDTO {
     private int id;
     private String nome;
     private String email;
+    private String senha;
     private int idEta;
     private String nomeEta;
 
+    //Construtores
+    public AdminDTO() {
+    }
+    public AdminDTO(int id, String nome, String email, String senha, int idEta, String nomeEta) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.idEta = idEta;
+        this.nomeEta = nomeEta;
+    }
+
+    //Getters e Setters
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -18,7 +33,6 @@ public class AdminDTO {
     public String getNome() {
         return nome;
     }
-
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -26,16 +40,16 @@ public class AdminDTO {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public int getIdEta() {
-        return idEta;
-    }
+    public String getSenha() { return senha; }
+    public void setSenha(String senha) { this.senha = senha; }
 
-    public void setIdEta(int idEta) {
-        this.idEta = idEta;
-    }
+    public int getIdEta() { return idEta; }
+    public void setIdEta(int idEta) { this.idEta = idEta; }
+
+    public String getNomeEta() { return nomeEta; }
+    public void setNomeEta(String nomeEta) { this.nomeEta = nomeEta; }
 }

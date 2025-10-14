@@ -1,73 +1,251 @@
-//package com.example.servletsvireya.dao;
+package com.example.servletsvireya.dao;
+
+import com.example.servletsvireya.dto.CargoDTO;
+import com.example.servletsvireya.dto.EstoqueDTO;
+import com.example.servletsvireya.model.Cargo;
+import com.example.servletsvireya.util.Conexao;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class CargoDAO {
+    private Conexao conexao = new Conexao();
+
+    // ➕ INSERIR CARGO (agora inclui o id_eta)
+    public int inserirCargo(CargoDTO cargo) {
+        String comandoSQL = "INSERT INTO Cargo(nome, acesso, id_eta) VALUES (?, ?, ?)";
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
+
+            pstmt.setString(1, cargo.getNome());
+            pstmt.setInt(2, cargo.getAcesso());
+            pstmt.setInt(3, cargo.getIdEta()); // novo campo
+
+            return pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public int removerCargo(CargoDTO cargo) {
+        String comandoSQL = "DELETE FROM Cargo WHERE id = ?";
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
+
+            pstmt.setInt(1, cargo.getId());
+            pstmt.executeUpdate();
+            return 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public CargoDTO buscarPorId(CargoDTO cargoDTO) {
+        Connection conn = conexao.conectar();
+        String comandoSQL = "SELECT * FROM cargo WHERE id = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
+
+            pstmt.setInt(1, cargoDTO.getId());
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                cargoDTO.setId(rs.getInt("id"));
+                cargoDTO.setNome(rs.getString("nome"));
+                cargoDTO.setAcesso(rs.getInt("acesso"));
+                cargoDTO.setIdEta(rs.getInt("id_eta")); // adiciona o id_eta também
+            }
+            return cargoDTO;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            conexao.desconectar();
+        }
+    }
+
+//    // 🔍 LISTAR CARGOS POR ETA (sem depender de funcionário)
+//    public List<CargoDTO> listarCargoPorEta(int idEta) {
+//        List<CargoDTO> cargos = new ArrayList<>();
+//        String sql = "SELECT id, nome, acesso, id_eta FROM Cargo WHERE id_eta = ? ORDER BY nome";
 //
-//import com.example.servletsvireya.model.Cargo;
+//        try (Connection conn = conexao.conectar();
+//             PreparedStatement ps = conn.prepareStatement(sql)) {
 //
-//import java.sql.PreparedStatement;
-//import java.sql.ResultSet;
-//import java.sql.SQLException;
-//import java.util.ArrayList;
-//import java.util.List;
+//            ps.setInt(1, idEta);
+//            ResultSet rs = ps.executeQuery();
 //
-//public class CargoDAO {
-//    private Conexao conexao;
-//
-//    public int inserirCargo(Cargo cargo) {
-//        conexao.conectar();
-//        try (PreparedStatement pstmt = conexao.getConn().prepareStatement("INSERT INTO Cargo (id, nome, acesso) VALUES (?, ?, ?)")) {
-//            pstmt.setInt(1, cargo.getId());
-//            pstmt.setString(2, cargo.getNome());
-//            pstmt.setString(3, cargo.getAcesso());
-//            pstmt.execute();
-//            return pstmt.executeUpdate();
-//        } catch (SQLException exceptionSQL) {
-//            return -1;
-//        } finally {
-//            conexao.desconectar();
-//        }
-//    }
-//
-//    public List<Cargo> buscarCargo(Cargo cargo) {
-//        List<Cargo> cargos = new ArrayList<>();
-//        conexao.conectar();
-//        try (PreparedStatement pstmt = conexao.getConn().prepareStatement("SELECT * FROM Cargo WHERE id = ?")) {
-//            pstmt.setInt(1, cargo.getId());
-//            ResultSet rs = pstmt.executeQuery();
-//            while (rs.next()){
-//                cargo.setId(rs.getInt("id"));
-//                cargo.setNome(rs.getString("nome"));
-//                cargo.setAcesso(rs.getString("acesso"));
-//                cargos.add(cargo);
+//            while (rs.next()) {
+//                CargoDTO dto = new CargoDTO();
+//                dto.setId(rs.getInt("id"));
+//                dto.setNome(rs.getString("nome"));
+//                dto.setAcesso(rs.getInt("acesso"));
+//                dto.setIdEta(rs.getInt("id_eta"));
+//                cargos.add(dto);
 //            }
-//            return cargos;
+//
 //        } catch (SQLException e) {
-//            return null;
+//            e.printStackTrace();
 //        } finally {
 //            conexao.desconectar();
 //        }
+//        return cargos;
 //    }
-//    public int alterarCargo(Cargo cargo){
-//        conexao.conectar();
-//        try (PreparedStatement pstmt = conexao.getConn().prepareStatement("UPDATE Cargo SET nome = ?, acesso = ? WHERE id = ?")){
-//            pstmt.setString(1, cargo.getNome());
-//            pstmt.setString(2, cargo.getAcesso());
-//            pstmt.setInt(3, cargo.getId());
-//            return pstmt.executeUpdate();
-//        } catch (SQLException sqle){
-//            return -1;
-//        } finally {
-//            conexao.desconectar();
-//        }
-//    }
-//    public int removerCargo(Cargo cargo){
-//        conexao.conectar();
-//        try (PreparedStatement pstmt = conexao.getConn().prepareStatement("DELETE FROM Cargo WHERE id = ?")){
-//            pstmt.setInt(1, cargo.getId());
-//            return pstmt.executeUpdate();
-//        } catch (SQLException e){
-//            return -1;
-//        }
-//        finally {
-//            conexao.desconectar();
-//        }
-//    }
-//}
+
+
+    public List<CargoDTO> buscarPorNome(String nomeCargo) { //busca id_eta tambem
+        List<CargoDTO> lista = new ArrayList<>();
+        Connection conn = conexao.conectar();
+        String sql = "SELECT c.*, e.nome AS nome_eta FROM cargo c " +
+                "JOIN funcionario f ON c.id = f.id_cargo " +
+                "JOIN eta e ON e.id = f.id_eta " +
+                "WHERE LOWER(nome) = LOWER(?)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, nomeCargo);
+            ResultSet rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                CargoDTO dto = new CargoDTO();
+                dto.setId(rset.getInt("id"));
+                dto.setNome(rset.getString("nome"));
+                dto.setAcesso(rset.getInt("acesso"));
+                dto.setIdEta(rset.getInt("id_eta"));
+                dto.setNomeEta(rset.getString("nome_eta"));
+                lista.add(dto);
+            }
+            return lista;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        } finally {
+            conexao.desconectar();
+        }
+    }
+
+
+    public Integer buscarIdPorNome(String nomeCargo) {
+        Connection conn = conexao.conectar();
+        Integer id = null;
+        String sql = "SELECT id FROM cargo WHERE LOWER(nome) = LOWER(?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, nomeCargo);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally{
+            conexao.desconectar();
+        }
+        return id;
+    }
+
+
+    // ✏️ ALTERAR CARGO (agora também permite trocar o id_eta se precisar)
+    public int alterarCargo(CargoDTO cargo) {
+        String comandoSQL = "UPDATE Cargo SET nome = ?, acesso = ?, id_eta = ? WHERE id = ?";
+        try (Connection conn = conexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
+
+            pstmt.setString(1, cargo.getNome());
+            pstmt.setInt(2, cargo.getAcesso());
+            pstmt.setInt(3, cargo.getIdEta());
+            pstmt.setInt(4, cargo.getId());
+
+            return pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+
+    public List<CargoDTO> listarCargo() {
+        List<CargoDTO> cargos = new ArrayList<>();
+        String sql = "SELECT c.*, e.nome AS nome_eta FROM cargo c " +
+                "JOIN eta e ON e.id = c.id_eta " +
+                "ORDER BY c.nome";
+
+        try {
+            Connection conn = conexao.conectar();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                CargoDTO dto = new CargoDTO();
+                dto.setId(rs.getInt("id"));
+                dto.setNome(rs.getString("nome"));
+                dto.setAcesso(rs.getInt("acesso"));
+                dto.setIdEta(rs.getInt("id_eta"));
+                dto.setNomeEta(rs.getString("nome_eta"));
+                cargos.add(dto);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conexao.desconectar();
+        }
+        return cargos;
+    }
+
+    public List<CargoDTO> filtroBuscaPorColuna(String coluna, String pesquisa) {
+        int novapesquisa = 0;
+        String tabela;
+        String operador = "LIKE"; // por padrão
+
+        if (coluna.equalsIgnoreCase("nome_eta")) {
+            tabela = "ETA";
+            coluna = "NOME";
+        } else if (coluna.equalsIgnoreCase("acesso")) {
+            tabela = "CARGO";
+            operador = "="; // muda o operador
+            novapesquisa = Integer.parseInt(pesquisa);
+        } else {
+            tabela = "CARGO";
+        }
+
+        String sql =
+                "SELECT CARGO.*, ETA.NOME AS nome_eta " +
+                        "FROM CARGO " +
+                        "JOIN ETA ON ETA.id = CARGO.id_eta " +
+                        "WHERE " + tabela + "." + coluna + " " + operador + " ?";
+
+        List<CargoDTO> lista = new ArrayList<>();
+
+        try (Connection conn = conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            if (coluna.equalsIgnoreCase("acesso")) {
+                stmt.setInt(1, novapesquisa);
+            } else {
+                stmt.setString(1, "%" + pesquisa + "%");
+            }
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                CargoDTO dto = new CargoDTO();
+                dto.setId(rs.getInt("id"));
+                dto.setNome(rs.getString("nome"));
+                dto.setAcesso(rs.getInt("acesso"));
+                dto.setIdEta(rs.getInt("id_eta"));
+                dto.setNomeEta(rs.getString("nome_eta"));
+                lista.add(dto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+
+}

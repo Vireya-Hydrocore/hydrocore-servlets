@@ -7,8 +7,9 @@ public class FuncionarioDTO {
     private int id;
     private String nome;
     private String email;
-    private LocalDate dataAdmissao;
-    private LocalDate dataNascimento;
+    private String senha;
+    private Date dataAdmissao;
+    private Date dataNascimento;
     private int idEta; // Foreign Key
     private int idCargo; // Foreign Key
     private String nomeCargo;
@@ -17,13 +18,16 @@ public class FuncionarioDTO {
     //Construtores
     public FuncionarioDTO() {
     }
-    public FuncionarioDTO(int id, String nome, String email, LocalDate dataAdmissao,
-                          LocalDate dataNascimento, String nomeCargo, String nomeEta) {
+    public FuncionarioDTO(int id, String nome, String email, String senha, Date dataAdmissao,
+                          Date dataNascimento, int idEta, int idCargo, String nomeCargo, String nomeEta) {
         this.id = id;
         this.nome = nome;
         this.email = email;
+        this.senha = senha;
         this.dataAdmissao = dataAdmissao;
         this.dataNascimento = dataNascimento;
+        this.idEta = idEta;
+        this.idCargo = idCargo;
         this.nomeCargo = nomeCargo;
         this.nomeEta = nomeEta;
     }
@@ -50,18 +54,32 @@ public class FuncionarioDTO {
         this.email = email;
     }
 
-    public LocalDate getDataAdmissao() {
-        return this.dataAdmissao;
+    public Date getDataAdmissao() {
+        return dataAdmissao;
     }
-    public void setDataAdmissao(LocalDate dataAdmissao) {
+    public void setDataAdmissao(Date dataAdmissao) {
         this.dataAdmissao = dataAdmissao;
     }
 
-    public LocalDate getDataNascimento() {
-        return this.dataNascimento;
+    public Date getDataNascimento() {
+        return dataNascimento;
     }
-    public void setDataNascimento(LocalDate dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public int getIdCargo() {
+        return idCargo;
+    }
+    public void setIdCargo(int idCargo) {
+        this.idCargo = idCargo;
     }
 
     public String getNomeCargo() {
@@ -69,6 +87,13 @@ public class FuncionarioDTO {
     }
     public void setNomeCargo(String nomeCargo) {
         this.nomeCargo = nomeCargo;
+    }
+
+    public int getIdEta() {
+        return idEta;
+    }
+    public void setIdEta(int idEta) {
+        this.idEta = idEta;
     }
 
     public String getNomeEta() {

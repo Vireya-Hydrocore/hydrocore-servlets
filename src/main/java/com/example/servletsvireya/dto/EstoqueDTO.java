@@ -6,17 +6,17 @@ import java.util.Date;
 public class EstoqueDTO {
     private int id;
     private int quantidade;
-    private LocalDate dataValidade;
+    private Date dataValidade;
     private Integer minPossivelEstocado;
     private int idProduto;
     private int idEta;
-    private String nomeProduto;
     private String nomeEta;
+    private String nomeProduto;
 
     //Construtores
     public EstoqueDTO() {}
-    public EstoqueDTO(int id, int quantidade, LocalDate dataValidade, Integer minPossivelEstocado,
-                      int idProduto, int idEta, String nomeProduto, String nomeEta) {
+    public EstoqueDTO(int id, int quantidade, Date dataValidade, Integer minPossivelEstocado,
+                      int idProduto, int idEta, String nomeProduto) {
         this.id = id;
         this.quantidade = quantidade;
         this.dataValidade = dataValidade;
@@ -24,7 +24,6 @@ public class EstoqueDTO {
         this.idProduto = idProduto;
         this.idEta = idEta;
         this.nomeProduto = nomeProduto;
-        this.nomeEta = nomeEta;
     }
 
     //Getters e Setters
@@ -42,14 +41,16 @@ public class EstoqueDTO {
         this.quantidade = quantidade;
     }
 
-    public LocalDate getDataValidade() {
-        return this.dataValidade;
+    public Date getDataValidade() {
+        return dataValidade;
     }
-    public void setDataValidade(LocalDate dataValidade) {
+
+    public void setDataValidade(Date dataValidade) {
         this.dataValidade = dataValidade;
     }
 
-    public Integer getMinPossivEstocado() {
+
+    public Integer getMinPossivelEstocado() {
         return this.minPossivelEstocado;
     }
     public void setMinPossivelEstocado(Integer minPossivelEstocado) {
@@ -66,13 +67,13 @@ public class EstoqueDTO {
     public int getIdEta() { return this.idEta; }
     public void setIdEta(int idEta) { this.idEta = idEta; }
 
+    public String getNomeEta() { return nomeEta; }
+    public void setNomeEta(String nomeEta) { this.nomeEta = nomeEta; }
+
     public String getNomeProduto() {
         return this.nomeProduto;
     }
     public void setNomeProduto(String nomeProduto) {
         this.nomeProduto = nomeProduto;
     }
-
-    public String getNomeEta() { return this.nomeEta; }
-    public void setNomeEta(String nomeEta) { this.nomeEta = nomeEta; }
 }
