@@ -88,7 +88,7 @@ public class ServletEta extends HttpServlet {
 
     protected void listarEtas(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<EtaDTO> listEtas = etaDAO.listarEta(); //List de objetos retornados na query
+        List<EtaDTO> listEtas = etaDAO.listarEtas(); //List de objetos retornados na query
 
         req.setAttribute("etas", listEtas); //Devolve a lista de ETAs encontradas em um novo atributo, para a pagina JSP
 

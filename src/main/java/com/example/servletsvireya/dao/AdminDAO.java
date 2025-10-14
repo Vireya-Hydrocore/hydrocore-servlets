@@ -11,53 +11,59 @@ import java.util.List;
 
 public class AdminDAO {
     Conexao conexao = new Conexao();
-    private static final Dotenv dotenv = Dotenv.load();
 
+    private static final Dotenv dotenv = Dotenv.load();
     private static final String ADMIN_EMAIL_AUTORIZADO = dotenv.get("ADMIN_EMAIL");
     private static final String ADMIN_SENHA = dotenv.get("ADMIN_SENHA");
     private static final String ADMIN_SENHA_HASH = SenhaHash.hashSenha(ADMIN_SENHA);
 
+
+    // ========== Método para inserir um admin ========== //
     public int inserirAdmin(AdminDTO adminDTO) {
-        Connection conn = conexao.conectar();
-        String comando = "INSERT INTO admin (nome, email,senha, id_eta) VALUES (?, ?, ?, ?)";
+        Connection conn = conexao.conectar(); //Criando conexão com o banco
+        //Preparando a instrução SQL
+        String comando = "INSERT INTO admin (nome, email, senha, id_eta) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+            //Settnado os valores no comando/pstmt
             pstmt.setString(1, adminDTO.getNome());
             pstmt.setString(2, adminDTO.getEmail());
-            if (adminDTO.getSenha().length() > 60) {
+            if (adminDTO.getSenha().length() > 60) { //Se for maior que o tamanho permitido retorna 0
                 return 0;
             }
             pstmt.setString(3, adminDTO.getSenha());
             pstmt.setInt(4, adminDTO.getIdEta());
 
-            if (pstmt.executeUpdate() > 0) {
-                return 1;
+            if (pstmt.executeUpdate() > 0) { //Se inserir
+                return 1; //Se realizou a inserção
             } else {
-                return 0;
+                return 0; //Deu errado
             }
         } catch (SQLException sqle) {
             sqle.printStackTrace();
-            return -1;
+            return -1; //Caiu em exceção
         } finally {
-            conexao.desconectar();
+            conexao.desconectar(); //Finaliza a conexão, mesmo se cair em exceção
         }
     }
 
+
+    // ========== Método para buscar um admin pelo ID ========== //
     public AdminDTO buscarPorId(AdminDTO adminDTO) {
         Connection conn = conexao.conectar();
+        String comando = "SELECT * FROM admin WHERE id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM admin WHERE id = ?")) {
+        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setInt(1, adminDTO.getId());
-            ResultSet rset = pstmt.executeQuery();
+            ResultSet rset = pstmt.executeQuery(); //Armazena os dados no ResultSet
 
             if (rset.next()) {
                 adminDTO.setSenha(rset.getString("senha")); //Setta no mesmo objeto
                 adminDTO.setNome(rset.getString("nome"));
                 adminDTO.setEmail(rset.getString("email"));
-                return adminDTO;
-            } else {
-                return null;
             }
+            return adminDTO; //Retorna com o objeto preenchido ou vazio
+
         } catch (SQLException sqle) {
             sqle.printStackTrace();
             return null;
@@ -67,6 +73,7 @@ public class AdminDAO {
     }
 
 
+    // ========== Método para alterar um admin ========== //
     public int alterarAdmin(AdminDTO adminDTO) {
         Connection conn = conexao.conectar();
         String comando = "UPDATE admin SET nome = ?, email = ?, senha = ? WHERE id = ?";
@@ -90,6 +97,8 @@ public class AdminDAO {
         }
     }
 
+
+    // ========== Método para remover um admin ========== //
     public int removerAdmin(AdminDTO adminDTO) {
         Connection conn = conexao.conectar();
         String comando = "DELETE FROM admin WHERE id = ?";
@@ -111,9 +120,11 @@ public class AdminDAO {
     }
 
 
+    // ========== Método para listar os admins ========== //
     public List<AdminDTO> listarAdmin() {
-        List<AdminDTO> admins = new ArrayList<>();
+        List<AdminDTO> admins = new ArrayList<>(); //Para armazenar os dados
         Connection conn = conexao.conectar();
+        //Preparando instrução SQL com JOIN
         String comando = "SELECT a.*, e.nome AS nome_eta FROM admin a " +
                 "JOIN eta e ON e.id = a.id_eta";
 
@@ -127,8 +138,8 @@ public class AdminDAO {
                 admin.setNome(rs.getString("nome"));
                 admin.setEmail(rs.getString("email"));
                 admin.setSenha(rs.getString("senha"));
-                admin.setIdEta(rs.getInt("id_eta")); //tem que ser a mesma em cada
-                admin.setNomeEta(rs.getString("nome_eta"));
+                admin.setIdEta(rs.getInt("id_eta"));
+                admin.setNomeEta(rs.getString("nome_eta")); //Campo extra do DTO
 
                 admins.add(admin); //Populando o list
             }
@@ -143,33 +154,33 @@ public class AdminDAO {
     }
 
 
-    public String ListarporEmail(String email) {
-        Connection conn = conexao.conectar();
+//    public String ListarporEmail(String email) {
+//        Connection conn = conexao.conectar();
+//
+//        try (PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Admin WHERE email= ?")) {
+//            pstmt.setString(1, email);
+//            ResultSet rs = pstmt.executeQuery();
+//            if (rs.next()) {
+//                return (rs.getString("senha"));
+//            } else {
+//                return null;
+//            }
+//
+//
+//        } catch (SQLException e) {//Lista vazia
+//            return null;
+//        } finally {
+//            conexao.desconectar();
+//        }
+//    }
 
-        try (PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Admin WHERE email= ?")) {
-            pstmt.setString(1, email);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return (rs.getString("senha"));
-            } else {
-                return null;
-            }
 
-
-        } catch (SQLException e) {//Lista vazia
-            return null;
-        } finally {
-            conexao.desconectar();
-        }
-    }
-
-
+    // ========== Método para logar um admin --> gerente da ETA ========== //
     public Integer seLogar(String email, String senha) {
-        String sql = "SELECT id, senha FROM admin WHERE email = ?"; // busca id do admin e senha
+        Connection conn = conexao.conectar();
+        String comando = "SELECT id, senha FROM admin WHERE email = ?"; // busca id do admin e senha
 
-        try (Connection conn = conexao.conectar();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setString(1, email);
             ResultSet rs = pstmt.executeQuery();
 
@@ -178,72 +189,73 @@ public class AdminDAO {
 
                 // Verifica se a senha informada bate com a do banco
                 if (SenhaHash.verificarSenha(senha, senhaBanco)) {
-                    return rs.getInt("id"); // retorna o id do admin
+                    return rs.getInt("id"); // Retorna o id do admin
                 }
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null; // login incorreto
-    }
-
-
-    public String buscarSenhaPorEmail(String email) {
-        String senha = null;
-        String sql = "SELECT senha FROM admin WHERE email = ?";
-
-        try (Connection conn = conexao.conectar();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, email);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    senha = rs.getString("senha");
-                }
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Erro ao buscar senha por e-mail: " + e.getMessage());
-        }
-
-        return senha; // se não encontrar, retorna null
-    }
-
-    public List<AdminDTO> listarEtas() {
-        List<AdminDTO> admins = new ArrayList<>();
-        Connection conn = conexao.conectar();
-        String comando = "SELECT * FROM admin";
-
-        try{
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(comando);
-            while (rs.next()) {
-                AdminDTO admin = new AdminDTO(); //Instanciando um objeto a cada while
-
-                admin.setId(rs.getInt("id"));
-                admin.setNome(rs.getString("nome"));
-                admin.setEmail(rs.getString("email"));
-                admin.setSenha(rs.getString("senha"));
-                admin.setIdEta(rs.getInt("id_eta")); //tem que ser a mesma em cada
-
-                admins.add(admin); //Populando o list
-            }
-            return admins;
+            return null; // login incorreto
 
         } catch (SQLException sqle) {
             sqle.printStackTrace();
-            return new ArrayList<>(); //Lista vazia
-        } finally {
-            conexao.desconectar();
+            return null;
         }
     }
 
 
+//    public String buscarSenhaPorEmail(String email) {
+//        String senha = null;
+//        String sql = "SELECT senha FROM admin WHERE email = ?";
+//
+//        try (Connection conn = conexao.conectar();
+//             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+//
+//            pstmt.setString(1, email);
+//
+//            try (ResultSet rs = pstmt.executeQuery()) {
+//                if (rs.next()) {
+//                    senha = rs.getString("senha");
+//                }
+//            }
+//
+//        } catch (SQLException e) {
+//            System.out.println("Erro ao buscar senha por e-mail: " + e.getMessage());
+//        }
+//
+//        return senha; // se não encontrar, retorna null
+//    }
+
+//    public List<AdminDTO> listarEtas() {
+//        List<AdminDTO> admins = new ArrayList<>();
+//        Connection conn = conexao.conectar();
+//        String comando = "SELECT * FROM admin";
+//
+//        try{
+//            Statement stmt = conn.createStatement();
+//            ResultSet rs = stmt.executeQuery(comando);
+//            while (rs.next()) {
+//                AdminDTO admin = new AdminDTO(); //Instanciando um objeto a cada while
+//
+//                admin.setId(rs.getInt("id"));
+//                admin.setNome(rs.getString("nome"));
+//                admin.setEmail(rs.getString("email"));
+//                admin.setSenha(rs.getString("senha"));
+//                admin.setIdEta(rs.getInt("id_eta")); //tem que ser a mesma em cada
+//
+//                admins.add(admin); //Populando o list
+//            }
+//            return admins;
+//
+//        } catch (SQLException sqle) {
+//            sqle.printStackTrace();
+//            return new ArrayList<>(); //Lista vazia
+//        } finally {
+//            conexao.desconectar();
+//        }
+//    }
+
+
+    // ========== Método para logar na área restrita --> desenvolvedores do projeto ========== //
     public boolean seLogarAreaRestrita(String email, String senha) {
-        // Apenas o seu email permitido
+        // Apenas o email permitido
         String emailPermitido = ADMIN_EMAIL_AUTORIZADO;
         String senhaPermitida = ADMIN_SENHA; // ou carregue de um dotenv
 
@@ -255,46 +267,45 @@ public class AdminDAO {
         }
     }
 
+
+    // ========== Método para filtrar um admin ========== //
     public List<AdminDTO> filtroBuscaPorColuna(String coluna, String pesquisa) {
         String tabela;
+
         if (coluna.equalsIgnoreCase("nome_eta")) {
             tabela = "ETA";
             coluna = "NOME";
         } else {
             tabela = "ADMIN";
         }
-        String sql =
+
+        Connection conn = conexao.conectar();
+        List<AdminDTO> lista = new ArrayList<>();
+        String comando =
                 "SELECT ADMIN.*, ETA.NOME AS nome_eta " +
                         "FROM ADMIN " +
                         "JOIN ETA ON ETA.id = ADMIN.id_eta " +
                         "WHERE "+tabela+"." + coluna + " LIKE ?";
 
-        List<AdminDTO> lista = new ArrayList<>();
-
-        try (Connection conn = conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, "%" + pesquisa + "%");
-            ResultSet rs = stmt.executeQuery();
+        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+            pstmt.setString(1, "%" + pesquisa + "%");
+            ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                AdminDTO dto = new AdminDTO();
-                dto.setId(rs.getInt("id"));
-                dto.setNome(rs.getString("nome"));
-                dto.setEmail(rs.getString("email"));
-                dto.setSenha(rs.getString("senha"));
-                dto.setIdEta(rs.getInt("id_eta"));
-                dto.setNomeEta(rs.getString("nome_eta"));
-                lista.add(dto);
+                AdminDTO admin = new AdminDTO();
+                admin.setId(rs.getInt("id"));
+                admin.setNome(rs.getString("nome"));
+                admin.setEmail(rs.getString("email"));
+                admin.setSenha(rs.getString("senha"));
+                admin.setIdEta(rs.getInt("id_eta"));
+                admin.setNomeEta(rs.getString("nome_eta"));
+                lista.add(admin);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            return new ArrayList<>(); //Lista vazia
         }
-        return lista;
+
+        return lista; //Com os dados ou vazia
     }
-
-
-
 }
-
-

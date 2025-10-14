@@ -83,7 +83,7 @@ public class ServletCargo extends HttpServlet {
 
     protected void listarCargos(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<CargoDTO> lista = cargoDAO.listarCargo(); //List de objetos retornados na query
+        List<CargoDTO> lista = cargoDAO.listarCargos(); //List de objetos retornados na query
 
         req.setAttribute("cargos", lista); //Devolve a lista de estoques encontrados em um novo atributo
 

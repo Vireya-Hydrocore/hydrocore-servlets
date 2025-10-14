@@ -86,7 +86,7 @@ public class ServletProduto extends HttpServlet {
 
     protected void listarProdutos(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<ProdutoDTO> lista = produtoDAO.listarProduto(); //List de objetos retornados na query
+        List<ProdutoDTO> lista = produtoDAO.listarProdutos(); //List de objetos retornados na query
 
         req.setAttribute("produtos", lista); //Devolve a lista de produtos encontrados em um novo atributo
 
@@ -112,7 +112,7 @@ public class ServletProduto extends HttpServlet {
         produtoDTO.setIdEta(etaDAO.buscarIdPorNome(nomeEta));
         produtoDTO.setNomeEta(nomeEta);
 
-        int resultado = produtoDAO.cadastrarProduto(produtoDTO, produtoDTO.getIdEta());
+        int resultado = produtoDAO.cadastrarProduto(produtoDTO);
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto"); //Lista novamente os produtos se der certo
@@ -172,10 +172,9 @@ public class ServletProduto extends HttpServlet {
 
     protected void removerProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Pega o id para remoção
-        ProdutoDTO produtoDTO = new ProdutoDTO();
-        produtoDTO.setId(Integer.parseInt(req.getParameter("id")));
+        int id = Integer.parseInt(req.getParameter("id"));
 
-        int resultado = produtoDAO.removerProduto(produtoDTO);
+        int resultado = produtoDAO.removerProduto(id);
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto");
