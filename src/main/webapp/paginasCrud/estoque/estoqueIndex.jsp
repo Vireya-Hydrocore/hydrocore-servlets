@@ -160,7 +160,7 @@
                         &nbsp;|&nbsp;
 
                         <!-- Botão Excluir -->
-                        <form action="${pageContext.request.contextPath}/ServletEstoque" method="get" style="display:inline;">
+                        <form action="${pageContext.request.contextPath}/ServletEstoque" method="post" style="display:inline;">
                             <input type="hidden" name="action" value="deleteEstoque">
                             <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
                             <button class="botao-excluir" type="submit" onclick="return confirm('Tem certeza que deseja excluir este estoque?');">

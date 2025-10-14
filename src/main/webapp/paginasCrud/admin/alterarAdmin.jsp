@@ -97,9 +97,9 @@
             <input type="email" name="email" value="${admin.email}" required>
         </div>
 
-        <div class="campos">
+        <div class="campos-readonly">
             <label>Senha</label>
-            <input type="password" name="senha" value="${admin.senha}" required>
+            <input type="password" name="senha" value="${admin.senha}" readonly>
         </div>
 
         <div class="acoes">

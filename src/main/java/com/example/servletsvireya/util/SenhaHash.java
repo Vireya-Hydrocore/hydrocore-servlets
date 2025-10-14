@@ -30,7 +30,7 @@ public class SenhaHash {
     public static boolean emailValido(String email){
         if (email == null) return false;
 
-        String regex = "^[\\\\w._%+-]+@[\\\\w.-]+\\\\.[a-zA-Z]{2,6}$";
+        String regex = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();

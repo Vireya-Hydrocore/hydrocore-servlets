@@ -9,17 +9,17 @@ import com.example.servletsvireya.dto.EstoqueDTO;
 import com.example.servletsvireya.dto.FuncionarioDTO;
 import com.example.servletsvireya.model.Funcionario;
 import com.example.servletsvireya.util.SenhaHash;
+import com.example.servletsvireya.util.Validador; // ===== IMPORTAÇÃO DO VALIDADOR =====
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/ServletFuncionario", "/mainFuncionario", "/createFuncionario", "/selectFuncionario", "/updateFuncionario", "/deleteFuncionario", "/filtroFuncionario"}, name = "ServletFuncionario")
@@ -134,11 +134,39 @@ public class ServletFuncionario extends HttpServlet {
         }
         String dataStr2 = req.getParameter("dataAdmissao");
         if (dataStr2 != null && !dataStr2.isEmpty()) {
-            funcionarioDTO.setDataAdmissao(java.sql.Date.valueOf(dataStr));
+            funcionarioDTO.setDataAdmissao(java.sql.Date.valueOf(dataStr2)); // corrigido dataStr2
+        }
+
+        // ===== Validação com classe Validador =====
+        List<String> erros = new ArrayList<>();
+
+        if (!Validador.naoVazio(funcionarioDTO.getNome())) {
+            erros.add("O nome do funcionário não pode estar vazio.");
+        }
+
+        if (!Validador.validarEmail(funcionarioDTO.getEmail())) {
+            erros.add("O e-mail informado é inválido.");
+        }
+
+//        if (funcionarioDTO.getDataNascimento() == null || !Validador.validarData(funcionarioDTO.getDataNascimento().toLocalDate())) {
+//            erros.add("A data de nascimento é inválida.");
+//        }
+//
+//        if (funcionarioDTO.getDataAdmissao() == null || !Validador.validarData(funcionarioDTO.getDataAdmissao().toLocalDate())) {
+//            erros.add("A data de admissão é inválida.");
+//        }
+
+        String senhaDigitada = req.getParameter("senha");
+        List<String> errosSenha = Validador.validarSenha(senhaDigitada);
+        erros.addAll(errosSenha);
+
+        if (!erros.isEmpty()) {
+            req.setAttribute("erros", erros);
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            return;
         }
 
         //Criptografia de senha
-        String senhaDigitada= req.getParameter("senha");
         String senhaCrip = SenhaHash.hashSenha(senhaDigitada);
         funcionarioDTO.setSenha(senhaCrip);
 
@@ -192,6 +220,38 @@ public class ServletFuncionario extends HttpServlet {
         // Buscar o id do cargo pelo nome
         CargoDAO cargoDAO = new CargoDAO();
         funcionarioDTO.setIdCargo(cargoDAO.buscarIdPorNome(nomeCargo)); //Nesse método é retornado o id do cargo
+
+        // ===== Validação com classe Validador =====
+        List<String> erros = new ArrayList<>();
+
+        if (!Validador.naoVazio(funcionarioDTO.getNome())) {
+            erros.add("O nome do funcionário não pode estar vazio.");
+        }
+
+        if (!Validador.validarEmail(funcionarioDTO.getEmail())) {
+            erros.add("O e-mail informado é inválido.");
+        }
+
+//        if (funcionarioDTO.getDataNascimento() == null || !Validador.validarData(funcionarioDTO.getDataNascimento())) {
+//            erros.add("A data de nascimento é inválida.");
+//        }
+//
+//        if (funcionarioDTO.getDataAdmissao() == null || !Validador.validarData(funcionarioDTO.getDataAdmissao())) {
+//            erros.add("A data de admissão é inválida.");
+//        }
+
+        List<String> errosSenha = Validador.validarSenha(funcionarioDTO.getSenha());
+        erros.addAll(errosSenha);
+
+        if (!erros.isEmpty()) {
+            req.setAttribute("erros", erros);
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            return;
+        }
+        // ===== Fim da validação =====
+
+        // Criptografar novamente antes de salvar
+        funcionarioDTO.setSenha(SenhaHash.hashSenha(funcionarioDTO.getSenha()));
 
         // Chamar o DAO com o id já settado no DTO
         int resultado = funcionarioDAO.alterarFuncionario(funcionarioDTO); //Dentro do objeto, é settado os atributos

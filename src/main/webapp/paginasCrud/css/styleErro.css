@@ -46,3 +46,33 @@ button {
     margin-top: 120px;
     font-size: medium;
 }
+
+.lista-erros {
+    list-style-type: "⚠ ";
+    margin: 20px auto;
+    padding: 0;
+    width: fit-content;
+    text-align: left;
+    color: #b00020;
+    font-size: 17px;
+}
+
+.lista-erros li {
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.botao-voltar {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 20px;
+}
+
+.botao-voltar:hover {
+    background-color: #0056b3;
+}
