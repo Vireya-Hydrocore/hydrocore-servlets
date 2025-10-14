@@ -97,7 +97,8 @@ public class EstoqueDAO { //erik
         //Prepara a consulta SQL para selecionar os produtos
         String comando = "SELECT e.*, p.nome AS nome_produto, et.nome AS nome_eta FROM estoque e " +
                 "JOIN produto p ON p.id = e.id_produto " +
-                "JOIN eta et ON et.id= e.id_eta";
+                "JOIN eta et ON et.id= e.id_eta " +
+                "ORDER BY nome_produto";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             rset = pstmt.executeQuery(); //Executa a query
@@ -252,7 +253,7 @@ public class EstoqueDAO { //erik
                         "FROM ESTOQUE " +
                         "JOIN PRODUTO ON PRODUTO.id = ESTOQUE.id_produto " +
                         "JOIN ETA ON ETA.id = ESTOQUE.id_eta " +
-                        "WHERE " + tabela + "." + coluna + " " + operador + " ?";
+                        "WHERE LOWER(" + tabela + "." + coluna + ") " + operador + " LOWER(?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             // Define o tipo de dado corretamente

@@ -96,8 +96,8 @@
 
     <section class="lista">
       <div>
-        <!-- FILTRO DE ADMINS -->
 
+        <!-- FILTRO DE ADMINS -->
         <section class="filtro">
         <h2>Lista de Admins</h2>
 
@@ -120,6 +120,8 @@
 
             <div class="acoes">
               <button type="submit" class="botao-salvar">Aplicar Filtro</button>
+
+              <a href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin" class="botao-cancelar">Redefinir Filtragem</a>
             </div>
           </form>
         </section>

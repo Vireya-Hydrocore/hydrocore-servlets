@@ -148,7 +148,7 @@ public class CargoDAO {
     // ========== Método para buscar o ID de cargo pelo nome ========== //
     public Integer buscarIdPorNome(String nomeCargo) {
         Connection conn = conexao.conectar();
-        Integer id = null;
+        Integer id = 0;
         String comando = "SELECT id FROM cargo WHERE LOWER(nome) = LOWER(?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
@@ -158,27 +158,27 @@ public class CargoDAO {
             if (rs.next()) {
                 id = rs.getInt("id");
             }
-            return id; //Retorna o id ou vazio
 
         } catch (SQLException sqle) {
             sqle.printStackTrace();
-            return null;
+            id = 0;
         } finally{
             conexao.desconectar();
         }
+
+        return id; //Retorna o id ou 0
     }
 
 
     // ========== Método para alterar um cargo ========== //
     public int alterarCargo(CargoDTO cargo) {
         Connection conn = conexao.conectar();
-        String comando = "UPDATE cargo SET nome = ?, acesso = ?, id_eta = ? WHERE id = ?";
+        String comando = "UPDATE cargo SET nome = ?, acesso = ? WHERE id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setString(1, cargo.getNome());
             pstmt.setInt(2, cargo.getAcesso());
-            pstmt.setInt(3, cargo.getIdEta());
-            pstmt.setInt(4, cargo.getId()); //WHERE id = ?
+            pstmt.setInt(3, cargo.getId()); //WHERE id = ?
 
             return (pstmt.executeUpdate() > 0) ? 1 : 0;
 
@@ -196,10 +196,10 @@ public class CargoDAO {
         //Prepara o comando SQL com JOIN
         String comando = "SELECT c.*, e.nome AS nome_eta FROM cargo c " +
                 "JOIN eta e ON e.id = c.id_eta " +
-                "ORDER BY c.nome";
+                "ORDER BY c.acesso DESC";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)){
-            ResultSet rs = pstmt.executeQuery(comando);
+            ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
                 CargoDTO cargo = new CargoDTO(); //Cria um objeto a cada repetição

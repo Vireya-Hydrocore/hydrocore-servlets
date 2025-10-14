@@ -116,7 +116,7 @@ public class ServletProduto extends HttpServlet {
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto"); //Lista novamente os produtos se der certo
-        } else if (resultado == 0) { //Deu erro na inserção
+        } else { //Deu erro na inserção
             req.setAttribute("erro", "Não foi possível inserir o produto. Verifique os campos e tente novamente!"); //Setta um atributo com o erro
             req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp); //Vai para a página de erro
         }

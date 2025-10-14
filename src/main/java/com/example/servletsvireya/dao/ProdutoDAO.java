@@ -326,7 +326,7 @@ public class ProdutoDAO {
                         "FROM PRODUTO " +
                         "JOIN ESTOQUE ON ESTOQUE.id_produto = PRODUTO.id " +
                         "JOIN ETA ON ETA.id = ESTOQUE.id_eta " +
-                        "WHERE " + tabela + "." + coluna + " " + operador + " ?";
+                        "WHERE LOWER(" + tabela + "." + coluna + ") " + operador + " LOWER(?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             //Define o tipo de dado corretamente

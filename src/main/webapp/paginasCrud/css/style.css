@@ -108,8 +108,7 @@ main {
     padding: 20px;
     min-height: calc(100vh - 60px);
     transition: margin-left 0.3s ease;
-    max-width: 1000px;
-    margin: 0 auto;
+    width: 100%;
 }
 
 .sidebar.open~main {
@@ -371,6 +370,34 @@ table th {
         grid-template-columns: 1fr 1fr;
     }
 }
+
+
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.lista {
+    background: white;
+    width: 100%; /* garante que o card da lista use toda a tela */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+    overflow-x: auto; /* adiciona rolagem se necessário */
+}
+
+table {
+    width: 100%;
+    min-width: 1200px; /* aumenta a largura mínima */
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+
+
 
 @media (max-width: 768px) {
     header {

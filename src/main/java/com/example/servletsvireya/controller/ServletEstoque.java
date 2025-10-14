@@ -132,7 +132,6 @@ public class ServletEstoque extends HttpServlet {
 
         ProdutoDAO produtoDAO = new ProdutoDAO(); //Para realizar a busca do nome do produto
         String nomeProduto = req.getParameter("nomeProduto");
-        System.out.println("nome: "+nomeProduto);
         int idProduto = produtoDAO.buscarIdPorNome(nomeProduto);
         estoqueDTO.setIdProduto(idProduto);
         estoqueDTO.setNomeProduto(nomeProduto);

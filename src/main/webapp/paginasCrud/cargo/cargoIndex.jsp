@@ -11,7 +11,6 @@
 
 <%
     List<CargoDTO> lista = (List<CargoDTO>) request.getAttribute("cargos");
-//    Boolean alterado = (Boolean) request.getAttribute("alteradoSucesso");
 %>
 
 <!DOCTYPE html>
@@ -118,6 +117,8 @@
 
                     <div class="acoes">
                         <button type="submit" class="botao-salvar">Aplicar Filtro</button>
+
+                        <a class="botao-cancelar" href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">Redefinir filtro</a>
                     </div>
                 </form>
             </section>

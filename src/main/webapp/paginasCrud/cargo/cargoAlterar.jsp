@@ -78,10 +78,10 @@
         <input type="hidden" name="id" value="${cargo.id}" readonly>
 
         <label for="cargo">Nome do cargo:</label>
-        <input type="text" id="cargo" name="nomeCargo" value="${cargo.nome}" required><br>
+        <input type="text" id="cargo" name="nome" value="${cargo.nome}" required><br>
 
-        <label for="nivelAcesso">Nível de acesso:</label>
-        <input type="number" id="nivelAcesso" name="nivelAcesso"  value="${cargo.acesso}" required><br>
+        <label for="acesso">Nível de acesso:</label>
+        <input type="number" id="acesso" name="acesso"  value="${cargo.acesso}" required><br>
 
         <button type="submit">Salvar</button>
     </form>

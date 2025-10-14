@@ -1,4 +1,5 @@
 package com.example.servletsvireya.util;
+import java.sql.Date;
 import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDate;
@@ -27,9 +28,9 @@ public class Validador {
         return cnpj != null && cnpj.matches("^\\d{14}$");
     }
 
-    public static boolean validarData(LocalDate data) {
-        return data != null && !data.isAfter(LocalDate.now().plusYears(100));
-    }
+//    public static boolean validarData(Date data) {
+//        return data != null && !data.isAfter(Date.now().plusYears(100));
+//    }
 
     // VALIDAÇÃO DE SENHA
 
