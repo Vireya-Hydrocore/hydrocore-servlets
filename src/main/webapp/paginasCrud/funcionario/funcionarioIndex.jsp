@@ -67,46 +67,47 @@
 
         <section class="cadastro">
             <h2>Cadastro de Funcionários</h2>
-            <form name="frmFuncionario" action="${pageContext.request.contextPath}/ServletFuncionario" method="post" onsubmit="return validar();">
+            <form name="frmFuncionario" action="${pageContext.request.contextPath}/ServletFuncionario" method="post">
                 <div class="campos">
                     <input type="hidden" name="action" value="createFuncionario"> <!-- envia esse parametro para o servlet ver q é create-->
 
                     <label>Nome</label>
-                    <input type="text" name="nome" placeholder="Ex: Iago Eiken">
+                    <input type="text" name="nome" placeholder="Ex: Iago Eiken" required>
                 </div>
 
                 <div class="campos">
                     <label>E-mail</label>
-                    <input type="text" name="email">
+                    <input type="text" name="email" placeholder="exemplo@gmail.com" required>
                 </div>
 
                 <div class="campos">
                     <label>Senha</label>
-                    <input type="password" name="senha" placeholder="xxxxxxxxxxx">
+                    <input type="password" name="senha" placeholder="xxxxxxxxxxx" required>
                 </div>
 
                 <div class="campos">
                     <label>Data de Nascimento</label>
-                    <input type="date" name="dataNascimento">
+                    <input type="date" name="dataNascimento" required>
                 </div>
 
                 <div class="campos">
                     <label>Data de Admissão</label>
-                    <input type="date" name="dataAdmissao">
+                    <input type="date" name="dataAdmissao" required>
                 </div>
 
                 <div class="campos">
                     <label>Cargo</label>
-                    <input type="text" name="cargo" placeholder="Ex: Operador">
+                    <input type="text" name="cargo" placeholder="Ex: Operador" required>
                 </div>
 
                 <div class="campos">
                     <label>Nome ETA</label>
-                    <input type="text" name="nomeEta" placeholder="Ex: ETA Guarau">
+                    <input type="text" name="nomeEta" placeholder="Ex: ETA Guarau" required>
                 </div>
 
                 <div class="acoes">
-                    <button type="button" class="botao-cancelar">Cancelar</button>
+                    <button type="reset" class="botao-cancelar">Cancelar</button>
+
                     <input type="submit" value="Salvar" class="botao-salvar">
                 </div>
             </form>
