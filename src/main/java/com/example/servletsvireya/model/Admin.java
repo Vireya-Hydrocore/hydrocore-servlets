@@ -6,6 +6,7 @@ public class Admin {
     private String email;
     private int idEta;
     private String senha;
+
     public Admin(){}
     public Admin(String nome, String email, String senha,int idEta){
         this.nome = nome;
@@ -13,6 +14,7 @@ public class Admin {
         this.senha = senha;
         this.idEta = idEta;
     }
+
     public void setNome(String nome){
         this.nome = nome;
     }
@@ -22,6 +24,7 @@ public class Admin {
     public void setSenha(String senha){
         this.senha = senha;
     }
+
     public String getSenha(){
         return this.senha;
     }

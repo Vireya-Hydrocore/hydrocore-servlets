@@ -19,7 +19,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/styleProduto.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/style.css">
 </head>
 <body>
 <header>
@@ -96,8 +96,8 @@
 
     <section class="lista">
       <div>
-        <!-- FILTRO DE ADMINS -->
 
+        <!-- FILTRO DE ADMINS -->
         <section class="filtro">
         <h2>Lista de Admins</h2>
 
@@ -120,6 +120,8 @@
 
             <div class="acoes">
               <button type="submit" class="botao-salvar">Aplicar Filtro</button>
+
+              <a href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin" class="botao-cancelar">Redefinir Filtragem</a>
             </div>
           </form>
         </section>

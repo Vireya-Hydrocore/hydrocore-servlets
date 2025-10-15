@@ -20,29 +20,31 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/ServletEta", "/mainEta", "/filtroEta", "/createEta"}, name = "ServletEta")
+@WebServlet(urlPatterns = {"/ServletEta", "/mainEta", "/createEta", "/selectEta", "/updateEta", "/deleteEta", "/filtroEta"}, name = "ServletEta")
 public class ServletEta extends HttpServlet {
 
     private EtaDAO etaDAO = new EtaDAO();
 
-    // GET
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
 
-        String action = req.getParameter("action");
-        System.out.println(action);
+    // ===============================================================
+    //             Método doGet (atributos passam pela URL)
+    // ===============================================================
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        String action = req.getParameter("action"); //Vem com a ação do usuário
 
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
             // comportamento padrão: listar etas (ou redirecionar)
-            listar(req, resp);
+            listarEtas(req, resp);
             return;
         }
 
         switch (action){
             case "mainEta":
-                listar(req, resp);
+                listarEtas(req, resp);
                 break;
             case "selectEta":
                 buscarEta(req, resp);
@@ -55,10 +57,13 @@ public class ServletEta extends HttpServlet {
         }
     }
 
-    // POST
+
+    // ===============================================================
+    //          Método doPost (atributos passam pelo servidor)
+    // ===============================================================
+
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String action = req.getParameter("action");
 
@@ -68,19 +73,39 @@ public class ServletEta extends HttpServlet {
                 break;
             case "updateEta":
                 alterarEta(req, resp);
+                break;
+                //delete????
         }
     }
 
-    // ======================
-    // MÉTODO DE CADASTRO (mantido intacto)
-    // ======================
-    private void cadastrarEta(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
 
-        //no cadastro é criado um dto de endereco, eta e admin. Já que quando eu crio uma eta eu coloco também dados no endereco e crio um admin primario para começar os processos
-        //que nada mais sera do que um admin com o nome e email da eta e não uma pessoa em si.
+    // ==================== MÉTODOS AUXILIARES =======================
 
-        // Cria DTO da ETA
+
+    // ===============================================================
+    //                  Método para LISTAR as ETAs
+    // ===============================================================
+
+    protected void listarEtas(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        List<EtaDTO> listEtas = etaDAO.listarEtas(); //List de objetos retornados na query
+
+        req.setAttribute("etas", listEtas); //Devolve a lista de ETAs encontradas em um novo atributo, para a pagina JSP
+
+        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/eta/etaIndex.jsp"); //Envia para a página principal
+        rd.forward(req, resp);
+    }
+
+
+    // ===============================================================
+    //                Método para CADASTRAR uma ETA //////////////////
+    // ===============================================================
+
+    private void cadastrarEta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // no cadastro é criado um dto de endereco, eta e admin. Já que quando eu crio uma eta
+        // eu coloco também dados no endereco e crio um admin primario para começar os processos
+        // que nada mais sera do que um admin com o nome e email da eta e não uma pessoa em si.
+
         HttpSession session = request.getSession();
         String nome = (String) session.getAttribute("nome");
         String email = (String) session.getAttribute("email");
@@ -88,9 +113,10 @@ public class ServletEta extends HttpServlet {
         String cnpj= (String) session.getAttribute("cnpj");
         String telefone = (String) session.getAttribute("telefone");
         int capacidade = (Integer) session.getAttribute("capacidade");
-        EtaDTO etaDTO = new EtaDTO();
 
-        etaDTO.setNome(nome);
+        //Criando um DTO de ETA para armazenar os valores inseridos
+        EtaDTO etaDTO = new EtaDTO();
+        etaDTO.setNome(nome); //Nome da ETA
         etaDTO.setCapacidade(capacidade);
         etaDTO.setRua(request.getParameter("rua"));
         etaDTO.setNumero(Integer.parseInt(request.getParameter("numero")));
@@ -98,37 +124,41 @@ public class ServletEta extends HttpServlet {
         etaDTO.setCidade(request.getParameter("cidade"));
         etaDTO.setEstado(request.getParameter("estado"));
         etaDTO.setCep(request.getParameter("cep"));
+
+        //Aplicação do REGEX em CNPJ e telefone
         String regex = "\\D";
         String cnpjFormatado = cnpj.replaceAll(regex,"");
         String telefoneFormatado = telefone.replaceAll(regex,"");
         etaDTO.setCnpj(cnpjFormatado);
         etaDTO.setTelefone(telefoneFormatado);
 
-        // Cria DTO do Admin vinculado à ETA
+        //Criando DTO do Admin vinculado à ETA
         AdminDTO adminDTO = new AdminDTO();
         adminDTO.setNome(nome);
         adminDTO.setEmail(email);
         String senhaDigitada = senha;
-        // Valida a senha e coleta os erros
+
+        //Validação da senha e coleta dos erros
         var errosSenha = Validador.validarSenha(senhaDigitada);
 
         if (!errosSenha.isEmpty()) {
-            // Se houver erros, encaminha para o JSP de erro mostrando só os erros da senha
+            //Se houver erros, encaminha para o JSP de erro mostrando só os erros da senha
             request.setAttribute("errosSenha", errosSenha);
             RequestDispatcher rd = request.getRequestDispatcher("/paginasCrud/erroSenha.jsp");
             rd.forward(request, response);
             return;
         }
-        // Se estiver tudo certo, criptografa e segue
+
+        //Se estiver tudo certo, criptografa e segue
         String senhaCrip = SenhaHash.hashSenha(senhaDigitada);
         adminDTO.setSenha(senhaCrip);
 
-        // Chama DAO
-        EtaDAO dao = new EtaDAO();
-        int idEta = dao.inserir(etaDTO, adminDTO);
+        //Chama DAO
+        EtaDAO etaDAO = new EtaDAO();
+        int idEta = etaDAO.cadastrarEta(etaDTO, adminDTO);
 
-        // se a o cadastro estiver correto ele manda para a pagina de login
-        if (idEta > 0) {
+        //Se a o cadastro estiver correto ele manda para a pagina de login
+        if (idEta > 0) { //???????????
             response.sendRedirect(request.getContextPath() + "/paginasCrud/admin/logar.jsp");
         } else {
             request.setAttribute("erro", "Erro ao cadastrar ETA.");
@@ -138,21 +168,31 @@ public class ServletEta extends HttpServlet {
     }
 
 
+    // ===================================================================================
+    //       Método para BUSCAR uma ETA (mostra os VALORES ANTIGOS na tela de edição)
+    // ===================================================================================
+
     protected void buscarEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //Setta o id no EtaDTO
+        //Settando o id na etaDTO
         EtaDTO etaDTO = new EtaDTO();
         etaDTO.setId(Integer.parseInt(req.getParameter("id")));
-        etaDAO.buscarPorId(etaDTO);
 
-        req.setAttribute("eta", etaDTO); //Para o JSP pegar os valores
+        etaDAO.buscarPorId(etaDTO); //No mesmo objeto, setta os valores encontrados
 
-        //Envia para a página de alterar
+        req.setAttribute("eta", etaDTO); //Setta em um novo atributo para o JSP pegar os valores
+
+        //Encaminhar ao documento alterarEta.jsp
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/eta/etaAlterar.jsp");
         rd.forward(req, resp);
     }
 
+
+    // ===============================================================
+    //       Método para ALTERAR a ETA (com os VALORES NOVOS)
+    // ===============================================================
+
     protected void alterarEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //Settando os valores da ETA
+        //Settando os valores no etaDTO
         EtaDTO etaDTO = new EtaDTO();
         etaDTO.setId(Integer.parseInt(req.getParameter("id")));
         etaDTO.setNome(req.getParameter("nome"));
@@ -160,7 +200,7 @@ public class ServletEta extends HttpServlet {
         etaDTO.setTelefone(req.getParameter("telefone"));
         etaDTO.setCnpj(req.getParameter("cnpj"));
 
-        //E em relação a endereço
+        //Settando o que tem relação ao endereço
         etaDTO.setRua(req.getParameter("rua"));
         etaDTO.setBairro(req.getParameter("bairro"));
         etaDTO.setCidade(req.getParameter("cidade"));
@@ -172,37 +212,27 @@ public class ServletEta extends HttpServlet {
         int resultado = etaDAO.alterarEta(etaDTO);
 
         if (resultado == 1) {
-            //Redireciona para a listagem por ETA
             resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta");
         } else {
-            // Página de erro
             req.setAttribute("erro", "Não foi possível alterar a ETA! Verifique os campos e tente novamente.");
             req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
         }
     }
 
+    // ===============================================================
+    //          Método para REMOVER a ETA (pelo ID pego)
+    // ===============================================================
 
-    // ======================
-    // MÉTODO DE LISTAGEM DA ETA POR ADMIN LOGADO
-    // ======================
-    private void listar(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        //listo a eta por admin, filtrando a tela inicial que mostra alguns dados da eta para que mostre apenas da eta em que o o admin faz parte
 
-        List<EtaDTO> listEtas = etaDAO.listarEta();
-
-        // Passa para o JSP
-        req.setAttribute("etas", listEtas);
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/eta/etaIndex.jsp");
-        rd.forward(req, resp);
-    }
-
+    // ===============================================================
+    //        Método para FILTRAR a ETA (por coluna e valor)
+    // ===============================================================
 
     protected void filtrarEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<EtaDTO> lista = etaDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"),req.getParameter("pesquisa"));
+        //Armazena a query filtrada em um novo List
+        List<EtaDTO> lista = etaDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
 
-        req.setAttribute("etas", lista); //Devolve a lista de etas encontrados
-        //Envia para a página principal
+        req.setAttribute("etas", lista); //Devolve a lista de ETAs encontradas em um novo atributo
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/eta/etaIndex.jsp");
         rd.forward(req, resp);
     }

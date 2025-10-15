@@ -9,27 +9,27 @@ import com.example.servletsvireya.dto.EstoqueDTO;
 import com.example.servletsvireya.dto.FuncionarioDTO;
 import com.example.servletsvireya.model.Funcionario;
 import com.example.servletsvireya.util.SenhaHash;
+import com.example.servletsvireya.util.Validador; // ===== IMPORTAÇÃO DO VALIDADOR =====
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/ServletFuncionario", "/mainFuncionario", "/createFuncionario", "/selectFuncionario", "/updateFuncionario", "/deleteFuncionario"}, name = "ServletFuncionario")
+@WebServlet(urlPatterns = {"/ServletFuncionario", "/mainFuncionario", "/createFuncionario", "/selectFuncionario", "/updateFuncionario", "/deleteFuncionario", "/filtroFuncionario"}, name = "ServletFuncionario")
 public class ServletFuncionario extends HttpServlet {
 
     private FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
 
 
     // ===============================================================
-    //            Método doGet (variáveis passam pela URL)
+    //            Método doGet (atributos passam pela URL)
     // ===============================================================
 
     @Override
@@ -48,10 +48,13 @@ public class ServletFuncionario extends HttpServlet {
             switch (action) {
                 case "mainFuncionario":
                     listarFuncionarios(req, resp);
+                    break;
                 case "selectFuncionario":
                     buscarFuncionario(req, resp);
+                    break;
                 case "filtroFuncionario":
-                    filtroFuncionario(req, resp);
+                    filtrarFuncionario(req, resp);
+                    break;
                 default:
                     resp.sendRedirect(req.getContextPath() + "/paginasCrud/funcionario/funcionarioIndex.jsp");
             }
@@ -62,20 +65,24 @@ public class ServletFuncionario extends HttpServlet {
 
 
     // ===============================================================
-    //            Método doPost (passam pelo servidor)
+    //          Método doPost (atributos passam pelo servidor)
     // ===============================================================
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String action = req.getParameter("action");
 
         switch (action) {
             case "createFuncionario":
                 inserirFuncionario(req, resp);
+                break;
             case "updateFuncionario":
                 alterarFuncionario(req,resp);
+                break;
             case "deleteFuncionario":
                 removerFuncionario(req, resp);
+                break;
             default:
                 resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario");
         }
@@ -91,9 +98,9 @@ public class ServletFuncionario extends HttpServlet {
 
     protected void listarFuncionarios(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<FuncionarioDTO> lista = funcionarioDAO.listarFuncionarios(); //Objetos retornados na query
+        List<FuncionarioDTO> lista = funcionarioDAO.listarFuncionarios(); //List de objetos retornados na query
 
-        req.setAttribute("funcionarios", lista); //Devolve a lista de produtos encontrados em um novo atributo
+        req.setAttribute("funcionarios", lista); //Devolve a lista de produtos encontrados em um novo atributo, para a pagina JSP
 
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/funcionario/funcionarioIndex.jsp"); //Envia para a página principal
         rd.forward(req, resp);
@@ -102,10 +109,10 @@ public class ServletFuncionario extends HttpServlet {
 
     // ===============================================================
     //               Método para INSERIR o funcionário
-    // ================================================================
+    // ===============================================================
 
     protected void inserirFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //Criado um DTO para armazenar os valores inseridos
+        //Criando um DTO para armazenar os valores inseridos
         FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
 
         CargoDAO cargoDAO = new CargoDAO(); //Para realizar a busca do id do cargo
@@ -127,18 +134,46 @@ public class ServletFuncionario extends HttpServlet {
         }
         String dataStr2 = req.getParameter("dataAdmissao");
         if (dataStr2 != null && !dataStr2.isEmpty()) {
-            funcionarioDTO.setDataAdmissao(java.sql.Date.valueOf(dataStr));
+            funcionarioDTO.setDataAdmissao(java.sql.Date.valueOf(dataStr2)); // corrigido dataStr2
+        }
+
+        // ===== Validação com classe Validador =====
+        List<String> erros = new ArrayList<>();
+
+        if (!Validador.naoVazio(funcionarioDTO.getNome())) {
+            erros.add("O nome do funcionário não pode estar vazio.");
+        }
+
+        if (!Validador.validarEmail(funcionarioDTO.getEmail())) {
+            erros.add("O e-mail informado é inválido.");
+        }
+
+//        if (funcionarioDTO.getDataNascimento() == null || !Validador.validarData(funcionarioDTO.getDataNascimento().toLocalDate())) {
+//            erros.add("A data de nascimento é inválida.");
+//        }
+//
+//        if (funcionarioDTO.getDataAdmissao() == null || !Validador.validarData(funcionarioDTO.getDataAdmissao().toLocalDate())) {
+//            erros.add("A data de admissão é inválida.");
+//        }
+
+        String senhaDigitada = req.getParameter("senha");
+        List<String> errosSenha = Validador.validarSenha(senhaDigitada);
+        erros.addAll(errosSenha);
+
+        if (!erros.isEmpty()) {
+            req.setAttribute("erros", erros);
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            return;
         }
 
         //Criptografia de senha
-        String senhaDigitada= req.getParameter("senha");
         String senhaCrip = SenhaHash.hashSenha(senhaDigitada);
         funcionarioDTO.setSenha(senhaCrip);
 
         int resultado = funcionarioDAO.inserirFuncionario(funcionarioDTO);
 
         if (resultado == 1) {
-            resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario"); //Lista novamente os produtos se der certo
+            resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario"); //Lista novamente os funcionarios se der certo
         } else {
             req.setAttribute("erro", "Não foi possível inserir esse funcionário, Verifique os campos e tente novamente!"); //Setta um atributo com o erro
             req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp); //Vai para a página de erro
@@ -186,6 +221,38 @@ public class ServletFuncionario extends HttpServlet {
         CargoDAO cargoDAO = new CargoDAO();
         funcionarioDTO.setIdCargo(cargoDAO.buscarIdPorNome(nomeCargo)); //Nesse método é retornado o id do cargo
 
+        // ===== Validação com classe Validador =====
+        List<String> erros = new ArrayList<>();
+
+        if (!Validador.naoVazio(funcionarioDTO.getNome())) {
+            erros.add("O nome do funcionário não pode estar vazio.");
+        }
+
+        if (!Validador.validarEmail(funcionarioDTO.getEmail())) {
+            erros.add("O e-mail informado é inválido.");
+        }
+
+//        if (funcionarioDTO.getDataNascimento() == null || !Validador.validarData(funcionarioDTO.getDataNascimento())) {
+//            erros.add("A data de nascimento é inválida.");
+//        }
+//
+//        if (funcionarioDTO.getDataAdmissao() == null || !Validador.validarData(funcionarioDTO.getDataAdmissao())) {
+//            erros.add("A data de admissão é inválida.");
+//        }
+
+        List<String> errosSenha = Validador.validarSenha(funcionarioDTO.getSenha());
+        erros.addAll(errosSenha);
+
+        if (!erros.isEmpty()) {
+            req.setAttribute("erros", erros);
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            return;
+        }
+        // ===== Fim da validação =====
+
+        // Criptografar novamente antes de salvar
+        funcionarioDTO.setSenha(SenhaHash.hashSenha(funcionarioDTO.getSenha()));
+
         // Chamar o DAO com o id já settado no DTO
         int resultado = funcionarioDAO.alterarFuncionario(funcionarioDTO); //Dentro do objeto, é settado os atributos
 
@@ -218,9 +285,12 @@ public class ServletFuncionario extends HttpServlet {
     }
 
 
+    // ===============================================================
+    //     Método para FILTRAR o funcionário (por coluna e valor)
+    // ===============================================================
 
-    protected void filtroFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<FuncionarioDTO> lista = funcionarioDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"),req.getParameter("pesquisa"));
+    protected void filtrarFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<FuncionarioDTO> lista = funcionarioDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
 
         req.setAttribute("funcionarios", lista);
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/funcionario/funcionarioIndex.jsp");

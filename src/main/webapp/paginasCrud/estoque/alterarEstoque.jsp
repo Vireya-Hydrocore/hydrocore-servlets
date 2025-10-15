@@ -7,12 +7,16 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<%
+  EstoqueDTO estoque = (EstoqueDTO) request.getAttribute("estoque");
+%>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <title>Alterar Estoque</title>
-  <link href="${pageContext.request.contextPath}/paginasCrud/css/styleAlterar.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/styleAlterar.css">
 </head>
 <body>
 
@@ -22,24 +26,24 @@
   <form action="${pageContext.request.contextPath}/ServletEstoque" method="post">
     <input type="hidden" name="action" value="updateEstoque"> <!-- Servlet enxerga que o action é updateEstoque -->
 
-    <div class="campos">
+    <div class="campos-readonly">
       <label>ID</label>
-      <input type="number" name="id" value="${id}" readonly>
+      <input type="number" name="id" value="${estoque.id}" readonly>
     </div>
 
     <div class="campos">
       <label>Quantidade</label>
-      <input type="number" min="0" name="quantidade" value="${quantidade}">
+      <input type="number" min="0" name="quantidade" value="${estoque.quantidade}">
     </div>
 
     <div class="campos">
       <label>Data de Validade</label>
-      <input type="date" name="dataValidade" value="${dataValidade}">
+      <input type="date" name="dataValidade" value="${estoque.dataValidade}">
     </div>
 
-    <div class="campos">
+    <div class="campos-readonly">
       <label>Minímo possível estocado</label>
-      <input type="number" name="minPossivelEstocado" value="${minPossivelEstocado}" required>
+      <input type="number" name="minPossivelEstocado" value="${estoque.minPossivelEstocado}" readonly>
     </div>
 
     <div class="acoes">

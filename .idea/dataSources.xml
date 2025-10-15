@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:postgresql://localhost:5432/dbtesteservlet</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="FudErikdb" uuid="dd94c9c9-b042-427d-be26-53675e2cdd9b">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://pg-26d1af5a-germinare-bf04.h.aivencloud.com:28190/fudErikdb</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

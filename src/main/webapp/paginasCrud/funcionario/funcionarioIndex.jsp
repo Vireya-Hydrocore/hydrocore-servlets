@@ -21,7 +21,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Funcionários</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/styleProduto.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/paginasCrud/css/style.css">
 </head>
 
 <body>
@@ -143,8 +143,10 @@
 
                     <div class="acoes">
                         <button type="submit" class="botao-salvar">Aplicar Filtro</button>
+                        <a class="botao-cancelar" href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">Redefinir filtragem</a>
                     </div>
                 </form>
+
             </div>
 
             <table>
@@ -176,7 +178,7 @@
                         <a class="botao-editar" href="${pageContext.request.contextPath}/ServletFuncionario?action=selectFuncionario&id=<%= lista.get(i).getId() %>">Editar</a>
                         &nbsp;|&nbsp;
                         <!-- Botão Excluir -->
-                        <form action="<%= request.getContextPath() %>/ServletFuncionario" method="get" style="display:inline;">
+                        <form action="<%= request.getContextPath() %>/ServletFuncionario" method="post" style="display:inline;">
                             <input type="hidden" name="action" value="deleteFuncionario">
                             <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
                             <button class="botao-excluir" type="submit" onclick="return confirm('Tem certeza que deseja excluir este funcionário?');">
@@ -188,7 +190,7 @@
                 <% }
                 } else { %>
                 <tr>
-                    <td colspan="6">Nenhum produto encontrado!</td>
+                    <td colspan="6">Nenhum funcionário encontrado!</td>
                 </tr>
                 <% } %>
                 </tbody>

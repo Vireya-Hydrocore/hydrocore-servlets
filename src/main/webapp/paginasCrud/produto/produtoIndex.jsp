@@ -13,13 +13,6 @@
 <%
     List<ProdutoDTO> lista = (List<ProdutoDTO>) request.getAttribute("produtos");
 %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.example.servletsvireya.dto.EtaDTO" %>
-
-<%
-    EtaDTO eta = (EtaDTO) request.getAttribute("eta");
-%>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -177,7 +170,7 @@
                         <a class="botao-editar" href="${pageContext.request.contextPath}/ServletProduto?action=selectProduto&id=<%= lista.get(i).getId() %>">Editar</a>
                         &nbsp;|&nbsp;
                         <!-- Botão Excluir -->
-                        <form action="<%= request.getContextPath() %>/ServletProduto" method="get" style="display:inline;">
+                        <form action="<%= request.getContextPath() %>/ServletProduto" method="post" style="display:inline;">
                             <input type="hidden" name="action" value="deleteProduto">
                             <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
                             <button class="botao-excluir" type="submit" onclick="return confirm('Tem certeza que deseja excluir este produto?');">

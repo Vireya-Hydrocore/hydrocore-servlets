@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SenhaHash {
+
     // Gera o hash seguro da senha antes de salvar no banco (usa fator de custo 12)
     public static String hashSenha(String senhaPura){
         return BCrypt.hashpw(senhaPura, BCrypt.gensalt(6));
@@ -29,7 +30,7 @@ public class SenhaHash {
     public static boolean emailValido(String email){
         if (email == null) return false;
 
-        String regex = "^[\\\\w._%+-]+@[\\\\w.-]+\\\\.[a-zA-Z]{2,6}$";
+        String regex = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();

@@ -4,7 +4,6 @@ import com.example.servletsvireya.dao.EtaDAO;
 import com.example.servletsvireya.dao.ProdutoDAO;
 import com.example.servletsvireya.dto.ProdutoDTO;
 import com.example.servletsvireya.model.Produto;
-import com.example.servletsvireya.util.Validador;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -38,10 +37,13 @@ public class ServletProduto extends HttpServlet {
             switch (action) {
                 case "mainProduto":
                     listarProdutos(req, resp);
+                    break;
                 case "selectProduto":
                     buscarProduto(req, resp);
+                    break;
                 case "filtroProduto":
                     filtroProduto(req, resp);
+                    break;
                 default:
                     resp.sendRedirect(req.getContextPath() + "/paginasCrud/produto/produtoIndex.jsp");
             }
@@ -62,10 +64,13 @@ public class ServletProduto extends HttpServlet {
         switch (action) {
             case "createProduto":
                 inserirProduto(req, resp);
+                break;
             case "updateProduto":
                 alterarProduto(req, resp);
+                break;
             case "deleteProduto":
                 removerProduto(req, resp);
+                break;
             default:
                 resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto");
         }
@@ -81,7 +86,7 @@ public class ServletProduto extends HttpServlet {
 
     protected void listarProdutos(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<ProdutoDTO> lista = produtoDAO.listarProduto(); //Objetos retornados na query
+        List<ProdutoDTO> lista = produtoDAO.listarProdutos(); //List de objetos retornados na query
 
         req.setAttribute("produtos", lista); //Devolve a lista de produtos encontrados em um novo atributo
 
@@ -107,11 +112,11 @@ public class ServletProduto extends HttpServlet {
         produtoDTO.setIdEta(etaDAO.buscarIdPorNome(nomeEta));
         produtoDTO.setNomeEta(nomeEta);
 
-        int resultado = produtoDAO.cadastrarProduto(produtoDTO, produtoDTO.getIdEta());
+        int resultado = produtoDAO.cadastrarProduto(produtoDTO);
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto"); //Lista novamente os produtos se der certo
-        } else if (resultado == 0) { //Deu erro na inserção
+        } else { //Deu erro na inserção
             req.setAttribute("erro", "Não foi possível inserir o produto. Verifique os campos e tente novamente!"); //Setta um atributo com o erro
             req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
@@ -167,10 +172,9 @@ public class ServletProduto extends HttpServlet {
 
     protected void removerProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Pega o id para remoção
-        ProdutoDTO produtoDTO = new ProdutoDTO();
-        produtoDTO.setId(Integer.parseInt(req.getParameter("id")));
+        int id = Integer.parseInt(req.getParameter("id"));
 
-        int resultado = produtoDAO.removerProduto(produtoDTO);
+        int resultado = produtoDAO.removerProduto(id);
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto");
