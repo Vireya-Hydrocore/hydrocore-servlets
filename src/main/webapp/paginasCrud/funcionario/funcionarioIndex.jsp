@@ -106,8 +106,7 @@
                 </div>
 
                 <div class="acoes">
-                    <button type="reset" class="botao-cancelar">Cancelar</button>
-
+                    <button type="reset" class="botao-redefinir">Limpar</button>
                     <input type="submit" value="Salvar" class="botao-salvar">
                 </div>
             </form>
@@ -118,16 +117,17 @@
         <section class="lista">
 
             <div class="filtro">
-            <h2>Lista de Funcionários</h2>
+                <div class="filtro-titulo">
+                    <h2>Lista de Funcionários</h2>
+                </div>
 
-            <!-- FILTRO DE FUNCIONÁRIOS -->
-
-                <form action="${pageContext.request.contextPath}/ServletFuncionario" method="get">
+                <!-- FILTRO DE FUNCIONÁRIOS -->
+                <form class="filtro-form" action="${pageContext.request.contextPath}/ServletFuncionario" method="get">
                     <input type="hidden" name="action" value="filtroFuncionario">
 
                     <div class="campos">
                         <label>Coluna</label>
-                        <select name="nome_coluna">
+                        <select name="nome_coluna" id="colunaSelect">
                             <option value="nome">Nome</option>
                             <option value="email">E-mail</option>
                             <option value="data_admissao">Data de Admissão</option>
@@ -139,14 +139,32 @@
 
                     <div class="campos">
                         <label>Pesquisa</label>
-                        <input type="text" name="pesquisa" placeholder="Digite o termo de busca...">
+                        <input type="text" id="pesquisa" name="pesquisa">
                     </div>
 
-                    <div class="acoes">
+                    <div class="acoes filtro-acoes">
+                        <a class="botao-redefinir" style="text-decoration: none" href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">Redefinir filtragem</a>
                         <button type="submit" class="botao-salvar">Aplicar Filtro</button>
-                        <a class="botao-cancelar" href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">Redefinir filtragem</a>
                     </div>
                 </form>
+
+                <script>
+                    const colunaSelect = document.getElementById('colunaSelect');
+                    const inputPesquisa = document.getElementById('pesquisa');
+
+                    colunaSelect.addEventListener('change', function() {
+                        const valor = colunaSelect.value;
+
+                        // Se for uma das opções de data, muda o tipo para "date"
+                        if (valor === 'data_admissao' || valor === 'data_nascimento') {
+                            inputPesquisa.type = 'date';
+                            inputPesquisa.value = ''; // limpa o campo para evitar erro de formato
+                        } else {
+                            inputPesquisa.type = 'text';
+                            inputPesquisa.value = '';
+                        }
+                    });
+                </script>
 
             </div>
 
@@ -155,7 +173,6 @@
                 <th>ID</th>
                 <th>Nome</th>
                 <th>E-mail</th>
-                <th>Senha</th>
                 <th>Data Admissão</th>
                 <th>Data Nascimento</th>
                 <th>Cargo</th>
@@ -169,7 +186,6 @@
                     <td><%= lista.get(i).getId() %></td>
                     <td><%= lista.get(i).getNome() %></td>
                     <td><%= lista.get(i).getEmail() %></td>
-                    <td><%= lista.get(i).getSenha()%></td>
                     <td><%= lista.get(i).getDataAdmissao()%></td>
                     <td><%= lista.get(i).getDataNascimento()%></td>
                     <td><%= lista.get(i).getNomeCargo()%></td>

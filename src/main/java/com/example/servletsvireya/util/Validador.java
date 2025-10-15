@@ -16,6 +16,22 @@ public class Validador {
         return texto != null && !texto.trim().isEmpty();
     }
 
+    public static boolean ehNulloString(List<String> lista){
+        return !lista.isEmpty();
+    }
+    public static boolean ehNulloInt(List<Integer> lista){
+        return !lista.isEmpty();
+    }
+    public static boolean ehNulloClass(List<Class> lista){
+        return !lista.isEmpty();
+    }
+    public static boolean ehNulloObject(List<Object> lista) {
+        return !lista.isEmpty();
+    }
+    public static boolean validarLength(String palavra,int quantidadeCaracteres){
+        return palavra.length() < quantidadeCaracteres;
+    }
+
     public static boolean validarEmail(String email) {
         return email != null && email.matches("^[\\w-.]+@[\\w-]+\\.[a-zA-Z]{2,}$");
     }
@@ -28,9 +44,9 @@ public class Validador {
         return cnpj != null && cnpj.matches("^\\d{14}$");
     }
 
-//    public static boolean validarData(Date data) {
-//        return data != null && !data.isAfter(Date.now().plusYears(100));
-//    }
+    public static boolean validarData(LocalDate data) {
+        return data != null && !data.isAfter(LocalDate.now().plusYears(100));
+    }
 
     // VALIDAÇÃO DE SENHA
 

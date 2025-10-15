@@ -106,7 +106,7 @@
                 </div>
 
                 <div class="acoes">
-                    <button type="button" class="botao-cancelar">Cancelar</button>
+                    <button type="reset" class="botao-redefinir">Limpar</button>
                     <input type="submit" value="Salvar" class="botao-salvar">
                 </div>
             </form>
@@ -140,6 +140,7 @@
                     </div>
 
                     <div class="acoes">
+                        <a class="botao-redefinir" style="text-decoration: none" href="${pageContext.request.contextPath}/ServletProduto?action=mainProduto">Redefinir filtragem</a>
                         <button type="submit" class="botao-salvar">Aplicar Filtro</button>
                     </div>
                 </form>

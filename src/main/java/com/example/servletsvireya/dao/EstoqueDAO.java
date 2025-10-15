@@ -5,6 +5,8 @@ import com.example.servletsvireya.dto.EtaDTO;
 import com.example.servletsvireya.util.Conexao;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -229,6 +231,8 @@ public class EstoqueDAO { //erik
         String tabela;
         String operador = "LIKE";
         boolean numero = false;
+        boolean isData=false;
+        LocalDate data= null;
 
         //Define de qual tabela e tipo de dado vem a coluna
         if (coluna.equals("id") || coluna.equals("quantidade") || coluna.equals("min_possivel_estocado")) {
@@ -241,6 +245,11 @@ public class EstoqueDAO { //erik
         } else if (coluna.equals("nome_eta")) {
             tabela = "ETA";
             coluna = "NOME";
+        } else if (coluna.equals("data_validade"))  {
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            data= LocalDate.parse(pesquisa, formato);
+            tabela = "ESTOQUE";
+            isData = true;
         } else {
             tabela = "ESTOQUE";
         }
@@ -253,12 +262,15 @@ public class EstoqueDAO { //erik
                         "FROM ESTOQUE " +
                         "JOIN PRODUTO ON PRODUTO.id = ESTOQUE.id_produto " +
                         "JOIN ETA ON ETA.id = ESTOQUE.id_eta " +
-                        "WHERE LOWER(" + tabela + "." + coluna + ") " + operador + " LOWER(?)";
-
+                        "WHERE " + (isData
+                        ? "ESTOQUE." + coluna + " = ?"   // comparação direta com DATE
+                        : tabela + "." + coluna + " ILIKE ?"); // comparação textual
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             // Define o tipo de dado corretamente
             if (numero) {
                 pstmt.setInt(1, Integer.parseInt(pesquisa));
+            } else if (isData) {
+                pstmt.setDate(1, java.sql.Date.valueOf(data));
             } else {
                 pstmt.setString(1, "%" + pesquisa + "%");
             }
@@ -276,14 +288,12 @@ public class EstoqueDAO { //erik
                 etaDTO.setNomeEta(rs.getString("nome_eta")); //Campo extra do etaDTO
                 lista.add(etaDTO);
             }
-
         } catch (SQLException sqle) {
             sqle.printStackTrace();
             return new ArrayList<>();
         } catch (NumberFormatException e) {
             System.out.println("Valor inválido para número");
         }
-
         return lista;
     }
 }

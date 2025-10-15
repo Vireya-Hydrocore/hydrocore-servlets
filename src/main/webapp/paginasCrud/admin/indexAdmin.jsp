@@ -86,7 +86,7 @@
         </div>
 
         <div class="acoes">
-          <button type="button" class="botao-cancelar">Cancelar</button>
+          <button type="reset" class="botao-redefinir">Limpar</button>
           <input type="submit" value="Salvar" class="botao-salvar">
         </div>
       </form>
@@ -119,9 +119,8 @@
             </div>
 
             <div class="acoes">
+              <a class="botao-redefinir" style="text-decoration: none" href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin">Redefinir filtragem</a>
               <button type="submit" class="botao-salvar">Aplicar Filtro</button>
-
-              <a href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin" class="botao-cancelar">Redefinir Filtragem</a>
             </div>
           </form>
         </section>
@@ -132,7 +131,6 @@
         <th>ID</th>
         <th>Nome</th>
         <th>Email</th>
-        <th>Senha</th>
         <th>ETA</th>
         <th>Ações</th>
         </thead>
@@ -143,7 +141,6 @@
           <td><%= lista.get(i).getId() %></td>
           <td><%= lista.get(i).getNome() %></td>
           <td><%= lista.get(i).getEmail() %></td>
-          <td><%= lista.get(i).getSenha() %></td>
           <td><%= lista.get(i).getNomeEta() %></td>
           <td>
             <a class="botao-editar" href="${pageContext.request.contextPath}/ServletAdmin?action=selectAdmin&id=<%= lista.get(i).getId() %>">Editar</a>
