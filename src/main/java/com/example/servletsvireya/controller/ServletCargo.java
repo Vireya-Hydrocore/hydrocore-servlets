@@ -3,6 +3,7 @@ package com.example.servletsvireya.controller;
 import com.example.servletsvireya.dao.CargoDAO;
 import com.example.servletsvireya.dao.EtaDAO;
 import com.example.servletsvireya.dto.CargoDTO;
+import com.example.servletsvireya.util.Validador;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -127,6 +128,16 @@ public class ServletCargo extends HttpServlet {
         cargoDTO.setIdEta(idEta);
         cargoDTO.setNomeEta(nomeEta);
 
+        // VALIDAÇÃO
+        List<String> erros = Validador.validarCargo(cargoDTO.getNome(), cargoDTO.getAcesso());
+
+        if (!erros.isEmpty()) {
+            req.setAttribute("erros", erros);
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            return;
+        }
+
+        // Chamando o DAO
         int resultado = cargoDAO.inserirCargo(cargoDTO);
 
         if (resultado == 1) {
@@ -147,7 +158,16 @@ public class ServletCargo extends HttpServlet {
         CargoDTO cargoDTO = new CargoDTO();
         cargoDTO.setId(Integer.parseInt(req.getParameter("id")));
         cargoDTO.setNome(req.getParameter("nome"));
-        cargoDTO.setAcesso(Integer.parseInt(req.getParameter("acesso"))); //tipo?????????????????????????????????????????
+        cargoDTO.setAcesso(Integer.parseInt(req.getParameter("acesso")));
+
+        // VALIDAÇÃO
+        List<String> erros = Validador.validarCargo(cargoDTO.getNome(), cargoDTO.getAcesso());
+
+        if (!erros.isEmpty()) {
+            req.setAttribute("erros", erros);
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            return;
+        }
 
         int resultado = cargoDAO.alterarCargo(cargoDTO);
 
@@ -158,6 +178,7 @@ public class ServletCargo extends HttpServlet {
             req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
         }
     }
+
 
 
     // ===============================================================

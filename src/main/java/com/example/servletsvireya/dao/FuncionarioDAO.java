@@ -5,6 +5,8 @@ import com.example.servletsvireya.model.Funcionario;
 import com.example.servletsvireya.util.Conexao;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,12 +116,19 @@ public class FuncionarioDAO {
     // ========== Método para remover um funcionário ========== //
     public int removerFuncionario(int idFuncionario) {
         Connection conn = conexao.conectar();
-        String comandoSQL = "DELETE FROM funcionario WHERE id = ?";
-
-        try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
+        String comandoSQL2= "DELETE FROM TAREFA WHERE ID_FUNCIONARIO= ?";
+        String comandoSQL = "DELETE FROM funcionario WHERE id= ?";
+        try {
+            PreparedStatement pstm2 = conn.prepareStatement(comandoSQL2);
+            PreparedStatement pstmt = conn.prepareStatement(comandoSQL);
+            pstm2.setInt(1, idFuncionario);
             pstmt.setInt(1, idFuncionario);
-
-            return (pstmt.executeUpdate() > 0) ? 1 : 0;
+            pstm2.executeUpdate();
+            if (pstmt.executeUpdate()>0){
+                return 1;
+            } else {
+                return -1;
+            }
 
         } catch (SQLException sqle) {
             sqle.printStackTrace();
@@ -145,6 +154,27 @@ public class FuncionarioDAO {
             conexao.desconectar();
         }
     }
+
+
+//    org.postgresql.util.PSQLException: ERROR: update or delete on table "funcionario" violates foreign key constraint "tarefa_id_funcionario_fkey" on table "tarefa"
+//    Detalhe: Key (id)=(1) is still referenced from table "tarefa".
+//    at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2725)
+//    at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2412)
+//    at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:371)
+//    at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:502)
+//    at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:419)
+//    at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:194)
+//    at org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:155)
+//    at com.example.servletsvireya.dao.FuncionarioDAO.removerFuncionario(FuncionarioDAO.java:124)
+//    at com.example.servletsvireya.controller.ServletFuncionario.removerFuncionario(ServletFuncionario.java:276)
+//    at com.example.servletsvireya.controller.ServletFuncionario.doPost(ServletFuncionario.java:84)
+//    at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:649)
+//    at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710)
+//    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:130)
+//    at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+//    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:109)
+//    at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+//    at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:79)
 
 
     // ========== Método para buscar um funcionário pelo id ========== //
@@ -290,10 +320,18 @@ public class FuncionarioDAO {
     // ========== Método para filtrar funcionário(s) ========== //
     public List<FuncionarioDTO> filtroBuscaPorColuna(String coluna, String pesquisa) {
         String tabela;
+        boolean isData = false;
+        LocalDate data = null;
 
         if (coluna.equalsIgnoreCase("nome_eta")) {
             tabela = "ETA";
             coluna = "NOME";
+        } else if (coluna.equalsIgnoreCase("data_nascimento") || coluna.equalsIgnoreCase("data_admissao")) {
+            // O input type="date" envia no formato yyyy-MM-dd
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            data = LocalDate.parse(pesquisa, formato);
+            tabela = "FUNCIONARIO";
+            isData = true;
         } else if (coluna.equalsIgnoreCase("nome_cargo")) {
             tabela = "CARGO";
             coluna = "NOME";
@@ -303,16 +341,27 @@ public class FuncionarioDAO {
 
         Connection conn = conexao.conectar();
         List<FuncionarioDTO> lista = new ArrayList<>();
+
+        // Aqui diferenciamos o comando SQL conforme o tipo de dado
         String comando =
                 "SELECT FUNCIONARIO.*, ETA.nome AS nome_eta, CARGO.nome AS nome_cargo " +
                         "FROM FUNCIONARIO " +
                         "JOIN ETA ON ETA.id = FUNCIONARIO.id_eta " +
                         "JOIN CARGO ON CARGO.id = FUNCIONARIO.id_cargo " +
-                        "WHERE LOWER(" + tabela + "." + coluna + ") LIKE LOWER(?)";
+                        "WHERE " + (isData
+                        ? "FUNCIONARIO." + coluna + " = ?"   // comparação direta com DATE
+                        : tabela + "." + coluna + " ILIKE ?"); // comparação textual
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
-            pstmt.setString(1, "%" + pesquisa + "%");
-            ResultSet rs = pstmt.executeQuery();
+            ResultSet rs;
+
+            if (isData) {
+                pstmt.setDate(1, java.sql.Date.valueOf(data)); // Converte LocalDate para SQL Date
+            } else {
+                pstmt.setString(1, "%" + pesquisa + "%");
+            }
+
+            rs = pstmt.executeQuery();
 
             while (rs.next()) {
                 FuncionarioDTO func = new FuncionarioDTO();
@@ -323,18 +372,19 @@ public class FuncionarioDAO {
                 func.setDataAdmissao(rs.getDate("data_admissao"));
                 func.setDataNascimento(rs.getDate("data_nascimento"));
                 func.setIdCargo(rs.getInt("id_cargo"));
-                func.setNomeCargo(rs.getString("nome_cargo")); //Campo extra
+                func.setNomeCargo(rs.getString("nome_cargo"));
                 func.setIdEta(rs.getInt("id_eta"));
-                func.setNomeEta(rs.getString("nome_eta")); //Campo extra
+                func.setNomeEta(rs.getString("nome_eta"));
                 lista.add(func);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
-            return new ArrayList<>(); //Vazio
+            return new ArrayList<>();
         } finally {
             conexao.desconectar();
         }
 
-        return lista; //Retorna com os funcionários ou vazio
+        return lista;
     }
 }

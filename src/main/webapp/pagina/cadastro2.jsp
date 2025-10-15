@@ -25,7 +25,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Endereço</title>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/pagina/imgs/vireya%20icon.png" type="image/x-icon">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/pagina/cadastro2.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/pagina/css/cadastro2.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
