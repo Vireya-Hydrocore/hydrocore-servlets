@@ -33,10 +33,10 @@ public class ServletLogin extends HttpServlet {
         try {
             switch (action) {
                 case "logarAdmin":
-                    logarAdmin(req, resp);
+                    logarAdmin(req, resp); //Login dos desenvolvedores
                     break;
                 case "logar":
-                    logar(req, resp);
+                    logar(req, resp); //Gerente da ETA
                     break;
                 default:
                     logar(req, resp);
@@ -58,6 +58,7 @@ public class ServletLogin extends HttpServlet {
         String senha = req.getParameter("senha");
 
         Boolean resultado = adminDAO.seLogarAreaRestrita(email, senha);
+        System.out.println(resultado);
 
         if (resultado) {
             // Redireciona para página inicial do admin

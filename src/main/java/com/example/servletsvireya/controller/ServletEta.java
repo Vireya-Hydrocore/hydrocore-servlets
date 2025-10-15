@@ -79,7 +79,7 @@ public class ServletEta extends HttpServlet {
     }
 
 
-    // ==================== MÉTODOS AUXILIARES =======================
+    // =================== MÉTODOS AUXILIARES ========================
 
 
     // ===============================================================
@@ -102,10 +102,6 @@ public class ServletEta extends HttpServlet {
     // ===============================================================
 
     private void cadastrarEta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // no cadastro é criado um dto de endereco, eta e admin. Já que quando eu crio uma eta
-        // eu coloco também dados no endereco e crio um admin primario para começar os processos
-        // que nada mais sera do que um admin com o nome e email da eta e não uma pessoa em si.
-
         HttpSession session = request.getSession();
         String nome = (String) session.getAttribute("nome");
         String email = (String) session.getAttribute("email");
@@ -132,24 +128,31 @@ public class ServletEta extends HttpServlet {
         etaDTO.setCnpj(cnpjFormatado);
         etaDTO.setTelefone(telefoneFormatado);
 
+        // ===== VALIDAÇÃO ETA =====
+        List<String> erros = Validador.validarEta(nome, capacidade, telefoneFormatado, cnpjFormatado);
+        if (!erros.isEmpty()) {
+            request.setAttribute("erros", erros);
+            RequestDispatcher rd = request.getRequestDispatcher("/paginasCrud/erro.jsp");
+            rd.forward(request, response);
+            return; // Interrompe execução se houver erros
+        }
+
         //Criando DTO do Admin vinculado à ETA
         AdminDTO adminDTO = new AdminDTO();
         adminDTO.setNome(nome);
         adminDTO.setEmail(email);
         String senhaDigitada = senha;
 
-        //Validação da senha e coleta dos erros
+        // ===== VALIDAÇÃO ADMIN (senha) =====
         var errosSenha = Validador.validarSenha(senhaDigitada);
-
         if (!errosSenha.isEmpty()) {
-            //Se houver erros, encaminha para o JSP de erro mostrando só os erros da senha
             request.setAttribute("errosSenha", errosSenha);
             RequestDispatcher rd = request.getRequestDispatcher("/paginasCrud/erroSenha.jsp");
             rd.forward(request, response);
             return;
         }
 
-        //Se estiver tudo certo, criptografa e segue
+        //Se estiver tudo certo, criptografa a senha
         String senhaCrip = SenhaHash.hashSenha(senhaDigitada);
         adminDTO.setSenha(senhaCrip);
 
@@ -157,33 +160,14 @@ public class ServletEta extends HttpServlet {
         EtaDAO etaDAO = new EtaDAO();
         int idEta = etaDAO.cadastrarEta(etaDTO, adminDTO);
 
-        //Se a o cadastro estiver correto ele manda para a pagina de login
-        if (idEta > 0) { //???????????
+        //Se o cadastro estiver correto, manda para a pagina de login
+        if (idEta > 0) {
             response.sendRedirect(request.getContextPath() + "/paginasCrud/admin/logar.jsp");
         } else {
             request.setAttribute("erro", "Erro ao cadastrar ETA.");
             RequestDispatcher rd = request.getRequestDispatcher("/paginasCrud/erroSenha.jsp");
             rd.forward(request, response);
         }
-    }
-
-
-    // ===================================================================================
-    //       Método para BUSCAR uma ETA (mostra os VALORES ANTIGOS na tela de edição)
-    // ===================================================================================
-
-    protected void buscarEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //Settando o id na etaDTO
-        EtaDTO etaDTO = new EtaDTO();
-        etaDTO.setId(Integer.parseInt(req.getParameter("id")));
-
-        etaDAO.buscarPorId(etaDTO); //No mesmo objeto, setta os valores encontrados
-
-        req.setAttribute("eta", etaDTO); //Setta em um novo atributo para o JSP pegar os valores
-
-        //Encaminhar ao documento alterarEta.jsp
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/eta/etaAlterar.jsp");
-        rd.forward(req, resp);
     }
 
 
@@ -208,7 +192,21 @@ public class ServletEta extends HttpServlet {
         etaDTO.setNumero(Integer.parseInt(req.getParameter("numero")));
         etaDTO.setCep(req.getParameter("cep"));
 
-        //Chamando o produtoDAO
+        // ===== VALIDAÇÃO ETA =====
+        List<String> erros = Validador.validarEta(
+                etaDTO.getNome(),
+                etaDTO.getCapacidade(),
+                etaDTO.getTelefone(),
+                etaDTO.getCnpj()
+        );
+
+        if (!erros.isEmpty()) {
+            req.setAttribute("erros", erros);
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            return;
+        }
+
+        //Chamando o DAO
         int resultado = etaDAO.alterarEta(etaDTO);
 
         if (resultado == 1) {
@@ -218,6 +216,26 @@ public class ServletEta extends HttpServlet {
             req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
         }
     }
+
+
+    // ===================================================================================
+    //       Método para BUSCAR uma ETA (mostra os VALORES ANTIGOS na tela de edição)
+    // ===================================================================================
+
+    protected void buscarEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //Settando o id na etaDTO
+        EtaDTO etaDTO = new EtaDTO();
+        etaDTO.setId(Integer.parseInt(req.getParameter("id")));
+
+        etaDAO.buscarPorId(etaDTO); //No mesmo objeto, setta os valores encontrados
+
+        req.setAttribute("eta", etaDTO); //Setta em um novo atributo para o JSP pegar os valores
+
+        //Encaminhar ao documento alterarEta.jsp
+        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/eta/etaAlterar.jsp");
+        rd.forward(req, resp);
+    }
+
 
     // ===============================================================
     //          Método para REMOVER a ETA (pelo ID pego)

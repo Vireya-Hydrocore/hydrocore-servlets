@@ -308,7 +308,7 @@ public class FuncionarioDAO {
                         "FROM FUNCIONARIO " +
                         "JOIN ETA ON ETA.id = FUNCIONARIO.id_eta " +
                         "JOIN CARGO ON CARGO.id = FUNCIONARIO.id_cargo " +
-                        "WHERE LOWER(" + tabela + "." + coluna + ") LIKE LOWER(?)";
+                        "WHERE " + tabela + "." + coluna + " LIKE LOWER(?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setString(1, "%" + pesquisa + "%");

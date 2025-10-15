@@ -62,6 +62,13 @@ public class ServletAdmin extends HttpServlet {
 
         String action = req.getParameter("action");
 
+        // Proteção contra NullPointerException em switch de String
+        if (action == null) {
+            // comportamento padrão: listar admins (ou redirecionar)
+            listarAdmins(req, resp);
+            return;
+        }
+
         switch (action) {
             case "createAdmin":
                 inserirAdmin(req, resp);
@@ -126,14 +133,24 @@ public class ServletAdmin extends HttpServlet {
         AdminDTO adminDTO = new AdminDTO();
         adminDTO.setNome(req.getParameter("nome"));
         adminDTO.setEmail(req.getParameter("email"));
+        String senhaDigitada = req.getParameter("senha");
         String nomeEta = req.getParameter("nomeEta");
 
         EtaDAO etaDAO= new EtaDAO(); //Para realizar a busca do id da ETA
         adminDTO.setIdEta(etaDAO.buscarIdPorNome(nomeEta));
         adminDTO.setNomeEta(nomeEta);
 
+        // ===== VALIDAÇÃO =====
+        List<String> erros = Validador.validarAdmin(adminDTO.getNome(), adminDTO.getEmail(), senhaDigitada);
+
+        if (!erros.isEmpty()) {
+            req.setAttribute("erros", erros);
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            return; // Interrompe execução se houver erros
+        }
+
         //Criptografando a senha
-        String senhacrip = SenhaHash.hashSenha(req.getParameter("senha"));
+        String senhacrip = SenhaHash.hashSenha(senhaDigitada);
         adminDTO.setSenha(senhacrip);
 
         int resultado = adminDAO.inserirAdmin(adminDTO);
@@ -157,7 +174,19 @@ public class ServletAdmin extends HttpServlet {
         adminDTO.setId(Integer.parseInt(req.getParameter("id")));
         adminDTO.setNome(req.getParameter("nome"));
         adminDTO.setEmail(req.getParameter("email"));
-        adminDTO.setSenha(req.getParameter("senha"));
+        String senhaDigitada = req.getParameter("senha"); // pegar senha digitada
+
+        // ===== VALIDAÇÃO =====
+        List<String> erros = Validador.validarAdmin(adminDTO.getNome(), adminDTO.getEmail(), senhaDigitada);
+
+        if (!erros.isEmpty()) {
+            req.setAttribute("erros", erros);
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            return; // Interrompe execução se houver erros
+        }
+
+        // Criptografando a senha antes de salvar
+        adminDTO.setSenha(SenhaHash.hashSenha(senhaDigitada));
 
         // Chamar o método do DAO
         int resultado = adminDAO.alterarAdmin(adminDTO);
