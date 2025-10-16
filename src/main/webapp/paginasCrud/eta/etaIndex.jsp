@@ -70,6 +70,7 @@
         <h2>Lista de Estações de Tratamento de Água</h2>
 
         <form action="${pageContext.request.contextPath}/ServletEta" method="get">
+          <div class="formulario">
           <input type="hidden" name="action" value="filtroEta">
 
           <div class="campos">
@@ -92,7 +93,7 @@
             <a class="botao-redefinir" style="text-decoration: none" href="${pageContext.request.contextPath}/ServletEta?action=mainEta">Redefinir filtragem</a>
             <button type="submit" class="botao-salvar">Aplicar Filtro</button>
           </div>
-
+          </div>
         </form>
       </div>
 

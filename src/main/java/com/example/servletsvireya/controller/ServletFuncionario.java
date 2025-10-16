@@ -148,13 +148,13 @@ public class ServletFuncionario extends HttpServlet {
             erros.add("O e-mail informado é inválido.");
         }
 
-//        if (funcionarioDTO.getDataNascimento() == null || !Validador.validarData(funcionarioDTO.getDataNascimento().toLocalDate())) {
-//            erros.add("A data de nascimento é inválida.");
-//        }
-//
-//        if (funcionarioDTO.getDataAdmissao() == null || !Validador.validarData(funcionarioDTO.getDataAdmissao().toLocalDate())) {
-//            erros.add("A data de admissão é inválida.");
-//        }
+        if (!Validador.validarDataNascimento((Date) funcionarioDTO.getDataNascimento())) {
+            erros.add("O funcionário deve ter pelo menos 16 anos.");
+        }
+
+        if (!Validador.validarDataAdmissao((Date) funcionarioDTO.getDataAdmissao())) {
+            erros.add("A data de admissão deve ser hoje ou anterior.");
+        }
 
         String senhaDigitada = req.getParameter("senha");
         List<String> errosSenha = Validador.validarSenha(senhaDigitada);
@@ -232,13 +232,13 @@ public class ServletFuncionario extends HttpServlet {
             erros.add("O e-mail informado é inválido.");
         }
 
-//        if (funcionarioDTO.getDataNascimento() == null || !Validador.validarData(funcionarioDTO.getDataNascimento())) {
-//            erros.add("A data de nascimento é inválida.");
-//        }
-//
-//        if (funcionarioDTO.getDataAdmissao() == null || !Validador.validarData(funcionarioDTO.getDataAdmissao())) {
-//            erros.add("A data de admissão é inválida.");
-//        }
+        if (!Validador.validarDataNascimento((Date) funcionarioDTO.getDataNascimento())) {
+            erros.add("O funcionário deve ter pelo menos 16 anos e uma data de nascimento válida.");
+        }
+
+        if (!Validador.validarDataAdmissao((Date) funcionarioDTO.getDataAdmissao())) {
+            erros.add("A data de admissão deve ser hoje ou anterior.");
+        }
 
         List<String> errosSenha = Validador.validarSenha(funcionarioDTO.getSenha());
         erros.addAll(errosSenha);

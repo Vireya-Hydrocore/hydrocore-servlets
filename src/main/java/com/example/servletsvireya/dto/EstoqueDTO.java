@@ -1,12 +1,11 @@
 package com.example.servletsvireya.dto;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class EstoqueDTO {
     private int id;
     private int quantidade;
-    private Date dataValidade;
+    private java.sql.Date dataValidade;
     private Integer minPossivelEstocado;
     private int idProduto;
     private int idEta;
@@ -15,7 +14,7 @@ public class EstoqueDTO {
 
     //Construtores
     public EstoqueDTO() {}
-    public EstoqueDTO(int id, int quantidade, Date dataValidade, Integer minPossivelEstocado,
+    public EstoqueDTO(int id, int quantidade, java.sql.Date dataValidade, Integer minPossivelEstocado,
                       int idProduto, int idEta, String nomeProduto) {
         this.id = id;
         this.quantidade = quantidade;
@@ -45,7 +44,7 @@ public class EstoqueDTO {
         return dataValidade;
     }
 
-    public void setDataValidade(Date dataValidade) {
+    public void setDataValidade(java.sql.Date dataValidade) {
         this.dataValidade = dataValidade;
     }
 
