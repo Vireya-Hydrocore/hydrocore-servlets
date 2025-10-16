@@ -12,7 +12,7 @@ public class Conexao {
     String user = "avnadmin";
     String pass = "AVNS_6laeJARLI53amL4NRl1";
 
-//    Dotenv dotenv = Dotenv.load(); //carrega o arquivo .env
+    Dotenv dotenv = Dotenv.load(); //carrega o arquivo .env
 
     //Método para criar conexão com o banco
     public Connection conectar() {
@@ -20,11 +20,11 @@ public class Conexao {
             //Informando o drive postgreSQL
             Class.forName("org.postgresql.Driver"); //Não obrigatório
 
-            this.conn = DriverManager.getConnection(url, user, pass);
-//                    Objects.requireNonNull(dotenv.get("DB_URL")),
-//                    dotenv.get("DB_USER"),
-//                    dotenv.get("DB_PASSWORD")
-//            );
+            this.conn = DriverManager.getConnection(
+                    Objects.requireNonNull(dotenv.get("DB_URL")),
+                    dotenv.get("DB_USER"),
+                    dotenv.get("DB_PASSWORD")
+            );
 
             System.out.println("conectou!");
         } catch (SQLException | ClassNotFoundException e) {
