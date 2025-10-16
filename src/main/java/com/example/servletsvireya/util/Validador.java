@@ -33,19 +33,22 @@ public class Validador {
     }
 
     public static boolean validarEmail(String email) {
-        return email != null && email.matches("^[\\w-.]+@[\\w-]+\\.[a-zA-Z]{2,}$");
+        return email != null && email.matches("^[\\w.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     }
 
     public static boolean validarTelefone(String telefone) {
-        return telefone != null && telefone.matches("^\\(?\\d{2}\\)?\\s?9?\\d{4}-?\\d{4}$");
+        return telefone != null && telefone.matches("\\([0-9]{2}\\) [0-9]{5}-[0-9]{4}");
     }
 
     public static boolean validarCNPJ(String cnpj) {
-        return cnpj != null && cnpj.matches("^\\d{14}$");
+        return cnpj != null && cnpj.matches("^[0-9]{2}\\.[0-9]{3}\\.[0-9]{3}/[0-9]{4}-[0-9]{2}$");
     }
 
     public static boolean validarData(LocalDate data) {
         return data != null && !data.isAfter(LocalDate.now().plusYears(100));
+    }
+    public static boolean validarCep(String cep) {
+        return cep!= null && cep.matches("[0-9]{5}-[0-9]{3}");
     }
 
     // VALIDAÇÃO DE SENHA
@@ -105,7 +108,7 @@ public class Validador {
         return erros;
     }
 
-    public static List<String> validarEta(String nome, int capacidade, String telefone, String cnpj) {
+    public static List<String> validarEta(String nome, int capacidade, String telefone, String cnpj,String cep) {
         List<String> erros = new ArrayList<>();
 
         if (!naoVazio(nome))
@@ -119,6 +122,10 @@ public class Validador {
 
         if (!validarCNPJ(cnpj))
             erros.add("CNPJ inválido.");
+
+        if (!validarCep(cep)){
+            erros.add("Cep inválido");
+        }
 
         return erros;
     }

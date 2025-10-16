@@ -11,7 +11,7 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/ServletLogin", "/logar", "/logarAdmin"}, name = "ServletLogin")
 public class ServletLogin extends HttpServlet {
 
-    AdminDAO adminDAO = new AdminDAO();
+    private final AdminDAO adminDAO = new AdminDAO();
 
 
     // ===============================================================
@@ -21,7 +21,9 @@ public class ServletLogin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String action = req.getParameter("action");
+        String action; // Proteção contra NullPointerException em switch de String
+
+        action = req.getParameter("action");
 
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
@@ -44,6 +46,8 @@ public class ServletLogin extends HttpServlet {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            req.setAttribute("erro", "Ocorreu um erro interno ao processar o login.");
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
         }
     }
 
@@ -53,11 +57,17 @@ public class ServletLogin extends HttpServlet {
     // ===============================================================
 
     protected void logarAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //Pegando atributos para realização do login na Área Restrita
-        String email = req.getParameter("email");
-        String senha = req.getParameter("senha");
 
-        Boolean resultado = adminDAO.seLogarAreaRestrita(email, senha);
+        String email; //Pegando atributos para realização do login na Área Restrita
+        String senha; //Pegando atributos para realização do login na Área Restrita
+        Boolean resultado;
+        RequestDispatcher rd;
+
+        //Pegando atributos para realização do login na Área Restrita
+        email = req.getParameter("email");
+        senha = req.getParameter("senha");
+
+        resultado = adminDAO.seLogarAreaRestrita(email, senha);
         System.out.println(resultado);
 
         if (resultado) {
@@ -65,7 +75,7 @@ public class ServletLogin extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta");
         } else {
             req.setAttribute("erroLogin", "E-mail ou senha incorretos."); //Setta um atributo erro para o JSP tratar
-            RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/menu/index.jsp"); //Volta para a página de login
+            rd = req.getRequestDispatcher("/paginasCrud/menu/index.jsp"); //Volta para a página de login
             rd.forward(req, resp);
         }
     }
@@ -76,17 +86,23 @@ public class ServletLogin extends HttpServlet {
     // ===============================================================
 
     protected void logar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String email = req.getParameter("email");
-        String senha = req.getParameter("senha");
 
-        Integer idAdmin = adminDAO.seLogar(email, senha);
+        String email;
+        String senha;
+        Integer idAdmin;
+        RequestDispatcher rd;
+
+        email = req.getParameter("email");
+        senha = req.getParameter("senha");
+
+        idAdmin = adminDAO.seLogar(email, senha);
 
         if (idAdmin != null) {
             // Redireciona para página principal do admin
             resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta");
         } else {
             req.setAttribute("erroLogin", "E-mail ou senha incorretos.");
-            RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/menu/index.jsp");
+            rd = req.getRequestDispatcher("/paginasCrud/menu/index.jsp");
             rd.forward(req, resp);
         }
     }
