@@ -7,12 +7,14 @@ import com.example.servletsvireya.dto.EstoqueDTO;
 import com.example.servletsvireya.dto.ProdutoDTO;
 import com.example.servletsvireya.model.Estoque;
 import com.example.servletsvireya.model.Produto;
+import com.example.servletsvireya.util.Validador;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
-import java.util.Date;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/ServletEstoque", "/mainEstoque", "/createEstoque", "/selectEstoque", "/updateEstoque", "/deleteEstoque", "/filtroEstoque"}, name = "ServletEstoque")
@@ -141,6 +143,29 @@ public class ServletEstoque extends HttpServlet {
         estoqueDTO.setIdEta(etaDAO.buscarIdPorNome(nomeEta));
         estoqueDTO.setNomeEta(nomeEta);
 
+        //===== Validação de dados usando a classe Validador ======
+        List<String> erros = new ArrayList<>();
+
+        if (estoqueDTO.getQuantidade() <= 0) {
+            erros.add("A quantidade deve ser maior que zero.");
+        }
+
+        if (!Validador.validarDataValidade((Date) estoqueDTO.getDataValidade())) {
+            erros.add("A data de validade deve ser hoje ou uma data futura válida (até 100 anos à frente).");
+        }
+
+        if (estoqueDTO.getMinPossivelEstocado() < 0) {
+            erros.add("O valor mínimo estocado não pode ser negativo.");
+        }
+
+        //Se houver erros, retorna pra página de erro
+        if (!erros.isEmpty()) {
+            req.setAttribute("erros", erros);
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            return;
+        }
+
+        //Chamando o DAO de estoque
         int resultado = estoqueDAO.inserirEstoque(estoqueDTO);
 
         if (resultado == 1) {
@@ -164,6 +189,28 @@ public class ServletEstoque extends HttpServlet {
         String dataStr = req.getParameter("dataValidade"); //Convertendo de String para Date
         estoqueDTO.setDataValidade(java.sql.Date.valueOf(dataStr));
         estoqueDTO.setMinPossivelEstocado(Integer.parseInt(req.getParameter("minPossivelEstocado")));
+
+        //===== Validação de dados usando a classe Validador ======
+        List<String> erros = new ArrayList<>();
+
+        if (estoqueDTO.getQuantidade() <= 0) {
+            erros.add("A quantidade deve ser maior que zero.");
+        }
+
+        if (!Validador.validarDataValidade((Date) estoqueDTO.getDataValidade())) {
+            erros.add("Data de validade inválida.");
+        }
+
+        if (estoqueDTO.getMinPossivelEstocado() < 0) {
+            erros.add("O valor mínimo estocado não pode ser negativo.");
+        }
+
+        //Se houver erros, retorna pra página de erro
+        if (!erros.isEmpty()) {
+            req.setAttribute("erros", erros);
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            return;
+        }
 
         //Chamar o DAO com o id já settado no DTO
         int resultado = estoqueDAO.alterarEstoque(estoqueDTO); //Dentro do método, é settado os atributos

@@ -8,8 +8,8 @@ public class FuncionarioDTO {
     private String nome;
     private String email;
     private String senha;
-    private Date dataAdmissao;
-    private Date dataNascimento;
+    private java.sql.Date dataAdmissao;
+    private java.sql.Date dataNascimento;
     private int idEta; // Foreign Key
     private int idCargo; // Foreign Key
     private String nomeCargo;
@@ -18,8 +18,8 @@ public class FuncionarioDTO {
     //Construtores
     public FuncionarioDTO() {
     }
-    public FuncionarioDTO(int id, String nome, String email, String senha, Date dataAdmissao,
-                          Date dataNascimento, int idEta, int idCargo, String nomeCargo, String nomeEta) {
+    public FuncionarioDTO(int id, String nome, String email, String senha, java.sql.Date dataAdmissao,
+                          java.sql.Date dataNascimento, int idEta, int idCargo, String nomeCargo, String nomeEta) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -57,14 +57,14 @@ public class FuncionarioDTO {
     public Date getDataAdmissao() {
         return dataAdmissao;
     }
-    public void setDataAdmissao(Date dataAdmissao) {
+    public void setDataAdmissao(java.sql.Date dataAdmissao) {
         this.dataAdmissao = dataAdmissao;
     }
 
     public Date getDataNascimento() {
         return dataNascimento;
     }
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(java.sql.Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 

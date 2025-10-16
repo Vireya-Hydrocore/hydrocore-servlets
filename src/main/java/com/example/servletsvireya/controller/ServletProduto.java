@@ -114,7 +114,12 @@ public class ServletProduto extends HttpServlet {
         produtoDTO.setNomeEta(nomeEta);
 
         // ===== VALIDAÇÃO PRODUTO =====
-        List<String> erros = Validador.validarProduto(produtoDTO.getNome(), produtoDTO.getTipo(), produtoDTO.getConcentracao());
+        List<String> erros = Validador.validarProduto(
+                produtoDTO.getNome(),
+                produtoDTO.getTipo(),
+                produtoDTO.getConcentracao()
+        );
+
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
             req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);

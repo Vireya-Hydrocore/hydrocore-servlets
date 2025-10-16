@@ -220,7 +220,10 @@ form {
     border-radius: 6px;
     cursor: pointer;
 }
-
+.formulario {
+    display: flex;
+    align-items: center;
+}
 .botao-salvar {
     background: #2AA0C4;
     color: white;

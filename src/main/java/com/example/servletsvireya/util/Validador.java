@@ -44,9 +44,44 @@ public class Validador {
         return cnpj != null && cnpj.matches("^\\d{14}$");
     }
 
-    public static boolean validarData(LocalDate data) {
-        return data != null && !data.isAfter(LocalDate.now().plusYears(100));
+
+    // DATAS
+
+    public static boolean validarDataNascimento(Date dataNascimento) {
+        if (dataNascimento == null) return false;
+
+        LocalDate data = dataNascimento.toLocalDate();
+        LocalDate hoje = LocalDate.now();
+
+        //A pessoa deve ter pelo menos 16 anos e no máximo 120
+        LocalDate limiteMinimo = hoje.minusYears(120); //Mais velho possível
+        LocalDate limiteMaximo = hoje.minusYears(16);  //Mais novo possível
+
+        //A data deve estar entre 120 e 16 anos
+        return (data.isAfter(limiteMinimo) || data.isEqual(limiteMinimo)) &&
+                (data.isBefore(limiteMaximo) || data.isEqual(limiteMaximo));
     }
+
+    public static boolean validarDataAdmissao(Date dataAdmissao) {
+        if (dataAdmissao == null) return false;
+        LocalDate data = dataAdmissao.toLocalDate();
+        LocalDate hoje = LocalDate.now();
+        return !data.isAfter(hoje); // Pode ser hoje ou antes
+    }
+
+    public static boolean validarDataValidade(java.sql.Date dataValidade) {
+        if (dataValidade == null) return false;
+
+        LocalDate data = dataValidade.toLocalDate();
+        LocalDate hoje = LocalDate.now();
+
+        // Pode ser hoje ou no futuro (até 100 anos)
+        return !data.isBefore(hoje) && !data.isAfter(hoje.plusYears(100));
+    }
+
+
+
+
 
     // VALIDAÇÃO DE SENHA
 
