@@ -74,6 +74,9 @@ header {
     transition: left 0.3s ease;
     padding-top: 20px;
 }
+.sidebar ul a li img {
+    margin-top: 15px;
+}
 
 .sidebar.open {
     left: 0;
@@ -134,8 +137,8 @@ main {
 
 .filtro {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    justify-content: center;
+    /*align-items: flex-start;*/
     flex-wrap: wrap; /* permite quebrar linha */
     gap: 10px;
 }
@@ -211,6 +214,7 @@ form {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
+    margin-top: 15px;
 }
 
 .botao-redefinir {
@@ -220,9 +224,19 @@ form {
     border-radius: 6px;
     cursor: pointer;
 }
-.formulario {
+
+.filtro {
     display: flex;
     align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.filtros {
+    display: flex;
+    text-align: center;
+    width: 650px;
+    gap: 25px;
 }
 .botao-salvar {
     background: #2AA0C4;
@@ -257,6 +271,11 @@ table td {
     word-wrap: break-word; /* quebras de palavra */
 }
 
+table td {
+    word-break: break-word;
+    white-space: normal;
+}
+
 table th {
     background: #f0f0f0;
 }
@@ -269,7 +288,7 @@ table th {
     padding: 5px 10px;
     border-radius: 4px;
     cursor: pointer;
-    margin-right: 5px;
+    /*margin-right: 5px;*/
 }
 
 .botao-excluir {
@@ -412,34 +431,6 @@ table th {
     }
 }
 
-
-
-main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.lista {
-    background: white;
-    width: 100%; /* garante que o card da lista use toda a tela */
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 15px;
-    overflow-x: auto; /* adiciona rolagem se necessário */
-}
-
-table {
-    width: 100%;
-    min-width: 1200px; /* aumenta a largura mínima */
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-
-
-
 @media (max-width: 768px) {
     header {
         justify-content: space-between;
@@ -547,6 +538,7 @@ table {
         min-width: 120px;
     }
 }
+
 @media (max-width: 768px) {
     table td {
         text-align: center;
@@ -560,11 +552,4 @@ table {
         padding: 6px 10px;
         margin: 3px;
     }
-}
-
-
-
-
-.lista {
-    overflow-x: auto; /* garante rolagem se tabela for grande */
 }
