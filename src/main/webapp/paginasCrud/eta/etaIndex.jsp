@@ -89,6 +89,7 @@
           </div>
 
           <div class="acoes">
+            <a class="botao-redefinir" style="text-decoration: none" href="${pageContext.request.contextPath}/ServletEta?action=mainEta">Redefinir filtragem</a>
             <button type="submit" class="botao-salvar">Aplicar Filtro</button>
           </div>
 
@@ -125,7 +126,7 @@
             <a class="botao-editar" href="${pageContext.request.contextPath}/ServletEta?action=selectEta&id=<%= lista.get(i).getId() %>">Editar</a>
             &nbsp;|&nbsp;
             <!-- Botão Excluir -->
-            <form action="<%= request.getContextPath() %>/ServletEta" method="get" style="display:inline;">
+            <form action="<%= request.getContextPath() %>/ServletEta" method="post" style="display:inline;">
               <input type="hidden" name="action" value="deleteEta">
               <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
               <button class="botao-excluir" type="submit" onclick="return confirm('Tem certeza que deseja excluir essa ETA?');">

@@ -4,6 +4,7 @@ import com.example.servletsvireya.dao.EtaDAO;
 import com.example.servletsvireya.dao.ProdutoDAO;
 import com.example.servletsvireya.dto.ProdutoDTO;
 import com.example.servletsvireya.model.Produto;
+import com.example.servletsvireya.util.Validador;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -112,6 +113,14 @@ public class ServletProduto extends HttpServlet {
         produtoDTO.setIdEta(etaDAO.buscarIdPorNome(nomeEta));
         produtoDTO.setNomeEta(nomeEta);
 
+        // ===== VALIDAÇÃO PRODUTO =====
+        List<String> erros = Validador.validarProduto(produtoDTO.getNome(), produtoDTO.getTipo(), produtoDTO.getConcentracao());
+        if (!erros.isEmpty()) {
+            req.setAttribute("erros", erros);
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            return; // Interrompe execução se houver erros
+        }
+
         int resultado = produtoDAO.cadastrarProduto(produtoDTO);
 
         if (resultado == 1) {
@@ -119,6 +128,39 @@ public class ServletProduto extends HttpServlet {
         } else { //Deu erro na inserção
             req.setAttribute("erro", "Não foi possível inserir o produto. Verifique os campos e tente novamente!"); //Setta um atributo com o erro
             req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp); //Vai para a página de erro
+        }
+    }
+
+
+    // ===============================================================
+    //      Método para ALTERAR o produto (com os VALORES NOVOS)
+    // ================================================================
+
+    protected void alterarProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //Settando os novos valores do produto
+        ProdutoDTO produtoDTO = new ProdutoDTO();
+        produtoDTO.setId(Integer.parseInt(req.getParameter("id")));
+        produtoDTO.setNome(req.getParameter("nome"));
+        produtoDTO.setTipo(req.getParameter("tipo"));
+        produtoDTO.setUnidadeMedida(req.getParameter("unidadeMedida"));
+        produtoDTO.setConcentracao(Double.parseDouble(req.getParameter("concentracao")));
+
+        // ===== VALIDAÇÃO PRODUTO =====
+        List<String> erros = Validador.validarProduto(produtoDTO.getNome(), produtoDTO.getTipo(), produtoDTO.getConcentracao());
+        if (!erros.isEmpty()) {
+            req.setAttribute("erros", erros);
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            return; // Interrompe execução se houver erros
+        }
+
+        //Chamando o produtoDAO
+        int resultado = produtoDAO.alterarProduto(produtoDTO);
+
+        if (resultado == 1) {
+            resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto");
+        } else {
+            req.setAttribute("erro", "Não foi possível alterar o produto! Verifique os campos e tente novamente.");
+            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
         }
     }
 
@@ -138,31 +180,6 @@ public class ServletProduto extends HttpServlet {
         //Envia para a página de alterar
         RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/produto/produtoAlterar.jsp");
         rd.forward(req, resp);
-    }
-
-
-    // ===============================================================
-    //      Método para ALTERAR o produto (com os VALORES NOVOS)
-    // ================================================================
-
-    protected void alterarProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //Settando os novos valores do produto
-        ProdutoDTO produtoDTO = new ProdutoDTO();
-        produtoDTO.setId(Integer.parseInt(req.getParameter("id")));
-        produtoDTO.setNome(req.getParameter("nome"));
-        produtoDTO.setTipo(req.getParameter("tipo"));
-        produtoDTO.setUnidadeMedida(req.getParameter("unidadeMedida"));
-        produtoDTO.setConcentracao(Double.parseDouble(req.getParameter("concentracao")));
-
-        //Chamando o produtoDAO
-        int resultado = produtoDAO.alterarProduto(produtoDTO);
-
-        if (resultado == 1) {
-            resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto");
-        } else {
-            req.setAttribute("erro", "Não foi possível alterar o produto! Verifique os campos e tente novamente.");
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
-        }
     }
 
 

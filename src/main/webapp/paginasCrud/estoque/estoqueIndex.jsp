@@ -95,7 +95,7 @@
                 </div>
 
                 <div class="acoes">
-                    <button type="button" class="botao-cancelar">Cancelar</button>
+                    <button type="reset" class="botao-redefinir">Limpar</button>
                     <input type="submit" value="Salvar" class="botao-salvar">
                 </div>
             </form>
@@ -113,7 +113,7 @@
 
                     <div class="campos">
                         <label>Coluna</label>
-                        <select name="nome_coluna">
+                        <select name="nome_coluna" id="colunaSelect">
                             <option value="nome_produto">Nome do Produto</option>
                             <option value="quantidade">Quantidade</option>
                             <option value="data_validade">Data de Validade</option>
@@ -124,13 +124,32 @@
 
                     <div class="campos">
                         <label>Pesquisa</label>
-                        <input type="text" name="pesquisa" placeholder="Digite o termo de busca...">
+                        <input type="text" name="pesquisa" id="pesquisa" placeholder="Digite o termo de busca...">
                     </div>
 
                     <div class="acoes">
+                        <a class="botao-redefinir" style="text-decoration: none" href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">Redefinir filtragem</a>
                         <button type="submit" class="botao-salvar">Aplicar Filtro</button>
                     </div>
                 </form>
+                <script>
+
+                    const colunaSelect = document.getElementById('colunaSelect');
+                    const inputPesquisa = document.getElementById('pesquisa');
+
+                    colunaSelect.addEventListener('change', function() {
+                        const valor = colunaSelect.value;
+
+                        // Se for uma das opções de data, muda o tipo para "date"
+                        if (valor === 'data_validade') {
+                            inputPesquisa.type = 'date';
+                            inputPesquisa.value = ''; // limpa o campo para evitar erro de formato
+                        } else {
+                            inputPesquisa.type = 'text';
+                            inputPesquisa.value = '';
+                        }
+                    });
+                </script>
             </section>
 
             <table>

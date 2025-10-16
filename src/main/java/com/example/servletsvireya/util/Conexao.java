@@ -1,17 +1,12 @@
 package com.example.servletsvireya.util;
 import io.github.cdimascio.dotenv.Dotenv;
 
-import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
 
 public class Conexao {
+
     Connection conn;
-
-    String url = "jdbc:postgresql://pg-26d1af5a-germinare-bf04.h.aivencloud.com:28190/fudErikdb";
-    String user = "avnadmin";
-    String pass = "AVNS_6laeJARLI53amL4NRl1";
-
     Dotenv dotenv = Dotenv.load(); //carrega o arquivo .env
 
     //Método para criar conexão com o banco

@@ -41,9 +41,9 @@
         }
     %>
 
-    <form action="${pageContext.request.contextPath}/ServletEta?action=mainEta" method="get">
-        <button type="submit" class="botao-voltar">Voltar à Página Principal</button>
-    </form>
+    <a href="/ServletEta?action=mainEta" class="botao-voltar">Voltar à Página Principal</a>
+    <a href="../" class="botao-voltar">Voltar à Página Anterior</a>
+
 </main>
 
 </body>

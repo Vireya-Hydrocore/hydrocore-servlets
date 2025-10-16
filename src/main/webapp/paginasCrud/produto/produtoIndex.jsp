@@ -6,13 +6,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<!-------------------- MENU PRODUTO ----------------------->
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.servletsvireya.dto.ProdutoDTO" %>
 <%
     List<ProdutoDTO> lista = (List<ProdutoDTO>) request.getAttribute("produtos");
 %>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -65,17 +65,17 @@
 
         <section class="cadastro">
             <h2>Cadastro de Produtos</h2>
-            <form name="frmProduto" action="${pageContext.request.contextPath}/ServletProduto" method="post" onsubmit="return validarProduto();">
+            <form name="frmProduto" action="${pageContext.request.contextPath}/ServletProduto" method="post">
                 <div class="campos">
                     <input type="hidden" name="action" value="createProduto"> <!-- Envia esse parametro para o servlet ver que action é create-->
 
                     <label>Nome do Produto</label>
-                    <input type="text" name="nome" placeholder="Ex: Cloro Líquido">
+                    <input type="text" name="nome" placeholder="Ex: Cloro Líquido" required>
                 </div>
 
                 <div class="campos">
                     <label>Tipo</label>
-                    <select name="tipo">
+                    <select name="tipo" required>
                         <option value="">Selecione a categoria</option>
                         <option value="Coagulante">Coagulante</option>
                         <option value="Floculante">Floculante</option>
@@ -84,7 +84,7 @@
 
                 <div class="campos">
                     <label>Unidade de Medida</label>
-                    <select name="unidadeMedida">
+                    <select name="unidadeMedida" required>
                         <option value="">Selecione a unidade</option>
                         <option value="kg">kg</option>
                         <option value="g">g</option>
@@ -97,16 +97,16 @@
 
                 <div class="campos">
                     <label>Concentração (%)</label>
-                    <input type="number" name="concentracao" max="100" placeholder="Ex: 25.50">
+                    <input type="number" name="concentracao" max="100" step="0.01" placeholder="Ex: 25.50" required>
                 </div>
+
                 <div class="campos">
                     <label>Nome ETA</label>
-                    <input type="text" name="nomeEta" placeholder="Ex: ETA Central">
+                    <input type="text" name="nomeEta" placeholder="Ex: ETA Central" required>
                 </div>
 
                 <div class="acoes">
-                    <button type="button" class="botao-cancelar">Cancelar</button>
-
+                    <button type="reset" class="botao-redefinir">Limpar</button>
                     <input type="submit" value="Salvar" class="botao-salvar">
                 </div>
             </form>
@@ -117,9 +117,9 @@
         <section class="lista">
 
             <div class="filtro">
-            <h2>Lista de Produtos</h2>
+                <h2>Lista de Produtos</h2>
 
-            <!-- FILTRO DE PRODUTOS -->
+                <!-- FILTRO DE PRODUTOS -->
                 <form action="${pageContext.request.contextPath}/ServletProduto" method="get">
                     <input type="hidden" name="action" value="filtroProduto">
 
@@ -140,6 +140,7 @@
                     </div>
 
                     <div class="acoes">
+                        <a class="botao-redefinir" style="text-decoration: none" href="${pageContext.request.contextPath}/ServletProduto?action=mainProduto">Redefinir filtragem</a>
                         <button type="submit" class="botao-salvar">Aplicar Filtro</button>
                     </div>
                 </form>
@@ -147,32 +148,34 @@
 
             <table>
                 <thead>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Tipo</th>
-                <th>Unidade de Medida</th>
-                <th>Concentração</th>
-                <th>Nome ETA</th>
-                <th>Ações</th>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Tipo</th>
+                    <th>Unidade de Medida</th>
+                    <th>Concentração</th>
+                    <th>Nome ETA</th>
+                    <th>Ações</th>
+                </tr>
                 </thead>
                 <tbody>
                 <% if (lista != null && !lista.isEmpty()) {
-                    for (int i=0; i < lista.size(); i++) { %>
+                    for (ProdutoDTO p : lista) { %>
                 <tr>
-                    <td><%= lista.get(i).getId() %></td>
-                    <td><%= lista.get(i).getNome() %></td>
-                    <td><%= lista.get(i).getTipo() %></td>
-                    <td><%= lista.get(i).getUnidadeMedida() %></td>
-                    <td><%= lista.get(i).getConcentracao() %></td>
-                    <td><%= lista.get(i).getNomeEta() %></td>
+                    <td><%= p.getId() %></td>
+                    <td><%= p.getNome() %></td>
+                    <td><%= p.getTipo() %></td>
+                    <td><%= p.getUnidadeMedida() %></td>
+                    <td><%= p.getConcentracao() %></td>
+                    <td><%= p.getNomeEta() %></td>
                     <td>
                         <!-- Botão Editar -->
-                        <a class="botao-editar" href="${pageContext.request.contextPath}/ServletProduto?action=selectProduto&id=<%= lista.get(i).getId() %>">Editar</a>
+                        <a class="botao-editar" href="${pageContext.request.contextPath}/ServletProduto?action=selectProduto&id=<%= p.getId() %>">Editar</a>
                         &nbsp;|&nbsp;
                         <!-- Botão Excluir -->
                         <form action="<%= request.getContextPath() %>/ServletProduto" method="post" style="display:inline;">
                             <input type="hidden" name="action" value="deleteProduto">
-                            <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
+                            <input type="hidden" name="id" value="<%= p.getId() %>">
                             <button class="botao-excluir" type="submit" onclick="return confirm('Tem certeza que deseja excluir este produto?');">
                                 Excluir
                             </button>
@@ -182,7 +185,7 @@
                 <% }
                 } else { %>
                 <tr>
-                    <td colspan="6">Nenhum produto encontrado!</td>
+                    <td colspan="7">Nenhum produto encontrado!</td>
                 </tr>
                 <% } %>
                 </tbody>
@@ -190,6 +193,7 @@
         </section>
     </main>
 </div>
+
 <!-- Script -->
 <script src="${pageContext.request.contextPath}/paginasCrud/scripts/script.js"></script>
 </body>

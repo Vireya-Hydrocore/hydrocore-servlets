@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vireya | HydroCore</title>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/pagina/style.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/pagina/css/style.css">
 </head>
 
 <body>
