@@ -49,7 +49,7 @@ public class ServletLogin extends HttpServlet {
 
 
     // ===============================================================
-    //          Método para LOGAR ADMIN (......)
+    //          Método para LOGAR ADMIN (Desenvolvedores)
     // ===============================================================
 
     protected void logarAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

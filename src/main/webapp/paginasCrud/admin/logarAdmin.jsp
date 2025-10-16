@@ -61,7 +61,7 @@
 </head>
 <body>
 <div class="login-container">
-  <h2>Login</h2>
+  <h2>Login (Área restrita)</h2>
 
   <%
     String erro = (String) request.getAttribute("erroLogin");
