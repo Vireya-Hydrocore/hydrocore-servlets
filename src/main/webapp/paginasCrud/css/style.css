@@ -402,15 +402,17 @@ table th {
     margin-bottom: 20px;
 }
 
+/* ====== RESPONSIVIDADE ====== */
 
+/* --- Ajuste geral para telas médias --- */
+@media (max-width: 1024px) {
 
-@media (max-width: 992px) {
     header {
         padding: 0 10px;
     }
 
     .logo {
-        margin-left: 0;
+        margin-left: 60px;
         font-size: 18px;
     }
 
@@ -418,41 +420,46 @@ table th {
         width: 180px;
     }
 
-    .sidebar.open ~ main {
-        margin-left: 180px;
+    .filtros {
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
     }
 
-    .grid {
-        grid-template-columns: 1fr 1fr;
+    .filtros .campos,
+    .filtros .acoes {
+        width: 90%;
     }
 
-    form {
-        grid-template-columns: 1fr 1fr;
+    table th, table td {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .botao-editar,
+    .botao-excluir {
+        padding: 4px 8px;
+        font-size: 13px;
     }
 }
 
+/* --- Ajuste para tablets e telas pequenas --- */
 @media (max-width: 768px) {
-    header {
-        justify-content: space-between;
-        padding: 0 10px;
+
+    .menu {
+        font-size: 26px;
     }
 
     .logo {
         font-size: 18px;
-    }
-
-    .header-direito {
-        gap: 5px;
-    }
-
-    .area-restrita, .logout {
-        padding: 5px 10px;
-        font-size: 13px;
+        margin-left: 10px;
     }
 
     .sidebar {
-        width: 180px;
-        left: -180px;
+        top: 60px;
+        height: calc(100vh - 60px);
+        left: -100%;
+        width: 220px;
     }
 
     .sidebar.open {
@@ -461,95 +468,94 @@ table th {
 
     main {
         padding: 15px;
-        margin: 0;
+        margin-left: 0 !important;
+        width: 100%;
+    }
+
+    .filtros {
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+    }
+
+    .filtro input,
+    .filtro select {
+        width: 100%;
         max-width: 100%;
     }
 
-    .sidebar.open ~ main {
-        margin-left: 0;
-    }
-
-    .grid, form {
-        grid-template-columns: 1fr;
-    }
-
     .acoes {
-        justify-content: center;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
     }
 
-    table th, table td {
-        font-size: 13px;
-        padding: 8px;
-    }
-}
-
-@media (max-width: 480px) {
-    header {
-        height: 55px;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
-    .menu {
-        font-size: 20px;
-    }
-
-    .logo {
-        font-size: 16px;
-    }
-
-    .area-restrita,
-    .logout {
-        font-size: 12px;
-        padding: 5px 8px;
-    }
-
-    .avatar {
-        width: 30px;
-        height: 30px;
-    }
-
-    .cadastro,
-    .lista,
-    .informacoes,
-    .editar {
-        padding: 15px;
-    }
-
-    h2 {
-        font-size: 18px;
-    }
-
-    .botao-adicionar,
-    .botao-salvar,
-    .botao-cancelar{
-        font-size: 13px;
-        padding: 6px 10px;
+    .botao-redefinir,
+    .botao-salvar {
+        width: 100%;
+        text-align: center;
     }
 
     table {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
+        border-radius: 8px;
     }
 
-    .dropdown {
-        right: -20px;
-        min-width: 120px;
-    }
-}
-
-@media (max-width: 768px) {
-    table td {
-        text-align: center;
+    table th, table td {
+        font-size: 12px;
+        padding: 6px;
     }
 
     .botao-editar,
     .botao-excluir {
         display: inline-block;
+        margin: 3px 0;
+    }
+}
+
+/* --- Ajuste para celulares --- */
+@media (max-width: 480px) {
+
+    header {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0 10px;
+    }
+
+    .logo {
+        font-size: 16px;
+        margin-left: 0;
+    }
+
+    .logout-btn {
         width: auto;
-        min-width: 70px;
-        padding: 6px 10px;
-        margin: 3px;
+        font-size: 12px;
+        padding: 4px 6px;
+    }
+
+    .sidebar {
+        width: 180px;
+    }
+
+    .filtros {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .filtro h2 {
+        text-align: center;
+        font-size: 18px;
+    }
+
+    table th, table td {
+        font-size: 11px;
+    }
+
+    .botao-editar,
+    .botao-excluir {
+        padding: 3px 6px;
+        font-size: 11px;
     }
 }
