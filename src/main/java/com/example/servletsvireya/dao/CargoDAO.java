@@ -43,10 +43,15 @@ public class CargoDAO {
     public int removerCargo(CargoDTO cargo) {
         Connection conn = conexao.conectar();
         String comando = "DELETE FROM Cargo WHERE id = ?";
+        String comando2 = "UPDATE FUNCIONARIO SET ID_CARGO=NULL WHERE id_cargo = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+
+        try (PreparedStatement pstmt = conn.prepareStatement(comando);
+             PreparedStatement pstmt2 = conn.prepareStatement(comando2)) {
             pstmt.setInt(1, cargo.getId());
+            pstmt2.setInt(1, cargo.getId());
 
+            pstmt2.executeUpdate();
             return (pstmt.executeUpdate() > 0) ? 1 : 0; //Forma simplificada para retornar
 
         } catch (SQLException e) {

@@ -21,7 +21,7 @@
                 <li><a href="#funcionalidade-title">Funcionalidades</a></li>
                 <li><a href="#sobre-nos">Sobre nós</a></li>
                 <li><a href="#planos">Planos</a></li>
-                <li><a id="bottom-cadastro" href="<%= request.getContextPath() %>/pagina/cadastro.jsp">Cadastrar</a></li>
+                <li><a id="bottom-cadastro" href="${pageContext.request.contextPath}/pagina/cadastro.jsp">Cadastrar</a></li>
             </ul>
         </nav>
     </div>

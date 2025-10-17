@@ -106,11 +106,11 @@ header {
 }
 
 main {
-    margin-left: 0;
     padding: 20px;
     min-height: calc(100vh - 60px);
+    margin: 0 auto;
     transition: margin-left 0.3s ease;
-    width: 100%;
+    width: 75%;
 }
 
 .sidebar.open~main {
@@ -135,13 +135,26 @@ main {
     margin-bottom: 20px;
 }
 
-.filtro {
-    display: flex;
-    justify-content: center;
-    /*align-items: flex-start;*/
-    flex-wrap: wrap; /* permite quebrar linha */
-    gap: 10px;
+.lista{
+    /* Define a largura fixa da div */
+    width: 75%;
+    /* Ativa a barra de rolagem horizontal (só aparece se necessário) */
+    overflow-x: auto;
+    /* Esconde a barra de rolagem vertical, se houver */
+    overflow-y: hidden;
+
+    /* Estilização opcional para visualização */
+    padding: 40px;
+    border: 1px solid #ccc;
 }
+
+/*.filtro {*/
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*!*align-items: flex-start;*!*/
+    /*flex-wrap: wrap; !* permite quebrar linha *!*/
+    /*gap: 10px;*/
+/*}*/
 
 .filtro select,
 .filtro input {
@@ -225,19 +238,23 @@ form {
     cursor: pointer;
 }
 
-.filtro {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-}
+/*.filtro {*/
+/*    position: fixed;*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    flex-direction: column;*/
+/*    !* Impede que o texto quebre para a próxima linha *!*/
+/*    white-space: nowrap;*/
+/*}*/
 
 .filtros {
-    display: flex;
     text-align: center;
     width: 650px;
     gap: 25px;
 }
+
+
 .botao-salvar {
     background: #2AA0C4;
     color: white;
@@ -258,7 +275,7 @@ form {
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
+    margin-top: 20px;
     /* min-width: 1200px; */ /* Remover ou comentar */
 }
 

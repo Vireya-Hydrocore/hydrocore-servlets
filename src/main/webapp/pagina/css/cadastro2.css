@@ -14,11 +14,15 @@ main {
     display: flex;
     width: 75%;
     background-color: #fff;
-    height: 650px;
+    height: 700px;
     border-radius: 10px;
     margin-top: 10px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15), 0 6px 18px rgba(0, 0, 0, 0.2);
     overflow: hidden; /* impede qualquer scroll */
+}
+
+main#m2{
+    height: 700px;
 }
 
 .container-esquerdo {
@@ -149,7 +153,7 @@ input {
 }
 
 .celular img {
-    width: 230px; /* menor */
+    width: 300px;
 }
 
 .input-senha {

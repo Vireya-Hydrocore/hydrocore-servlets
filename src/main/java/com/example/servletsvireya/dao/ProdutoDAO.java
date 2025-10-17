@@ -68,16 +68,20 @@ public class ProdutoDAO {
         Connection conn = conexao.conectar(); //Cria conexão com o banco
         String comandoEstoque = "DELETE FROM estoque WHERE id_produto = ?"; //Para deletar o que tiver relacionado com produto
         String comandoProduto = "DELETE FROM produto WHERE id = ?";
+        String comandoUso_produto_processo="DELETE FROM USO_PRODUTO_PROCESSO WHERE ID_PRODUTO= ?";
 
         try {
             conn.setAutoCommit(false); // Caso de erro em algum comando, é possível voltar
 
             try (PreparedStatement pstmtEstoque = conn.prepareStatement(comandoEstoque);
-                 PreparedStatement pstmtProduto = conn.prepareStatement(comandoProduto)) {
+                 PreparedStatement pstmtProduto = conn.prepareStatement(comandoProduto);
+                 PreparedStatement pstmtUso = conn.prepareStatement(comandoUso_produto_processo)) {
                 pstmtEstoque.setInt(1, idProduto); //No primeiro comando
                 pstmtProduto.setInt(1, idProduto); //Segundo comando
+                pstmtUso.setInt(1,idProduto);
 
                 pstmtEstoque.executeUpdate(); //Primeiro: remove primeiro o estoque
+                pstmtUso.executeUpdate();
                 if (pstmtProduto.executeUpdate() > 0) { //Depois: remove o produto
                     conn.commit(); //Confirma a exclusão
                     return 1;

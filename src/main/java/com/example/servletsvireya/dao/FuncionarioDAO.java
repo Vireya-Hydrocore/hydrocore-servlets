@@ -116,7 +116,7 @@ public class FuncionarioDAO {
     // ========== Método para remover um funcionário ========== //
     public int removerFuncionario(int idFuncionario) {
         Connection conn = conexao.conectar();
-        String comandoSQL2= "DELETE FROM TAREFA WHERE ID_FUNCIONARIO= ?";
+        String comandoSQL2 = "DELETE FROM TAREFA WHERE ID_FUNCIONARIO= ?";
         String comandoSQL = "DELETE FROM funcionario WHERE id= ?";
         try {
             PreparedStatement pstm2 = conn.prepareStatement(comandoSQL2);
@@ -124,7 +124,7 @@ public class FuncionarioDAO {
             pstm2.setInt(1, idFuncionario);
             pstmt.setInt(1, idFuncionario);
             pstm2.executeUpdate();
-            if (pstmt.executeUpdate()>0){
+            if (pstmt.executeUpdate() > 0) {
                 return 1;
             } else {
                 return -1;
@@ -154,27 +154,6 @@ public class FuncionarioDAO {
             conexao.desconectar();
         }
     }
-
-
-//    org.postgresql.util.PSQLException: ERROR: update or delete on table "funcionario" violates foreign key constraint "tarefa_id_funcionario_fkey" on table "tarefa"
-//    Detalhe: Key (id)=(1) is still referenced from table "tarefa".
-//    at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2725)
-//    at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2412)
-//    at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:371)
-//    at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:502)
-//    at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:419)
-//    at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:194)
-//    at org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:155)
-//    at com.example.servletsvireya.dao.FuncionarioDAO.removerFuncionario(FuncionarioDAO.java:124)
-//    at com.example.servletsvireya.controller.ServletFuncionario.removerFuncionario(ServletFuncionario.java:276)
-//    at com.example.servletsvireya.controller.ServletFuncionario.doPost(ServletFuncionario.java:84)
-//    at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:649)
-//    at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710)
-//    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:130)
-//    at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
-//    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:109)
-//    at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
-//    at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:79)
 
 
     // ========== Método para buscar um funcionário pelo id ========== //
@@ -248,10 +227,14 @@ public class FuncionarioDAO {
         List<FuncionarioDTO> funcionarios = new ArrayList<>(); //List para armazenar os dados
         Connection conn = conexao.conectar();
         //Prepara a consulta com JOINS para pegar cargo e nome da ETA
-        String comando = "SELECT f.*, c.nome AS nome_cargo, e.nome AS nome_eta FROM Funcionario f " +
-                "JOIN cargo c ON f.id_cargo = c.id " +
-                "JOIN eta e ON f.id_eta = e.id " +
-                "ORDER BY f.nome"; //Ordena por ordem alfabética
+        String comando =
+                "SELECT f.*, "+
+                        "c.nome AS nome_cargo, "+
+                        "e.nome AS nome_eta "+
+                        "FROM Funcionario f "+
+                        "LEFT JOIN cargo c ON f.id_cargo = c.id "+
+                        "LEFT JOIN eta e ON f.id_eta = e.id "
+                        +"ORDER BY f.nome "; //Ordena por ordem alfabética
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)){
             ResultSet rs = pstmt.executeQuery();

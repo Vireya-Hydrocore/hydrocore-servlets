@@ -37,26 +37,26 @@
 </header>
 
 <aside class="sidebar" id="sidebar">
-<%--  <ul>--%>
-<%--    <a href="${pageContext.request.contextPath}/ServletEta?action=mainEta">--%>
-<%--      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/imagem9.png"> ETAs</li>--%>
-<%--    </a>--%>
-<%--    <a href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">--%>
-<%--      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image10.png"> Funcionarios</li>--%>
-<%--    </a>--%>
-<%--    <a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">--%>
-<%--      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image11.png"> Estoque</li>--%>
-<%--    </a>--%>
-<%--    <a href="${pageContext.request.contextPath}/ServletProduto?action=mainProduto">--%>
-<%--      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image12.png"> Produtos</li>--%>
-<%--    </a>--%>
-<%--    <a href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">--%>
-<%--      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image13.png"> Cargo</li>--%>
-<%--    </a>--%>
-<%--    <a href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin">--%>
-<%--      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/icons8-admin-settings-male-16.png"> Admin</li>--%>
-<%--    </a>--%>
-<%--  </ul>--%>
+  <ul>
+    <a href="${pageContext.request.contextPath}/ServletEta?action=mainEta">
+      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/imagem9.png"> ETAs</li>
+    </a>
+    <a href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">
+      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image10.png"> Funcionarios</li>
+    </a>
+    <a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">
+      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image11.png"> Estoque</li>
+    </a>
+    <a href="${pageContext.request.contextPath}/ServletProduto?action=mainProduto">
+      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image12.png"> Produtos</li>
+    </a>
+    <a href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">
+      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/image13.png"> Cargo</li>
+    </a>
+    <a href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin">
+      <li><img src="${pageContext.request.contextPath}/paginasCrud/img/icons8-admin-settings-male-16.png"> Admin</li>
+    </a>
+  </ul>
 </aside>
 
 <div class="plano-de-fundo">
@@ -71,28 +71,28 @@
 
         <form action="${pageContext.request.contextPath}/ServletEta" method="get">
           <div class="filtros">
-          <input type="hidden" name="action" value="filtroEta">
+            <input type="hidden" name="action" value="filtroEta">
 
-          <div class="campos">
-            <label>Coluna</label>
-            <select name="nome_coluna">
-              <option value="nome">Nome</option>
-              <option value="capacidade">Capacidade</option>
-              <option value="telefone">Telefone</option>
-              <option value="cnpj">CNPJ</option>
-              <option value="cep">CEP</option> <!--endereço-->
-            </select>
-          </div>
+            <div class="campos">
+              <label>Coluna</label>
+              <select name="nome_coluna">
+                <option value="nome">Nome</option>
+                <option value="capacidade">Capacidade</option>
+                <option value="telefone">Telefone</option>
+                <option value="cnpj">CNPJ</option>
+                <option value="cep">CEP</option> <!--endereço-->
+              </select>
+            </div>
 
-          <div class="campos">
-            <label>Pesquisa</label>
-            <input type="text" name="pesquisa" placeholder="Digite o termo de busca...">
-          </div>
+            <div class="campos">
+              <label>Pesquisa</label>
+              <input type="text" name="pesquisa" placeholder="Digite o termo de busca...">
+            </div>
 
-          <div class="acoes">
-            <a class="botao-redefinir" style="text-decoration: none" href="${pageContext.request.contextPath}/ServletEta?action=mainEta">Redefinir filtragem</a>
-            <button type="submit" class="botao-salvar">Aplicar Filtro</button>
-          </div>
+            <div class="acoes">
+              <a class="botao-redefinir" style="text-decoration: none" href="${pageContext.request.contextPath}/ServletEta?action=mainEta">Redefinir filtragem</a>
+              <button type="submit" class="botao-salvar">Aplicar Filtro</button>
+            </div>
           </div>
         </form>
       </div>
