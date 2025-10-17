@@ -18,7 +18,7 @@
       <span>HydroCore</span>
     </div>
     <h1>Fazer Login</h1>
-    <form>
+    <form action="${pageContext.request.contextPath}/ServletLogin?action=logar" method="post">
       <label for="email">E-mail</label>
       <input type="text" id="email" name="email" placeholder="Digite seu e-mail" required>
 
