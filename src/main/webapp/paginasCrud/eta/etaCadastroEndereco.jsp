@@ -102,7 +102,6 @@
       <img src="${pageContext.request.contextPath}img/modelo_frontal.png" alt="Celular">
     </div>
   </div>
-
   <script src="${pageContext.request.contextPath}/paginasCrud/eta/js/regex.js"></script>
   <script src="${pageContext.request.contextPath}/paginasCrud/eta/js/script.js"></script>
 </main>
