@@ -33,7 +33,7 @@
 <main id="m2">
     <div class="container-esquerdo">
         <div class="logo">
-            <img src="${pageContext.request.contextPath}/pagina/imgs/vireya icon.png" alt="Logo HydroCore">
+            <img src="${pageContext.request.contextPath}/pagina/imgs/vireya_icon.png" alt="Logo HydroCore">
             <span>HydroCore</span>
         </div>
         <h1>Cadastrar Endereço</h1>

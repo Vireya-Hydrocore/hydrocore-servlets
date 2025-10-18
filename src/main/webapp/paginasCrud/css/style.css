@@ -3,9 +3,10 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', sans-serif;
+    white-space: nowrap !important;
 }
 body{
-    overflow-x: hidden;
+    overflow-x: auto;
 }
 
 header {
@@ -74,9 +75,9 @@ header {
     transition: left 0.3s ease;
     padding-top: 20px;
 }
-.sidebar ul a li img {
-    margin-top: 15px;
-}
+/*.sidebar ul a li img {*/
+/*    margin-top: 15px;*/
+/*}*/
 
 .sidebar.open {
     left: 0;
@@ -128,6 +129,7 @@ main {
     margin-bottom: 15px;
 }
 
+
 .cadastro h2,
 .lista h2,
 .informacoes h2 {
@@ -136,25 +138,21 @@ main {
 }
 
 .lista{
-    /* Define a largura fixa da div */
-    width: 75%;
+
     /* Ativa a barra de rolagem horizontal (só aparece se necessário) */
     overflow-x: auto;
     /* Esconde a barra de rolagem vertical, se houver */
     overflow-y: hidden;
 
-    /* Estilização opcional para visualização */
-    padding: 40px;
-    border: 1px solid #ccc;
 }
 
-/*.filtro {*/
-    /*display: flex;*/
-    /*justify-content: center;*/
-    /*!*align-items: flex-start;*!*/
-    /*flex-wrap: wrap; !* permite quebrar linha *!*/
-    /*gap: 10px;*/
-/*}*/
+.filtro {
+    display: flex;
+    justify-content: center;
+    /*align-items: flex-start;*/
+    flex-wrap: wrap; /* permite quebrar linha */
+    gap: 10px;
+}
 
 .filtro select,
 .filtro input {
@@ -236,17 +234,18 @@ form {
     padding: 8px 14px;
     border-radius: 6px;
     cursor: pointer;
+    color: black;
 }
 
-/*.filtro {*/
-/*    position: fixed;*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*    flex-direction: column;*/
-/*    !* Impede que o texto quebre para a próxima linha *!*/
-/*    white-space: nowrap;*/
-/*}*/
+.filtro {
+    position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* Impede que o texto quebre para a próxima linha */
+    white-space: nowrap;
+}
 
 .filtros {
     text-align: center;
@@ -391,6 +390,8 @@ table th {
 }
 .logout-btn{
     width: 60px;
+    text-decoration: none;
+    color: black;
 }
 
 
@@ -462,6 +463,12 @@ table th {
 
 /* --- Ajuste para tablets e telas pequenas --- */
 @media (max-width: 768px) {
+    .lista{
+        /* Ativa a barra de rolagem horizontal (só aparece se necessário) */
+        overflow-x: auto;
+        /* Esconde a barra de rolagem vertical, se houver */
+        overflow-y: hidden;
+    }
 
     .menu {
         font-size: 26px;
@@ -575,4 +582,41 @@ table th {
         padding: 3px 6px;
         font-size: 11px;
     }
+}
+
+
+
+
+
+.lista {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 500px; /* altura máxima da área */
+    overflow: hidden; /* evita rolagem dupla */
+}
+
+/* Área fixa (título + filtros) */
+.filtro {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+}
+
+/* Área rolável apenas para a tabela */
+.tabela-container {
+    overflow-y: auto;
+    overflow-x: auto;
+    max-height: 350px; /* defina conforme desejar */
+    border-radius: 6px;
+}
+
+/* Cabeçalho da tabela fixo também */
+.tabela-container table thead th {
+    position: sticky;
+    top: 0;
+    background: #f0f0f0;
+    z-index: 5;
 }

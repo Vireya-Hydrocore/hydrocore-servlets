@@ -168,50 +168,55 @@
 
             </div>
 
-            <table>
-                <thead>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>E-mail</th>
-                <th>Data Admissão</th>
-                <th>Data Nascimento</th>
-                <th>Cargo</th>
-                <th>ETA</th>
-                <th>Ações</th>
-                </thead>
-                <tbody>
-                <% if (lista != null && !lista.isEmpty()) {
-                    for (int i=0; i < lista.size(); i++) { %>
-                <tr>
-                    <td><%= lista.get(i).getId() %></td>
-                    <td><%= lista.get(i).getNome() %></td>
-                    <td><%= lista.get(i).getEmail() %></td>
-                    <td><%= lista.get(i).getDataAdmissao()%></td>
-                    <td><%= lista.get(i).getDataNascimento()%></td>
-                    <td><%= lista.get(i).getNomeCargo()%></td>
-                    <td><%= lista.get(i).getNomeEta()%></td>
-                    <td>
-                        <!-- Botão Editar -->
-                        <a class="botao-editar" href="${pageContext.request.contextPath}/ServletFuncionario?action=selectFuncionario&id=<%= lista.get(i).getId() %>">Editar</a>
-                        &nbsp;|&nbsp;
-                        <!-- Botão Excluir -->
-                        <form action="<%= request.getContextPath() %>/ServletFuncionario" method="post" style="display:inline;">
-                            <input type="hidden" name="action" value="deleteFuncionario">
-                            <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
-                            <button class="botao-excluir" type="submit" onclick="return confirm('Tem certeza que deseja excluir este funcionário?');">
-                                Excluir
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                <% }
-                } else { %>
-                <tr>
-                    <td colspan="6">Nenhum funcionário encontrado!</td>
-                </tr>
-                <% } %>
-                </tbody>
-            </table>
+            <!--LISTA-->
+            <div class="tabela-container">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Data Admissão</th>
+                        <th>Data Nascimento</th>
+                        <th>Cargo</th>
+                        <th>ETA</th>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% if (lista != null && !lista.isEmpty()) {
+                        for (int i=0; i < lista.size(); i++) { %>
+                    <tr>
+                        <td><%= lista.get(i).getId() %></td>
+                        <td><%= lista.get(i).getNome() %></td>
+                        <td><%= lista.get(i).getEmail() %></td>
+                        <td><%= lista.get(i).getDataAdmissao()%></td>
+                        <td><%= lista.get(i).getDataNascimento()%></td>
+                        <td><%= lista.get(i).getNomeCargo()%></td>
+                        <td><%= lista.get(i).getNomeEta()%></td>
+                        <td>
+                            <a class="botao-editar"
+                               href="${pageContext.request.contextPath}/ServletFuncionario?action=selectFuncionario&id=<%= lista.get(i).getId() %>">Editar</a>
+                            &nbsp;|&nbsp;
+                            <form action="<%= request.getContextPath() %>/ServletFuncionario" method="post" style="display:inline;">
+                                <input type="hidden" name="action" value="deleteFuncionario">
+                                <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
+                                <button class="botao-excluir" type="submit"
+                                        onclick="return confirm('Tem certeza que deseja excluir este funcionário?');">
+                                    Excluir
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }
+                    } else { %>
+                    <tr>
+                        <td colspan="8">Nenhum funcionário encontrado!</td>
+                    </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
         </section>
     </main>
 </div>

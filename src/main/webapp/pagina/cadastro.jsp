@@ -59,7 +59,7 @@
                 <label for="termos">Termos e Condições de Uso</label>
             </div>
             <button class="botao" type="submit">Cadastre-se</button>
-            <p class="login-text">Já possui uma conta? <a href="${pageContext.request.contextPath}/paginasCrud/admin/logarAdmin.jsp">Clique aqui</a></p>
+            <p class="login-text">Já possui uma conta? <a href="${pageContext.request.contextPath}/pagina/login.jsp">Clique aqui</a></p>
         </form>
     </div>
 

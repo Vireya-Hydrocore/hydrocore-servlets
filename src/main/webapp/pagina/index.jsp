@@ -21,7 +21,7 @@
                 <li><a href="#funcionalidade-title">Funcionalidades</a></li>
                 <li><a href="#sobre-nos">Sobre nós</a></li>
                 <li><a href="#planos">Planos</a></li>
-                <li><a id="bottom-cadastro" href="${pageContext.request.contextPath}/pagina/cadastro.jsp">Cadastrar</a></li>
+                <li><a id="bottom-cadastro" href="${pageContext.request.contextPath}/pagina/login.jsp">Login</a></li>
             </ul>
         </nav>
     </div>
@@ -189,7 +189,7 @@
                 tecnologia. Nosso objetivo é oferecer uma solução que realmente atenda às necessidades das ETAs,
                 simplificando processos, aumentando a produtividade e garantindo água de qualidade. Acreditamos que
                 a tecnologia é a chave para preservar os recursos hídricos e construir um futuro sustentável</p>
-            <a id="link-saibamais" href="<%= request.getContextPath() %>/pagina/sobreNosReal.html">Saiba mais</a>
+            <a id="link-saibamais" href="<%= request.getContextPath() %>/pagina/sobreNosReal.jsp">Saiba mais</a>
         </div>
     </section>
 
@@ -283,7 +283,7 @@
             <nav class="nav-footer">
                 <p class="title-points">Outros</p>
                 <ul>
-                    <li><a href="<%= request.getContextPath() %>/pagina/sobreNosReal.html">Sobre nós</a></li>
+                    <li><a href="<%= request.getContextPath() %>/pagina/sobreNosReal.jsp">Sobre nós</a></li>
                     <li><a href="<%= request.getContextPath() %>/paginasCrud/admin/logarAdmin.jsp">Área Restrita</a></li>
                 </ul>
             </nav>

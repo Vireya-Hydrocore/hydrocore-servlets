@@ -29,9 +29,9 @@
   <h1 class="logo">HydroCore</h1>
 
   <div class="logout-container">
-    <form action="${pageContext.request.contextPath}/ServletAdmin" method="post">
+    <form action="${pageContext.request.contextPath}/ServletLogin" method="post">
       <input type="hidden" name="action" value="logout">
-      <a href="${pageContext.request.contextPath}/paginasCrud/admin/logarAdmin.jsp" class="logout-btn" type="submit" title="Sair">Sair</a>
+      <a href="${pageContext.request.contextPath}/paginasCrud/admin/logar.jsp" class="logout-btn" type="submit" title="Sair">Sair</a>
     </form>
   </div>
 </header>

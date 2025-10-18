@@ -329,8 +329,8 @@ public class FuncionarioDAO {
         String comando =
                 "SELECT FUNCIONARIO.*, ETA.nome AS nome_eta, CARGO.nome AS nome_cargo " +
                         "FROM FUNCIONARIO " +
-                        "JOIN ETA ON ETA.id = FUNCIONARIO.id_eta " +
-                        "JOIN CARGO ON CARGO.id = FUNCIONARIO.id_cargo " +
+                        "LEFT JOIN ETA ON ETA.id = FUNCIONARIO.id_eta " +
+                        "LEFT JOIN CARGO ON CARGO.id = FUNCIONARIO.id_cargo " +
                         "WHERE " + (isData
                         ? "FUNCIONARIO." + coluna + " = ?"   // comparação direta com DATE
                         : tabela + "." + coluna + " ILIKE ?"); // comparação textual

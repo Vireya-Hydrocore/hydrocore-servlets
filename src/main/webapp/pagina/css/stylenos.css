@@ -202,10 +202,8 @@ header {
 }
 
 .icones-midias {
-    display: flex;
-    justify-content: space-around;
-
-
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
 }
 
 .icon {
@@ -215,7 +213,6 @@ header {
     border-radius: 50%;
     display: flex;
     align-items: center;
-    justify-content: center;
     transition: 0.3s;
 
 }

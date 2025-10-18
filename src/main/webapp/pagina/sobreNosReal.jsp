@@ -1,0 +1,240 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nós</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/pagina/css/stylenos.css">
+</head>
+<body>
+<header>
+    <div class="title-logo">
+        <h1>HydroCore</h1>
+    </div>
+    <div class="topics-head" id="menu">
+        <nav>
+            <ul>
+                <li><a href="<%=request.getContextPath()%>/pagina/index.jsp">Início</a></li>
+                <li><a id="bottom-cadastro" href="<%=request.getContextPath()%>/pagina/login.jsp">Logar</a></li>
+            </ul>
+        </nav>
+    </div>
+    <button id="btn-hamb">☰</button>
+</header>
+
+<main>
+    <div id="historia-container">
+        <h1>Nossa História</h1>
+        <p>
+            A Vireya nasceu do sonho de jovens inovadores que acreditam no poder da tecnologia para construir um futuro mais sustentável dentro das indústrias.
+            O que começou em uma sala de aula logo se transformou em um propósito: revolucionar a gestão de Estações de Tratamento de Água com soluções inteligentes,
+            acessíveis e humanas. Hoje, a Vireya une ciência, inovação e compromisso ambiental para enfrentar os desafios da água no século XXI, tornando cada gota mais valiosa.
+        </p>
+    </div>
+
+    <div id="pontos">
+        <section>
+            <h3>Missão</h3>
+            <p>Garantir eficiência e sustentabilidade no tratamento de água, usando tecnologia para reduzir erros e preservar recursos hídricos.</p>
+        </section>
+        <section>
+            <h3>Visão</h3>
+            <p>Ser referência em inovação tecnológica para ETAs, contribuindo para um futuro sustentável e acessível.</p>
+        </section>
+        <section>
+            <h3>Valores</h3>
+            <p>Inovação, Sustentabilidade, Colaboração, Comprometimento e Inclusão.</p>
+        </section>
+    </div>
+
+    <section id="equipe">
+        <h2>Equipe</h2>
+        <p>Conheça nossa equipe!</p>
+
+        <div class="card">
+            <div class="filters">
+                <select id="year">
+                    <option value="">Selecione o ano</option>
+                    <option value="1">1º</option>
+                    <option value="2">2º</option>
+                </select>
+
+                <select id="area">
+                    <option value="">Selecione a área</option>
+                    <option value="dev">Desenvolvimento</option>
+                    <option value="dados">Dados</option>
+                </select>
+            </div>
+
+            <div class="team-container">
+                <aside>
+                    <ul id="student-list">
+                        <!-- Lista dinâmica -->
+                    </ul>
+                </aside>
+
+                <div class="profile" id="profile">
+                    <p>Selecione um aluno para ver os detalhes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="grid-footer">
+        <div class="links-grid">
+            <img id="img-foot" src="<%=request.getContextPath()%>/pagina/imgs/Group 1.png" alt="foto do Vireya">
+            <nav class="nav-footer">
+                <p class="title-points">Ferramentas</p>
+                <ul>
+                    <li>Dashboard</li>
+                    <li>Calculadora Química</li>
+                    <li>Controle de Estoque</li>
+                    <li>Tratamento de Água</li>
+                    <li>Criação de Relatórios</li>
+                    <li>Controle de Atividades e Avisos</li>
+                </ul>
+            </nav>
+
+            <nav class="nav-footer">
+                <p class="title-points">Contatos</p>
+                <ul>
+                    <li>(11) 95795-9848</li>
+                    <li>Institutuo J&F</li>
+                    <li>@vireyabrasil</li>
+                    <li>Rua Dolore Duran 38, Rochdale - SP</li>
+                </ul>
+            </nav>
+
+            <nav class="nav-footer">
+                <p class="title-points">Outros</p>
+                <ul>
+                    <li>Sobre Nós</li>
+                    <li><a href="<%=request.getContextPath()%>/paginasCrud/admin/logarAdmin.jsp">Área Restrita</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <hr>
+
+        <div class="rodape-footer">
+            <div id="direitos-cont">
+                <p>© 2025 HydroCore. Todos os direitos reservados.</p>
+            </div>
+            <div id="icones-midias">
+                <!-- Instagram -->
+                <div id="dist-icon">
+                    <a href="https://instagram.com" class="icon" target="_blank">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4A5.8 5.8 0 0 1 16.2 22H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 2C6 4 4 6 4 7.8v8.4C4 18 6 20 7.8 20h8.4c1.8 0 3.8-2 3.8-3.8V7.8C20 6 18 4 16.2 4H7.8Zm8.7 1.6a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Zm-4.5 2.4a4.2 4.2 0 1 1 0 8.4 4.2 4.2 0 0 1 0-8.4Zm0 2a2.2 2.2 0 1 0 0 4.4 2.2 2.2 0 0 0 0-4.4Z"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- LinkedIn -->
+                <div class="dist-icon">
+                    <a href="https://linkedin.com" class="icon" target="_blank">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M4.98 3.5c0 1.38-1.11 2.5-2.48 2.5A2.5 2.5 0 0 1 0 3.5C0 2.12 1.11 1 2.5 1S5 2.12 5 3.5zM.5 23h4V7.98h-4V23zM8 7.98h3.8v2.06h.05c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.65 4.77 6.1V23h-4v-6.52c0-1.56-.03-3.57-2.17-3.57-2.18 0-2.51 1.7-2.51 3.46V23H8V7.98z"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- WhatsApp -->
+                <div class="dist-icon">
+                    <a href="https://wa.me/5511999999999" class="icon" target="_blank">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M17.47 14.3c-.27-.14-1.63-.8-1.88-.9-.25-.09-.43-.14-.62.14-.19.27-.71.9-.88 1.08-.16.18-.33.2-.6.07-.27-.14-1.14-.42-2.18-1.35-.8-.71-1.34-1.6-1.5-1.87-.16-.27-.02-.42.12-.55.12-.12.27-.33.41-.49.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.62-1.5-.85-2.05-.22-.53-.45-.46-.62-.47h-.53c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.3 0 1.36.98 2.67 1.12 2.85.14.18 1.93 2.95 4.68 4.14.65.28 1.15.45 1.55.58.65.21 1.23.18 1.69.11.52-.08 1.63-.67 1.86-1.31.23-.64.23-1.19.16-1.31-.07-.12-.25-.2-.52-.34Z"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- GitHub -->
+                <div class="dist-icon">
+                    <a href="https://github.com" target="_blank" id="icon" class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-1.7c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.2-1.7-1.2-1.7-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1.7 2.2 3.7 1.6v-1.6c-2.6-.3-5.3-1.3-5.3-6 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.4.1-2.9 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.5.2 2.6.1 2.9.8.9 1.2 1.9 1.2 3.2 0 4.7-2.7 5.7-5.3 6v1.7c0 .3.2.6.8.5 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const alunos = {
+        "1": {
+            "dev": [
+                { nome: "Mayumi Itikaua", foto: "<%= request.getContextPath() %>/imgs/Erik.png", desc: "Dev Front-end apaixonada por UI/UX." },
+                { nome: "Guilherme Guedes", foto: "<%= request.getContextPath() %>/imgs/Guilherme.png", desc: "Desenvolvedor Back-end com foco em Java e Git" },
+                { nome: "Enzo Herrera", foto: "<%= request.getContextPath() %>/imgs/Herrera.png", desc: "Fullstack com foco em html e CSS" },
+                { nome: "Erik Santos", foto: "<%= request.getContextPath() %>/imgs/Erik.png", desc: "Fullstack com foco em Java e Git" }
+            ],
+            "dados": [
+                { nome: "Iago Balbino", foto: "<%= request.getContextPath() %>/imgs/Iago.png", desc: "Analista de dados e especialista em SQL." },
+                { nome: "Gabriel Andozia", foto: "<%= request.getContextPath() %>/imgs/Gabriel.png", desc: "Analista de dados e especialista em SQL." },
+                { nome: "Caio Eiken", foto: "<%= request.getContextPath() %>/imgs/Caio.png", desc: "Analista de dados e especialista em SQL." },
+                { nome: "Pedro Casarini", foto: "<%= request.getContextPath() %>/imgs/Casa.png", desc: "Analista de dados e especialista em SQL." }
+            ]
+        },
+        "2": {
+            "dev": [
+                { nome: "Clara Bartolini", foto: "<%= request.getContextPath() %>/imgs/Clara.png", desc: "Back-end developer com experiência em Java." },
+                { nome: "Leonardo Lins", foto: "<%= request.getContextPath() %>/imgs/Lins.png", desc: "Back-end developer com experiência em Java." },
+                { nome: "Rodrigo Alex", foto: "<%= request.getContextPath() %>/imgs/Rodrigo.png", desc: "Back-end developer com experiência em Java." },
+                { nome: "Vitor Augusto", foto: "<%= request.getContextPath() %>/imgs/Vitor.png", desc: "Back-end developer com experiência em Java." }
+            ],
+            "dados": [
+                { nome: "Guilherme Trindade", foto: "<%= request.getContextPath() %>/imgs/Trindade.png", desc: "Cientista de dados e entusiasta de IA." },
+                { nome: "Guilherme Costa", foto: "<%= request.getContextPath() %>/imgs/Costa.png", desc: "Cientista de dados e entusiasta de IA." },
+                { nome: "Fernando Henrique", foto: "<%= request.getContextPath() %>/imgs/Fernando.png", desc: "Cientista de dados e entusiasta de IA." },
+                { nome: "Pedro Frossard", foto: "<%= request.getContextPath() %>/imgs/Frossard.png", desc: "Cientista de dados e entusiasta de IA." }
+            ]
+        }
+    };
+
+    const yearSelect = document.getElementById("year");
+    const areaSelect = document.getElementById("area");
+    const studentList = document.getElementById("student-list");
+    const profile = document.getElementById("profile");
+
+    function updateList() {
+        studentList.innerHTML = "";
+        profile.innerHTML = "<p>Selecione um aluno para ver os detalhes.</p>";
+
+        const year = yearSelect.value;
+        const area = areaSelect.value;
+
+        if (year && area && alunos[year] && alunos[year][area]) {
+            alunos[year][area].forEach((student, index) => {
+                const li = document.createElement("li");
+                li.textContent = student.nome;
+                li.addEventListener("click", () => {
+                    profile.innerHTML = `
+              <img src="${student.foto}" alt="${student.nome}">
+              <h3>${student.nome}</h3>
+              <p>${student.desc}</p>
+            `;
+                });
+                studentList.appendChild(li);
+            });
+        }
+    }
+
+    yearSelect.addEventListener("change", updateList);
+    areaSelect.addEventListener("change", updateList);
+
+    const btn = document.getElementById("btn-hamb");
+    const menu = document.getElementById("menu");
+
+    btn.addEventListener("click", () => {
+        menu.classList.toggle("mostrar");
+    });
+
+
+</script>
+</body>
+</html>

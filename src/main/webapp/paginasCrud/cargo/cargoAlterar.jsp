@@ -75,7 +75,10 @@
 
     <form action="${pageContext.request.contextPath}/ServletCargo" method="post">
         <input type="hidden" name="action" value="updateCargo">
-        <input type="hidden" name="id" value="${cargo.id}" readonly>
+        <div class="campos">
+            <input type="hidden" name="id" value="${cargo.id}" readonly>
+        </div>
+
 
         <label for="cargo">Nome do cargo:</label>
         <input type="text" id="cargo" name="nome" value="${cargo.nome}" required><br>
