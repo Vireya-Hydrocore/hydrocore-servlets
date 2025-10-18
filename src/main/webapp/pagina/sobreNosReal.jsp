@@ -165,33 +165,21 @@
 </footer>
 
 <script>
-    const alunos = {
-        "1": {
-            "dev": [
-                { nome: "Mayumi Itikaua", foto: "<%= request.getContextPath() %>/imgs/Erik.png", desc: "Dev Front-end apaixonada por UI/UX." },
-                { nome: "Guilherme Guedes", foto: "<%= request.getContextPath() %>/imgs/Guilherme.png", desc: "Desenvolvedor Back-end com foco em Java e Git" },
-                { nome: "Enzo Herrera", foto: "<%= request.getContextPath() %>/imgs/Herrera.png", desc: "Fullstack com foco em html e CSS" },
-                { nome: "Erik Santos", foto: "<%= request.getContextPath() %>/imgs/Erik.png", desc: "Fullstack com foco em Java e Git" }
-            ],
-            "dados": [
-                { nome: "Iago Balbino", foto: "<%= request.getContextPath() %>/imgs/Iago.png", desc: "Analista de dados e especialista em SQL." },
-                { nome: "Gabriel Andozia", foto: "<%= request.getContextPath() %>/imgs/Gabriel.png", desc: "Analista de dados e especialista em SQL." },
-                { nome: "Caio Eiken", foto: "<%= request.getContextPath() %>/imgs/Caio.png", desc: "Analista de dados e especialista em SQL." },
-                { nome: "Pedro Casarini", foto: "<%= request.getContextPath() %>/imgs/Casa.png", desc: "Analista de dados e especialista em SQL." }
-            ]
-        },
-        "2": {
-            "dev": [
-                { nome: "Clara Bartolini", foto: "<%= request.getContextPath() %>/imgs/Clara.png", desc: "Back-end developer com experiência em Java." },
-                { nome: "Leonardo Lins", foto: "<%= request.getContextPath() %>/imgs/Lins.png", desc: "Back-end developer com experiência em Java." },
-                { nome: "Rodrigo Alex", foto: "<%= request.getContextPath() %>/imgs/Rodrigo.png", desc: "Back-end developer com experiência em Java." },
-                { nome: "Vitor Augusto", foto: "<%= request.getContextPath() %>/imgs/Vitor.png", desc: "Back-end developer com experiência em Java." }
-            ],
-            "dados": [
-                { nome: "Guilherme Trindade", foto: "<%= request.getContextPath() %>/imgs/Trindade.png", desc: "Cientista de dados e entusiasta de IA." },
-                { nome: "Guilherme Costa", foto: "<%= request.getContextPath() %>/imgs/Costa.png", desc: "Cientista de dados e entusiasta de IA." },
-                { nome: "Fernando Henrique", foto: "<%= request.getContextPath() %>/imgs/Fernando.png", desc: "Cientista de dados e entusiasta de IA." },
-                { nome: "Pedro Frossard", foto: "<%= request.getContextPath() %>/imgs/Frossard.png", desc: "Cientista de dados e entusiasta de IA." }
+        const basePath = "<%= request.getContextPath() %>/pagina/imgs/";
+
+        const alunos = {
+            "1": {
+                "dev": [
+                { nome: "Mayumi Itikaua", foto: basePath + "Mayumi.png", desc: "Dev Front-end apaixonada por UI/UX." },
+                { nome: "Guilherme Guedes", foto: basePath + "Mayumi.png", desc: "Desenvolvedor Back-end com foco em Java e Git" },
+                { nome: "Enzo Herrera", foto: basePath + "Mayumi.png", desc: "Fullstack com foco em html e CSS" },
+                { nome: "Erik Santos", foto: basePath + "Mayumi.png", desc: "Fullstack com foco em Java e Git" }
+                ],
+                    "dados": [
+                { nome: "Iago Balbino", foto: basePath + "Mayumi.png", desc: "Analista de dados e especialista em SQL." },
+                { nome: "Gabriel Andozia", foto: basePath + "Mayumi.png", desc: "Analista de dados e especialista em SQL." },
+                { nome: "Caio Eiken", foto: basePath + "Mayumi.png", desc: "Analista de dados e especialista em SQL." },
+                { nome: "Pedro Casarini", foto: basePath + "Mayumi.png", desc: "Analista de dados e especialista em SQL." }
             ]
         }
     };

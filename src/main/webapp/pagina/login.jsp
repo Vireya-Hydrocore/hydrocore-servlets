@@ -29,7 +29,7 @@
                title="Tem que incluir pelo menos uma letra maiúscula e um caractere especial(!@#$%)">
         <span class="password-toggle" id="togglePassword">
                         <i class="fas fa-eye"></i>
-                    </span>
+        </span>
       </div>
       <button class="botao">Entrar</button>
 
@@ -47,6 +47,8 @@
   </div>
 </main>
 <script src="${pageContext.request.contextPath}/paginasCrud/scripts/script.js"></script>
+<script src="${pageContext.request.contextPath}/paginasCrud/eta/js/regex.js"></script>
+
 </body>
 
 </html>

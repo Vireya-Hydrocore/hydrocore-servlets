@@ -201,10 +201,13 @@ header {
     justify-content: space-between;
 }
 
-.icones-midias {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+#icones-midias {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* centraliza os ícones no footer */
+    gap: 15px; /* espaço entre os ícones */
 }
+
 
 .icon {
     width: 40px;
@@ -263,10 +266,9 @@ header {
         margin-bottom: 50px;
     }
 
-    .icones-midias {
+    #icones-midias {
         display: grid;
-        grid-template-columns: 1fr;
-        gap: 16px;
+        grid-template-columns: repeat(1,1fr);
     }
 }
 
