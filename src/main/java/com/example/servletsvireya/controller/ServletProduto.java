@@ -46,7 +46,7 @@ public class ServletProduto extends HttpServlet {
                     filtroProduto(req, resp);
                     break;
                 default:
-                    resp.sendRedirect(req.getContextPath() + "/paginasCrud/produto/produtoIndex.jsp");
+                    resp.sendRedirect(req.getContextPath() + "/assets/pages/produto/produtoIndex.jsp");
             }
         } catch (Exception e) {
             e.printStackTrace(); //Mostra a exceção possível
@@ -91,7 +91,7 @@ public class ServletProduto extends HttpServlet {
 
         req.setAttribute("produtos", lista); //Devolve a lista de produtos encontrados em um novo atributo
 
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/produto/produtoIndex.jsp"); //Envia para a página principal
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/produto/produtoIndex.jsp"); //Envia para a página principal
         rd.forward(req, resp);
     }
 
@@ -122,7 +122,7 @@ public class ServletProduto extends HttpServlet {
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
             return; // Interrompe execução se houver erros
         }
 
@@ -132,7 +132,7 @@ public class ServletProduto extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto"); //Lista novamente os produtos se der certo
         } else { //Deu erro na inserção
             req.setAttribute("erro", "Não foi possível inserir o produto. Verifique os campos e tente novamente!"); //Setta um atributo com o erro
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp); //Vai para a página de erro
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
     }
 
@@ -154,7 +154,7 @@ public class ServletProduto extends HttpServlet {
         List<String> erros = Validador.validarProduto(produtoDTO.getNome(), produtoDTO.getTipo(), produtoDTO.getConcentracao());
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
             return; // Interrompe execução se houver erros
         }
 
@@ -165,7 +165,7 @@ public class ServletProduto extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto");
         } else {
             req.setAttribute("erro", "Não foi possível alterar o produto! Verifique os campos e tente novamente.");
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -183,7 +183,7 @@ public class ServletProduto extends HttpServlet {
         req.setAttribute("produto", produtoDTO); //Setta em um novo atributo para o JSP pegar os valores
 
         //Envia para a página de alterar
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/produto/produtoAlterar.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/produto/produtoAlterar.jsp");
         rd.forward(req, resp);
     }
 
@@ -203,7 +203,7 @@ public class ServletProduto extends HttpServlet {
         } else {
             // Página de erro
             req.setAttribute("erro", "Não foi possível remover, tente novamente mais tarde");
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -217,7 +217,7 @@ public class ServletProduto extends HttpServlet {
         List<ProdutoDTO> lista = produtoDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
 
         req.setAttribute("produtos", lista);
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/produto/produtoIndex.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/produto/produtoIndex.jsp");
         rd.forward(req, resp);
     }
 }

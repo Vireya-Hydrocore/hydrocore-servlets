@@ -43,7 +43,7 @@ public class ServletCargo extends HttpServlet {
                     filtrarCargo(req, resp);
                     break;
                 default:
-                    resp.sendRedirect(req.getContextPath() + "/paginasCrud/cargo/cargoIndex.jsp");
+                    resp.sendRedirect(req.getContextPath() + "/assets/pages/cargo/cargoIndex.jsp");
             }
         } catch (Exception e){
             e.printStackTrace(); //Mostra a exceção possível
@@ -88,7 +88,7 @@ public class ServletCargo extends HttpServlet {
 
         req.setAttribute("cargos", lista); //Devolve a lista de estoques encontrados em um novo atributo
 
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/cargo/cargoIndex.jsp"); //Envia para a página principal
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/cargo/cargoIndex.jsp"); //Envia para a página principal
         rd.forward(req, resp);
     }
 
@@ -107,7 +107,7 @@ public class ServletCargo extends HttpServlet {
         req.setAttribute("cargo", cargoDTO); //Setta em um novo atributo para o JSP pegar os valores
 
         //Encaminhar ao documento cargoAlterar.jsp
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/cargo/cargoAlterar.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/cargo/cargoAlterar.jsp");
         rd.forward(req, resp);
     }
 
@@ -133,7 +133,7 @@ public class ServletCargo extends HttpServlet {
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
             return;
         }
 
@@ -144,7 +144,7 @@ public class ServletCargo extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/ServletCargo?action=mainCargo"); //Lista novamente os cargos se der certo
         } else {
             req.setAttribute("erro", "Não foi possível inserir esse cargo, tente novamente!"); //Setta um atributo com o erro
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp); //Vai para a página de erro
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
     }
 
@@ -165,7 +165,7 @@ public class ServletCargo extends HttpServlet {
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
             return;
         }
 
@@ -175,7 +175,7 @@ public class ServletCargo extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/ServletCargo?action=mainCargo");
         } else {
             req.setAttribute("erro", "Não foi possível alterar o cargo! Verifique os campos e tente novamente.");
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -196,7 +196,7 @@ public class ServletCargo extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/ServletCargo?action=mainCargo");
         } else {
             req.setAttribute("erro", "Não foi possível remover o cargo, tente novamente mais tarde.");
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -210,7 +210,7 @@ public class ServletCargo extends HttpServlet {
         List<CargoDTO> lista = cargoDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
 
         req.setAttribute("cargos", lista);
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/cargo/cargoIndex.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/cargo/cargoIndex.jsp");
         rd.forward(req, resp);
     }
 }

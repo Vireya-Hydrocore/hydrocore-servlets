@@ -57,15 +57,14 @@ public class ServletLogin extends HttpServlet {
         String email = req.getParameter("email");
         String senha = req.getParameter("senha");
 
-        Boolean resultado = adminDAO.seLogarAreaRestrita(email, senha);
-        System.out.println(resultado);
+        boolean resultado = adminDAO.seLogarAreaRestrita(email, senha);
 
         if (resultado) {
             // Redireciona para página inicial do admin
             resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta");
         } else {
-            req.setAttribute("erroLogin", "E-mail ou senha incorretos."); //Setta um atributo erro para o JSP tratar
-            RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/menu/index.jsp"); //Volta para a página de login
+            req.setAttribute("erros", "E-mail ou senha incorretos."); //Setta um atributo erro para o JSP tratar
+            RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/erroLogin.jsp"); //Vai para a pagina de erro
             rd.forward(req, resp);
         }
     }
@@ -82,11 +81,11 @@ public class ServletLogin extends HttpServlet {
         Integer idAdmin = adminDAO.seLogar(email, senha);
 
         if (idAdmin != null) {
-            // Redireciona para página principal do admin
-            resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta");
+            // Redireciona para página principal do dashboard
+            resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta"); //////////////////////////////
         } else {
-            req.setAttribute("erroLogin", "E-mail ou senha incorretos.");
-            RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/menu/index.jsp");
+            req.setAttribute("erros", "E-mail ou senha incorretos.");
+            RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/erroLogin.jsp");
             rd.forward(req, resp);
         }
     }

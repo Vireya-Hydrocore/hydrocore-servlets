@@ -53,7 +53,7 @@ public class ServletEta extends HttpServlet {
                 filtrarEta(req, resp);
                 break;
             default:
-                resp.sendRedirect(req.getContextPath() + "/paginasCrud/eta/etaIndex.jsp");
+                resp.sendRedirect(req.getContextPath() + "/assets/pages/eta/etaIndex.jsp");
         }
     }
 
@@ -92,7 +92,7 @@ public class ServletEta extends HttpServlet {
 
         req.setAttribute("etas", listEtas); //Devolve a lista de ETAs encontradas em um novo atributo, para a pagina JSP
 
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/eta/etaIndex.jsp"); //Envia para a página principal
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/eta/etaIndex.jsp"); //Envia para a página principal
         rd.forward(req, resp);
     }
 
@@ -105,7 +105,7 @@ public class ServletEta extends HttpServlet {
         HttpSession session = request.getSession();
         String nome = (String) session.getAttribute("nome");
         String email = (String) session.getAttribute("email");
-        String senha = (String) session.getAttribute("senha");
+        String senhaDigitada = (String) session.getAttribute("senha");
         String cnpj= (String) session.getAttribute("cnpj");
         String telefone = (String) session.getAttribute("telefone");
         int capacidade = (Integer) session.getAttribute("capacidade");
@@ -132,7 +132,7 @@ public class ServletEta extends HttpServlet {
         List<String> erros = Validador.validarEta(nome, capacidade, telefoneFormatado, cnpjFormatado);
         if (!erros.isEmpty()) {
             request.setAttribute("erros", erros);
-            RequestDispatcher rd = request.getRequestDispatcher("/paginasCrud/erro.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/assets/pages/erroLogin.jsp");
             rd.forward(request, response);
             return; // Interrompe execução se houver erros
         }
@@ -141,13 +141,12 @@ public class ServletEta extends HttpServlet {
         AdminDTO adminDTO = new AdminDTO();
         adminDTO.setNome(nome);
         adminDTO.setEmail(email);
-        String senhaDigitada = senha;
 
         // ===== VALIDAÇÃO ADMIN (senha) =====
         var errosSenha = Validador.validarSenha(senhaDigitada);
         if (!errosSenha.isEmpty()) {
-            request.setAttribute("errosSenha", errosSenha);
-            RequestDispatcher rd = request.getRequestDispatcher("/paginasCrud/erroSenha.jsp");
+            request.setAttribute("erros", errosSenha);
+            RequestDispatcher rd = request.getRequestDispatcher("/assets/pages/erroLogin.jsp");
             rd.forward(request, response);
             return;
         }
@@ -162,10 +161,10 @@ public class ServletEta extends HttpServlet {
 
         //Se o cadastro estiver correto, manda para a pagina de login
         if (idEta > 0) {
-            response.sendRedirect(request.getContextPath() + "/paginasCrud/admin/logar.jsp");
+            response.sendRedirect(request.getContextPath() + "/assets/pages/landingpage/login.jsp");
         } else {
-            request.setAttribute("erro", "Erro ao cadastrar ETA.");
-            RequestDispatcher rd = request.getRequestDispatcher("/paginasCrud/erroSenha.jsp");
+            request.setAttribute("erros", "Erro ao cadastrar ETA.");
+            RequestDispatcher rd = request.getRequestDispatcher("/assets/pages/erroLogin.jsp");
             rd.forward(request, response);
         }
     }
@@ -202,7 +201,7 @@ public class ServletEta extends HttpServlet {
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
             return;
         }
 
@@ -212,8 +211,8 @@ public class ServletEta extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta");
         } else {
-            req.setAttribute("erro", "Não foi possível alterar a ETA! Verifique os campos e tente novamente.");
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.setAttribute("erros", "Não foi possível alterar a ETA! Verifique os campos e tente novamente.");
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -232,7 +231,7 @@ public class ServletEta extends HttpServlet {
         req.setAttribute("eta", etaDTO); //Setta em um novo atributo para o JSP pegar os valores
 
         //Encaminhar ao documento alterarEta.jsp
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/eta/etaAlterar.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/eta/etaAlterar.jsp");
         rd.forward(req, resp);
     }
 
@@ -251,7 +250,7 @@ public class ServletEta extends HttpServlet {
         List<EtaDTO> lista = etaDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
 
         req.setAttribute("etas", lista); //Devolve a lista de ETAs encontradas em um novo atributo
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/eta/etaIndex.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/eta/etaIndex.jsp");
         rd.forward(req, resp);
     }
 }

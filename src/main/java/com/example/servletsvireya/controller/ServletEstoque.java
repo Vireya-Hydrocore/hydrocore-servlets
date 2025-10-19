@@ -51,7 +51,7 @@ public class ServletEstoque extends HttpServlet {
                     filtrarEstoque(req, resp);
                     break;
                 default:
-                    resp.sendRedirect(req.getContextPath() + "/paginasCrud/estoque/estoqueIndex.jsp");
+                    resp.sendRedirect(req.getContextPath() + "/assets/pages/estoque/estoqueIndex.jsp");
             }
         } catch (Exception e) {
             e.printStackTrace(); //Mostra a exceção possível
@@ -96,7 +96,7 @@ public class ServletEstoque extends HttpServlet {
 
         req.setAttribute("estoques", lista); //Devolve a lista de estoques encontrados em um novo atributo
 
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/estoque/estoqueIndex.jsp"); //Envia para a página principal
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/estoque/estoqueIndex.jsp"); //Envia para a página principal
         rd.forward(req, resp);
     }
 
@@ -115,7 +115,7 @@ public class ServletEstoque extends HttpServlet {
         req.setAttribute("estoque", estoqueDTO); //Setta em um novo atributo para o JSP pegar os valores
 
         //Encaminhar ao documento estoqueAlterar.jsp
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/estoque/alterarEstoque.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/estoque/estoqueAlterar.jsp");
         rd.forward(req, resp);
     }
 
@@ -151,7 +151,7 @@ public class ServletEstoque extends HttpServlet {
         }
 
         if (!Validador.validarDataValidade((Date) estoqueDTO.getDataValidade())) {
-            erros.add("A data de validade deve ser hoje ou uma data futura válida (até 100 anos à frente).");
+            erros.add("A data de validade tem que ser hoje ou futura (até 100 anos à frente).");
         }
 
         if (estoqueDTO.getMinPossivelEstocado() < 0) {
@@ -161,7 +161,7 @@ public class ServletEstoque extends HttpServlet {
         //Se houver erros, retorna pra página de erro
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
             return;
         }
 
@@ -171,8 +171,9 @@ public class ServletEstoque extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque"); //Lista novamente os produtos no estoque se der certo
         } else {
-            req.setAttribute("erro", "Não foi possível inserir esse estoque, Verifique os campos e tente novamente!"); //Setta um atributo com o erro
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp); //Vai para a página de erro
+            erros.add("Não foi possível inserir esse estoque, Verifique os campos e tente novamente!");
+            req.setAttribute("erros", erros); //Setta um atributo com o erro generalizado
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
     }
 
@@ -198,7 +199,7 @@ public class ServletEstoque extends HttpServlet {
         }
 
         if (!Validador.validarDataValidade((Date) estoqueDTO.getDataValidade())) {
-            erros.add("Data de validade inválida.");
+            erros.add("A data de validade tem que ser hoje ou futura (até 100 anos à frente).");
         }
 
         if (estoqueDTO.getMinPossivelEstocado() < 0) {
@@ -208,7 +209,7 @@ public class ServletEstoque extends HttpServlet {
         //Se houver erros, retorna pra página de erro
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
             return;
         }
 
@@ -219,8 +220,9 @@ public class ServletEstoque extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque");
         } else {
-            req.setAttribute("erro", "Não foi possível alterar o estoque! Verifique os campos e tente novamente.");
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            erros.add("Não foi possível alterar o estoque! Verifique os campos e tente novamente."); //Erro generalizado
+            req.setAttribute("erros", erros);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Envia para a página de erro
         }
     }
 
@@ -239,8 +241,8 @@ public class ServletEstoque extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque");
         } else {
-            req.setAttribute("erro", "Não foi possível remover o estoque, tente novamente mais tarde.");
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.setAttribute("erros", "Não foi possível remover o estoque, tente novamente mais tarde.");
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -254,7 +256,7 @@ public class ServletEstoque extends HttpServlet {
         List<EstoqueDTO> lista = estoqueDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
 
         req.setAttribute("estoques", lista);
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/estoque/estoqueIndex.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/estoque/estoqueIndex.jsp");
         rd.forward(req, resp);
     }
 }

@@ -56,7 +56,7 @@ public class ServletFuncionario extends HttpServlet {
                     filtrarFuncionario(req, resp);
                     break;
                 default:
-                    resp.sendRedirect(req.getContextPath() + "/paginasCrud/funcionario/funcionarioIndex.jsp");
+                    resp.sendRedirect(req.getContextPath() + "/assets/pages/funcionario/funcionarioIndex.jsp");
             }
         } catch (Exception e) {
             e.printStackTrace(); //Mostra a exceção possível
@@ -102,7 +102,7 @@ public class ServletFuncionario extends HttpServlet {
 
         req.setAttribute("funcionarios", lista); //Devolve a lista de produtos encontrados em um novo atributo, para a pagina JSP
 
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/funcionario/funcionarioIndex.jsp"); //Envia para a página principal
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/funcionario/funcionarioIndex.jsp"); //Envia para a página principal
         rd.forward(req, resp);
     }
 
@@ -162,7 +162,7 @@ public class ServletFuncionario extends HttpServlet {
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
             return;
         }
 
@@ -175,8 +175,8 @@ public class ServletFuncionario extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario"); //Lista novamente os funcionarios se der certo
         } else {
-            req.setAttribute("erro", "Não foi possível inserir esse funcionário, Verifique os campos e tente novamente!"); //Setta um atributo com o erro
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp); //Vai para a página de erro
+            req.setAttribute("erros", "Não foi possível inserir esse funcionário, Verifique os campos e tente novamente!"); //Setta um atributo com o erro
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
     }
 
@@ -195,7 +195,7 @@ public class ServletFuncionario extends HttpServlet {
         req.setAttribute("funcionario", funcionarioDTO); //Setta em um novo atributo para o JSP pegar os valores
 
         //Encaminhar ao documento alterarFuncionario.jsp
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/funcionario/funcionarioAlterar.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/funcionario/funcionarioAlterar.jsp");
         rd.forward(req, resp);
     }
 
@@ -232,11 +232,11 @@ public class ServletFuncionario extends HttpServlet {
             erros.add("O e-mail informado é inválido.");
         }
 
-        if (!Validador.validarDataNascimento((Date) funcionarioDTO.getDataNascimento())) {
-            erros.add("O funcionário deve ter pelo menos 16 anos e uma data de nascimento válida.");
+        if (!Validador.validarDataNascimento((java.sql.Date) funcionarioDTO.getDataNascimento())) {
+            erros.add("O funcionário deve ter pelo menos 16 anos");
         }
 
-        if (!Validador.validarDataAdmissao((Date) funcionarioDTO.getDataAdmissao())) {
+        if (!Validador.validarDataAdmissao((java.sql.Date) funcionarioDTO.getDataAdmissao())) {
             erros.add("A data de admissão deve ser hoje ou anterior.");
         }
 
@@ -245,7 +245,7 @@ public class ServletFuncionario extends HttpServlet {
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
             return;
         }
         // ===== Fim da validação =====
@@ -253,15 +253,16 @@ public class ServletFuncionario extends HttpServlet {
         // Criptografar novamente antes de salvar
         funcionarioDTO.setSenha(SenhaHash.hashSenha(funcionarioDTO.getSenha()));
 
-        // Chamar o DAO com o id já settado no DTO
-        int resultado = funcionarioDAO.alterarFuncionario(funcionarioDTO); //Dentro do objeto, é settado os atributos
+        // Chamar o DAO para alterar
+        int resultado = funcionarioDAO.alterarFuncionario(funcionarioDTO);
 
         // Tratar o resultado
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario");
         } else {
-            req.setAttribute("erro", "Não foi possível alterar o funcionário! Verifique os campos e tente novamente.");
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            erros.add("Não foi possível alterar o funcionário! Cargo ou ETA não encontrado(s).");
+            req.setAttribute("erros", erros);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -280,7 +281,7 @@ public class ServletFuncionario extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario");
         } else {
             // Página de erro
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -293,7 +294,7 @@ public class ServletFuncionario extends HttpServlet {
         List<FuncionarioDTO> lista = funcionarioDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
 
         req.setAttribute("funcionarios", lista);
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/funcionario/funcionarioIndex.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/funcionario/funcionarioIndex.jsp");
         rd.forward(req, resp);
     }
 }

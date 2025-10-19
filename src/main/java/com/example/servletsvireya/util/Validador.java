@@ -70,17 +70,25 @@ public class Validador {
     }
 
     public static boolean validarDataValidade(java.sql.Date dataValidade) {
-        if (dataValidade == null) return false;
+        if (dataValidade == null) {
+            return false; // Data nula é inválida
+        }
 
-        LocalDate data = dataValidade.toLocalDate();
         LocalDate hoje = LocalDate.now();
+        LocalDate data = dataValidade.toLocalDate();
+        LocalDate limiteFuturo = hoje.plusYears(100); // Limite máximo arbitrário
 
-        // Pode ser hoje ou no futuro (até 100 anos)
-        return !data.isBefore(hoje) && !data.isAfter(hoje.plusYears(100));
+        // Data deve ser hoje ou no futuro, mas não ultrapassar o limite
+        if (data.isBefore(hoje)) {
+            return false; // Data passada → inválida
+        }
+
+        if (data.isAfter(limiteFuturo)) {
+            return false; // Data muito distante → inválida
+        }
+
+        return true; // Data válida
     }
-
-
-
 
 
     // VALIDAÇÃO DE SENHA

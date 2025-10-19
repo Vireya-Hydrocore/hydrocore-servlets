@@ -45,7 +45,7 @@ public class ServletAdmin extends HttpServlet {
                     filtrarAdmin(req, resp);
                     break;
                 default:
-                    resp.sendRedirect(req.getContextPath() + "/paginasCrud/admin/indexAdmin.jsp");
+                    resp.sendRedirect(req.getContextPath() + "/assets/pages/admin/adminIndex.jsp");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,7 +98,7 @@ public class ServletAdmin extends HttpServlet {
 
         req.setAttribute("admins", lista); //Devolve a lista de ETAs encontradas em um novo atributo, para a pagina JSP
 
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/admin/indexAdmin.jsp"); //Envia para a página principal
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/admin/adminIndex.jsp"); //Envia para a página principal
         rd.forward(req, resp);
     }
 
@@ -118,8 +118,8 @@ public class ServletAdmin extends HttpServlet {
         //Settando os atributos do formulário no adminDTO
         req.setAttribute("admin", adminDTO);
 
-        //Encaminhando ao documento alterarAdmin.jsp
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/admin/alterarAdmin.jsp");
+        //Encaminhando ao documento adminAlterar.jsp
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/admin/adminAlterar.jsp");
         rd.forward(req, resp);
     }
 
@@ -145,7 +145,7 @@ public class ServletAdmin extends HttpServlet {
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
             return; // Interrompe execução se houver erros
         }
 
@@ -159,7 +159,7 @@ public class ServletAdmin extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin"); //Lista novamente os admins se der certo
         } else {
             req.setAttribute("erro", "Não foi possível inserir esse admin, Verifique os campos e tente novamente!"); //Setta um atributo com o erro
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp); //Vai para a página de erro
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
     }
 
@@ -181,7 +181,7 @@ public class ServletAdmin extends HttpServlet {
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
             return; // Interrompe execução se houver erros
         }
 
@@ -195,7 +195,7 @@ public class ServletAdmin extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin");
         } else {
             req.setAttribute("erro", "E-mail ou senha inválidos");
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -216,7 +216,7 @@ public class ServletAdmin extends HttpServlet {
         } else {
             // Página de erro
             req.setAttribute("erro", "Não foi possível remover este Admin");
-            req.getRequestDispatcher("/paginasCrud/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -230,7 +230,7 @@ public class ServletAdmin extends HttpServlet {
         List<AdminDTO> lista = adminDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa")); //Armazena numa lista
 
         req.setAttribute("admins", lista); //Setta a lista em um novo atributo
-        RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/admin/indexAdmin.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/admin/adminIndex.jsp");
         rd.forward(req, resp);
     }
 }

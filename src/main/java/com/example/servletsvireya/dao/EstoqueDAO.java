@@ -135,7 +135,9 @@ public class EstoqueDAO { //erik
     public EstoqueDTO buscarPorId(EstoqueDTO estoqueDTO) {
         ResultSet rset = null; //Consulta da tabela
         Connection conn = conexao.conectar();
-        String comando = "SELECT * FROM estoque WHERE id = ?";
+        String comando = "SELECT e.*, p.nome AS nome_produto FROM estoque e " +
+                "JOIN produto p ON p.id = e.id_produto " +
+                "WHERE p.id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setInt(1, estoqueDTO.getId());
@@ -149,6 +151,7 @@ public class EstoqueDAO { //erik
                 estoqueDTO.setMinPossivelEstocado(rset.getInt("min_possivel_estocado"));
                 estoqueDTO.setIdEta(rset.getInt("id_eta"));
                 estoqueDTO.setIdProduto(rset.getInt("id_produto"));
+                estoqueDTO.setNomeProduto(rset.getString("nome_produto")); //Campo extra do DTO
             }
             return estoqueDTO; //Retorna contendo os produtos NO estoque
 

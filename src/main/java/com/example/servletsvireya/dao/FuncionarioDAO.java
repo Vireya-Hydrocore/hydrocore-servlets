@@ -169,8 +169,6 @@ public class FuncionarioDAO {
             pstmt.setInt(1, funcionarioDTO.getId()); //WHERE id = ?
             rset = pstmt.executeQuery(); //Executa e armazena a query
 
-            if (rset == null) return null;
-
             if (rset.next()) {
                 funcionarioDTO.setNome(rset.getString("nome"));
                 funcionarioDTO.setEmail(rset.getString("email"));
@@ -181,7 +179,10 @@ public class FuncionarioDAO {
                 funcionarioDTO.setNomeCargo(rset.getString("nome_cargo")); // campo extra do DTO
                 funcionarioDTO.setIdCargo(rset.getInt("id_cargo"));
                 funcionarioDTO.setNomeEta(rset.getString("nome_eta")); // campo extra do DTO
+            } else{
+                return null;
             }
+
             return funcionarioDTO; // Retorna com os dados preenchidos no mesmo objeto obtido como parâmetro
 
         } catch (SQLException sqle) {
@@ -191,35 +192,6 @@ public class FuncionarioDAO {
             conexao.desconectar();
         }
     }
-
-
-//    public FuncionarioDTO buscarPorId(int id) {
-//        FuncionarioDTO funcionario = null;
-//        String sql = "SELECT * FROM funcionario WHERE id = ?";
-//        try (Connection conn = conexao.conectar();
-//             PreparedStatement stmt = conn.prepareStatement(sql)) {
-//            stmt.setInt(1, id);
-//            ResultSet rs = stmt.executeQuery();
-//            if (rs.next()) {
-//                funcionario = new FuncionarioDTO();
-//                funcionario.setId(rs.getInt("id"));
-//                funcionario.setNome(rs.getString("nome"));
-//                funcionario.setEmail(rs.getString("email"));
-//                funcionario.setSenha(rs.getString("senha"));
-//                funcionario.setIdCargo(rs.getInt("id_cargo"));
-//                funcionario.setIdEta(rs.getInt("id_eta"));
-//                funcionario.setDataNascimento(rs.getDate("data_nascimento"));
-//                funcionario.setDataAdmissao(rs.getDate("data_admissao"));
-//            }
-//            return funcionario;
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return null;
-//        } finally {
-//            conexao.desconectar();
-//        }
-//    }
 
 
     // ========== Método para listar os funcionários ========== //
