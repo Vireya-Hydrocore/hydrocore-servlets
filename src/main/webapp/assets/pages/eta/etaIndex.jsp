@@ -56,6 +56,9 @@
     <a href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin">
       <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-admin-settings-male-16.png"> Admin</li>
     </a>
+    <a href="${pageContext.request.contextPath}/dashAnalise">
+      <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-painel-de-controle-16.png"> DashBoard</li>
+    </a>
   </ul>
 </aside>
 
@@ -67,7 +70,7 @@
     <section class="lista">
       <div class="filtro">
         <div class="filtro-titulo">
-          <h2>Lista de Funcionários</h2>
+          <h2>Lista de ETAs</h2>
         </div>
 
         <form action="${pageContext.request.contextPath}/ServletEta" method="get" class="filtro-form">

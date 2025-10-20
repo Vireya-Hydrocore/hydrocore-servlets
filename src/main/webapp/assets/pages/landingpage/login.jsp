@@ -25,7 +25,6 @@
       <label for="senha">Senha</label>
       <div class="input-senha">
         <input name="senha" type="password" id="senha" placeholder="Digite sua senha" required
-               pattern="^(?=.[A-Z])(?=.[!@#$%]).{8,}$"
                title="Tem que incluir pelo menos uma letra maiúscula e um caractere especial(!@#$%)">
         <span class="password-toggle" id="togglePassword">
                         <i class="fas fa-eye"></i>

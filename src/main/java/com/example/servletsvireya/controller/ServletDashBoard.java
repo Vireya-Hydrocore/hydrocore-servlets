@@ -20,9 +20,9 @@ public class ServletDashBoard extends HttpServlet {
 
             Map<String, Integer> lista = dash.contagemGeral(); //List de objetos retornados na query
 
-            req.setAttribute("DashBoard", lista); //Devolve a lista de estoques encontrados em um novo atributo
+            req.setAttribute("dashboard", lista); //Devolve a lista de estoques encontrados em um novo atributo
 
-            RequestDispatcher rd = req.getRequestDispatcher("COLOCAR CAMINHO DO JSP"); //Envia para a página principal
+            RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/dashBoard.jsp"); //Envia para a página principal
             rd.forward(req, resp);
         }
     }

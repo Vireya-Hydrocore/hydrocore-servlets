@@ -64,7 +64,7 @@ public class ServletLogin extends HttpServlet {
                 resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta");
             } else {
                 req.setAttribute("erroLogin", "E-mail ou senha incorretos."); //Setta um atributo erro para o JSP tratar
-                RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/erro/"); //Vai para a pagina de erro
+                RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/erro.jsp"); //Vai para a pagina de erro
                 rd.forward(req, resp);
             }
         }
@@ -85,7 +85,7 @@ public class ServletLogin extends HttpServlet {
                 System.out.println(idAdmin);
             } else {
                 req.setAttribute("erroLogin", "E-mail ou senha incorretos.");
-                RequestDispatcher rd = req.getRequestDispatcher("/paginasCrud/erroSenha.jsp");
+                RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/erro.jsp");
                 rd.forward(req, resp);
             }
         }

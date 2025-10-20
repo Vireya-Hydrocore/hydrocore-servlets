@@ -56,6 +56,9 @@
         <a href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin">
             <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-admin-settings-male-16.png"> Admin</li>
         </a>
+        <a href="${pageContext.request.contextPath}/dashAnalise">
+            <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-painel-de-controle-16.png"> DashBoard</li>
+        </a>
     </ul>
 </aside>
 
