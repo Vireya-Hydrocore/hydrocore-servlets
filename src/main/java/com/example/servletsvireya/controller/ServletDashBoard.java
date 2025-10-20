@@ -6,24 +6,26 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import com.example.servletsvireya.dao.dashBoardDAO;
+import com.example.servletsvireya.dao.DashBoardDAO;
 
 
 import java.io.IOException;
 import java.util.Map;
 
-@WebServlet("/dashAnalise")
+@WebServlet(value = "/dashAnalise", name = "/ServletDashBoard")
 public class ServletDashBoard extends HttpServlet {
-        private dashBoardDAO dash = new dashBoardDAO();
-        @Override
-        protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-            Map<String, Integer> lista = dash.contagemGeral(); //List de objetos retornados na query
+    private DashBoardDAO dash = new DashBoardDAO();
 
-            req.setAttribute("DashBoard", lista); //Devolve a lista de estoques encontrados em um novo atributo
 
-            RequestDispatcher rd = req.getRequestDispatcher("COLOCAR CAMINHO DO JSP"); //Envia para a página principal
-            rd.forward(req, resp);
-        }
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        Map<String, Integer> lista = dash.contagemGeral(); //List de objetos retornados na query
+
+        req.setAttribute("dashboard", lista); //Devolve a lista dos resultados encontrados em um novo atributo
+
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/dashboard.jsp"); //Envia para a página principal
+        rd.forward(req, resp);
     }
-
+}

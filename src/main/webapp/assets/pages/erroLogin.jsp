@@ -1,14 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%
-    List<String> erros = (List<String>) request.getAttribute("erros");
-    if (erros != null && !erros.isEmpty()) {
+    String erro = (String) request.getAttribute("erros");
+    if (erro != null) {
 %>
 <div class="alert alert-danger">
     <ul>
-        <% for (String erro : erros) { %>
         <li><%= erro %></li>
-        <% } %>
     </ul>
 </div>
 <%

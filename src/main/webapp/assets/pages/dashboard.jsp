@@ -1,4 +1,4 @@
-<%--
+<%@ page import="java.util.Map" %><%--
   Created by IntelliJ IDEA.
   User: eriksilva-ieg
   Date: 19/10/2025
@@ -6,6 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+  Map<String, Integer> lista = (Map<String, Integer>) request.getAttribute("dashboard");
+%>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -64,27 +67,27 @@
 
       <div class="container">
         <div class="blocos">
-          <h2>Quantidade Funcionarios</h2>
+          <h2>Quantidade Admin</h2>
           <hr>
-          <p>5</p>
+          <p><%= lista.get("admin") %></p>
         </div>
 
         <div class="blocos">
-          <h2>Quantidade Produtos</h2>
+          <h2>Total Cargos</h2>
           <hr>
-          <p>213</p>
+          <p><%= lista.get("cargo")%></p>
         </div>
 
         <div class="blocos">
-          <h2>Quantidade Produtos</h2>
+          <h2>Quantidade Estoques</h2>
           <hr>
-          <p>213</p>
+          <p><%= lista.get("estoque")%></p>
         </div>
 
         <div class="blocos">
-          <h2>Funcionarios demitidos</h2>
+          <h2>Total ETAs</h2>
           <hr>
-          <p>900000</p>
+          <p><%= lista.get("eta")%></p>
         </div>
 
         <div class="blocos blocos-grafico">
@@ -93,15 +96,15 @@
         </div>
 
         <div class="blocos">
-          <h2>Quantidade Funcionarios</h2>
+          <h2>Quantidade Funcionários</h2>
           <hr>
-          <p>5</p>
+          <p><%= lista.get("funcionario")%></p>
         </div>
 
         <div class="blocos">
-          <h2>Quantidade Funcionarios</h2>
+          <h2>Quantidade Produtos</h2>
           <hr>
-          <p>5</p>
+          <p><%= lista.get("produto")%></p>
         </div>
       </div>
 
