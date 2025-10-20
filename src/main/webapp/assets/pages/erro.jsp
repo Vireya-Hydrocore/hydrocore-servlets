@@ -40,11 +40,9 @@
     <%
         }
     %>
-
-    <a href="${pageContext.request.contextPath}/ServletEta?action=mainEta" class="botao-voltar">Voltar à Página Principal</a>
-    <a href="../" class="botao-voltar">Voltar à Página Anterior</a>
+    <a href="${pageContext.request.contextPath}/index.jsp" class="botao-voltar">Voltar à Página Principal</a>
+    <a href="javascript: history.go(-1)" class="botao-voltar">Voltar à Página Anterior</a>
 
 </main>
-
 </body>
 </html>
