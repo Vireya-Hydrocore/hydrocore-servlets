@@ -7,6 +7,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 main {
@@ -15,7 +17,7 @@ main {
     background-color: #fff;
     height: 700px;
     border-radius: 10px;
-    margin-top: 35px;
+    margin-top: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 

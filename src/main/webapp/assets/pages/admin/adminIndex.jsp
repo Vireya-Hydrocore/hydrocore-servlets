@@ -6,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<!---------------------- MENU ADMIN ------------------------>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.servletsvireya.dto.AdminDTO" %>
@@ -15,12 +14,14 @@
 %>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styleCrud.css">
 </head>
+
 <body>
 <header>
   <button class="menu" id="menu-toggle">☰</button>
@@ -29,7 +30,8 @@
   <div class="logout-container">
     <form action="${pageContext.request.contextPath}/ServletAdmin" method="post">
       <input type="hidden" name="action" value="logout">
-        <a href="${pageContext.request.contextPath}/assets/pages/landingpage/loginAdmin.jsp" class="logout-btn" type="submit" title="Sair">Sair</a>
+      <a href="${pageContext.request.contextPath}/assets/pages/landingpage/loginAdmin.jsp"
+         class="logout-btn" type="submit" title="Sair">Sair</a>
     </form>
   </div>
 </header>
@@ -60,7 +62,7 @@
 <div class="plano-de-fundo">
   <main>
 
-    <!-- INSERÇÃO DE ESTOQUES -->
+    <!-- CADASTRO DE ADMINS -->
     <section class="cadastro">
       <h2>Cadastro de Admins</h2>
       <form name="frmAdmin" action="${pageContext.request.contextPath}/ServletAdmin" method="post">
@@ -68,105 +70,118 @@
 
         <div class="campos">
           <label>Nome</label>
-          <input type="text" name="nome" placeholder="Ex: Erik Andozia">
+          <input type="text" name="nome" placeholder="Ex: Erik Andozia" required>
         </div>
 
         <div class="campos">
           <label>E-mail</label>
-          <input type="email" name="email" placeholder="Ex: marcelogrilo@gmail.com">
+          <input type="email" name="email" placeholder="Ex: marcelogrilo@gmail.com" required>
         </div>
 
         <div class="campos">
           <label>Senha</label>
-          <input type="password" name="senha" maxlength="30" placeholder="xxxxxxxxx">
+          <input type="password" name="senha" maxlength="30" placeholder="xxxxxxxxx" required>
         </div>
 
         <div class="campos">
           <label>ETA</label>
-          <input type="text" name="nomeEta" maxlength="30" placeholder="ETA Guarau">
+          <input type="text" name="nomeEta" maxlength="30" placeholder="ETA Guarau" required>
         </div>
 
         <div class="acoes">
-          <input type="reset" class="botao-salvar" value="Limpar">
-          <input type="submit" class="botao-redefinir" value="Salvar">
+          <button type="reset" class="botao-redefinir">Limpar</button>
+          <input type="submit" class="botao-salvar" value="Salvar">
         </div>
       </form>
     </section>
 
     <!-- LISTA DE ADMINS -->
-
     <section class="lista">
-      <div>
 
-        <!-- FILTRO DE ADMINS -->
-        <section class="filtro">
-        <h2>Lista de Admins</h2>
+      <!-- FILTRO DE ADMINS -->
+      <div class="filtro">
+        <div class="filtro-titulo">
+          <h2>Lista de Admins</h2>
+        </div>
 
-          <form action="${pageContext.request.contextPath}/ServletAdmin" method="get">
-            <input type="hidden" name="action" value="filtroAdmin">
+        <form action="${pageContext.request.contextPath}/ServletAdmin" method="get" class="filtro-form">
+          <input type="hidden" name="action" value="filtroAdmin">
 
-            <div class="campos">
-              <label>Coluna</label>
-              <select name="nome_coluna">
-                <option value="nome">Nome</option>
-                <option value="email">E-mail</option>
-                <option value="nome_eta">ETA</option>
-              </select>
-            </div>
+          <div class="campos">
+            <label>Coluna</label>
+            <select name="nome_coluna">
+              <option value="nome">Nome</option>
+              <option value="email">E-mail</option>
+              <option value="nome_eta">ETA</option>
+            </select>
+          </div>
 
-            <div class="campos">
-              <label>Pesquisa</label>
-              <input type="text" name="pesquisa" placeholder="Digite o termo de busca...">
-            </div>
+          <div class="campos">
+            <label>Pesquisa</label>
+            <input type="text" name="pesquisa" placeholder="Digite o termo de busca...">
+          </div>
 
-            <div class="acoes">
-              <a class="botao-redefinir" style="text-decoration: none" href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin">Redefinir filtragem</a>
-              <button type="submit" class="botao-salvar">Aplicar Filtro</button>
-            </div>
-          </form>
-        </section>
+          <div class="acoes filtro-acoes">
+            <a class="botao-redefinir" style="text-decoration: none"
+               href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin">
+              Redefinir filtragem
+            </a>
+            <button type="submit" class="botao-salvar">Aplicar Filtro</button>
+          </div>
+        </form>
       </div>
 
-      <table>
-        <thead>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>Email</th>
-        <th>ETA</th>
-        <th>Ações</th>
-        </thead>
-        <tbody>
-        <% if (lista != null && !lista.isEmpty()) {
-          for (int i=0; i < lista.size(); i++) { %>
-        <tr>
-          <td><%= lista.get(i).getId() %></td>
-          <td><%= lista.get(i).getNome() %></td>
-          <td><%= lista.get(i).getEmail() %></td>
-          <td><%= lista.get(i).getNomeEta() %></td>
-          <td>
-            <a class="botao-editar" href="${pageContext.request.contextPath}/ServletAdmin?action=selectAdmin&id=<%= lista.get(i).getId() %>">Editar</a>
-            &nbsp;|&nbsp;
-            <form action="${pageContext.request.contextPath}/ServletAdmin" method="post" style="display:inline;">
-              <input type="hidden" name="action" value="deleteAdmin">
-              <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
-              <button class="botao-excluir" type="submit" onclick="return confirm('Tem certeza que deseja excluir este admin?');">
-                Excluir
-              </button>
-            </form>
-          </td>
-        </tr>
-        <% }
-        } else { %>
-        <tr>
-          <td colspan="5">Nenhum admin encontrado!</td>
-        </tr>
-        <% } %>
-        </tbody>
-      </table>
+      <!-- LISTAGEM -->
+      <div class="tabela-container">
+        <table>
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>ETA</th>
+            <th>Ações</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% if (lista != null && !lista.isEmpty()) {
+            for (int i=0; i < lista.size(); i++) { %>
+          <tr>
+            <td><%= lista.get(i).getId() %></td>
+            <td><%= lista.get(i).getNome() %></td>
+            <td><%= lista.get(i).getEmail() %></td>
+            <td><%= lista.get(i).getNomeEta() %></td>
+            <td>
+              <a class="botao-editar"
+                 href="${pageContext.request.contextPath}/ServletAdmin?action=selectAdmin&id=<%= lista.get(i).getId() %>">
+                Editar
+              </a>
+              &nbsp;|&nbsp;
+              <form action="${pageContext.request.contextPath}/ServletAdmin"
+                    method="post" style="display:inline;">
+                <input type="hidden" name="action" value="deleteAdmin">
+                <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
+                <button class="botao-excluir" type="submit"
+                        onclick="return confirm('Tem certeza que deseja excluir este admin?');">
+                  Excluir
+                </button>
+              </form>
+            </td>
+          </tr>
+          <% }
+          } else { %>
+          <tr>
+            <td colspan="5">Nenhum admin encontrado!</td>
+          </tr>
+          <% } %>
+          </tbody>
+        </table>
+      </div>
     </section>
   </main>
 </div>
 
 <script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
 </body>
+
 </html>

@@ -161,8 +161,8 @@ public class FuncionarioDAO {
         Connection conn = conexao.conectar();
         ResultSet rset = null; //Para consulta
         String comando = "SELECT f.*, c.nome AS nome_cargo, e.nome AS nome_eta FROM funcionario f " +
-                "JOIN cargo c ON c.id = f.id_cargo " +
-                "JOIN eta e ON e.id = f.id_eta " +
+                "LEFT JOIN cargo c ON c.id = f.id_cargo " +
+                "LEFT JOIN eta e ON e.id = f.id_eta " +
                 "WHERE f.id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {

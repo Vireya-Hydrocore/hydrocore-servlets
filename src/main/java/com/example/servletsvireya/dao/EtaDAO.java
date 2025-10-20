@@ -361,7 +361,7 @@ public class EtaDAO {
         // SQL com join para trazer o CEP de endereço
         String comando =
                 "SELECT eta.*, endereco.cep FROM eta " +
-                        "JOIN endereco ON endereco.id = eta.id_endereco" +
+                        "JOIN endereco ON endereco.id = eta.id_endereco " +
                         "WHERE " + tabela + "." + coluna + " " + operador + " ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {

@@ -235,7 +235,7 @@
                 <div class="card-assinar">
                     <h3>Enterprise</h3>
                     <p>Para grandes corporações</p>
-                    <p id="preco">R$ 1599,00 /mês</p>
+                    <p class="preco">R$ 1599,00 /mês</p>
                     <ul>
                         <li>Tudo do Professional</li>
                         <li>Dashboard avançado</li>
