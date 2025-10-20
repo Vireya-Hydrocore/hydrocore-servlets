@@ -1,12 +1,15 @@
+:root{
+    --azul-escuro: #001f54;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', sans-serif;
-    white-space: nowrap !important;
 }
 body{
-    overflow-x: auto;
+    overflow-x: hidden;
 }
 
 header {
@@ -75,9 +78,6 @@ header {
     transition: left 0.3s ease;
     padding-top: 20px;
 }
-/*.sidebar ul a li img {*/
-/*    margin-top: 15px;*/
-/*}*/
 
 .sidebar.open {
     left: 0;
@@ -107,11 +107,11 @@ header {
 }
 
 main {
+    margin-left: 0;
     padding: 20px;
     min-height: calc(100vh - 60px);
-    margin: 0 auto;
     transition: margin-left 0.3s ease;
-    width: 75%;
+    width: 100%;
 }
 
 .sidebar.open~main {
@@ -122,13 +122,12 @@ main {
 .lista,
 .informacoes {
     background: white;
-    /*width: 150%; !*************************************************!*/
+    width: 150%;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 15px;
 }
-
 
 .cadastro h2,
 .lista h2,
@@ -137,19 +136,10 @@ main {
     margin-bottom: 20px;
 }
 
-.lista{
-
-    /* Ativa a barra de rolagem horizontal (só aparece se necessário) */
-    overflow-x: auto;
-    /* Esconde a barra de rolagem vertical, se houver */
-    overflow-y: hidden;
-
-}
-
 .filtro {
     display: flex;
-    justify-content: center;
-    /*align-items: flex-start;*/
+    justify-content: space-between;
+    align-items: flex-start;
     flex-wrap: wrap; /* permite quebrar linha */
     gap: 10px;
 }
@@ -225,7 +215,6 @@ form {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    margin-top: 15px;
 }
 
 .botao-redefinir {
@@ -234,26 +223,11 @@ form {
     padding: 8px 14px;
     border-radius: 6px;
     cursor: pointer;
-    color: black;
 }
-
-.filtro {
-    position: center;
+.formulario {
     display: flex;
-    justify-content: center;
     align-items: center;
-    flex-direction: column;
-    /* Impede que o texto quebre para a próxima linha */
-    white-space: nowrap;
 }
-
-.filtros {
-    text-align: center;
-    width: 650px;
-    gap: 25px;
-}
-
-
 .botao-salvar {
     background: #2AA0C4;
     color: white;
@@ -262,20 +236,21 @@ form {
     border-radius: 6px;
     cursor: pointer;
 }
-/*.botao-aplicar {*/ /*************************************************************************/
+
+.botao-aplicar { /*
 /*    background: #2AA0C4;*/
-/*    color: white;*/
-/*    border: none;*/
-/*    padding: 4px 7px;*/
-/*    border-radius: 6px;*/
-/*    cursor: pointer;*/
-/*}*/
+     /*    color: white;*/
+     /*    border: none;*/
+     /*    padding: 4px 7px;*/
+     /*    border-radius: 6px;*/
+     /*    cursor: pointer;*/
+}
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    /* min-width: 1200px; */ /* Remover ou comentar */
+    margin-top: 15px;
+    /* min-width: 1200px; / / Remover ou comentar */
 }
 
 table th,
@@ -285,11 +260,6 @@ table td {
     text-align: left;
     font-size: 14px;
     word-wrap: break-word; /* quebras de palavra */
-}
-
-table td {
-    word-break: break-word;
-    white-space: normal;
 }
 
 table th {
@@ -304,7 +274,7 @@ table th {
     padding: 5px 10px;
     border-radius: 4px;
     cursor: pointer;
-    /*margin-right: 5px;*/
+    margin-right: 5px;
 }
 
 .botao-excluir {
@@ -390,8 +360,6 @@ table th {
 }
 .logout-btn{
     width: 60px;
-    text-decoration: none;
-    color: black;
 }
 
 
@@ -420,17 +388,15 @@ table th {
     margin-bottom: 20px;
 }
 
-/* ====== RESPONSIVIDADE ====== */
 
-/* --- Ajuste geral para telas médias --- */
-@media (max-width: 1024px) {
 
+@media (max-width: 992px) {
     header {
         padding: 0 10px;
     }
 
     .logo {
-        margin-left: 60px;
+        margin-left: 0;
         font-size: 18px;
     }
 
@@ -438,52 +404,69 @@ table th {
         width: 180px;
     }
 
-    .filtros {
-        flex-direction: column;
-        width: 100%;
-        align-items: center;
+    .sidebar.open ~ main {
+        margin-left: 180px;
     }
 
-    .filtros .campos,
-    .filtros .acoes {
-        width: 90%;
+    .grid {
+        grid-template-columns: 1fr 1fr;
     }
 
-    table th, table td {
-        font-size: 13px;
-        padding: 8px;
-    }
-
-    .botao-editar,
-    .botao-excluir {
-        padding: 4px 8px;
-        font-size: 13px;
+    form {
+        grid-template-columns: 1fr 1fr;
     }
 }
 
-/* --- Ajuste para tablets e telas pequenas --- */
-@media (max-width: 768px) {
-    .lista{
-        /* Ativa a barra de rolagem horizontal (só aparece se necessário) */
-        overflow-x: auto;
-        /* Esconde a barra de rolagem vertical, se houver */
-        overflow-y: hidden;
-    }
 
-    .menu {
-        font-size: 26px;
+
+main {
+    max-width: 60%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.lista {
+    background: white;
+    width: 100%; /* garante que o card da lista use toda a tela */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+    overflow-x: auto; /* adiciona rolagem se necessário */
+}
+
+table {
+    width: 100%;
+    min-width: 1200px; /* aumenta a largura mínima */
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+
+
+
+@media (max-width: 768px) {
+    header {
+        justify-content: space-between;
+        padding: 0 10px;
     }
 
     .logo {
         font-size: 18px;
-        margin-left: 10px;
+    }
+
+    .header-direito {
+        gap: 5px;
+    }
+
+    .area-restrita, .logout {
+        padding: 5px 10px;
+        font-size: 13px;
     }
 
     .sidebar {
-        top: 60px;
-        height: calc(100vh - 60px);
-        left: -100%;
-        width: 220px;
+        width: 180px;
+        left: -180px;
     }
 
     .sidebar.open {
@@ -492,131 +475,158 @@ table th {
 
     main {
         padding: 15px;
-        margin-left: 0 !important;
-        width: 100%;
-    }
-
-    .filtros {
-        flex-direction: column;
-        width: 100%;
-        gap: 15px;
-    }
-
-    .filtro input,
-    .filtro select {
-        width: 100%;
+        margin: 0;
         max-width: 100%;
     }
 
-    .acoes {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
+    .sidebar.open ~ main {
+        margin-left: 0;
     }
 
-    .botao-redefinir,
-    .botao-salvar {
-        width: 100%;
-        text-align: center;
+    .grid, form {
+        grid-template-columns: 1fr;
+    }
+
+    .acoes {
+        justify-content: center;
+    }
+
+    table th, table td {
+        font-size: 13px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        height: 55px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .menu {
+        font-size: 20px;
+    }
+
+    .logo {
+        font-size: 16px;
+    }
+
+    .area-restrita,
+    .logout {
+        font-size: 12px;
+        padding: 5px 8px;
+    }
+
+    .avatar {
+        width: 30px;
+        height: 30px;
+    }
+
+    .cadastro,
+    .lista,
+    .informacoes,
+    .editar {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    .botao-adicionar,
+    .botao-salvar,
+    .botao-cancelar{
+        font-size: 13px;
+        padding: 6px 10px;
     }
 
     table {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
-        border-radius: 8px;
     }
 
-    table th, table td {
-        font-size: 12px;
-        padding: 6px;
+    .dropdown {
+        right: -20px;
+        min-width: 120px;
+    }
+}
+@media (max-width: 768px) {
+    table td {
+        text-align: center;
     }
 
     .botao-editar,
     .botao-excluir {
         display: inline-block;
-        margin: 3px 0;
-    }
-}
-
-/* --- Ajuste para celulares --- */
-@media (max-width: 480px) {
-
-    header {
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 0 10px;
-    }
-
-    .logo {
-        font-size: 16px;
-        margin-left: 0;
-    }
-
-    .logout-btn {
         width: auto;
-        font-size: 12px;
-        padding: 4px 6px;
-    }
-
-    .sidebar {
-        width: 180px;
-    }
-
-    .filtros {
-        width: 100%;
-        flex-direction: column;
-    }
-
-    .filtro h2 {
-        text-align: center;
-        font-size: 18px;
-    }
-
-    table th, table td {
-        font-size: 11px;
-    }
-
-    .botao-editar,
-    .botao-excluir {
-        padding: 3px 6px;
-        font-size: 11px;
+        min-width: 70px;
+        padding: 6px 10px;
+        margin: 3px;
     }
 }
-
-
-
 
 
 .lista {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    max-height: 500px; /* altura máxima da área */
-    overflow: hidden; /* evita rolagem dupla */
+    overflow-x: auto; /* garante rolagem se tabela for grande */
 }
 
-/* Área fixa (título + filtros) */
-.filtro {
-    position: sticky;
-    top: 0;
-    background: white;
-    z-index: 10;
+
+.dashboard{
+    background-color: rgb(255, 255, 255);
+    padding: 5%;
+    border-radius: 20px;
+    box-shadow: 0 1px 5px rgb(0, 0, 0, 0.1);
 }
 
-/* Área rolável apenas para a tabela */
-.tabela-container {
-    overflow-y: auto;
-    overflow-x: auto;
-    max-height: 350px; /* defina conforme desejar */
-    border-radius: 6px;
+.dashboard h1 {
+    color: #001f54;
+}
+.container{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 2 colunas fixas */
+    gap: 5px;
+    justify-items: center;
 }
 
-/* Cabeçalho da tabela fixo também */
-.tabela-container table thead th {
-    position: sticky;
-    top: 0;
-    background: #f0f0f0;
-    z-index: 5;
+.blocos hr {
+    width: 90%;
+    margin: 4px;
+    margin-left: 10px;
+}
+
+.blocos h2{
+    display: inline-block;
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--azul-escuro);
+}
+
+.blocos{
+    text-align: center;
+    padding: 30px;
+    box-shadow: 0 1px 5px rgb(0, 0, 0, 0.2);
+    margin: 2%;
+    min-width: 100px;
+    width: 100px;
+    border-radius: 10px;
+}
+
+.blocos p{
+    font-size: 40px;
+}
+
+.blocos-grafico{
+    grid-column: 2 / -1;  /* fica na terceira coluna */
+    grid-row: 2 / span 2; /* ocupa duas linhas de altura */
+    text-align: center;
+    color: #000;
+    font-weight: bold;
+    width: 50%;
+}
+
+.blocos-grafico img{
+    width: 50%;
 }

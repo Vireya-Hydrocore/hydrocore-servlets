@@ -61,7 +61,7 @@ public class ServletLogin extends HttpServlet {
 
         if (resultado) {
             // Redireciona para página inicial do admin
-            resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta");
+            req.getRequestDispatcher("/assets/pages/dashboard.jsp").forward(req, resp);
         } else {
             req.setAttribute("erros", "E-mail ou senha incorretos."); //Setta um atributo erro para o JSP tratar
             RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/erroLogin.jsp"); //Vai para a pagina de erro
