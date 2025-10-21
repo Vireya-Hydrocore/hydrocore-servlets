@@ -169,7 +169,7 @@ public class ServletAdmin extends HttpServlet {
     // ===============================================================
 
     protected void alterarAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //Settando os valores no adminDTO ---> ---> --> usuário não pode mudar a eta
+        //Settando os valores no adminDTO --→ --→ -→ usuário não pode mudar a eta
         AdminDTO adminDTO = new AdminDTO();
         adminDTO.setId(Integer.parseInt(req.getParameter("id")));
         adminDTO.setNome(req.getParameter("nome"));
