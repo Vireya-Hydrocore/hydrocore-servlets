@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @WebServlet(value = "/dashAnalise", name = "/ServletDashBoard")
-public class ServletDashBoard extends HttpServlet {
+public class ServletdashBoard extends HttpServlet {
 
     private DashBoardDAO dash = new DashBoardDAO();
 
