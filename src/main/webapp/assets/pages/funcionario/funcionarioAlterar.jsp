@@ -39,9 +39,9 @@
       </div>
 
       <!-- Senha -->
-      <div class="campos">
+      <div class="campos-readonly">
         <label>Senha</label>
-        <input type="password" name="senha" value="${funcionario.senha}">
+        <input type="password" name="senha" value="${funcionario.senha}" readonly>
       </div>
 
       <!-- Data de Admissão -->

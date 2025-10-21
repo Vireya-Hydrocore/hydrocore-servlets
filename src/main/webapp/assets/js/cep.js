@@ -1,3 +1,4 @@
+//pego o cep e transformo ele em numericos
 cep.addEventListener('input', function () {
     let valor = cep.value;
     valor = valor.replace(/\D/g, ""); // mantém só números

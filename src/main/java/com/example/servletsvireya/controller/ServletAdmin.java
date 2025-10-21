@@ -158,7 +158,8 @@ public class ServletAdmin extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin"); //Lista novamente os admins se der certo
         } else {
-            req.setAttribute("erro", "Não foi possível inserir esse admin, Verifique os campos e tente novamente!"); //Setta um atributo com o erro
+            erros.add("ETA Inexistente. Verifique os campos e tente novamente!");
+            req.setAttribute("erros", erros); //Setta um atributo com o erro
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
     }

@@ -146,8 +146,8 @@ public class ServletEstoque extends HttpServlet {
         //===== Validação de dados usando a classe Validador ======
         List<String> erros = new ArrayList<>();
 
-        if (estoqueDTO.getQuantidade() <= 0) {
-            erros.add("A quantidade deve ser maior que zero.");
+        if (!Validador.validarLength(req.getParameter("quantidade"), 5)) {
+            erros.add("A quantidade deve ser maior que zero e no máximo 5 dígitos.");
         }
 
         if (!Validador.validarDataValidade((Date) estoqueDTO.getDataValidade())) {
@@ -171,7 +171,7 @@ public class ServletEstoque extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque"); //Lista novamente os produtos no estoque se der certo
         } else {
-            erros.add("Não foi possível inserir esse estoque, Verifique os campos e tente novamente!");
+            erros.add("Cargo ou ETA inexistente, Verifique os campos e tente novamente!");
             req.setAttribute("erros", erros); //Setta um atributo com o erro generalizado
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Vai para a página de erro
         }

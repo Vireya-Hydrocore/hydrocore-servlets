@@ -25,7 +25,7 @@ public class ServletDashBoard extends HttpServlet {
 
         req.setAttribute("dashboard", lista); //Devolve a lista dos resultados encontrados em um novo atributo
 
-        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/dashboard.jsp"); //Envia para a página principal
+        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/dashBoard.jsp"); //Envia para a página principal
         rd.forward(req, resp);
     }
 }

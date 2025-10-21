@@ -119,11 +119,13 @@
 
         <section class="lista">
 
-            <div class="filtro">
-                <h2>Lista de Produtos</h2>
+            <!-- FILTRO -->
+            <section class="filtro">
+                <div class="filtro-titulo">
+                    <h2>Lista de Produtos</h2>
+                </div>
 
-                <!-- FILTRO DE PRODUTOS -->
-                <form action="${pageContext.request.contextPath}/ServletProduto" method="get">
+                <form action="${pageContext.request.contextPath}/ServletProduto" method="get" class="filtro-form">
                     <input type="hidden" name="action" value="filtroProduto">
 
                     <div class="campos">
@@ -143,57 +145,61 @@
                     </div>
 
                     <div class="acoes">
-                        <a class="botao-redefinir" style="text-decoration: none" href="${pageContext.request.contextPath}/ServletProduto?action=mainProduto">Redefinir filtragem</a>
+                        <a class="botao-redefinir" style="text-decoration: none"
+                           href="${pageContext.request.contextPath}/ServletProduto?action=mainProduto">Redefinir filtragem</a>
                         <button type="submit" class="botao-salvar">Aplicar Filtro</button>
                     </div>
                 </form>
-            </div>
+            </section>
 
-            <table>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Tipo</th>
-                    <th>Unidade de Medida</th>
-                    <th>Concentração</th>
-                    <th>Nome ETA</th>
-                    <th>Ações</th>
-                </tr>
-                </thead>
-                <tbody>
-                <% if (lista != null && !lista.isEmpty()) {
-                    for (ProdutoDTO p : lista) { %>
-                <tr>
-                    <td><%= p.getId() %></td>
-                    <td><%= p.getNome() %></td>
-                    <td><%= p.getTipo() %></td>
-                    <td><%= p.getUnidadeMedida() %></td>
-                    <td><%= p.getConcentracao() %></td>
-                    <td><%= p.getNomeEta() %></td>
-                    <td>
-                        <!-- Botão Editar -->
-                        <a class="botao-editar" href="${pageContext.request.contextPath}/ServletProduto?action=selectProduto&id=<%= p.getId() %>">Editar</a>
-                        &nbsp;|&nbsp;
-                        <!-- Botão Excluir -->
-                        <form action="<%= request.getContextPath() %>/ServletProduto" method="post" style="display:inline;">
-                            <input type="hidden" name="action" value="deleteProduto">
-                            <input type="hidden" name="id" value="<%= p.getId() %>">
-                            <button class="botao-excluir" type="submit" onclick="return confirm('Tem certeza que deseja excluir este produto?');">
-                                Excluir
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                <% }
-                } else { %>
-                <tr>
-                    <td colspan="7">Nenhum produto encontrado!</td>
-                </tr>
-                <% } %>
-                </tbody>
-            </table>
+            <!-- TABELA DENTRO DO CONTAINER DE ROLAGEM -->
+            <div class="tabela-container">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Unidade de Medida</th>
+                        <th>Concentração</th>
+                        <th>Nome ETA</th>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% if (lista != null && !lista.isEmpty()) {
+                        for (ProdutoDTO p : lista) { %>
+                    <tr>
+                        <td><%= p.getId() %></td>
+                        <td><%= p.getNome() %></td>
+                        <td><%= p.getTipo() %></td>
+                        <td><%= p.getUnidadeMedida() %></td>
+                        <td><%= p.getConcentracao() %></td>
+                        <td><%= p.getNomeEta() %></td>
+                        <td>
+                            <a class="botao-editar" href="${pageContext.request.contextPath}/ServletProduto?action=selectProduto&id=<%= p.getId() %>">Editar</a>
+                            &nbsp;|&nbsp;
+                            <form action="<%= request.getContextPath() %>/ServletProduto" method="post" style="display:inline;">
+                                <input type="hidden" name="action" value="deleteProduto">
+                                <input type="hidden" name="id" value="<%= p.getId() %>">
+                                <button class="botao-excluir" type="submit"
+                                        onclick="return confirm('Tem certeza que deseja excluir este produto?');">
+                                    Excluir
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }
+                    } else { %>
+                    <tr>
+                        <td colspan="7">Nenhum produto encontrado!</td>
+                    </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
         </section>
+
     </main>
 </div>
 

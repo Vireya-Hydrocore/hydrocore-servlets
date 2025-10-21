@@ -68,85 +68,95 @@
     <!-- LISTA DAS ETAS -->
 
     <section class="lista">
-      <div class="filtro">
+
+      <!-- FILTRO -->
+      <section class="filtro">
         <div class="filtro-titulo">
           <h2>Lista de ETAs</h2>
         </div>
 
         <form action="${pageContext.request.contextPath}/ServletEta" method="get" class="filtro-form">
-            <input type="hidden" name="action" value="filtroEta">
+          <input type="hidden" name="action" value="filtroEta">
 
-            <div class="campos">
-              <label>Coluna</label>
-              <select name="nome_coluna">
-                <option value="nome">Nome</option>
-                <option value="capacidade">Capacidade</option>
-                <option value="telefone">Telefone</option>
-                <option value="cnpj">CNPJ</option>
-                <option value="cep">CEP</option> <!--endereço-->
-              </select>
-            </div>
+          <div class="campos">
+            <label>Coluna</label>
+            <select name="nome_coluna">
+              <option value="nome">Nome</option>
+              <option value="capacidade">Capacidade</option>
+              <option value="telefone">Telefone</option>
+              <option value="cnpj">CNPJ</option>
+              <option value="cep">CEP</option>
+            </select>
+          </div>
 
-            <div class="campos">
-              <label>Pesquisa</label>
-              <input type="text" name="pesquisa" placeholder="Digite o termo de busca...">
-            </div>
+          <div class="campos">
+            <label>Pesquisa</label>
+            <input type="text" name="pesquisa" placeholder="Digite o termo de busca...">
+          </div>
 
-            <div class="acoes">
-              <a class="botao-redefinir" style="text-decoration: none" href="${pageContext.request.contextPath}/ServletEta?action=mainEta">Redefinir filtragem</a>
-              <button type="submit" class="botao-salvar">Aplicar Filtro</button>
-            </div>
+          <div class="acoes">
+            <a class="botao-redefinir" style="text-decoration: none"
+               href="${pageContext.request.contextPath}/ServletEta?action=mainEta">Redefinir filtragem</a>
+            <button type="submit" class="botao-salvar">Aplicar Filtro</button>
+          </div>
         </form>
+      </section>
+
+      <!-- TABELA DENTRO DO CONTAINER DE ROLAGEM -->
+      <div class="tabela-container">
+        <table>
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Capacidade</th>
+            <th>Telefone</th>
+            <th>CNPJ</th>
+            <th>CEP</th>
+            <th>Ações</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% if (lista != null && !lista.isEmpty()) {
+            for (int i = 0; i < lista.size(); i++) { %>
+          <tr>
+            <td><%= lista.get(i).getId() %></td>
+            <td><%= lista.get(i).getNome() %></td>
+            <td><%= lista.get(i).getCapacidade() %></td>
+            <td><%= lista.get(i).getTelefone() %></td>
+            <td><%= lista.get(i).getCnpj() %></td>
+            <td><%= lista.get(i).getCep() %></td>
+
+            <!-- Dados adicionais ocultos -->
+            <td style="display: none"><%= lista.get(i).getRua() %></td>
+            <td style="display: none"><%= lista.get(i).getBairro() %></td>
+            <td style="display: none"><%= lista.get(i).getCidade() %></td>
+            <td style="display: none"><%= lista.get(i).getEstado() %></td>
+            <td style="display: none"><%= lista.get(i).getNumero() %></td>
+
+            <td>
+              <a class="botao-editar"
+                 href="${pageContext.request.contextPath}/ServletEta?action=selectEta&id=<%= lista.get(i).getId() %>">Editar</a>
+              &nbsp;|&nbsp;
+              <form action="<%= request.getContextPath() %>/ServletEta" method="post" style="display:inline;">
+                <input type="hidden" name="action" value="deleteEta">
+                <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
+                <button class="botao-excluir" type="submit"
+                        onclick="return confirm('Tem certeza que deseja excluir essa ETA?');">
+                  Excluir
+                </button>
+              </form>
+            </td>
+          </tr>
+          <% }
+          } else { %>
+          <tr>
+            <td colspan="7">Nenhuma ETA encontrada!</td>
+          </tr>
+          <% } %>
+          </tbody>
+        </table>
       </div>
-
-
-      <table>
-        <thead>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>Capacidade</th>
-        <th>Telefone</th>
-        <th>CNPJ</th>
-        <th>CEP</th>
-        <th>Ações</th>
-        </thead>
-        <tbody>
-        <% if (lista != null && !lista.isEmpty()) {
-          for (int i=0; i < lista.size(); i++) { %>
-        <tr>
-          <td><%= lista.get(i).getId() %></td>
-          <td><%= lista.get(i).getNome() %></td>
-          <td><%= lista.get(i).getCapacidade() %></td>
-          <td><%= lista.get(i).getTelefone() %></td>
-          <td><%= lista.get(i).getCnpj() %></td>
-          <td><%= lista.get(i).getCep() %></td>
-          <td style="display: none"><%= lista.get(i).getRua() %></td>
-          <td style="display: none"><%= lista.get(i).getBairro() %></td>
-          <td style="display: none"><%= lista.get(i).getCidade() %></td>
-          <td style="display: none"><%= lista.get(i).getEstado() %></td>
-          <td style="display: none"><%= lista.get(i).getNumero() %></td>
-          <td>
-            <!-- Botão Editar -->
-            <a class="botao-editar" href="${pageContext.request.contextPath}/ServletEta?action=selectEta&id=<%= lista.get(i).getId() %>">Editar</a>
-            &nbsp;|&nbsp;
-            <!-- Botão Excluir -->
-            <form action="<%= request.getContextPath() %>/ServletEta" method="post" style="display:inline;">
-              <input type="hidden" name="action" value="deleteEta">
-              <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
-              <button class="botao-excluir" type="submit" onclick="return confirm('Tem certeza que deseja excluir essa ETA?');">
-                Excluir
-              </button>
-            </form>
-          </td>
-        </tr>
-        <% }
-        } else { %>
-        <tr>
-          <td colspan="6">Nenhuma ETA encontrada!</td>
-        </tr>
-        <% } %>
-        </tbody>
-      </table>
     </section>
   </main>
 </div>

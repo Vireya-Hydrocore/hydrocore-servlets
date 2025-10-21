@@ -38,6 +38,9 @@
 
 <aside class="sidebar" id="sidebar">
   <ul>
+    <a href="${pageContext.request.contextPath}/dashAnalise">
+      <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-painel-de-controle-16.png"> DashBoard</li>
+    </a>
     <a href="${pageContext.request.contextPath}/ServletEta?action=mainEta">
       <li><img src="${pageContext.request.contextPath}/assets/imgs/imagem9.png"> ETAs</li>
     </a>
@@ -56,9 +59,6 @@
     <a href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin">
       <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-admin-settings-male-16.png"> Admin</li>
     </a>
-    <a href="${pageContext.request.contextPath}/dashAnalise">
-      <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-painel-de-controle-16.png"> DashBoard</li>
-    </a>
   </ul>
 </aside>
 
@@ -68,7 +68,7 @@
     <!-- CADASTRO DE ADMINS -->
     <section class="cadastro">
       <h2>Cadastro de Admins</h2>
-      <form name="frmAdmin" action="${pageContext.request.contextPath}/ServletAdmin" method="post">
+      <form name="admin-form" action="${pageContext.request.contextPath}/ServletAdmin" method="post">
         <input type="hidden" name="action" value="createAdmin">
 
         <div class="campos">
@@ -92,7 +92,7 @@
         </div>
 
         <div class="acoes">
-          <button type="reset" class="botao-redefinir">Limpar</button>
+          <input type="reset" class="botao-redefinir" value="Limpar">
           <input type="submit" class="botao-salvar" value="Salvar">
         </div>
       </form>

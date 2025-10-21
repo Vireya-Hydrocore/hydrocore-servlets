@@ -283,8 +283,8 @@
             <nav class="nav-footer">
                 <p class="title-points">Outros</p>
                 <ul>
-                    <li><a href="<%= request.getContextPath() %>/assets/pages/landingpage/sobreNosReal.jsp">Sobre nós</a></li>
-                    <li><a href="<%= request.getContextPath() %>/assets/pages/landingpage/loginAdmin.jsp">Área Restrita</a></li>
+                    <li><a href="${pageContext.request.contextPath}/assets/pages/landingpage/sobreNosReal.jsp">Sobre nós</a></li>
+                    <li><a href="${pageContext.request.contextPath}/assets/pages/landingpage/loginAdmin.jsp">Área Restrita</a></li>
                 </ul>
             </nav>
         </div>
