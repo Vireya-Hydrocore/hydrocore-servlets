@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EstoqueDAO { //erik
+public class EstoqueDAO {
 
     private final Conexao conexao = new Conexao(); //Para os métodos de conectar e desconectar
 

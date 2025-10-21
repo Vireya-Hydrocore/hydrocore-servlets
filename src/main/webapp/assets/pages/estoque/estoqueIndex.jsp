@@ -74,27 +74,27 @@
 
                 <div class="campos">
                     <label>Quantidade</label>
-                    <input type="number" name="quantidade" placeholder="Ex: 50">
+                    <input type="number" name="quantidade" placeholder="Ex: 50" required>
                 </div>
 
                 <div class="campos">
                     <label>Data de validade</label>
-                    <input type="date" name="dataValidade">
+                    <input type="date" name="dataValidade" required>
                 </div>
 
                 <div class="campos">
                     <label>Minímo possível estocado</label>
-                    <input type="number" name="minPossivelEstocado" placeholder="Ex: 10">
+                    <input type="number" name="minPossivelEstocado" placeholder="Ex: 10" required>
                 </div>
 
                 <div class="campos">
                     <label>Produto</label>
-                    <input type="text" name="nomeProduto" placeholder="Ex: Sulfato de alumínio">
+                    <input type="text" name="nomeProduto" placeholder="Ex: Sulfato de alumínio" required>
                 </div>
 
                 <div class="campos">
                     <label>Nome Eta</label>
-                    <input type="text" name="nomeEta" placeholder="Ex: ETA Central">
+                    <input type="text" name="nomeEta" placeholder="Ex: ETA Central" required>
                 </div>
 
                 <div class="acoes">
@@ -108,10 +108,12 @@
 
         <section class="lista">
 
-            <section class="filtro">
-            <h2>Lista dos estoques de produtos</h2>
+            <div class="filtro">
+                <div class="filtro-titulo">
+                    <h2>Lista de Estoque</h2>
+                </div>
 
-                <form action="${pageContext.request.contextPath}/ServletEstoque" method="get">
+                <form action="${pageContext.request.contextPath}/ServletEstoque" method="get" class="filtro-form">
                     <input type="hidden" name="action" value="filtroEstoque">
 
                     <div class="campos">
@@ -130,75 +132,61 @@
                         <input type="text" name="pesquisa" id="pesquisa" placeholder="Digite o termo de busca...">
                     </div>
 
-                    <div class="acoes">
-                        <a class="botao-redefinir" style="text-decoration: none" href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">Redefinir filtragem</a>
+                    <div class="acoes filtro-acoes">
+                        <a class="botao-redefinir" style="text-decoration: none"
+                           href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">Redefinir filtragem</a>
                         <button type="submit" class="botao-salvar">Aplicar Filtro</button>
                     </div>
                 </form>
-                <script>
+            </div>
 
-                    const colunaSelect = document.getElementById('colunaSelect');
-                    const inputPesquisa = document.getElementById('pesquisa');
-
-                    colunaSelect.addEventListener('change', function() {
-                        const valor = colunaSelect.value;
-
-                        // Se for uma das opções de data, muda o tipo para "date"
-                        if (valor === 'data_validade') {
-                            inputPesquisa.type = 'date';
-                            inputPesquisa.value = ''; // limpa o campo para evitar erro de formato
-                        } else {
-                            inputPesquisa.type = 'text';
-                            inputPesquisa.value = '';
-                        }
-                    });
-                </script>
-            </section>
-
-            <table>
-                <thead>
-                <th>ID</th>
-                <th>Nome Produto</th>
-                <th>Quantidade</th>
-                <th>Data Validade</th>
-                <th>Minímo Possível Estocado</th>
-                <th>ETA</th>
-                <th>Ações</th>
-                </thead>
-                <tbody>
-                <% if (lista != null && !lista.isEmpty()) {
-                    for (int i=0; i < lista.size(); i++) { %>
-                <tr>
-                    <td><%= lista.get(i).getId() %></td>
-                    <td><%= lista.get(i).getNomeProduto() %></td>
-                    <td><%= lista.get(i).getQuantidade() %></td>
-                    <td><%= lista.get(i).getDataValidade() %></td>
-                    <td><%= lista.get(i).getMinPossivelEstocado() %></td>
-                    <td><%= lista.get(i).getNomeEta() %></td>
-                    <td>
-                        <!-- Botão Editar -->
-                        <a class="botao-editar" href="${pageContext.request.contextPath}/ServletEstoque?action=selectEstoque&id=<%= lista.get(i).getId() %>">Editar</a>
-
-                        &nbsp;|&nbsp;
-
-                        <!-- Botão Excluir -->
-                        <form action="${pageContext.request.contextPath}/ServletEstoque" method="post" style="display:inline;">
-                            <input type="hidden" name="action" value="deleteEstoque">
-                            <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
-                            <button class="botao-excluir" type="submit" onclick="return confirm('Tem certeza que deseja excluir este estoque?');">
-                                Excluir
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                <% }
-                } else { %>
-                <tr>
-                    <td colspan="6">Nenhum estoque de produto encontrado!</td>
-                </tr>
-                <% } %>
-                </tbody>
-            </table>
+            <div class="tabela-container">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome Produto</th>
+                        <th>Quantidade</th>
+                        <th>Data Validade</th>
+                        <th>Mínimo Possível Estocado</th>
+                        <th>ETA</th>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% if (lista != null && !lista.isEmpty()) {
+                        for (int i = 0; i < lista.size(); i++) { %>
+                    <tr>
+                        <td><%= lista.get(i).getId() %></td>
+                        <td><%= lista.get(i).getNomeProduto() %></td>
+                        <td><%= lista.get(i).getQuantidade() %></td>
+                        <td><%= lista.get(i).getDataValidade() %></td>
+                        <td><%= lista.get(i).getMinPossivelEstocado() %></td>
+                        <td><%= lista.get(i).getNomeEta() %></td>
+                        <td>
+                            <a class="botao-editar"
+                               href="${pageContext.request.contextPath}/ServletEstoque?action=selectEstoque&id=<%= lista.get(i).getId() %>">
+                                Editar
+                            </a>
+                            &nbsp;|&nbsp;
+                            <form action="${pageContext.request.contextPath}/ServletEstoque" method="post" style="display:inline;">
+                                <input type="hidden" name="action" value="deleteEstoque">
+                                <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
+                                <button class="botao-excluir" type="submit"
+                                        onclick="return confirm('Tem certeza que deseja excluir este estoque?');">
+                                    Excluir
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% } } else { %>
+                    <tr>
+                        <td colspan="7">Nenhum estoque encontrado!</td>
+                    </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
         </section>
     </main>
 </div>

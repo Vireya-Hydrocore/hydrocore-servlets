@@ -94,14 +94,15 @@
         </section>
 
         <!-- LISTA DE CARGOS -->
-
         <section class="lista">
 
-            <!-- FILTRO DE CARGOS -->
+            <!-- FILTRO -->
             <section class="filtro">
-            <h2>Lista de Cargos</h2>
+                <div class="filtro-titulo">
+                    <h2>Lista de Cargos</h2>
+                </div>
 
-                <form action="${pageContext.request.contextPath}/ServletCargo" method="get">
+                <form action="${pageContext.request.contextPath}/ServletCargo" method="get" class="filtro-form">
                     <input type="hidden" name="action" value="filtroCargo">
 
                     <div class="campos">
@@ -119,58 +120,82 @@
                     </div>
 
                     <div class="acoes">
-                        <a class="botao-redefinir" style="text-decoration: none" href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">Redefinir filtragem</a>
+                        <a class="botao-redefinir" style="text-decoration: none"
+                           href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">Redefinir filtragem</a>
                         <button type="submit" class="botao-salvar">Aplicar Filtro</button>
                     </div>
                 </form>
             </section>
-            <table>
-                <thead>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Acesso</th>
-                <th>ETA</th>
-                <th>Ações</th>
-                </thead>
-                <tbody>
-                <% if (lista != null && !lista.isEmpty()) {
-                    for (CargoDTO c : lista) { %>
-                <tr>
-                    <td><%= c.getId() %></td>
-                    <td><%= c.getNome() %></td>
-                    <td><%= c.getAcesso() %></td>
-                    <td><%= c.getNomeEta() %></td>
-                    <td>
-                        <!-- Editar -->
-                        <a class="botao-editar"
-                           href="${pageContext.request.contextPath}/ServletCargo?action=selectCargo&id=<%= c.getId() %>">Editar</a>
 
-                        &nbsp;|&nbsp;
-
-                        <!-- Excluir -->
-                        <form action="${pageContext.request.contextPath}/ServletCargo" method="post" style="display:inline;">
-                            <input type="hidden" name="action" value="deleteCargo">
-                            <input type="hidden" name="id" value="<%= c.getId() %>">
-                            <button class="botao-excluir" type="submit"
-                                    onclick="return confirm('Tem certeza que deseja excluir este cargo?');">
-                                Excluir
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                <% }
-                } else { %>
-                <tr>
-                    <td colspan="4">Nenhum cargo encontrado!</td>
-                </tr>
-                <% } %>
-                </tbody>
-            </table>
+            <!-- TABELA DENTRO DO CONTAINER DE ROLAGEM -->
+            <div class="tabela-container">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Acesso</th>
+                        <th>ETA</th>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% if (lista != null && !lista.isEmpty()) {
+                        for (CargoDTO c : lista) { %>
+                    <tr>
+                        <td><%= c.getId() %></td>
+                        <td><%= c.getNome() %></td>
+                        <td><%= c.getAcesso() %></td>
+                        <td><%= c.getNomeEta() %></td>
+                        <td>
+                            <a class="botao-editar" href="${pageContext.request.contextPath}/ServletCargo?action=selectCargo&id=<%= c.getId() %>">Editar</a>
+                            &nbsp;|&nbsp;
+                            <form action="${pageContext.request.contextPath}/ServletCargo" method="post" style="display:inline;">
+                                <input type="hidden" name="action" value="deleteCargo">
+                                <input type="hidden" name="id" value="<%= c.getId() %>">
+                                <button class="botao-excluir" type="submit"
+                                        onclick="return confirm('Tem certeza que deseja excluir este cargo?');">
+                                    Excluir
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }
+                    } else { %>
+                    <tr>
+                        <td colspan="5">Nenhum cargo encontrado!</td>
+                    </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
         </section>
+
     </main>
 </div>
 
 
+<!-- POPUP DE EDIÇÃO -->
+<%--<div id="popupCargo" class="popup-overlay">--%>
+<%--    <div class="popup-content">--%>
+<%--        <h2>Alterar Cargo</h2>--%>
+<%--        <form id="formEditarCargo" action="${pageContext.request.contextPath}/ServletCargo" method="post">--%>
+<%--            <input type="hidden" name="action" value="updateCargo">--%>
+<%--            <input type="hidden" id="idCargo" name="id">--%>
+
+<%--            <label for="nomeCargo">Nome do Cargo:</label>--%>
+<%--            <input type="text" id="nomeCargo" name="nome" required><br>--%>
+
+<%--            <label for="nivelAcesso">Nível de Acesso:</label>--%>
+<%--            <input type="number" id="nivelAcesso" name="acesso" required><br>--%>
+
+<%--            <div class="acoes">--%>
+<%--                <button type="button" id="btnFecharPopup" class="botao-redefinir">Cancelar</button>--%>
+<%--                <button type="submit" class="botao-salvar">Salvar</button>--%>
+<%--            </div>--%>
+<%--        </form>--%>
+<%--    </div>--%>
+<%--</div>--%>
 
 
 <!-- Script -->
