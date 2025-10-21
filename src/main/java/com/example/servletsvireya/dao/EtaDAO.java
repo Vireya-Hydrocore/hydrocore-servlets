@@ -105,29 +105,6 @@ public class EtaDAO {
     }
 
 
-    // Método inserirEta()
-//    public int inserirEta(EtaDTO etaDTO) {
-//        Connection conn = conexao.conectar();
-//        String comando = "INSERT INTO eta (nome, capacidade, telefone, cnpj) VALUES (?, ?, ?, ?)";
-//
-//        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
-//            pstmt.setString(1, etaDTO.getNome());
-//            pstmt.setInt(2, etaDTO.getCapacidade());
-//            pstmt.setString(3, etaDTO.getTelefone());
-//            pstmt.setString(4, etaDTO.getCnpj());
-//
-//            if (pstmt.executeUpdate() > 0) {
-//                return 1;
-//            } else {
-//                return 0;
-//            }
-//        } catch (SQLException sqle) {
-//            sqle.printStackTrace();
-//            return -1;
-//        } finally {
-//            conexao.desconectar();
-//        }
-//    }
 
 
     // ========== Método para listar as ETAs ========== //
@@ -405,7 +382,7 @@ public class EtaDAO {
 //
 //        try(PreparedStatement pstmt = conn.prepareStatement(comando)){
 //
-//            int qtdRemovida = pstmt.executeUpdate();
+//            int qtdRemovida = pstmt.executeUpdate()
 //            return qtdRemovida;
 //        }
 //        catch (SQLException sqle){

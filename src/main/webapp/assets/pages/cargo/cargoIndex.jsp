@@ -124,15 +124,6 @@
                     </div>
                 </form>
             </section>
-
-<%--            <% if (alterado != null && alterado) { %>--%>
-<%--            <script>--%>
-<%--                window.onload = function() {--%>
-<%--                    alert("✅ Cargo alterado com sucesso!");--%>
-<%--                }--%>
-<%--            </script>--%>
-<%--            <% } %>--%>
-
             <table>
                 <thead>
                 <th>ID</th>
@@ -180,27 +171,6 @@
 </div>
 
 
-<!-- POPUP DE EDIÇÃO -->
-<%--<div id="popupCargo" class="popup-overlay">--%>
-<%--    <div class="popup-content">--%>
-<%--        <h2>Alterar Cargo</h2>--%>
-<%--        <form id="formEditarCargo" action="${pageContext.request.contextPath}/ServletCargo" method="post">--%>
-<%--            <input type="hidden" name="action" value="updateCargo">--%>
-<%--            <input type="hidden" id="idCargo" name="id">--%>
-
-<%--            <label for="nomeCargo">Nome do Cargo:</label>--%>
-<%--            <input type="text" id="nomeCargo" name="nome" required><br>--%>
-
-<%--            <label for="nivelAcesso">Nível de Acesso:</label>--%>
-<%--            <input type="number" id="nivelAcesso" name="acesso" required><br>--%>
-
-<%--            <div class="acoes">--%>
-<%--                <button type="button" id="btnFecharPopup" class="botao-redefinir">Cancelar</button>--%>
-<%--                <button type="submit" class="botao-salvar">Salvar</button>--%>
-<%--            </div>--%>
-<%--        </form>--%>
-<%--    </div>--%>
-<%--</div>--%>
 
 
 <!-- Script -->
