@@ -14,6 +14,8 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +56,9 @@ public class ServletEstoque extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/assets/pages/estoque/estoqueIndex.jsp");
             }
         } catch (Exception e) {
-            e.printStackTrace(); //Mostra a exceção possível
+            e.printStackTrace();
+            req.setAttribute("erro", "Ocorreu um erro ao processar sua requisição de estoque.");
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -67,18 +71,24 @@ public class ServletEstoque extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
 
-        switch (action) {
-            case "createEstoque":
-                inserirEstoque(req, resp);
-                break;
-            case "updateEstoque":
-                alterarEstoque(req, resp);
-                break;
-            case "deleteEstoque":
-                removerEstoque(req, resp);
-                break;
-            default:
-                resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque");
+        try {
+            switch (action) {
+                case "createEstoque":
+                    inserirEstoque(req, resp);
+                    break;
+                case "updateEstoque":
+                    alterarEstoque(req, resp);
+                    break;
+                case "deleteEstoque":
+                    removerEstoque(req, resp);
+                    break;
+                default:
+                    resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            req.setAttribute("erro", "Erro inesperado ao processar a ação de estoque.");
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -187,7 +197,20 @@ public class ServletEstoque extends HttpServlet {
         EstoqueDTO estoqueDTO = new EstoqueDTO();
         estoqueDTO.setId(Integer.parseInt(req.getParameter("id")));
         estoqueDTO.setQuantidade(Integer.parseInt(req.getParameter("quantidade")));
-        String dataStr = req.getParameter("dataValidade"); //Convertendo de String para Date
+        String dataStr = req.getParameter("dataValidade");
+        try {
+            java.sql.Date dataValidade;
+            if (dataStr.contains("/")) { // caso venha no formato dd/MM/yyyy
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                java.util.Date utilDate = sdf.parse(dataStr);
+                dataValidade = new java.sql.Date(utilDate.getTime());
+            } else { // formato YYYY-MM-DD
+                dataValidade = java.sql.Date.valueOf(dataStr);
+            }
+            estoqueDTO.setDataValidade(dataValidade);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         estoqueDTO.setDataValidade(java.sql.Date.valueOf(dataStr));
         estoqueDTO.setMinPossivelEstocado(Integer.parseInt(req.getParameter("minPossivelEstocado")));
 

@@ -59,7 +59,9 @@ public class ServletFuncionario extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/assets/pages/funcionario/funcionarioIndex.jsp");
             }
         } catch (Exception e) {
-            e.printStackTrace(); //Mostra a exceção possível
+            e.printStackTrace();
+            req.setAttribute("erro", "Erro ao processar a solicitação de funcionário.");
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -73,18 +75,24 @@ public class ServletFuncionario extends HttpServlet {
 
         String action = req.getParameter("action");
 
-        switch (action) {
-            case "createFuncionario":
-                inserirFuncionario(req, resp);
-                break;
-            case "updateFuncionario":
-                alterarFuncionario(req,resp);
-                break;
-            case "deleteFuncionario":
-                removerFuncionario(req, resp);
-                break;
-            default:
-                resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario");
+        try {
+            switch (action) {
+                case "createFuncionario":
+                    inserirFuncionario(req, resp);
+                    break;
+                case "updateFuncionario":
+                    alterarFuncionario(req, resp);
+                    break;
+                case "deleteFuncionario":
+                    removerFuncionario(req, resp);
+                    break;
+                default:
+                    resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            req.setAttribute("erro", "Erro inesperado ao processar a ação do funcionário.");
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -272,15 +280,13 @@ public class ServletFuncionario extends HttpServlet {
     // ===============================================================
 
     protected void removerFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
         int id = Integer.parseInt(req.getParameter("id"));
         int resultado = funcionarioDAO.removerFuncionario(id);
 
         if (resultado == 1) {
-            // Atualiza a lista de produtos na mesma página
             resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario");
         } else {
-            // Página de erro
+            req.setAttribute("erro", "Não foi possível remover o funcionário. Tente novamente mais tarde.");
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }

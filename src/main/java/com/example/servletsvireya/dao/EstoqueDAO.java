@@ -137,7 +137,7 @@ public class EstoqueDAO {
         Connection conn = conexao.conectar();
         String comando = "SELECT e.*, p.nome AS nome_produto FROM estoque e " +
                 "JOIN produto p ON p.id = e.id_produto " +
-                "WHERE p.id = ?";
+                "WHERE e.id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setInt(1, estoqueDTO.getId());

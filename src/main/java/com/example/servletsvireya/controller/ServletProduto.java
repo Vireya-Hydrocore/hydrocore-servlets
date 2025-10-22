@@ -49,7 +49,9 @@ public class ServletProduto extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/assets/pages/produto/produtoIndex.jsp");
             }
         } catch (Exception e) {
-            e.printStackTrace(); //Mostra a exceção possível
+            e.printStackTrace();
+            req.setAttribute("erro", "Ocorreu um erro ao processar sua solicitação de Produto.");
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -61,19 +63,26 @@ public class ServletProduto extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
+        try {
 
-        switch (action) {
-            case "createProduto":
-                inserirProduto(req, resp);
-                break;
-            case "updateProduto":
-                alterarProduto(req, resp);
-                break;
-            case "deleteProduto":
-                removerProduto(req, resp);
-                break;
-            default:
-                resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto");
+
+            switch (action) {
+                case "createProduto":
+                    inserirProduto(req, resp);
+                    break;
+                case "updateProduto":
+                    alterarProduto(req, resp);
+                    break;
+                case "deleteProduto":
+                    removerProduto(req, resp);
+                    break;
+                default:
+                    resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            req.setAttribute("erro", "Erro inesperado ao processar a ação de Produto.");
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -108,7 +117,7 @@ public class ServletProduto extends HttpServlet {
         produtoDTO.setUnidadeMedida(req.getParameter("unidadeMedida"));
         produtoDTO.setConcentracao(Double.parseDouble(req.getParameter("concentracao")));
 
-        EtaDAO etaDAO= new EtaDAO(); //Para realizar a busca do id da ETA
+        EtaDAO etaDAO = new EtaDAO(); //Para realizar a busca do id da ETA
         String nomeEta = req.getParameter("nomeEta");
         produtoDTO.setIdEta(etaDAO.buscarIdPorNome(nomeEta));
         produtoDTO.setNomeEta(nomeEta);

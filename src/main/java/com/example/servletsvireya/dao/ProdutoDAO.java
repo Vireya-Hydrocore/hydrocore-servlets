@@ -22,7 +22,7 @@ public class ProdutoDAO {
         //Prepara a instrução SQL para inserir o produto e estoque
         String comandoProduto = "INSERT INTO produto (nome, tipo, unidade_medida, concentracao) VALUES (?, ?, ?, ?)";
         String comandoEstoque = "INSERT INTO estoque (quantidade, data_validade, min_possivel_estocado, id_produto, id_eta) " +
-                "VALUES (0, '01-01-2100', 0, ?, ?)"; //Insere um estoque predefinido
+                "VALUES (0, '2100-01-01', 100, ?, ?)"; //Insere um estoque predefinido
 
         try (PreparedStatement pstmtProduto = conn.prepareStatement(comandoProduto, Statement.RETURN_GENERATED_KEYS); //Retorna o id gerado
              PreparedStatement pstmtEstoque = conn.prepareStatement(comandoEstoque)){

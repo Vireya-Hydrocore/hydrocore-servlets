@@ -38,12 +38,21 @@
 
     <div class="campos">
       <label>Data de Validade</label>
-      <input type="date" name="dataValidade" value="${estoque.dataValidade}">
+      <%@ page import="java.text.SimpleDateFormat" %>
+      <%
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // formato aceito pelo input type=date
+        String dataValidadeFormatada = "";
+        if (estoque.getDataValidade() != null) {
+          dataValidadeFormatada = sdf.format(estoque.getDataValidade()); // formata a data antiga
+        }
+      %>
+
+      <input type="date" name="dataValidade" value="<%= dataValidadeFormatada %>">
     </div>
 
-    <div class="campos-readonly">
+    <div class="campos">
       <label>Minímo possível estocado</label>
-      <input type="number" name="minPossivelEstocado" value="${estoque.minPossivelEstocado}" readonly>
+      <input type="number" name="minPossivelEstocado" value="${estoque.minPossivelEstocado}">
     </div>
 
     <div class="acoes">

@@ -42,18 +42,24 @@ public class ServletEta extends HttpServlet {
             return;
         }
 
-        switch (action){
-            case "mainEta":
-                listarEtas(req, resp);
-                break;
-            case "selectEta":
-                buscarEta(req, resp);
-                break;
-            case "filtroEta":
-                filtrarEta(req, resp);
-                break;
-            default:
-                resp.sendRedirect(req.getContextPath() + "/assets/pages/eta/etaIndex.jsp");
+        try {
+            switch (action) {
+                case "mainEta":
+                    listarEtas(req, resp);
+                    break;
+                case "selectEta":
+                    buscarEta(req, resp);
+                    break;
+                case "filtroEta":
+                    filtrarEta(req, resp);
+                    break;
+                default:
+                    resp.sendRedirect(req.getContextPath() + "/assets/pages/eta/etaIndex.jsp");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            req.setAttribute("erro", "Ocorreu um erro ao processar sua solicitação de ETA.");
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -67,14 +73,22 @@ public class ServletEta extends HttpServlet {
 
         String action = req.getParameter("action");
 
-        switch (action){
-            case "createEta":
-                cadastrarEta(req, resp);
-                break;
-            case "updateEta":
-                alterarEta(req, resp);
-                break;
-                //delete????
+
+        try {
+            switch (action) {
+                case "createEta":
+                    cadastrarEta(req, resp);
+                    break;
+                case "updateEta":
+                    alterarEta(req, resp);
+                    break;
+                default:
+                    resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            req.setAttribute("erro", "Erro inesperado ao processar a ação de ETA.");
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 

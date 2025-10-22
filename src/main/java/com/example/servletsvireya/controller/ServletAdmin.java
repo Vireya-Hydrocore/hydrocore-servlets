@@ -49,6 +49,8 @@ public class ServletAdmin extends HttpServlet {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            req.setAttribute("erro", "Ocorreu um erro ao processar sua requisição de administrador.");
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -63,24 +65,24 @@ public class ServletAdmin extends HttpServlet {
         String action = req.getParameter("action");
 
         // Proteção contra NullPointerException em switch de String
-        if (action == null) {
-            // comportamento padrão: listar admins (ou redirecionar)
-            listarAdmins(req, resp);
-            return;
-        }
-
-        switch (action) {
-            case "createAdmin":
-                inserirAdmin(req, resp);
-                break;
-            case "updateAdmin":
-                alterarAdmin(req, resp);
-                break;
-            case "deleteAdmin":
-                removerAdmin(req, resp);
-                break;
-            default:
-                resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin");
+        try {
+            switch (action) {
+                case "createAdmin":
+                    inserirAdmin(req, resp);
+                    break;
+                case "updateAdmin":
+                    alterarAdmin(req, resp);
+                    break;
+                case "deleteAdmin":
+                    removerAdmin(req, resp);
+                    break;
+                default:
+                    resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            req.setAttribute("erro", "Erro inesperado ao processar a ação do administrador.");
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 

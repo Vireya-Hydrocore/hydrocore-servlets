@@ -45,8 +45,10 @@ public class ServletCargo extends HttpServlet {
                 default:
                     resp.sendRedirect(req.getContextPath() + "/assets/pages/cargo/cargoIndex.jsp");
             }
-        } catch (Exception e){
-            e.printStackTrace(); //Mostra a exceção possível
+        } catch (Exception e) {
+            e.printStackTrace();
+            req.setAttribute("erro", "Ocorreu um erro ao processar a requisição.");
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 
@@ -58,19 +60,24 @@ public class ServletCargo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
-
-        switch (action) {
-            case "createCargo":
-                inserirCargo(req, resp);
-                break;
-            case "updateCargo":
-                alterarCargo(req, resp);
-                break;
-            case "deleteCargo":
-                removerCargo(req, resp);
-                break;
-            default:
-                resp.sendRedirect(req.getContextPath() + "/ServletCargo?action=mainCargo");
+        try {
+            switch (action) {
+                case "createCargo":
+                    inserirCargo(req, resp);
+                    break;
+                case "updateCargo":
+                    alterarCargo(req, resp);
+                    break;
+                case "deleteCargo":
+                    removerCargo(req, resp);
+                    break;
+                default:
+                    resp.sendRedirect(req.getContextPath() + "/ServletCargo?action=mainCargo");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            req.setAttribute("erro", "Erro ao processar requisição no servidor.");
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
 

@@ -213,7 +213,9 @@
                         <li>Entrada/saída estoque</li>
                         <li>Avisos na Home</li>
                     </ul>
-                    <button>Assinar Agora</button>
+                    <button onclick="window.location.href='${pageContext.request.contextPath}/assets/pages/landingpage/login.jsp'">//ao clicar no botão é enviado para a pagina de login
+                        Assinar Agora
+                    </button>
                 </div>
                 <div class="card-assinar-highlit">
                     <h3>Professional</h3>
@@ -230,7 +232,9 @@
                         <li>Edição de perfil</li>
                         <li>Preferências do usuário</li>
                     </ul>
-                    <button>Assinar Agora</button>
+                    <button onclick="window.location.href='${pageContext.request.contextPath}/assets/pages/landingpage/login.jsp'">//ao clicar no botão é enviado para a pagina de login
+                        Assinar Agora
+                    </button>
                 </div>
                 <div class="card-assinar">
                     <h3>Enterprise</h3>
@@ -247,7 +251,9 @@
                         <li>Controle de custos</li>
                         <li>Gestão avançada</li>
                     </ul>
-                    <button>Assinar Agora</button>
+                    <button onclick="window.location.href='${pageContext.request.contextPath}/assets/pages/landingpage/login.jsp'">//ao clicar no botão é enviado para a pagina de login
+                        Assinar Agora
+                    </button>
                 </div>
             </div>
         </div>
