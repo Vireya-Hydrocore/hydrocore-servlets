@@ -26,6 +26,7 @@ import java.util.List;
 public class ServletFuncionario extends HttpServlet {
 
     private FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+    List<String> erros = new ArrayList<>();
 
 
     // ===============================================================
@@ -59,8 +60,8 @@ public class ServletFuncionario extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/assets/pages/funcionario/funcionarioIndex.jsp");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            req.setAttribute("erro", "Erro ao processar a solicitação de funcionário.");
+            erros.add("Erro ao processar a solicitação de funcionário.");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
@@ -74,6 +75,13 @@ public class ServletFuncionario extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String action = req.getParameter("action");
+
+        // Proteção contra NullPointerException em switch de String
+        if (action == null) {
+            // Comportamento padrão: listar funcionario (ou redirecionar)
+            listarFuncionarios(req, resp);
+            return;
+        }
 
         try {
             switch (action) {
@@ -90,8 +98,8 @@ public class ServletFuncionario extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            req.setAttribute("erro", "Erro inesperado ao processar a ação do funcionário.");
+            erros.add("Erro inesperado ao processar a ação do funcionário.");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
@@ -108,7 +116,7 @@ public class ServletFuncionario extends HttpServlet {
 
         List<FuncionarioDTO> lista = funcionarioDAO.listarFuncionarios(); //List de objetos retornados na query
 
-        req.setAttribute("funcionarios", lista); //Devolve a lista de produtos encontrados em um novo atributo, para a pagina JSP
+        req.setAttribute("funcionarios", lista); //Devolve a lista de funcionarios encontrados em um novo atributo, para a pagina JSP
 
         RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/funcionario/funcionarioIndex.jsp"); //Envia para a página principal
         rd.forward(req, resp);
@@ -142,11 +150,11 @@ public class ServletFuncionario extends HttpServlet {
         }
         String dataStr2 = req.getParameter("dataAdmissao");
         if (dataStr2 != null && !dataStr2.isEmpty()) {
-            funcionarioDTO.setDataAdmissao(java.sql.Date.valueOf(dataStr2)); // corrigido dataStr2
+            funcionarioDTO.setDataAdmissao(java.sql.Date.valueOf(dataStr2)); // Corrigido dataStr2
         }
 
         // ===== Validação com classe Validador =====
-        List<String> erros = new ArrayList<>();
+        erros = new ArrayList<>();
 
         if (!Validador.naoVazio(funcionarioDTO.getNome())) {
             erros.add("O nome do funcionário não pode estar vazio.");
@@ -183,7 +191,8 @@ public class ServletFuncionario extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario"); //Lista novamente os funcionarios se der certo
         } else {
-            req.setAttribute("erros", "Não foi possível inserir esse funcionário, Verifique os campos e tente novamente!"); //Setta um atributo com o erro
+            erros.add("Cargo ou ETA inexistente, verifique os campos e tente novamente!");
+            req.setAttribute("erros", erros); //Setta um atributo com o erro
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
     }
@@ -268,7 +277,7 @@ public class ServletFuncionario extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario");
         } else {
-            erros.add("Não foi possível alterar o funcionário! Cargo ou ETA não encontrado(s).");
+            erros.add("Cargo ou ETA inexistente, verifique os campos e tente novamente");
             req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
@@ -281,12 +290,14 @@ public class ServletFuncionario extends HttpServlet {
 
     protected void removerFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
+
         int resultado = funcionarioDAO.removerFuncionario(id);
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario");
         } else {
-            req.setAttribute("erro", "Não foi possível remover o funcionário. Tente novamente mais tarde.");
+            erros.add("Não foi possível remover o funcionário, tente novamente.");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }

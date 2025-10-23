@@ -9,6 +9,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.servletsvireya.dto.ProdutoDTO" %>
+<%@ page import="com.example.servletsvireya.dao.EtaDAO" %>
+<%@ page import="com.example.servletsvireya.dto.EtaDTO" %>
 <%
     List<ProdutoDTO> lista = (List<ProdutoDTO>) request.getAttribute("produtos");
 %>
@@ -37,6 +39,9 @@
 
 <aside class="sidebar" id="sidebar">
     <ul>
+        <a href="${pageContext.request.contextPath}/dashAnalise">
+            <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-painel-de-controle-16.png"> Dashboard</li>
+        </a>
         <a href="${pageContext.request.contextPath}/ServletEta?action=mainEta">
             <li><img src="${pageContext.request.contextPath}/assets/imgs/imagem9.png"> ETAs</li>
         </a>
@@ -50,13 +55,10 @@
             <li><img src="${pageContext.request.contextPath}/assets/imgs/image12.png"> Produtos</li>
         </a>
         <a href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">
-            <li><img src="${pageContext.request.contextPath}/assets/imgs/image13.png"> Cargo</li>
+            <li><img src="${pageContext.request.contextPath}/assets/imgs/image13.png"> Cargos</li>
         </a>
         <a href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin">
-            <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-admin-settings-male-16.png"> Admin</li>
-        </a>
-        <a href="${pageContext.request.contextPath}/dashAnalise">
-            <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-painel-de-controle-16.png"> DashBoard</li>
+            <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-admin-settings-male-16.png"> Admins</li>
         </a>
     </ul>
 </aside>
@@ -104,12 +106,22 @@
                 </div>
 
                 <div class="campos">
-                    <label>Nome ETA</label>
-                    <input type="text" name="nomeEta" placeholder="Ex: ETA Central" required>
+                    <label for="nomeEta">Nome da ETA</label>
+                    <select id="nomeEta">
+                        <option value="">Selecione uma ETA</option> <%-- Valor inicial vazio --%>
+                        <%-- Listando os cargos disponíveis com EtaDAO --%>
+                        <%
+                            EtaDAO etaDAO = new EtaDAO();
+                            List<EtaDTO> etaList = etaDAO.listarEtas();
+
+                            for (EtaDTO eta : etaList){%>
+                        <option value="<%= eta.getId() %>"> <%= eta.getNome() %> </option> <%-- Mostra o nome e pega o id da ETA --%>
+                        <%}%>
+                    </select>
                 </div>
 
                 <div class="acoes">
-                    <button type="reset" class="botao-redefinir">Limpar</button>
+                    <input type="reset" class="botao-redefinir" value="Limpar">
                     <input type="submit" value="Salvar" class="botao-salvar">
                 </div>
             </form>
@@ -162,7 +174,7 @@
                         <th>Tipo</th>
                         <th>Unidade de Medida</th>
                         <th>Concentração</th>
-                        <th>Nome ETA</th>
+                        <th>ETA</th>
                         <th>Ações</th>
                     </tr>
                     </thead>

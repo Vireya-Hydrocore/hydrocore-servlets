@@ -25,12 +25,9 @@ public class AdminDAO {
         String comando = "INSERT INTO admin (nome, email, senha, id_eta) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
-            //Settnado os valores no comando/pstmt
+            //Settando os valores no comando/pstmt
             pstmt.setString(1, adminDTO.getNome());
             pstmt.setString(2, adminDTO.getEmail());
-            if (adminDTO.getSenha().length() > 60) { //Se for maior que o tamanho permitido retorna 0
-                return 0;
-            }
             pstmt.setString(3, adminDTO.getSenha());
             pstmt.setInt(4, adminDTO.getIdEta());
 

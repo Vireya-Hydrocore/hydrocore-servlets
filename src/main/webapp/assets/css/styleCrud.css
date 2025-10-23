@@ -639,3 +639,74 @@ table th {
     text-align: left;
     border-bottom: 1px solid #e8e8e8;
 }
+
+
+
+
+.filtro-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: #fff;
+    padding: 12px 20px;
+    margin-bottom: 15px;
+}
+
+.titulo-lista {
+    color: #001f54;
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.3rem;
+    white-space: nowrap;
+}
+
+.filtro-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* Espaço entre cada grupo */
+}
+
+.campo-filtro {
+    display: flex;
+    flex-direction: column; /* Label acima do input */
+    min-width: 120px; /* Ajuste conforme necessário */
+}
+
+.filtro-form label {
+    display: block; /* Faz o label ocupar uma linha inteira */
+    margin-bottom: 5px; /* Espaço entre label e input */
+}
+
+.filtro-form select,
+.filtro-form input {
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    min-width: 120px;
+}
+
+.botao-redefinir {
+    background-color: #c4c4c4;
+    color: #000;
+    border-radius: 6px;
+    padding: 6px 10px;
+    text-decoration: none;
+}
+
+.botao-salvar {
+    background-color: #199bce;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.botao-salvar:hover {
+    background-color: #117ea8;
+}
+
+.botao-redefinir:hover {
+    background-color: #b3b3b3;
+}

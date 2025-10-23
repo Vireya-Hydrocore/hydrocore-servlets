@@ -9,12 +9,14 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/ServletAdmin", "/mainAdmin", "/createAdmin", "/selectAdmin", "/updateAdmin", "/deleteAdmin", "/filtroAdmin"}, name = "/ServletAdmin")
 public class ServletAdmin extends HttpServlet {
 
     private AdminDAO adminDAO = new AdminDAO();
+    List<String> erros = new ArrayList<>();
 
 
     // ===============================================================
@@ -44,12 +46,12 @@ public class ServletAdmin extends HttpServlet {
                 case "filtroAdmin":
                     filtrarAdmin(req, resp);
                     break;
-                default:
+                default: //Caso não seja nenhum,
                     resp.sendRedirect(req.getContextPath() + "/assets/pages/admin/adminIndex.jsp");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            req.setAttribute("erro", "Ocorreu um erro ao processar sua requisição de administrador.");
+            erros.add("Ocorreu um erro ao processar sua requisição de administrador.");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
@@ -65,6 +67,12 @@ public class ServletAdmin extends HttpServlet {
         String action = req.getParameter("action");
 
         // Proteção contra NullPointerException em switch de String
+        if (action == null) {
+            // comportamento padrão: listar admins (ou redirecionar)
+            listarAdmins(req, resp);
+            return;
+        }
+
         try {
             switch (action) {
                 case "createAdmin":
@@ -80,8 +88,8 @@ public class ServletAdmin extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            req.setAttribute("erro", "Erro inesperado ao processar a ação do administrador.");
+            erros.add("Ocorreu um erro ao processar sua requisição de administrador.");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
@@ -96,9 +104,9 @@ public class ServletAdmin extends HttpServlet {
 
     protected void listarAdmins(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<AdminDTO> lista = adminDAO.listarAdmin(); //List de objetos retornados na query
+        List<AdminDTO> lista = adminDAO.listarAdmin(); //Lista de objetos retornados na query
 
-        req.setAttribute("admins", lista); //Devolve a lista de ETAs encontradas em um novo atributo, para a pagina JSP
+        req.setAttribute("admins", lista); //Devolve a lista de Admins encontrados em um novo atributo, para a pagina JSP
 
         RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/admin/adminIndex.jsp"); //Envia para a página principal
         rd.forward(req, resp);
@@ -143,7 +151,7 @@ public class ServletAdmin extends HttpServlet {
         adminDTO.setNomeEta(nomeEta);
 
         // ===== VALIDAÇÃO =====
-        List<String> erros = Validador.validarAdmin(adminDTO.getNome(), adminDTO.getEmail(), senhaDigitada);
+        erros = Validador.validarAdmin(adminDTO.getNome(), adminDTO.getEmail(), senhaDigitada);
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
@@ -160,7 +168,7 @@ public class ServletAdmin extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin"); //Lista novamente os admins se der certo
         } else {
-            erros.add("ETA Inexistente. Verifique os campos e tente novamente!");
+            erros.add("ETA Inexistente, verifique os campos e tente novamente!");
             req.setAttribute("erros", erros); //Setta um atributo com o erro
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
@@ -172,7 +180,7 @@ public class ServletAdmin extends HttpServlet {
     // ===============================================================
 
     protected void alterarAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //Settando os valores no adminDTO ---> ---> --> usuário não pode mudar a eta
+        //Settando os valores no adminDTO
         AdminDTO adminDTO = new AdminDTO();
         adminDTO.setId(Integer.parseInt(req.getParameter("id")));
         adminDTO.setNome(req.getParameter("nome"));
@@ -180,7 +188,7 @@ public class ServletAdmin extends HttpServlet {
         String senhaDigitada = req.getParameter("senha"); // pegar senha digitada
 
         // ===== VALIDAÇÃO =====
-        List<String> erros = Validador.validarAdmin(adminDTO.getNome(), adminDTO.getEmail(), senhaDigitada);
+        erros = Validador.validarAdmin(adminDTO.getNome(), adminDTO.getEmail(), senhaDigitada);
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
@@ -197,7 +205,8 @@ public class ServletAdmin extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin");
         } else {
-            req.setAttribute("erro", "E-mail ou senha inválidos");
+            erros.add("ETA inexistente, verifique os campos e tente novamente!");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
@@ -218,7 +227,8 @@ public class ServletAdmin extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin");
         } else {
             // Página de erro
-            req.setAttribute("erro", "Não foi possível remover este Admin");
+            erros.add("Não foi possível remover este Admin.");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }

@@ -55,6 +55,12 @@
       <input type="number" name="minPossivelEstocado" value="${estoque.minPossivelEstocado}">
     </div>
 
+    <!-- Nome ETA -->
+    <div class="campos-readonly">
+      <label>ETA</label>
+      <input type="text" name="nomeEta" value="${estoque.nomeEta}" readonly>
+    </div>
+
     <div class="acoes">
       <input type="submit" value="Salvar Alterações">
     </div>

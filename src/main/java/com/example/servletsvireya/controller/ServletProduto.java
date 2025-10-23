@@ -10,12 +10,14 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/ServletProduto", "/mainProduto", "/createProduto", "/selectProduto", "/updateProduto", "/deleteProduto", "/filtroProduto"}, name = "ServletProduto")
 public class ServletProduto extends HttpServlet {
 
     private ProdutoDAO produtoDAO = new ProdutoDAO();
+    List<String> erros = new ArrayList<>();
 
 
     // ===============================================================
@@ -49,8 +51,8 @@ public class ServletProduto extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/assets/pages/produto/produtoIndex.jsp");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            req.setAttribute("erro", "Ocorreu um erro ao processar sua solicitação de Produto.");
+            erros.add("Ocorreu um erro ao processar sua solicitação de Produto.");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
@@ -62,10 +64,17 @@ public class ServletProduto extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String action = req.getParameter("action");
+
+        // Proteção contra NullPointerException em switch de String
+        if (action == null) {
+            // comportamento padrão: listar produtos (ou redirecionar)
+            listarProdutos(req, resp);
+            return;
+        }
+
         try {
-
-
             switch (action) {
                 case "createProduto":
                     inserirProduto(req, resp);
@@ -80,8 +89,8 @@ public class ServletProduto extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            req.setAttribute("erro", "Erro inesperado ao processar a ação de Produto.");
+            erros.add("Erro inesperado ao processar a ação de Produto.");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
@@ -123,7 +132,7 @@ public class ServletProduto extends HttpServlet {
         produtoDTO.setNomeEta(nomeEta);
 
         // ===== VALIDAÇÃO PRODUTO =====
-        List<String> erros = Validador.validarProduto(
+        erros = Validador.validarProduto(
                 produtoDTO.getNome(),
                 produtoDTO.getTipo(),
                 produtoDTO.getConcentracao()
@@ -140,7 +149,8 @@ public class ServletProduto extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto"); //Lista novamente os produtos se der certo
         } else { //Deu erro na inserção
-            req.setAttribute("erro", "Não foi possível inserir o produto. Verifique os campos e tente novamente!"); //Setta um atributo com o erro
+            erros.add("ETA inexistente, verifique os campos e tente novamente!");
+            req.setAttribute("erros", erros); //Setta um atributo com o erro
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
     }
@@ -160,7 +170,7 @@ public class ServletProduto extends HttpServlet {
         produtoDTO.setConcentracao(Double.parseDouble(req.getParameter("concentracao")));
 
         // ===== VALIDAÇÃO PRODUTO =====
-        List<String> erros = Validador.validarProduto(produtoDTO.getNome(), produtoDTO.getTipo(), produtoDTO.getConcentracao());
+        erros = Validador.validarProduto(produtoDTO.getNome(), produtoDTO.getTipo(), produtoDTO.getConcentracao());
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
@@ -173,7 +183,8 @@ public class ServletProduto extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto");
         } else {
-            req.setAttribute("erro", "Não foi possível alterar o produto! Verifique os campos e tente novamente.");
+            erros.add("ETA inexistente, verifique os campos e tente novamente!");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
@@ -211,7 +222,7 @@ public class ServletProduto extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/ServletProduto?action=mainProduto");
         } else {
             // Página de erro
-            req.setAttribute("erro", "Não foi possível remover, tente novamente mais tarde");
+            req.setAttribute("erros", "Não foi possível remover o produto, tente novamente.");
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }

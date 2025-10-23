@@ -8,6 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.servletsvireya.dto.CargoDTO" %>
+<%@ page import="com.example.servletsvireya.dao.EtaDAO" %>
+<%@ page import="com.example.servletsvireya.dto.EtaDTO" %>
 
 <%
     List<CargoDTO> lista = (List<CargoDTO>) request.getAttribute("cargos");
@@ -19,7 +21,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cargos</title>
+    <title>Cargo</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styleCrud.css">
 </head>
 
@@ -38,6 +40,9 @@
 
 <aside class="sidebar" id="sidebar">
     <ul>
+        <a href="${pageContext.request.contextPath}/dashAnalise">
+            <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-painel-de-controle-16.png"> Dashboard</li>
+        </a>
         <a href="${pageContext.request.contextPath}/ServletEta?action=mainEta">
             <li><img src="${pageContext.request.contextPath}/assets/imgs/imagem9.png"> ETAs</li>
         </a>
@@ -51,13 +56,10 @@
             <li><img src="${pageContext.request.contextPath}/assets/imgs/image12.png"> Produtos</li>
         </a>
         <a href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">
-            <li><img src="${pageContext.request.contextPath}/assets/imgs/image13.png"> Cargo</li>
+            <li><img src="${pageContext.request.contextPath}/assets/imgs/image13.png"> Cargos</li>
         </a>
         <a href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin">
-            <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-admin-settings-male-16.png"> Admin</li>
-        </a>
-        <a href="${pageContext.request.contextPath}/dashAnalise">
-            <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-painel-de-controle-16.png"> DashBoard</li>
+            <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-admin-settings-male-16.png"> Admins</li>
         </a>
     </ul>
 </aside>
@@ -69,9 +71,9 @@
         <section class="cadastro">
             <h2>Cadastro de Cargos</h2>
             <form name="frmCargo" action="${pageContext.request.contextPath}/ServletCargo" method="post">
-                <div class="campos">
-                    <input type="hidden" name="action" value="createCargo">
+                <input type="hidden" name="action" value="createCargo">
 
+                <div class="campos">
                     <label>Nome do Cargo</label>
                     <input type="text" name="nome" placeholder="Ex: Operador de ETA" required>
                 </div>
@@ -82,12 +84,22 @@
                 </div>
 
                 <div class="campos">
-                    <label>Nome ETA</label>
-                    <input type="text" name="nomeEta" placeholder="Ex: ETA Guarau" required>
+                    <label for="nomeEta">Nome da ETA</label>
+                    <select id="nomeEta">
+                        <option value="">Selecione uma ETA</option> <%-- Valor inicial vazio --%>
+                        <%-- Listando as ETAs disponíveis com etaDAO --%>
+                        <%
+                            EtaDAO etaDAO = new EtaDAO();
+                            List<EtaDTO> etaList = etaDAO.listarEtas();
+
+                            for (EtaDTO eta : etaList){%>
+                        <option value="<%= eta.getId() %>"> <%= eta.getNome() %> </option> <%-- Mostra o nome e pega o id da ETA --%>
+                        <%}%>
+                    </select>
                 </div>
 
                 <div class="acoes">
-                    <button type="button" class="botao-redefinir">Limpar</button>
+                    <input type="reset" class="botao-redefinir" value="Limpar">
                     <input type="submit" value="Salvar" class="botao-salvar">
                 </div>
             </form>
@@ -173,30 +185,6 @@
 
     </main>
 </div>
-
-
-<!-- POPUP DE EDIÇÃO -->
-<%--<div id="popupCargo" class="popup-overlay">--%>
-<%--    <div class="popup-content">--%>
-<%--        <h2>Alterar Cargo</h2>--%>
-<%--        <form id="formEditarCargo" action="${pageContext.request.contextPath}/ServletCargo" method="post">--%>
-<%--            <input type="hidden" name="action" value="updateCargo">--%>
-<%--            <input type="hidden" id="idCargo" name="id">--%>
-
-<%--            <label for="nomeCargo">Nome do Cargo:</label>--%>
-<%--            <input type="text" id="nomeCargo" name="nome" required><br>--%>
-
-<%--            <label for="nivelAcesso">Nível de Acesso:</label>--%>
-<%--            <input type="number" id="nivelAcesso" name="acesso" required><br>--%>
-
-<%--            <div class="acoes">--%>
-<%--                <button type="button" id="btnFecharPopup" class="botao-redefinir">Cancelar</button>--%>
-<%--                <button type="submit" class="botao-salvar">Salvar</button>--%>
-<%--            </div>--%>
-<%--        </form>--%>
-<%--    </div>--%>
-<%--</div>--%>
-
 
 <!-- Script -->
 <script src="${pageContext.request.contextPath}/assets/js/script.js"></script>

@@ -18,12 +18,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/ServletEta", "/mainEta", "/createEta", "/selectEta", "/updateEta", "/deleteEta", "/filtroEta"}, name = "ServletEta")
 public class ServletEta extends HttpServlet {
 
     private EtaDAO etaDAO = new EtaDAO();
+    List<String> erros = new ArrayList<>();
 
 
     // ===============================================================
@@ -57,8 +59,8 @@ public class ServletEta extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/assets/pages/eta/etaIndex.jsp");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            req.setAttribute("erro", "Ocorreu um erro ao processar sua solicitação de ETA.");
+            erros.add("Ocorreu um erro ao processar sua solicitação de ETA.");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
@@ -73,6 +75,12 @@ public class ServletEta extends HttpServlet {
 
         String action = req.getParameter("action");
 
+        // Proteção contra NullPointerException em switch de String
+        if (action == null) {
+            // comportamento padrão: listar etas (ou redirecionar)
+            listarEtas(req, resp);
+            return;
+        }
 
         try {
             switch (action) {
@@ -86,8 +94,8 @@ public class ServletEta extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            req.setAttribute("erro", "Erro inesperado ao processar a ação de ETA.");
+            erros.add("Erro inesperado ao processar a ação de ETA.");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
@@ -112,7 +120,7 @@ public class ServletEta extends HttpServlet {
 
 
     // ===============================================================
-    //                Método para CADASTRAR uma ETA //////////////////
+    //       Método para CADASTRAR uma ETA (ocorre no cadastro)
     // ===============================================================
 
     private void cadastrarEta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -157,9 +165,9 @@ public class ServletEta extends HttpServlet {
         adminDTO.setEmail(email);
 
         // ===== VALIDAÇÃO ADMIN (senha) =====
-        var errosSenha = Validador.validarSenha(senhaDigitada);
-        if (!errosSenha.isEmpty()) {
-            request.setAttribute("erros", errosSenha);
+        erros = Validador.validarSenha(senhaDigitada);
+        if (!erros.isEmpty()) {
+            request.setAttribute("erros", erros);
             RequestDispatcher rd = request.getRequestDispatcher("/assets/pages/erroLogin.jsp");
             rd.forward(request, response);
             return;
@@ -177,7 +185,8 @@ public class ServletEta extends HttpServlet {
         if (idEta > 0) {
             response.sendRedirect(request.getContextPath() + "/assets/pages/landingpage/login.jsp");
         } else {
-            request.setAttribute("erros", "Erro ao cadastrar ETA.");
+            erros.add("Não foi possível cadastrar esta ETA, verifique os campos e tente novamente.");
+            request.setAttribute("erros", erros);
             RequestDispatcher rd = request.getRequestDispatcher("/assets/pages/erroLogin.jsp");
             rd.forward(request, response);
         }
@@ -225,7 +234,8 @@ public class ServletEta extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta");
         } else {
-            req.setAttribute("erros", "Não foi possível alterar a ETA! Verifique os campos e tente novamente.");
+            erros.add("Não foi possível alterar a ETA! Verifique os campos e tente novamente.");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }

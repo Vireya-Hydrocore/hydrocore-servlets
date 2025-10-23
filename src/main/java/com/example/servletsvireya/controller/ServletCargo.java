@@ -12,11 +12,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/ServletCargo", "/mainCargo", "/createCargo", "/selectCargo", "/updateCargo", "/deleteCargo", "/filtroCargo"}, name = "ServletCargo")
 public class ServletCargo extends HttpServlet {
-    private final CargoDAO cargoDAO = new CargoDAO();
+
+    CargoDAO cargoDAO = new CargoDAO();
+    List<String> erros = new ArrayList<>();
 
 
     // ===============================================================
@@ -29,7 +32,11 @@ public class ServletCargo extends HttpServlet {
         String action = req.getParameter("action"); //Vem com a ação do usuário
 
         // Proteção contra NullPointerException em switch de String
-        if (action == null) action = "mainCargo";
+        if (action == null) {
+            // comportamento padrão: listar estoques (ou redirecionar)
+            listarCargos(req, resp);
+            return;
+        }
 
         try{
             switch (action) {
@@ -46,8 +53,8 @@ public class ServletCargo extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/assets/pages/cargo/cargoIndex.jsp");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            req.setAttribute("erro", "Ocorreu um erro ao processar a requisição.");
+            erros.add("Ocorreu um erro ao processar a requisição.");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
@@ -59,7 +66,16 @@ public class ServletCargo extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String action = req.getParameter("action");
+
+        // Proteção contra NullPointerException em switch de String
+        if (action == null) {
+            // comportamento padrão: listar estoques (ou redirecionar)
+            listarCargos(req, resp);
+            return;
+        }
+
         try {
             switch (action) {
                 case "createCargo":
@@ -75,8 +91,8 @@ public class ServletCargo extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/ServletCargo?action=mainCargo");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            req.setAttribute("erro", "Erro ao processar requisição no servidor.");
+            erros.add("Erro ao processar requisição no servidor.");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
@@ -93,7 +109,7 @@ public class ServletCargo extends HttpServlet {
 
         List<CargoDTO> lista = cargoDAO.listarCargos(); //List de objetos retornados na query
 
-        req.setAttribute("cargos", lista); //Devolve a lista de estoques encontrados em um novo atributo
+        req.setAttribute("cargos", lista); //Devolve a lista de cargos encontrados em um novo atributo
 
         RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/cargo/cargoIndex.jsp"); //Envia para a página principal
         rd.forward(req, resp);
@@ -150,7 +166,8 @@ public class ServletCargo extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletCargo?action=mainCargo"); //Lista novamente os cargos se der certo
         } else {
-            req.setAttribute("erro", "Não foi possível inserir esse cargo, tente novamente!"); //Setta um atributo com o erro
+            erros.add("Não foi possível inserir esse cargo, tente novamente!");
+            req.setAttribute("erros", erros); //Setta um atributo com o erro
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
     }
@@ -161,14 +178,14 @@ public class ServletCargo extends HttpServlet {
     // ===============================================================
 
     protected void alterarCargo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //Settando os valores no cargoDTO ---> ---> --> usuário não pode mudar a eta
+        //Settando os valores no cargoDTO
         CargoDTO cargoDTO = new CargoDTO();
         cargoDTO.setId(Integer.parseInt(req.getParameter("id")));
         cargoDTO.setNome(req.getParameter("nome"));
         cargoDTO.setAcesso(Integer.parseInt(req.getParameter("acesso")));
 
-        // VALIDAÇÃO
-        List<String> erros = Validador.validarCargo(cargoDTO.getNome(), cargoDTO.getAcesso());
+        // ============ VALIDAÇÃO ============
+        erros = Validador.validarCargo(cargoDTO.getNome(), cargoDTO.getAcesso());
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
@@ -181,11 +198,11 @@ public class ServletCargo extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletCargo?action=mainCargo");
         } else {
-            req.setAttribute("erro", "Não foi possível alterar o cargo! Verifique os campos e tente novamente.");
+            erros.add("Não foi possível alterar o cargo! Verifique os campos e tente novamente.");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
-
 
 
     // ===============================================================
@@ -202,7 +219,8 @@ public class ServletCargo extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletCargo?action=mainCargo");
         } else {
-            req.setAttribute("erro", "Não foi possível remover o cargo, tente novamente mais tarde.");
+            erros.add("Não foi possível remover o cargo, tente novamente mais tarde.");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }

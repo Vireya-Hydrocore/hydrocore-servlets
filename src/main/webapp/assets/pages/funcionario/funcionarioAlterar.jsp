@@ -9,13 +9,13 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Alterar Funcionário</title>
+  <title>Funcionário</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styleAlterar.css">
 </head>
 <body>
 
 <div class="form-container">
-  <h2>Alterar Produto</h2>
+  <h2>Alterar Funcionário</h2>
 
     <form action="${pageContext.request.contextPath}/ServletFuncionario" method="post">
       <input type="hidden" name="action" value="updateFuncionario">
@@ -38,18 +38,11 @@
         <input type="email" name="email" value="${funcionario.email}">
       </div>
 
-      <!-- Senha -->
-      <div class="campos-readonly">
-        <label>Senha</label>
-        <input type="password" name="senha" value="${funcionario.senha}" readonly>
-      </div>
-
       <!-- Data de Admissão -->
       <div class="campos">
         <label>Data de Admissão</label>
         <input type="date" name="dataAdmissao" value="${funcionario.dataAdmissao}">
       </div>
-
 
       <!-- Data de Nascimento -->
       <div class="campos">

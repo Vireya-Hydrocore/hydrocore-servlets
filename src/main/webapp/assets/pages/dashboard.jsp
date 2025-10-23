@@ -36,11 +36,14 @@
 
 <aside class="sidebar" id="sidebar">
     <ul>
+        <a href="${pageContext.request.contextPath}/dashAnalise">
+            <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-painel-de-controle-16.png"> Dashboard</li>
+        </a>
         <a href="${pageContext.request.contextPath}/ServletEta?action=mainEta">
             <li><img src="${pageContext.request.contextPath}/assets/imgs/imagem9.png"> ETAs</li>
         </a>
         <a href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">
-            <li><img src="${pageContext.request.contextPath}/assets/imgs/image10.png"> Funcionarios</li>
+            <li><img src="${pageContext.request.contextPath}/assets/imgs/image10.png"> Funcionários</li>
         </a>
         <a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">
             <li><img src="${pageContext.request.contextPath}/assets/imgs/image11.png"> Estoque</li>
@@ -49,13 +52,10 @@
             <li><img src="${pageContext.request.contextPath}/assets/imgs/image12.png"> Produtos</li>
         </a>
         <a href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">
-            <li><img src="${pageContext.request.contextPath}/assets/imgs/image13.png"> Cargo</li>
+            <li><img src="${pageContext.request.contextPath}/assets/imgs/image13.png"> Cargos</li>
         </a>
         <a href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin">
-            <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-admin-settings-male-16.png"> Admin</li>
-        </a>
-        <a href="${pageContext.request.contextPath}/dashAnalise">
-            <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-painel-de-controle-16.png"> DashBoard</li>
+            <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-admin-settings-male-16.png"> Admins</li>
         </a>
     </ul>
 </aside>

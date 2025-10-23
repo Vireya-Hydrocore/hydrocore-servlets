@@ -23,6 +23,7 @@ import java.util.List;
 public class ServletEstoque extends HttpServlet {
 
     private EstoqueDAO estoqueDAO = new EstoqueDAO();
+    List<String> erros = new ArrayList<>();
 
 
     // ===============================================================
@@ -56,8 +57,8 @@ public class ServletEstoque extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/assets/pages/estoque/estoqueIndex.jsp");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            req.setAttribute("erro", "Ocorreu um erro ao processar sua requisição de estoque.");
+            erros.add("Ocorreu um erro ao processar sua requisição de estoque.");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
@@ -69,7 +70,15 @@ public class ServletEstoque extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String action = req.getParameter("action");
+
+        // Proteção contra NullPointerException em switch de String
+        if (action == null) {
+            // comportamento padrão: listar estoques (ou redirecionar)
+            listarEstoque(req, resp);
+            return;
+        }
 
         try {
             switch (action) {
@@ -86,8 +95,8 @@ public class ServletEstoque extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            req.setAttribute("erro", "Erro inesperado ao processar a ação de estoque.");
+            erros.add("Erro inesperado ao processar a ação de estoque.");
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
@@ -154,7 +163,7 @@ public class ServletEstoque extends HttpServlet {
         estoqueDTO.setNomeEta(nomeEta);
 
         //===== Validação de dados usando a classe Validador ======
-        List<String> erros = new ArrayList<>();
+        erros = new ArrayList<>();
 
         if (!Validador.validarLength(req.getParameter("quantidade"), 5)) {
             erros.add("A quantidade deve ser maior que zero e no máximo 5 dígitos.");
@@ -181,7 +190,7 @@ public class ServletEstoque extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque"); //Lista novamente os produtos no estoque se der certo
         } else {
-            erros.add("Cargo ou ETA inexistente, Verifique os campos e tente novamente!");
+            erros.add("Produto ou ETA inexistente, verifique os campos e tente novamente!");
             req.setAttribute("erros", erros); //Setta um atributo com o erro generalizado
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
@@ -243,7 +252,7 @@ public class ServletEstoque extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque");
         } else {
-            erros.add("Não foi possível alterar o estoque! Verifique os campos e tente novamente."); //Erro generalizado
+            erros.add("Produto ou ETA inexistente, verifique os campos e tente novamente!"); //Erro generalizado
             req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Envia para a página de erro
         }
@@ -251,7 +260,7 @@ public class ServletEstoque extends HttpServlet {
 
 
     // ===============================================================
-    //       Método para REMOVER o estoque (pelo ID pego)
+    //         Método para REMOVER o estoque (pelo ID pego)
     // ===============================================================
 
     protected void removerEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -264,7 +273,7 @@ public class ServletEstoque extends HttpServlet {
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque");
         } else {
-            req.setAttribute("erros", "Não foi possível remover o estoque, tente novamente mais tarde.");
+            req.setAttribute("erros", "Não foi possível remover o estoque.");
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }

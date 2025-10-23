@@ -16,7 +16,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Alterar Admin</title>
+    <title>Admin</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styleAlterar.css">
 </head>
 <body>
@@ -42,9 +42,10 @@
             <input type="email" name="email" value="${admin.email}" required>
         </div>
 
+        <!-- Nome ETA -->
         <div class="campos-readonly">
-            <label>Senha</label>
-            <input type="password" name="senha" value="${admin.senha}" readonly>
+            <label>ETA</label>
+            <input type="text" name="nomeEta" value="${admin.nomeEta}" readonly>
         </div>
 
         <div class="acoes">

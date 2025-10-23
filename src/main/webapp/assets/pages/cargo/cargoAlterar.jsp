@@ -26,7 +26,8 @@
 
     <form action="${pageContext.request.contextPath}/ServletCargo" method="post">
         <input type="hidden" name="action" value="updateCargo">
-        <div class="campos">
+
+        <div class="campos-readonly">
             <input type="hidden" name="id" value="${cargo.id}" readonly>
         </div>
 
@@ -38,6 +39,12 @@
         <div class="campos">
             <label for="acesso">Nível de acesso:</label>
             <input type="number" id="acesso" name="acesso"  value="${cargo.acesso}" required><br>
+        </div>
+
+        <!-- Nome ETA -->
+        <div class="campos-readonly">
+            <label>ETA</label>
+            <input type="text" name="nomeEta" value="${cargo.nomeEta}" readonly>
         </div>
 
         <div class="acoes">

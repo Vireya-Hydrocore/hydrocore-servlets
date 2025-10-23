@@ -10,9 +10,9 @@
     </ul>
 </div>
 <%
-} else if (request.getAttribute("erro") != null) {
+} else if (request.getAttribute("erros") != null) {
 %>
 <div class="alert alert-danger">
-    <p><%= request.getAttribute("erro") %></p>
+    <p><%= request.getAttribute("erros") %></p>
 </div>
 <% } %>

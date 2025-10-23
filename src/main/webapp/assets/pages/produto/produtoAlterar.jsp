@@ -69,6 +69,12 @@
             <input type="number" name="concentracao" value="${produto.concentracao}" required>
         </div>
 
+        <!-- Nome ETA -->
+        <div class="campos-readonly">
+            <label>ETA</label>
+            <input type="text" name="nomeEta" value="${produto.nomeEta}" readonly>
+        </div>
+
         <!-- Botão -->
         <div class="acoes">
             <input type="submit" value="Salvar Alterações">

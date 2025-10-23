@@ -7,11 +7,14 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(urlPatterns = {"/ServletLogin", "/logar", "/logarAdmin"}, name = "ServletLogin")
 public class ServletLogin extends HttpServlet {
 
     AdminDAO adminDAO = new AdminDAO();
+    List<String> erros = new ArrayList<>();
 
 
     // ===============================================================
@@ -43,7 +46,9 @@ public class ServletLogin extends HttpServlet {
                     break;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            erros.add("Ocorreu um erro inesperado ao processar a solicitação de login");
+            req.setAttribute("erros", erros);
+            req.getRequestDispatcher("assets/pages/erroLogin.jsp");
         }
     }
 
@@ -61,9 +66,10 @@ public class ServletLogin extends HttpServlet {
 
         if (resultado) {
             // Redireciona para página inicial do admin
-            resp.sendRedirect(req.getContextPath() + "/dashAnalise");
+            resp.sendRedirect(req.getContextPath() + "/ServletDashboard");
         } else {
-            req.setAttribute("erros", "E-mail ou senha incorretos."); //Setta um atributo erro para o JSP tratar
+            erros.add("E-mail ou senha incorretos.");
+            req.setAttribute("erros", erros); //Setta um atributo erro para o JSP tratar
             RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/erroLogin.jsp"); //Vai para a pagina de erro
             rd.forward(req, resp);
         }
@@ -71,7 +77,7 @@ public class ServletLogin extends HttpServlet {
 
 
     // ===============================================================
-    //          Método para LOGAR USUÁRIO (pagina do vitor???)
+    //                 Método para LOGAR USUÁRIO
     // ===============================================================
 
     protected void logar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -82,9 +88,10 @@ public class ServletLogin extends HttpServlet {
 
         if (idAdmin != null) {
             // Redireciona para página principal do dashboard
-            resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta"); //////////////////////////////
+            resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta"); //////////////////////////////PAGINA DE EL VITOR
         } else {
-            req.setAttribute("erros", "E-mail ou senha incorretos.");
+            erros.add("E-mail ou senha incorretos.");
+            req.setAttribute("erros", erros);
             RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/erroLogin.jsp");
             rd.forward(req, resp);
         }

@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styleErro.css">
-    <title>Erro de Validação</title>
+    <title>Erro</title>
 </head>
 
 <body>
@@ -23,7 +23,7 @@
     </div>
 
     <%
-        // Recupera a lista de erros enviada pelo Servlet
+        // Recupera a lista de erros enviada pelos Servlets
         List<String> erros = (List<String>) request.getAttribute("erros");
         if (erros != null && !erros.isEmpty()) {
     %>
@@ -40,7 +40,7 @@
     <%
         }
     %>
-    <a href="${pageContext.request.contextPath}/index.jsp" class="botao-voltar">Voltar à Página Principal</a>
+    <a href="${pageContext.request.contextPath}/index.jsp" class="botao-voltar">Sair</a>
     <a href="javascript: history.go(-1)" class="botao-voltar">Voltar à Página Anterior</a>
 
 </main>

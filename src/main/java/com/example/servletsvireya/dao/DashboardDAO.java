@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DashBoardDAO {
+public class DashboardDAO {
 
     Conexao conexao = new Conexao();
 

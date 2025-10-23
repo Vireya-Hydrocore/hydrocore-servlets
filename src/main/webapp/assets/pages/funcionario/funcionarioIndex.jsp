@@ -8,6 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.servletsvireya.dto.FuncionarioDTO" %>
+<%@ page import="com.example.servletsvireya.dao.CargoDAO" %>
+<%@ page import="com.example.servletsvireya.dto.CargoDTO" %>
+<%@ page import="com.example.servletsvireya.dao.EtaDAO" %>
+<%@ page import="com.example.servletsvireya.dto.EtaDTO" %>
 <%
     // Recupera a lista de funcionarios do request, que deve ser enviada pelo servlet
     List<FuncionarioDTO> lista = (List<FuncionarioDTO>) request.getAttribute("funcionarios");
@@ -39,6 +43,9 @@
 
 <aside class="sidebar" id="sidebar">
     <ul>
+        <a href="${pageContext.request.contextPath}/dashAnalise">
+            <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-painel-de-controle-16.png"> Dashboard</li>
+        </a>
         <a href="${pageContext.request.contextPath}/ServletEta?action=mainEta">
             <li><img src="${pageContext.request.contextPath}/assets/imgs/imagem9.png"> ETAs</li>
         </a>
@@ -52,13 +59,10 @@
             <li><img src="${pageContext.request.contextPath}/assets/imgs/image12.png"> Produtos</li>
         </a>
         <a href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">
-            <li><img src="${pageContext.request.contextPath}/assets/imgs/image13.png"> Cargo</li>
+            <li><img src="${pageContext.request.contextPath}/assets/imgs/image13.png"> Cargos</li>
         </a>
         <a href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin">
-            <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-admin-settings-male-16.png"> Admin</li>
-        </a>
-        <a href="${pageContext.request.contextPath}/dashAnalise">
-            <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-painel-de-controle-16.png"> DashBoard</li>
+            <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-admin-settings-male-16.png"> Admins</li>
         </a>
     </ul>
 </aside>
@@ -71,9 +75,9 @@
         <section class="cadastro">
             <h2>Cadastro de Funcionários</h2>
             <form name="frmFuncionario" action="${pageContext.request.contextPath}/ServletFuncionario" method="post">
-                <div class="campos">
-                    <input type="hidden" name="action" value="createFuncionario"> <!-- envia esse parametro para o servlet ver q é create-->
+                <input type="hidden" name="action" value="createFuncionario"> <!-- envia esse parametro para o servlet ver q é create-->
 
+                <div class="campos">
                     <label>Nome</label>
                     <input type="text" name="nome" placeholder="Ex: Iago Eiken" required>
                 </div>
@@ -85,7 +89,7 @@
 
                 <div class="campos">
                     <label>Senha</label>
-                    <input type="password" name="senha" placeholder="xxxxxxxxxxx" required>
+                    <input type="password" name="senha" placeholder="senhaForte01@" required>
                 </div>
 
                 <div class="campos">
@@ -99,17 +103,36 @@
                 </div>
 
                 <div class="campos">
-                    <label>Cargo</label>
-                    <input type="text" name="cargo" placeholder="Ex: Operador" required>
+                    <label for="cargo">Cargo</label>
+                    <select id="cargo">
+                        <option value="">Selecione um cargo</option> <%-- Valor inicial vazio --%>
+                        <%-- Listando os cargos disponíveis com cargoDAO --%>
+                        <%CargoDAO cargoDAO = new CargoDAO();
+                        List<CargoDTO> cargosList = cargoDAO.listarCargos();
+
+                        for (CargoDTO cargo : cargosList){%>
+                            <option value="<%= cargo.getId() %>"> <%= cargo.getNome() %> </option> <%-- Mostra o nome e pega o id do cargo --%>
+                        <%}%>
+                    </select>
                 </div>
 
                 <div class="campos">
-                    <label>Nome ETA</label>
-                    <input type="text" name="nomeEta" placeholder="Ex: ETA Guarau" required>
+                    <label for="nomeEta">Nome da ETA</label>
+                    <select id="nomeEta">
+                        <option value="">Selecione uma ETA</option> <%-- Valor inicial vazio --%>
+                        <%-- Listando os cargos disponíveis com EtaDAO --%>
+                        <%
+                            EtaDAO etaDAO = new EtaDAO();
+                            List<EtaDTO> etaList = etaDAO.listarEtas();
+
+                            for (EtaDTO eta : etaList){%>
+                        <option value="<%= eta.getId() %>"> <%= eta.getNome() %> </option> <%-- Mostra o nome e pega o id da ETA --%>
+                        <%}%>
+                    </select>
                 </div>
 
                 <div class="acoes">
-                    <button type="reset" class="botao-redefinir">Limpar</button>
+                    <input type="reset" class="botao-redefinir" value="Limpar">
                     <input type="submit" value="Salvar" class="botao-salvar">
                 </div>
             </form>
@@ -119,39 +142,35 @@
 
         <section class="lista">
 
-            <div class="filtro">
-                <div class="filtro-titulo">
-                    <h2>Lista de Funcionários</h2>
-                </div>
+            <!-- FILTRO DE FUNCIONÁRIOS -->
 
-                <!-- FILTRO DE FUNCIONÁRIOS -->
+            <div class="filtro-topo">
+                <h2 class="titulo-lista">Lista de Funcionários</h2>
+
                 <form class="filtro-form" action="${pageContext.request.contextPath}/ServletFuncionario" method="get">
                     <input type="hidden" name="action" value="filtroFuncionario">
 
-                    <div class="campos">
-                        <label>Coluna</label>
-                        <select name="nome_coluna" id="colunaSelect">
-                            <option value="nome">Nome</option>
-                            <option value="email">E-mail</option>
-                            <option value="data_admissao">Data de Admissão</option>
-                            <option value="data_nascimento">Data de Nascimento</option>
-                            <option value="nome_cargo">Cargo</option>
-                            <option value="nome_eta">ETA</option>
-                        </select>
-                    </div>
+                    <label for="colunaSelect">Coluna</label>
+                    <select name="nome_coluna" id="colunaSelect">
+                        <option value="nome">Nome</option>
+                        <option value="email">E-mail</option>
+                        <option value="data_admissao">Data de Admissão</option>
+                        <option value="data_nascimento">Data de Nascimento</option>
+                        <option value="nome_cargo">Cargo</option>
+                        <option value="nome_eta">ETA</option>
+                    </select>
 
-                    <div class="campos">
-                        <label>Pesquisa</label>
-                        <input type="text" id="pesquisa" name="pesquisa">
-                    </div>
+                    <label for="pesquisa">Pesquisa</label>
+                    <input type="text" id="pesquisa" name="pesquisa" placeholder="Buscar...">
 
-                    <div class="acoes filtro-acoes">
-                        <a class="botao-redefinir" style="text-decoration: none" href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">Redefinir filtragem</a>
-                        <button type="submit" class="botao-salvar">Aplicar Filtro</button>
-                    </div>
+                    <a class="botao-redefinir" href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">
+                        Redefinir filtragem
+                    </a>
+                    <button type="submit" class="botao-salvar">Aplicar Filtro</button>
                 </form>
+            </div>
 
-                <script>
+            <script>
                     const colunaSelect = document.getElementById('colunaSelect');
                     const inputPesquisa = document.getElementById('pesquisa');
 
@@ -168,8 +187,6 @@
                         }
                     });
                 </script>
-
-            </div>
 
             <!--LISTA-->
             <div class="tabela-container">
