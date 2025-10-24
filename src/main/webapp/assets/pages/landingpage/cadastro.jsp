@@ -35,15 +35,27 @@
             <div id="erroCNPJ" class="erro"></div>
 
             <label for="senha">Senha</label>
+            <div class="parametros-senha">
+                <p>Sua senha deve conter pelo menos:</p>
+                <ul>
+                    <li id="length" class="invalid">8 caracteres</li>
+                    <li id="uppercase" class="invalid">1 letra maiúscula</li>
+                    <li id="special" class="invalid">1 caractere especial (!@#$%)</li>
+                    <li id="number" class="invalid">1 número</li>
+                </ul>
+            </div>
+
             <div class="input-senha">
-                <input name="senha" type="password" id="senha" placeholder="Digite sua senha" required
-                       pattern="^(?=.*[A-Z])(?=.*[!@#$%]).{8,}$"
+                <input type="password" id="senha" placeholder="Digite sua senha" required
+                       pattern="^(?=.[A-Z])(?=.[!@#$%]).{8,}$"
                        title="Tem que incluir pelo menos uma letra maiúscula e um caractere especial(!@#$%)">
                 <span class="password-toggle" id="togglePassword">
                         <i class="fas fa-eye"></i>
-                    </span>
+                </span>
             </div>
+
             <div id="erroSenha" class="erro"></div>
+
 
             <label for="telefone">Telefone</label>
             <input name="telefone" type="text" id="telefone" placeholder="Digite o telefone (99) 99999-9999"
@@ -74,6 +86,7 @@
 
     <script src="${pageContext.request.contextPath}/assets/js/regex.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/mostrarSenha.js"></script>
 </main>
 </body>
 </html>

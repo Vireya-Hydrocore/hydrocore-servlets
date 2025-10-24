@@ -109,15 +109,6 @@ input {
     border-bottom-right-radius: 9px;
 }
 
-.celular {
-    text-align: center;
-    z-index: 2;
-    animation: float 3s ease-in-out infinite;
-}
-
-.celular img {
-    width: 350px;
-}
 
 .input-senha {
     position: relative;
@@ -184,4 +175,25 @@ input {
     h1 {
         font-size: 26px;
     }
+}
+
+
+/* Animação de rotação */
+@keyframes girar {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.logo-girando {
+    display: block;
+    width: 260px;             /* Aumenta o tamanho geral */
+    height: auto;             /* Mantém a proporção natural */
+    animation: girar 6s linear infinite;
+    transform-origin: center center;
+    z-index: 2;
+    position: relative;
 }

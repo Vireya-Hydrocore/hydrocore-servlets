@@ -75,9 +75,7 @@ header {
     padding: 0 15px;
     text-decoration: none;
     margin-bottom: 10px;
-
 }
-
 
 .topics-head a {
     position: relative;
@@ -102,7 +100,6 @@ header {
 
 
 #bottom-cadastro {
-
     background-color: #2b4eff;
     color: white;
     border-radius: 5%;
@@ -355,7 +352,6 @@ header {
 }
 
 .block-porque {
-    margin-top: auto;
     background-color: #0c2356;
     padding: 30px;
     border-radius: 8px;
@@ -363,7 +359,6 @@ header {
     color: #fff;
     transition: transform 0.3s ease, background-color 0.3s ease; /* transition sempre na classe normal, e não no hover */
 }
-
 
 .block-porque h3 {
     font-family: 'Roboto Slab', serif;
@@ -610,6 +605,17 @@ color: #0A1C47;
 .card-assinar-highlit button {
     background: #ffffff;
     color: #3d5bff;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+    font-weight: 800;
+    transition:1.2s;
+}
+.card-assinar-highlit button:hover {
+    background: #ffffff;
+    color: #4459cd;
     border: none;
     padding: 12px;
     border-radius: 8px;

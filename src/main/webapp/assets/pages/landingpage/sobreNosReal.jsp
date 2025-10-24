@@ -23,64 +23,116 @@
     <button id="btn-hamb">☰</button>
 </header>
 
-<main>
-    <div id="historia-container">
-        <h1>Nossa História</h1>
-        <p>
-            A Vireya nasceu do sonho de jovens inovadores que acreditam no poder da tecnologia para construir um futuro mais sustentável dentro das indústrias.
-            O que começou em uma sala de aula logo se transformou em um propósito: revolucionar a gestão de Estações de Tratamento de Água com soluções inteligentes,
-            acessíveis e humanas. Hoje, a Vireya une ciência, inovação e compromisso ambiental para enfrentar os desafios da água no século XXI, tornando cada gota mais valiosa.
-        </p>
+<section class="empresa">
+    <h2>Sobre a Empresa</h2>
+    <p>
+        A Vireya é uma startup comprometida com a automação inteligente no tratamento de água,
+        focando na sustentabilidade, redução de desperdícios e otimização dos processos industriais.
+        Nosso objetivo é unir tecnologia e impacto ambiental positivo, garantindo eficiência e confiabilidade
+        sem o uso de sensores físicos, mas com dados e inteligência.
+    </p>
+</section>
+
+<section class="missao-visao-valores">
+    <div class="card mvv">
+        <h3>Missão</h3>
+        <p>Promover inovação e sustentabilidade em processos de tratamento de água.</p>
     </div>
-
-    <div id="pontos">
-        <section>
-            <h3>Missão</h3>
-            <p>Garantir eficiência e sustentabilidade no tratamento de água, usando tecnologia para reduzir erros e preservar recursos hídricos.</p>
-        </section>
-        <section>
-            <h3>Visão</h3>
-            <p>Ser referência em inovação tecnológica para ETAs, contribuindo para um futuro sustentável e acessível.</p>
-        </section>
-        <section>
-            <h3>Valores</h3>
-            <p>Inovação, Sustentabilidade, Colaboração, Comprometimento e Inclusão.</p>
-        </section>
+    <div class="card mvv">
+        <h3>Visão</h3>
+        <p>Ser referência em soluções tecnológicas que preservam recursos naturais e otimizam operações industriais.</p>
     </div>
+    <div class="card mvv">
+        <h3>Valores</h3>
+        <p>Inovação, sustentabilidade, eficiência, inclusão e responsabilidade ambiental.</p>
+    </div>
+</section>
 
-    <section id="equipe">
-        <h2>Equipe</h2>
-        <p>Conheça nossa equipe!</p>
-
-        <div class="card">
-            <div class="filters">
-                <select id="year">
-                    <option value="">Selecione o ano</option>
-                    <option value="1">1º</option>
-                    <option value="2">2º</option>
-                </select>
-
-                <select id="area">
-                    <option value="">Selecione a área</option>
-                    <option value="dev">Desenvolvimento</option>
-                    <option value="dados">Dados</option>
-                </select>
-            </div>
-
-            <div class="team-container">
-                <aside>
-                    <ul id="student-list">
-                        <!-- Lista dinâmica -->
-                    </ul>
-                </aside>
-
-                <div class="profile" id="profile">
-                    <p>Selecione um aluno para ver os detalhes.</p>
-                </div>
-            </div>
+<section class="equipe">
+    <h2>Nossa Equipe</h2>
+    <div class="grid-equipe">
+        <div class="membro" style="--delay: 0s">
+            <img src="<%=request.getContextPath()%>/assets/imgs/Erik.png" alt="Erik Silva">
+            <h3>Erik Silva</h3>
+            <p>Desenvolvedor do servlet, JSP e funcionalidades de download.</p>
         </div>
-    </section>
-</main>
+        <div class="membro" style="--delay: 0.2s">
+            <img src="<%=request.getContextPath()%>/assets/imgs/Mayumi.png" alt="Mayumi Itikaua">
+            <h3>Mayumi Itikaua</h3>
+            <p>Designer de UX, responsável por toda a experiência do usuário.</p>
+        </div>
+        <div class="membro" style="--delay: 0.4s">
+            <img src="<%=request.getContextPath()%>/assets/imgs/Guilherme.png" alt="Guilherme Guedes">
+            <h3>Guilherme Guedes</h3>
+            <p>Designer de UX, responsável pela experiência completa do usuário..</p>
+        </div>
+        <div class="membro" style="--delay: 0.4s">
+            <img src="<%=request.getContextPath()%>/assets/imgs/Caio.png" alt="Caio">
+            <h3>Caio Eiken</h3>
+            <p>Especialista em dados, responsável por PROMPT e pseudonimização.</p>
+        </div>
+        <div class="membro" style="--delay: 0.2s">
+            <img src="<%=request.getContextPath()%>/assets/imgs/Iago.png" alt="Iago">
+            <h3>Iago Balbino</h3>
+            <p>Especialista em banco de dados, responsável pelo modelo conceitual, scripts e data loader.</p>
+        </div>
+        <div class="membro" style="--delay: 0.4s">
+            <img src="<%=request.getContextPath()%>/assets/imgs/Casa.png" alt="Pedro Casarini">
+            <h3>Pedro Casarini</h3>
+            <p>Criador do modelo lógico e dos fluxogramas do projeto.</p>
+        </div>
+        <div class="membro" style="--delay: 0s">
+            <img src="<%=request.getContextPath()%>/assets/imgs/Herrera.png" alt="Enzo Herreira">
+            <h3>Enzo Herreira</h3>
+            <p>Designer de front-end, responsável por CSS, HTML e algumas telas..</p>
+        </div>
+        <div class="membro" style="--delay: 0.2s">
+            <img src="<%=request.getContextPath()%>/assets/imgs/Gabriel.png" alt="Gabreil Andozia">
+            <h3>Gabrieil Andozia</h3>
+            <p>Analista de sistemas operacionais e planilhas, responsável por SOP e Excel.</p>
+        </div>
+        <div class="membro" style="--delay: 0s">
+            <img src="<%=request.getContextPath()%>/assets/imgs/Clara.png" alt="clara">
+            <h3>Clara Bortoleto</h3>
+            <p>Apaixonado por programação e soluções digitais, sempre explorando novas tecnologias e desafios de desenvolvimento.</p>
+        </div>
+        <div class="membro" style="--delay: 0s">
+            <img src="<%=request.getContextPath()%>/assets/imgs/Vitor.png" alt="Vitor">
+            <h3>Vitor Augusto</h3>
+            <p>Apaixonado por programação e soluções digitais, sempre explorando novas tecnologias e desafios de desenvolvimento.</p>
+        </div>
+        <div class="membro" style="--delay: 0.2s">
+            <img src="<%=request.getContextPath()%>/assets/imgs/Lins.png" alt="lins">
+            <h3>Leonardo Lins</h3>
+            <p>Apaixonado por programação e soluções digitais, sempre explorando novas tecnologias e desafios de desenvolvimento.</p>
+        </div>
+        <div class="membro" style="--delay: 0.4s">
+            <img src="<%=request.getContextPath()%>/assets/imgs/Rodrigo.png" alt="rodrigo">
+            <h3>Rodrigo Alex</h3>
+            <p>Apaixonado por programação e soluções digitais, sempre explorando novas tecnologias e desafios de desenvolvimento.</p>
+        </div>
+        <div class="membro" style="--delay: 0s">
+            <img src="<%=request.getContextPath()%>/assets/imgs/Trindade.png" alt="Trindade">
+            <h3>Guilherme Trindade</h3>
+            <p>Interessado em análise e interpretação de dados, com foco em transformar informações em insights estratégicos.</p>
+        </div>
+        <div class="membro" style="--delay: 0s">
+            <img src="<%=request.getContextPath()%>/assets/imgs/Costa.png" alt="costa">
+            <h3>Guilherme Costa</h3>
+            <p>Interessado em análise e interpretação de dados, com foco em transformar informações em insights estratégicos.</p>
+        </div>
+        <div class="membro" style="--delay: 0.4s">
+            <img src="<%=request.getContextPath()%>/assets/imgs/Frossard.png" alt="Frossard">
+            <h3>Pedro Frossard</h3>
+            <p>Interessado em análise e interpretação de dados, com foco em transformar informações em insights estratégicos.</p>
+        </div>
+        <div class="membro" style="--delay: 0.4s">
+            <img src="<%=request.getContextPath()%>/assets/imgs/Fernando.png" alt="Fernando">
+            <h3>Fernando Henrique</h3>
+            <p>Interessado em análise e interpretação de dados, com foco em transformar informações em insights estratégicos.</p>
+        </div>
+    </div>
+</section>
 
 <footer>
     <div class="grid-footer">
@@ -163,66 +215,14 @@
         </div>
     </div>
 </footer>
-
 <script>
-        const basePath = "<%= request.getContextPath() %>/pagina/imgs/";
-
-        const alunos = {
-            "1": {
-                "dev": [
-                { nome: "Mayumi Itikaua", foto: basePath + "Mayumi.png", desc: "Dev Front-end apaixonada por UI/UX." },
-                { nome: "Guilherme Guedes", foto: basePath + "Mayumi.png", desc: "Desenvolvedor Back-end com foco em Java e Git" },
-                { nome: "Enzo Herrera", foto: basePath + "Mayumi.png", desc: "Fullstack com foco em html e CSS" },
-                { nome: "Erik Santos", foto: basePath + "Mayumi.png", desc: "Fullstack com foco em Java e Git" }
-                ],
-                    "dados": [
-                { nome: "Iago Balbino", foto: basePath + "Mayumi.png", desc: "Analista de dados e especialista em SQL." },
-                { nome: "Gabriel Andozia", foto: basePath + "Mayumi.png", desc: "Analista de dados e especialista em SQL." },
-                { nome: "Caio Eiken", foto: basePath + "Mayumi.png", desc: "Analista de dados e especialista em SQL." },
-                { nome: "Pedro Casarini", foto: basePath + "Mayumi.png", desc: "Analista de dados e especialista em SQL." }
-            ]
-        }
-    };
-
-    const yearSelect = document.getElementById("year");
-    const areaSelect = document.getElementById("area");
-    const studentList = document.getElementById("student-list");
-    const profile = document.getElementById("profile");
-
-    function updateList() {
-        studentList.innerHTML = "";
-        profile.innerHTML = "<p>Selecione um aluno para ver os detalhes.</p>";
-
-        const year = yearSelect.value;
-        const area = areaSelect.value;
-
-        if (year && area && alunos[year] && alunos[year][area]) {
-            alunos[year][area].forEach((student, index) => {
-                const li = document.createElement("li");
-                li.textContent = student.nome;
-                li.addEventListener("click", () => {
-                    profile.innerHTML = `
-              <img src="${student.foto}" alt="${student.nome}">
-              <h3>${student.nome}</h3>
-              <p>${student.desc}</p>
-            `;
-                });
-                studentList.appendChild(li);
-            });
-        }
-    }
-
-    yearSelect.addEventListener("change", updateList);
-    areaSelect.addEventListener("change", updateList);
-
-    const btn = document.getElementById("btn-hamb");
-    const menu = document.getElementById("menu");
-
-    btn.addEventListener("click", () => {
-        menu.classList.toggle("mostrar");
+    document.addEventListener("DOMContentLoaded", () => {
+        const cards = document.querySelectorAll(".membro");
+        cards.forEach((card, index) => {
+            card.style.animationDelay = ${index * 0.2}s;
+        });
     });
-
-
 </script>
+
 </body>
 </html>

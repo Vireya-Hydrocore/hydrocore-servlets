@@ -38,10 +38,10 @@
 
   <div class="container-direito">
     <div class="sobreposicao">
-      <img src="${pageContext.request.contextPath}/assets/imgs/abstract geometric.png" alt="Background">
+      <img src="${pageContext.request.contextPath}/assets/imgs/Papel-de-parede-degrade-azul-142.webp" alt="Background">
     </div>
-    <div class="celular">
-      <img src="${pageContext.request.contextPath}/assets/imgs/modelo_frontal.png" alt="App Preview">
+    <div class="logo-direita">
+      <img src="${pageContext.request.contextPath}/assets/imgs/vireya_icon.png" class="logo-girando" alt="App Preview">
     </div>
   </div>
 </main>
