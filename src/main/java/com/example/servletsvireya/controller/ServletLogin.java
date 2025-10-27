@@ -13,8 +13,16 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/ServletLogin", "/logar", "/logarAdmin"}, name = "ServletLogin")
 public class ServletLogin extends HttpServlet {
 
-    AdminDAO adminDAO = new AdminDAO();
-    List<String> erros = new ArrayList<>();
+    private AdminDAO adminDAO = new AdminDAO();
+    private List<String> erros = new ArrayList<>();
+
+    // Variáveis de escopo de método movidas para o topo (declaradas)
+    private String action;
+    private String email;
+    private String senha;
+    private boolean resultado;
+    private Integer idAdmin;
+    private RequestDispatcher rd;
 
 
     // ===============================================================
@@ -24,7 +32,7 @@ public class ServletLogin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String action = req.getParameter("action");
+        action = req.getParameter("action");
 
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
@@ -48,7 +56,8 @@ public class ServletLogin extends HttpServlet {
         } catch (Exception e) {
             erros.add("Ocorreu um erro inesperado ao processar a solicitação de login");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("assets/pages/erroLogin.jsp");
+            // Redireciona para página de erro, usando RequestDispatcher
+            req.getRequestDispatcher("/assets/pages/erroLogin.jsp").forward(req, resp);
         }
     }
 
@@ -59,10 +68,10 @@ public class ServletLogin extends HttpServlet {
 
     protected void logarAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Pegando atributos para realização do login na Área Restrita
-        String email = req.getParameter("email");
-        String senha = req.getParameter("senha");
+        email = req.getParameter("email");
+        senha = req.getParameter("senha");
 
-        boolean resultado = adminDAO.seLogarAreaRestrita(email, senha);
+        resultado = adminDAO.seLogarAreaRestrita(email, senha);
 
         if (resultado) {
             // Redireciona para página inicial do admin
@@ -70,7 +79,7 @@ public class ServletLogin extends HttpServlet {
         } else {
             erros.add("E-mail ou senha incorretos.");
             req.setAttribute("erros", erros); //Setta um atributo erro para o JSP tratar
-            RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/erroLogin.jsp"); //Vai para a pagina de erro
+            rd = req.getRequestDispatcher("/assets/pages/erroLogin.jsp"); //Vai para a pagina de erro
             rd.forward(req, resp);
         }
     }
@@ -81,10 +90,10 @@ public class ServletLogin extends HttpServlet {
     // ===============================================================
 
     protected void logar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String email = req.getParameter("email");
-        String senha = req.getParameter("senha");
+        email = req.getParameter("email");
+        senha = req.getParameter("senha");
 
-        Integer idAdmin = adminDAO.seLogar(email, senha);
+        idAdmin = adminDAO.seLogar(email, senha);
 
         if (idAdmin != null) {
             // Redireciona para página principal do dashboard
@@ -92,7 +101,7 @@ public class ServletLogin extends HttpServlet {
         } else {
             erros.add("E-mail ou senha incorretos.");
             req.setAttribute("erros", erros);
-            RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/erroLogin.jsp");
+            rd = req.getRequestDispatcher("/assets/pages/erroLogin.jsp");
             rd.forward(req, resp);
         }
     }

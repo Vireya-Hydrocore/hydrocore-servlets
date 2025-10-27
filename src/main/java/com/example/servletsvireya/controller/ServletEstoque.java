@@ -23,7 +23,17 @@ import java.util.List;
 public class ServletEstoque extends HttpServlet {
 
     private EstoqueDAO estoqueDAO = new EstoqueDAO();
+    private ProdutoDAO produtoDAO = new ProdutoDAO(); // Instanciado no topo
+    private EtaDAO etaDAO = new EtaDAO(); // Instanciado no topo
     List<String> erros = new ArrayList<>();
+
+    // Variáveis de escopo de método movidas para o topo (declaradas)
+    private String action;
+    private List<EstoqueDTO> lista;
+    private EstoqueDTO estoqueDTO;
+    private RequestDispatcher rd;
+    private int resultado;
+    private String dataStr;
 
 
     // ===============================================================
@@ -33,7 +43,7 @@ public class ServletEstoque extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String action = req.getParameter("action"); //Vem com a ação do usuário
+        action = req.getParameter("action"); //Vem com a ação do usuário
 
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
@@ -71,7 +81,7 @@ public class ServletEstoque extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String action = req.getParameter("action");
+        action = req.getParameter("action");
 
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
@@ -111,11 +121,11 @@ public class ServletEstoque extends HttpServlet {
 
     protected void listarEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<EstoqueDTO> lista = estoqueDAO.listarEstoque(); //List de objetos retornados na query
+        lista = estoqueDAO.listarEstoque(); //List de objetos retornados na query
 
         req.setAttribute("estoques", lista); //Devolve a lista de estoques encontrados em um novo atributo
 
-        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/estoque/estoqueIndex.jsp"); //Envia para a página principal
+        rd = req.getRequestDispatcher("/assets/pages/estoque/estoqueIndex.jsp"); //Envia para a página principal
         rd.forward(req, resp);
     }
 
@@ -126,7 +136,7 @@ public class ServletEstoque extends HttpServlet {
 
     protected void buscarEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Settando o id no EstoqueDTO
-        EstoqueDTO estoqueDTO = new EstoqueDTO();
+        estoqueDTO = new EstoqueDTO();
         estoqueDTO.setId(Integer.parseInt(req.getParameter("id")));
 
         estoqueDAO.buscarPorId(estoqueDTO); //No mesmo objeto, setta os valores encontrados
@@ -134,7 +144,7 @@ public class ServletEstoque extends HttpServlet {
         req.setAttribute("estoque", estoqueDTO); //Setta em um novo atributo para o JSP pegar os valores
 
         //Encaminhar ao documento estoqueAlterar.jsp
-        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/estoque/estoqueAlterar.jsp");
+        rd = req.getRequestDispatcher("/assets/pages/estoque/estoqueAlterar.jsp");
         rd.forward(req, resp);
     }
 
@@ -145,25 +155,25 @@ public class ServletEstoque extends HttpServlet {
 
     protected void inserirEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Criado um DTO para armazenar os valores inseridos
-        EstoqueDTO estoqueDTO = new EstoqueDTO();
+        estoqueDTO = new EstoqueDTO();
         estoqueDTO.setQuantidade(Integer.parseInt(req.getParameter("quantidade")));
-        String dataStr = req.getParameter("dataValidade"); //Convertendo de String para Date
+        dataStr = req.getParameter("dataValidade"); //Convertendo de String para Date
         estoqueDTO.setDataValidade(java.sql.Date.valueOf(dataStr));
         estoqueDTO.setMinPossivelEstocado(Integer.parseInt(req.getParameter("minPossivelEstocado")));
 
-        ProdutoDAO produtoDAO = new ProdutoDAO(); //Para realizar a busca do nome do produto
+        // ProdutoDAO produtoDAO = new ProdutoDAO(); //Para realizar a busca do nome do produto (Movido para o topo)
         String nomeProduto = req.getParameter("nomeProduto");
         int idProduto = produtoDAO.buscarIdPorNome(nomeProduto);
         estoqueDTO.setIdProduto(idProduto);
         estoqueDTO.setNomeProduto(nomeProduto);
 
-        EtaDAO etaDAO = new EtaDAO(); //Realizar a busca do id da ETA
+        // EtaDAO etaDAO = new EtaDAO(); //Realizar a busca do id da ETA (Movido para o topo)
         String nomeEta= req.getParameter("nomeEta");
         estoqueDTO.setIdEta(etaDAO.buscarIdPorNome(nomeEta));
         estoqueDTO.setNomeEta(nomeEta);
 
         //===== Validação de dados usando a classe Validador ======
-        erros = new ArrayList<>();
+        erros = new ArrayList<>(); // Reinstanciando para limpar erros anteriores
 
         if (!Validador.validarLength(req.getParameter("quantidade"), 5)) {
             erros.add("A quantidade deve ser maior que zero e no máximo 5 dígitos.");
@@ -185,7 +195,7 @@ public class ServletEstoque extends HttpServlet {
         }
 
         //Chamando o DAO de estoque
-        int resultado = estoqueDAO.inserirEstoque(estoqueDTO);
+        resultado = estoqueDAO.inserirEstoque(estoqueDTO);
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque"); //Lista novamente os produtos no estoque se der certo
@@ -203,10 +213,10 @@ public class ServletEstoque extends HttpServlet {
 
     protected void alterarEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Settando os valores no estoqueDTO ---> ---> --> usuário não pode mudar a eta
-        EstoqueDTO estoqueDTO = new EstoqueDTO();
+        estoqueDTO = new EstoqueDTO();
         estoqueDTO.setId(Integer.parseInt(req.getParameter("id")));
         estoqueDTO.setQuantidade(Integer.parseInt(req.getParameter("quantidade")));
-        String dataStr = req.getParameter("dataValidade");
+        dataStr = req.getParameter("dataValidade");
         try {
             java.sql.Date dataValidade;
             if (dataStr.contains("/")) { // caso venha no formato dd/MM/yyyy
@@ -220,11 +230,12 @@ public class ServletEstoque extends HttpServlet {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        //A linha abaixo foi mantida, mas a lógica acima já faz a conversão. Mantida para consistência com o código original.
         estoqueDTO.setDataValidade(java.sql.Date.valueOf(dataStr));
         estoqueDTO.setMinPossivelEstocado(Integer.parseInt(req.getParameter("minPossivelEstocado")));
 
         //===== Validação de dados usando a classe Validador ======
-        List<String> erros = new ArrayList<>();
+        erros = new ArrayList<>(); // Reinstanciando para limpar erros anteriores
 
         if (estoqueDTO.getQuantidade() <= 0) {
             erros.add("A quantidade deve ser maior que zero.");
@@ -246,7 +257,7 @@ public class ServletEstoque extends HttpServlet {
         }
 
         //Chamar o DAO com o id já settado no DTO
-        int resultado = estoqueDAO.alterarEstoque(estoqueDTO); //Dentro do método, é settado os atributos
+        resultado = estoqueDAO.alterarEstoque(estoqueDTO); //Dentro do método, é settado os atributos
 
         //Tratando o resultado
         if (resultado == 1) {
@@ -265,15 +276,16 @@ public class ServletEstoque extends HttpServlet {
 
     protected void removerEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Instanciando objeto DTO e settando o id para remoção
-        EstoqueDTO estoqueDTO = new EstoqueDTO();
+        estoqueDTO = new EstoqueDTO();
         estoqueDTO.setId(Integer.parseInt(req.getParameter("id")));
 
-        int resultado = estoqueDAO.removerEstoque(estoqueDTO);
+        resultado = estoqueDAO.removerEstoque(estoqueDTO);
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletEstoque?action=mainEstoque");
         } else {
-            req.setAttribute("erros", "Não foi possível remover o estoque.");
+            erros.add("Não foi possível remover o estoque."); // Adicionado na lista para consistência
+            req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
     }
@@ -285,10 +297,10 @@ public class ServletEstoque extends HttpServlet {
 
     protected void filtrarEstoque(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Armazena a query filtrada em um novo List
-        List<EstoqueDTO> lista = estoqueDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
+        lista = estoqueDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
 
         req.setAttribute("estoques", lista);
-        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/estoque/estoqueIndex.jsp");
+        rd = req.getRequestDispatcher("/assets/pages/estoque/estoqueIndex.jsp");
         rd.forward(req, resp);
     }
 }
