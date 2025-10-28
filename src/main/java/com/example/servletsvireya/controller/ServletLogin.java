@@ -96,7 +96,7 @@ public class ServletLogin extends HttpServlet {
             System.out.println(idAdmin);
 
             // constrói a URL de destino
-            String url = "https://rendervireyaweb/login-externo"
+            String url = "https://hydrocore-gerente.onrender.com/"
                     + "?funcionarioId=" + idAdmin
                     + "&token=" + URLEncoder.encode(TOKEN, "UTF-8");
 

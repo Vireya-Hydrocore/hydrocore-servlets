@@ -1,7 +1,5 @@
 const telefone = document.getElementById('telefone');
 const cnpj = document.getElementById('cnpj');
-const erroSenha = document.getElementById("erroSenha");
-
 
 // Máscara de Telefone
 telefone.addEventListener('input', function () {
@@ -37,6 +35,3 @@ cnpj.addEventListener('input', function () {
 
     cnpj.value = valor;
 });
-
-
-

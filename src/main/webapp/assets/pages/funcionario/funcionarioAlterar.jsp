@@ -29,13 +29,13 @@
       <!-- Nome -->
       <div class="campos">
         <label>Nome</label>
-        <input type="text" name="nome" value="${funcionario.nome}" required>
+        <input type="text" name="nome" maxlength="80" value="${funcionario.nome}" required>
       </div>
 
       <!-- Email -->
       <div class="campos">
         <label>E-mail</label>
-        <input type="email" name="email" value="${funcionario.email}">
+        <input type="email" name="email" maxlength="40" value="${funcionario.email}">
       </div>
 
       <!-- Data de Admissão -->

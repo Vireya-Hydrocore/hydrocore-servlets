@@ -79,17 +79,17 @@
 
                 <div class="campos">
                     <label>Nome</label>
-                    <input type="text" name="nome" placeholder="Ex: Iago Eiken" required>
+                    <input type="text" name="nome" maxlength="80" placeholder="Ex: Iago Eiken" required>
                 </div>
 
                 <div class="campos">
                     <label>E-mail</label>
-                    <input type="text" name="email" placeholder="exemplo@gmail.com" required>
+                    <input type="text" name="email" maxlength="40" placeholder="exemplo@gmail.com" required>
                 </div>
 
                 <div class="campos">
                     <label>Senha</label>
-                    <input type="password" name="senha" placeholder="senhaForte01@" required>
+                    <input type="password" name="senha" maxlength="36" placeholder="senhaForte01@" required>
                 </div>
 
                 <div class="campos">

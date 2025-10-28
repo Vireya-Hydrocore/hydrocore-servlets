@@ -75,7 +75,7 @@
                     <input type="hidden" name="action" value="createProduto"> <!-- Envia esse parametro para o servlet ver que action é create-->
 
                     <label>Nome do Produto</label>
-                    <input type="text" name="nome" placeholder="Ex: Cloro Líquido" required>
+                    <input type="text" name="nome" maxlength="50" placeholder="Ex: Cloro Líquido" required>
                 </div>
 
                 <div class="campos">
@@ -102,7 +102,7 @@
 
                 <div class="campos">
                     <label>Concentração (%)</label>
-                    <input type="number" name="concentracao" max="100" step="0.01" placeholder="Ex: 25.50" required>
+                    <input type="number" name="concentracao" max="100" min="0" step="0.01" placeholder="Ex: 25.50" required>
                 </div>
 
                 <div class="campos">

@@ -2,14 +2,17 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <%
-    // Guarda dados da primeira etapa na sessão
     String nome = request.getParameter("nome");
     String email = request.getParameter("email");
     String senha = request.getParameter("senha");
-    String cnpj= request.getParameter("cnpj");
+    String cnpj = request.getParameter("cnpj");
     String telefone = request.getParameter("telefone");
-    int capacidade = Integer.parseInt(request.getParameter("capacidade"));
+    String capacidadeStr = request.getParameter("capacidade");
 
+    int capacidade = 0;
+    if (capacidadeStr != null && !capacidadeStr.isEmpty()) {
+        capacidade = Integer.parseInt(capacidadeStr);
+    }
 
     if (nome != null && email != null) {
         session.setAttribute("nome", nome);
@@ -25,7 +28,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Endereço</title>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/imgs/vireya%20icon.png" type="image/x-icon">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/cadastro2.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/cadastro.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -41,12 +44,13 @@
         <form action="${pageContext.request.contextPath}/ServletEta" method="post" id="form-endereco">
             <input type="hidden" name="action" value="createEta">
 
+
             <label for="cep">CEP</label>
             <input type="text" id="cep" name="cep" placeholder="Digite seu CEP" pattern="[0-9]{5}-[0-9]{3}" required>
             <div id="erroCEP" class="erro"></div>
 
             <label for="logradouro">Logradouro</label>
-            <input type="text" id="logradouro" name="rua" placeholder="Ex: Rua das Flores" required>
+            <input type="text" id="logradouro" name="rua" maxlength="50" placeholder="Ex: Rua das Flores" required>
             <div id="erroLogradouro" class="erro"></div>
 
             <label for="numero">Número</label>
@@ -54,11 +58,11 @@
             <div id="erroNumero" class="erro"></div>
 
             <label for="bairro">Bairro</label>
-            <input type="text" id="bairro" name="bairro" placeholder="Ex: Centro" required>
+            <input type="text" id="bairro" name="bairro" maxlength="40" placeholder="Ex: Centro" required>
             <div id="erroBairro" class="erro"></div>
 
             <label for="cidade">Cidade</label>
-            <input type="text" id="cidade" name="cidade" placeholder="Ex: São Paulo" required>
+            <input type="text" id="cidade" name="cidade" maxlength="40" placeholder="Ex: São Paulo" required>
             <div id="erroCidade" class="erro"></div>
 
             <label for="estado">Estado</label>
@@ -107,7 +111,7 @@
         </div>
     </div>
 
-    <script src="${pageContext.request.contextPath}/assets/js/regex.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/mascaraCep.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
 </main>
 </body>

@@ -18,11 +18,12 @@
             <img src="${pageContext.request.contextPath}/assets/imgs/vireya%20icon.png">
             <span>HydroCore</span>
         </div>
+
         <h1>Criar Conta</h1>
 
         <form action="cadastro2.jsp" method="post" id="form">
             <label for="nome">Nome</label>
-            <input name="nome" type="text" id="nome" placeholder="Digite seu nome">
+            <input name="nome" type="text" id="nome" maxlength="80" placeholder="Digite seu nome">
             <div id="erroNome" class="erro"></div>
 
             <label for="email">E-mail</label>
@@ -46,8 +47,8 @@
             </div>
 
             <div class="input-senha">
-                <input type="password" id="senha" placeholder="Digite sua senha" required
-                       pattern="^(?=.[A-Z])(?=.[!@#$%]).{8,}$"
+                <input type="password" name="senha" id="senha" maxlength="36" placeholder="Digite sua senha" required
+                       pattern="^(?=.*[A-Z])(?=.*[!@#$%]).{8,}$"
                        title="Tem que incluir pelo menos uma letra maiúscula e um caractere especial(!@#$%)">
                 <span class="password-toggle" id="togglePassword">
                         <i class="fas fa-eye"></i>

@@ -36,7 +36,7 @@
         <!-- Nome -->
         <div class="campos">
             <label>Nome</label>
-            <input type="text" name="nome" value="${produto.nome}" required>
+            <input type="text" name="nome" maxlength="50" value="${produto.nome}" required>
         </div>
 
         <!-- Tipo -->
@@ -66,7 +66,7 @@
         <!-- Concentração -->
         <div class="campos">
             <label>Concentração</label>
-            <input type="number" name="concentracao" value="${produto.concentracao}" required>
+            <input type="number" name="concentracao" max="100" min="0" value="${produto.concentracao}" required>
         </div>
 
         <!-- Nome ETA -->

@@ -33,7 +33,7 @@
 
         <div class="campos">
             <label for="cargo">Nome do cargo:</label>
-            <input type="text" id="cargo" name="nome" value="${cargo.nome}" required><br>
+            <input type="text" id="cargo" name="nome" maxlength="40" value="${cargo.nome}" required><br>
         </div>
 
         <div class="campos">

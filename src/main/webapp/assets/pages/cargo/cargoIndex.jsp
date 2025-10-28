@@ -75,7 +75,7 @@
 
                 <div class="campos">
                     <label>Nome do Cargo</label>
-                    <input type="text" name="nome" placeholder="Ex: Operador de ETA" required>
+                    <input type="text" name="nome" maxlength="40" placeholder="Ex: Operador de ETA" required>
                 </div>
 
                 <div class="campos">

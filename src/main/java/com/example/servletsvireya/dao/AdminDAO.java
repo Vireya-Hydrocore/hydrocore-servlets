@@ -48,7 +48,7 @@ public class AdminDAO {
     // ========== Método para buscar um admin pelo ID ========== //
     public AdminDTO buscarPorId(AdminDTO adminDTO) {
         Connection conn = conexao.conectar();
-        String comando = "SELECT * FROM admin WHERE id = ?";
+        String comando = "SELECT a.*, e.nome AS nome_eta FROM admin a JOIN ETA e on e.id=a.id_eta WHERE a.id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setInt(1, adminDTO.getId());
@@ -58,6 +58,8 @@ public class AdminDAO {
                 adminDTO.setSenha(rset.getString("senha")); //Setta no mesmo objeto
                 adminDTO.setNome(rset.getString("nome"));
                 adminDTO.setEmail(rset.getString("email"));
+                adminDTO.setNomeEta(rset.getString("nome_eta"));
+
             }
             return adminDTO; //Retorna com o objeto preenchido ou vazio
 
@@ -184,7 +186,6 @@ public class AdminDAO {
             if (rs.next()) {
                 String senhaBanco = rs.getString("senha");
                 System.out.println(senhaBanco);
-
                 System.out.println(SenhaHash.verificarSenha(senha, senhaBanco));
                 // Verifica se a senha informada bate com a do banco
                 if (SenhaHash.verificarSenha(senha, senhaBanco)) {

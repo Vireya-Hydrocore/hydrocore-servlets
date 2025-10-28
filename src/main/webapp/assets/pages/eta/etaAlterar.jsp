@@ -10,99 +10,132 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-  EtaDTO eta = (EtaDTO) request.getAttribute("eta");
+    EtaDTO eta = (EtaDTO) request.getAttribute("eta");
 %>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>ETA</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styleAlterar.css">
+    <meta charset="UTF-8">
+    <title>ETA</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styleAlterar.css">
 </head>
 <body>
 
 <div class="form-container">
-  <h2>Alterar ETA</h2>
+    <h2>Alterar ETA</h2>
 
-  <form action="${pageContext.request.contextPath}/ServletEta" method="post">
-    <input type="hidden" name="action" value="updateEta">
+    <form action="${pageContext.request.contextPath}/ServletEta" method="post">
+        <input type="hidden" name="action" value="updateEta">
+        <div class="container-maior">
+            <div class="box-esquerda">
+                <!-- ID do produto -->
+                <div class="campos-readonly">
+                    <label>ID</label>
+                    <input type="number" name="id" value="${eta.id}" readonly>
+                </div>
 
-    <!-- ID do produto -->
-    <div class="campos-readonly">
-      <label>ID</label>
-      <input type="number" name="id" value="${eta.id}" readonly>
-    </div>
+                <!-- Nome -->
+                <div class="campos">
+                    <label>Nome</label>
+                    <input type="text" name="nome" value="${eta.nome}" required>
+                </div>
 
-    <!-- Nome -->
-    <div class="campos">
-      <label>Nome</label>
-      <input type="text" name="nome" value="${eta.nome}" required>
-    </div>
+                <!-- Capacidade -->
+                <div class="campos">
+                    <label>Capacidade</label>
+                    <input type="number" name="capacidade" value="${eta.capacidade}">
+                </div>
 
-    <!-- Capacidade -->
-    <div class="campos">
-      <label>Capacidade</label>
-      <input type="number" name="capacidade" value="${eta.capacidade}">
-    </div>
+                <!-- Telefone -->
+                <div class="campos">
+                    <label>Telefone</label>
+                    <input type="text" name="telefone" value="${eta.telefone}">
+                </div>
 
-    <!-- Telefone -->
-    <div class="campos">
-      <label>Telefone</label>
-      <input type="text" name="telefone" value="${eta.telefone}">
-    </div>
+                <!-- Telefone -->
+                <div class="campos-readonly">
+                    <label>CNPJ</label>
+                    <input type="text" name="cnpj" value="${eta.cnpj}" readonly>
+                </div>
+            </div>
+            <div class="box-direita">
+                <!-- ENDEREÇO -->
+                <br>
+                <div class="campos">
+                    <label>Rua</label>
+                    <input type="text" name="rua" maxlength="50" value="${eta.rua}">
+                </div>
 
-    <!-- Telefone -->
-    <div class="campos-readonly">
-      <label>CNPJ</label>
-      <input type="text" name="cnpj" value="${eta.cnpj}" readonly>
-    </div>
+                <!-- Bairro -->
+                <div class="campos">
+                    <label>Bairro</label>
+                    <input type="text" name="bairro" maxlength="40" value="${eta.bairro}" required>
+                </div>
 
-    <!-- ENDEREÇO -->
-    <br>
-    <h3>Endereço</h3>
+                <!-- Cidade -->
+                <div class="campos">
+                    <label>Cidade</label>
+                    <input type="text" name="cidade" maxlength="40" value="${eta.cidade}" required>
+                </div>
 
-    <div class="campos">
-      <label>Rua</label>
-      <input type="text" name="rua" value="${eta.rua}">
-    </div>
+                <!-- Estado -->
+                <div class="campos">
+                    <label for="estado">Estado</label>
+                    <select id="estado" name="estado" required>
+                        <option value="${eta.estado}">${eta.estado}</option>
+                        <option value="AC">Acre</option>
+                        <option value="AL">Alagoas</option>
+                        <option value="AP">Amapá</option>
+                        <option value="AM">Amazonas</option>
+                        <option value="BA">Bahia</option>
+                        <option value="CE">Ceará</option>
+                        <option value="DF">Distrito Federal</option>
+                        <option value="ES">Espírito Santo</option>
+                        <option value="GO">Goiás</option>
+                        <option value="MA">Maranhão</option>
+                        <option value="MT">Mato Grosso</option>
+                        <option value="MS">Mato Grosso do Sul</option>
+                        <option value="MG">Minas Gerais</option>
+                        <option value="PA">Pará</option>
+                        <option value="PB">Paraíba</option>
+                        <option value="PR">Paraná</option>
+                        <option value="PE">Pernambuco</option>
+                        <option value="PI">Piauí</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="RN">Rio Grande do Norte</option>
+                        <option value="RS">Rio Grande do Sul</option>
+                        <option value="RO">Rondônia</option>
+                        <option value="RR">Roraima</option>
+                        <option value="SC">Santa Catarina</option>
+                        <option value="SP">São Paulo</option>
+                        <option value="SE">Sergipe</option>
+                        <option value="TO">Tocantins</option>
+                    </select>
+                </div>
 
-    <!-- Bairro -->
-    <div class="campos">
-      <label>Bairro</label>
-      <input type="text" name="bairro" value="${eta.bairro}" required>
-    </div>
+                <!-- Número -->
+                <div class="campos">
+                    <label>Número</label>
+                    <input type="number" name="numero" value="${eta.numero}" required>
+                </div>
 
-    <!-- Cidade -->
-    <div class="campos">
-      <label>Cidade</label>
-      <input type="text" name="cidade" value="${eta.cidade}" required>
-    </div>
+                <!-- CEP -->
+                <div class="campos">
+                    <label for="cep">CEP</label>
+                    <input type="text" id="cep" name="cep" value="${eta.cep}" pattern="[0-9]{5}-[0-9]{3}" required>
+                </div>
+            </div>
+        </div>
 
-    <!-- Estado -->
-    <div class="campos">
-      <label>Estado</label>
-      <input type="text" name="estado" value="${eta.estado}" required>
-    </div>
-
-    <!-- Número -->
-    <div class="campos">
-      <label>Número</label>
-      <input type="number" name="numero" value="${eta.numero}" required>
-    </div>
-
-    <!-- CEP -->
-    <div class="campos">
-      <label>CEP</label>
-      <input type="text" name="cep" value="${eta.cep}" required>
-    </div>
-
-    <!-- Botão -->
-    <div class="acoes">
-      <input type="submit" value="Salvar Alterações">
-    </div>
-  </form>
+        <!-- Botão -->
+        <div class="acoes">
+            <input type="submit" value="Salvar Alterações">
+        </div>
+    </form>
 </div>
+
+<script src="${pageContext.request.contextPath}/assets/js/regex.js"></script>
 
 </body>
 </html>

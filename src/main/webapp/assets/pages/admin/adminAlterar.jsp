@@ -34,12 +34,17 @@
 
         <div class="campos">
             <label>Nome</label>
-            <input type="text" name="nome" value="${admin.nome}" required>
+            <input type="text" name="nome" maxlength="80" value="${admin.nome}" required>
         </div>
 
         <div class="campos">
             <label>E-mail</label>
-            <input type="email" name="email" value="${admin.email}" required>
+            <input type="email" name="email" maxlength="40" value="${admin.email}" required>
+        </div>
+
+        <div class="campos-readonly">
+            <label>Senha</label>
+            <input type="password" name="senha" maxlength="36" value="${admin.senha}" readonly>
         </div>
 
         <!-- Nome ETA -->

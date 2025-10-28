@@ -70,6 +70,9 @@ public class EtaDAO {
 
             // Inserir admin vinculado à ETA
             String sqlAdmin = "INSERT INTO admin (nome, senha, email, id_eta) VALUES (?, ?, ?, ?)";
+            System.out.println(adminDTO.getId());
+            System.out.println(adminDTO.getSenha());
+            System.out.println(dto.getCapacidade());
             pstmtAdmin = conn.prepareStatement(sqlAdmin);
             pstmtAdmin.setString(1, adminDTO.getNome());
             pstmtAdmin.setString(2, adminDTO.getSenha());

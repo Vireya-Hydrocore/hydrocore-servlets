@@ -75,17 +75,17 @@
 
         <div class="campos">
           <label>Nome</label>
-          <input type="text" name="nome" placeholder="Ex: Erik Andozia" required>
+          <input type="text" name="nome"  maxlength="80" placeholder="Ex: Erik Andozia" required>
         </div>
 
         <div class="campos">
           <label>E-mail</label>
-          <input type="email" name="email" placeholder="Ex: marcelogrilo@gmail.com" required>
+          <input type="email" name="email" maxlength="40" placeholder="Ex: marcelogrilo@gmail.com" required>
         </div>
 
         <div class="campos">
           <label>Senha</label>
-          <input type="password" name="senha" maxlength="30" placeholder="xxxxxxxxx" required>
+          <input type="password" name="senha" maxlength="36" placeholder="xxxxxxxxx" required>
         </div>
 
         <div class="campos">
