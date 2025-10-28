@@ -178,7 +178,10 @@ public class ProdutoDAO {
         ResultSet rset = null; //Consulta da tabela
         Connection conn = conexao.conectar();
         //Prepara a consulta SQL para selecionar os produtos pelo ID
-        String comando = "SELECT * FROM produto WHERE id = ?";
+        String comando = "SELECT p.*, et.nome AS nome_eta FROM produto p " +
+                "JOIN estoque es ON p.id = es.id_produto " +
+                "JOIN eta et ON et.id = es.id_eta " +
+                "WHERE p.id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setInt(1, produtoDTO.getId());
@@ -192,6 +195,7 @@ public class ProdutoDAO {
                 produtoDTO.setTipo(rset.getString("tipo"));
                 produtoDTO.setUnidadeMedida(rset.getString("unidade_medida"));
                 produtoDTO.setConcentracao(rset.getDouble("concentracao"));
+                produtoDTO.setNomeEta(rset.getString("nome_eta")); //Campo extra do DTO
             }
             return produtoDTO; //se não encontrar, volta null
 

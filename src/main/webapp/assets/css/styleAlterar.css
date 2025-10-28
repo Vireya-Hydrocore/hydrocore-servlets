@@ -52,6 +52,7 @@ body {
     border: 1px solid #e00;
     border-radius: 6px;
 }
+
 .acoes {
     text-align: center;
     margin-top: 20px;
@@ -66,4 +67,19 @@ body {
 }
 .acoes input[type="submit"]:hover {
     background-color: #2f45b5;
+}
+
+
+
+
+.acoes input[type="button"] {
+    background-color: #ececec;
+    color: #000;
+    border-radius: 6px;
+    padding: 6px 10px;
+    text-decoration: none;
+}
+.acoes input[type="button"]:hover {
+    cursor: pointer;
+    background-color: #b3b3b3;
 }

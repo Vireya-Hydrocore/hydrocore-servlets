@@ -93,7 +93,7 @@
 
                 <div class="campos">
                     <label for="nomeProduto">Produto</label>
-                    <select id="nomeProduto">
+                    <select id="nomeProduto" name="nomeProduto">
                         <option value="">Selecione um Produto</option> <%-- Valor inicial vazio --%>
                         <%-- Listando os dados disponíveis com o DAO --%>
                         <%
@@ -108,7 +108,7 @@
 
                 <div class="campos">
                     <label for="nomeEta">Nome da ETA</label>
-                    <select id="nomeEta">
+                    <select id="nomeEta" name="nomeEta">
                         <option value="">Selecione uma ETA</option> <%-- Valor inicial vazio --%>
                         <%-- Listando as ETAS disponíveis com etaDAO --%>
                         <%

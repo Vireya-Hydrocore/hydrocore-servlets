@@ -31,6 +31,7 @@ public class FuncionarioDAO {
             pstmt.setDate(5, (Date) (funcionarioDTO.getDataNascimento()));
             pstmt.setInt(6, funcionarioDTO.getIdCargo());
             pstmt.setInt(7, funcionarioDTO.getIdEta());
+            System.out.println(funcionarioDTO.getIdEta());
 
             if (pstmt.executeUpdate() > 0){ //Se adicionar alguma linha
                 return 1; //Deu certo

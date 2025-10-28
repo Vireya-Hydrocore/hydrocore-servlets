@@ -145,9 +145,8 @@ public class ServletCargo extends HttpServlet {
         cargoDTO.setNome(req.getParameter("nome"));
         cargoDTO.setAcesso(Integer.parseInt(req.getParameter("acesso")));
 
-        EtaDAO etaDAO = new EtaDAO(); //Para realizar a busca do id da eta
         String nomeEta = req.getParameter("nomeEta");
-        int idEta = etaDAO.buscarIdPorNome(nomeEta);
+        int idEta = Integer.parseInt(req.getParameter("nomeEta")); //
         cargoDTO.setIdEta(idEta);
         cargoDTO.setNomeEta(nomeEta);
 

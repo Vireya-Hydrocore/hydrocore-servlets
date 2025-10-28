@@ -66,7 +66,9 @@ public class CargoDAO {
     // ========== Método para buscar um cargo pelo ID ========== //
     public CargoDTO buscarPorId(CargoDTO cargo) {
         Connection conn = conexao.conectar();
-        String comando = "SELECT * FROM cargo WHERE id = ?";
+        String comando = "SELECT c.*, e.nome AS nome_eta FROM cargo c " +
+                "JOIN eta e ON e.id = c.id_eta " +
+                "WHERE c.id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             pstmt.setInt(1, cargo.getId());
@@ -76,6 +78,7 @@ public class CargoDAO {
                 cargo.setId(rs.getInt("id")); //Setta no mesmo objeto vindo como parâmetro
                 cargo.setNome(rs.getString("nome"));
                 cargo.setAcesso(rs.getInt("acesso"));
+                cargo.setNomeEta(rs.getString("nome_eta"));
                 cargo.setIdEta(rs.getInt("id_eta")); // Adiciona o id_eta também
             }
             return cargo;

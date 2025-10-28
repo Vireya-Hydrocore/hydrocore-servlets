@@ -48,6 +48,7 @@
         </div>
 
         <div class="acoes">
+            <input type="button" value="Cancelar" onclick="history.back()">
             <input type="submit" value="Salvar alterações">
         </div>
     </form>

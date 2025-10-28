@@ -84,7 +84,7 @@
                         qualidade da água.</p>
                 </div>
                 <div class="img">
-                    <img src="<%= request.getContextPath() %>/assets/imgs/6853976-uma-cientista.jpg" alt="mulher fazendo calculos com quimicos">
+                    <img src="${pageContext.request.contextPath}/assets/imgs/6853976-uma-cientista.jpg" alt="mulher fazendo calculos com quimicos">
                 </div>
             </div>
             <div class="linha-img reverse">
@@ -98,7 +98,7 @@
                         tratamento.</p>
                 </div>
                 <div class="img">
-                    <img src="<%= request.getContextPath() %>/assets/imgs/Sistema-de-gestao-de-estoque-1024x489.jpg.webp" alt="Homen com tablete em um armazem de estoque">
+                    <img src="${pageContext.request.contextPath}/assets/imgs/Sistema-de-gestao-de-estoque-1024x489.jpg.webp" alt="Homen com tablete em um armazem de estoque">
                 </div>
             </div>
             <div class="linha-img-dir">
@@ -110,7 +110,7 @@
                         tratamento sejam realizadas dentro do prazo, com acompanhamento do gestor em tempo real.</p>
                 </div>
                 <div class="img">
-                    <img src="<%= request.getContextPath() %>/assets/imgs/gestao-de-tarefas-em-telas-diferntes-para-acompanhamento-de-projeto.jpg" alt="pessoa fazendo gestão de atividades">
+                    <img src="${pageContext.request.contextPath}/assets/imgs/gestao-de-tarefas-em-telas-diferntes-para-acompanhamento-de-projeto.jpg" alt="pessoa fazendo gestão de atividades">
                 </div>
             </div>
             <div class="linha-img reverse">
@@ -123,7 +123,7 @@
                         já que os dados podem ser utilizados em auditorias e fiscalizações ambientais.</p>
                 </div>
                 <div class="img">
-                    <img src="<%= request.getContextPath() %>/assets/imgs/analyst-uses-computer-dashboard-data-600nw-2285412737.webp" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/imgs/analyst-uses-computer-dashboard-data-600nw-2285412737.webp" alt="">
                 </div>
             </div>
         </div>
@@ -213,7 +213,7 @@
                         <li>Entrada/saída estoque</li>
                         <li>Avisos na Home</li>
                     </ul>
-                    <button onclick="window.location.href='${pageContext.request.contextPath}/assets/pages/landingpage/login.jsp'">//ao clicar no botão é enviado para a pagina de login
+                    <button onclick="window.location.href='${pageContext.request.contextPath}/assets/pages/landingpage/login.jsp'">
                         Assinar Agora
                     </button>
                 </div>
@@ -232,7 +232,8 @@
                         <li>Edição de perfil</li>
                         <li>Preferências do usuário</li>
                     </ul>
-                    <button onclick="window.location.href='${pageContext.request.contextPath}/assets/pages/landingpage/login.jsp'">//ao clicar no botão é enviado para a pagina de login
+                    <!-- Ao clicar no botão é enviado para a pagina de login -->
+                    <button onclick="window.location.href='${pageContext.request.contextPath}/assets/pages/landingpage/login.jsp'">
                         Assinar Agora
                     </button>
                 </div>
@@ -251,7 +252,8 @@
                         <li>Controle de custos</li>
                         <li>Gestão avançada</li>
                     </ul>
-                    <button onclick="window.location.href='${pageContext.request.contextPath}/assets/pages/landingpage/login.jsp'">//ao clicar no botão é enviado para a pagina de login
+                    <!-- Ao clicar no botão é enviado para a pagina de login -->
+                    <button onclick="window.location.href='${pageContext.request.contextPath}/assets/pages/landingpage/login.jsp'">
                         Assinar Agora
                     </button>
                 </div>
@@ -264,7 +266,7 @@
 <footer>
     <div class="grid-footer">
         <div class="links-grid">
-            <img id="img-foot" src="<%= request.getContextPath() %>/assets/imgs/Group 1.png" alt="">
+            <img id="img-foot" src="${pageContext.request.contextPath}/assets/imgs/Group 1.png" alt="">
             <nav class="nav-footer">
                 <p class="title-points">Ferramentas</p>
                 <ul>
@@ -280,7 +282,7 @@
                 <p class="title-points">Contatos</p>
                 <ul>
                     <li>(11) 95795-9848</li>
-                    <li>Institutuo J&F</li>
+                    <li>Instituto J&F</li>
                     <li>@vireyabrasil</li>
                     <li>Rua Dolore Duran 38, Rochdale - SP</li>
                 </ul>

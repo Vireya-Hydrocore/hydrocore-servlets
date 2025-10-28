@@ -107,7 +107,7 @@
 
                 <div class="campos">
                     <label for="nomeEta">Nome da ETA</label>
-                    <select id="nomeEta">
+                    <select id="nomeEta" name="nomeEta">
                         <option value="">Selecione uma ETA</option> <%-- Valor inicial vazio --%>
                         <%-- Listando os cargos disponíveis com EtaDAO --%>
                         <%

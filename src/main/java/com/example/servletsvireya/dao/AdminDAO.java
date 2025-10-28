@@ -183,7 +183,9 @@ public class AdminDAO {
 
             if (rs.next()) {
                 String senhaBanco = rs.getString("senha");
+                System.out.println(senhaBanco);
 
+                System.out.println(SenhaHash.verificarSenha(senha, senhaBanco));
                 // Verifica se a senha informada bate com a do banco
                 if (SenhaHash.verificarSenha(senha, senhaBanco)) {
                     return rs.getInt("id"); // Retorna o id do admin

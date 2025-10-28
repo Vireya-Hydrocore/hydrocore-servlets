@@ -391,31 +391,6 @@ table th {
 }
 
 
-/* ===== POPUP ===== */
-.popup-overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.popup-content {
-    background: white;
-    padding: 25px 30px;
-    border-radius: 10px;
-    width: 400px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-
-.popup-content h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
 /* ====== RESPONSIVIDADE ====== */
 
 /* --- Ajuste geral para telas médias --- */
@@ -686,12 +661,17 @@ table th {
     min-width: 120px;
 }
 
+
+
 .botao-redefinir {
     background-color: #c4c4c4;
     color: #000;
     border-radius: 6px;
     padding: 6px 10px;
     text-decoration: none;
+}
+.botao-redefinir:hover {
+    background-color: #b3b3b3;
 }
 
 .botao-salvar {
@@ -702,11 +682,6 @@ table th {
     padding: 6px 12px;
     cursor: pointer;
 }
-
 .botao-salvar:hover {
     background-color: #117ea8;
-}
-
-.botao-redefinir:hover {
-    background-color: #b3b3b3;
 }

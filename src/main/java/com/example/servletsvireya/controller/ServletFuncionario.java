@@ -132,14 +132,12 @@ public class ServletFuncionario extends HttpServlet {
         FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
 
         CargoDAO cargoDAO = new CargoDAO(); //Para realizar a busca do id do cargo
-        String cargoNome = req.getParameter("cargo");
-        funcionarioDTO.setNomeCargo(cargoNome);
-        funcionarioDTO.setIdCargo(cargoDAO.buscarIdPorNome(cargoNome));
+        int idCargo = Integer.parseInt(req.getParameter("cargo"));
+        funcionarioDTO.setIdCargo(idCargo);//tira
 
-        EtaDAO etaDAO = new EtaDAO(); //Para realizar a busca do id da ETA
-        String nomeEta= req.getParameter("nomeEta");
-        funcionarioDTO.setNomeEta(nomeEta);
-        funcionarioDTO.setIdEta(etaDAO.buscarIdPorNome(nomeEta));
+        int idEta = Integer.parseInt(req.getParameter("nomeEta")); // valor do select (ID)
+        System.out.println(idEta);//.
+        funcionarioDTO.setIdEta(idEta);
 
         funcionarioDTO.setNome(req.getParameter("nome"));
         funcionarioDTO.setEmail(req.getParameter("email"));

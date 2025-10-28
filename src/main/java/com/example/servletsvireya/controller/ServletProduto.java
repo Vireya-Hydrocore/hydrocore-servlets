@@ -45,7 +45,7 @@ public class ServletProduto extends HttpServlet {
                     buscarProduto(req, resp);
                     break;
                 case "filtroProduto":
-                    filtroProduto(req, resp);
+                    filtrarProduto(req, resp);
                     break;
                 default:
                     resp.sendRedirect(req.getContextPath() + "/assets/pages/produto/produtoIndex.jsp");
@@ -127,9 +127,8 @@ public class ServletProduto extends HttpServlet {
         produtoDTO.setConcentracao(Double.parseDouble(req.getParameter("concentracao")));
 
         EtaDAO etaDAO = new EtaDAO(); //Para realizar a busca do id da ETA
-        String nomeEta = req.getParameter("nomeEta");
-        produtoDTO.setIdEta(etaDAO.buscarIdPorNome(nomeEta));
-        produtoDTO.setNomeEta(nomeEta);
+        int idEta= Integer.parseInt(req.getParameter("nomeEta"));
+        produtoDTO.setIdEta(idEta);
 
         // ===== VALIDAÇÃO PRODUTO =====
         erros = Validador.validarProduto(
@@ -232,7 +231,7 @@ public class ServletProduto extends HttpServlet {
     //        Método para FILTRAR o produto (por coluna e valor)
     // ===============================================================
 
-    protected void filtroProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void filtrarProduto(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Armazena a query filtrada em um novo List
         List<ProdutoDTO> lista = produtoDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
 

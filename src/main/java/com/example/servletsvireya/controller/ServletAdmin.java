@@ -4,6 +4,7 @@ import com.example.servletsvireya.util.SenhaHash;
 import com.example.servletsvireya.dao.AdminDAO;
 import com.example.servletsvireya.dto.AdminDTO;
 import com.example.servletsvireya.util.Validador;
+import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -17,6 +18,7 @@ public class ServletAdmin extends HttpServlet {
 
     private AdminDAO adminDAO = new AdminDAO();
     List<String> erros = new ArrayList<>();
+
 
 
     // ===============================================================
@@ -144,11 +146,10 @@ public class ServletAdmin extends HttpServlet {
         adminDTO.setNome(req.getParameter("nome"));
         adminDTO.setEmail(req.getParameter("email"));
         String senhaDigitada = req.getParameter("senha");
-        String nomeEta = req.getParameter("nomeEta");
+        int idEta = Integer.parseInt(req.getParameter("nomeEta")); // valor do select (ID)
 
-        EtaDAO etaDAO= new EtaDAO(); //Para realizar a busca do id da ETA
-        adminDTO.setIdEta(etaDAO.buscarIdPorNome(nomeEta));
-        adminDTO.setNomeEta(nomeEta);
+        System.out.println(idEta);//.
+        adminDTO.setIdEta(idEta);
 
         // ===== VALIDAÇÃO =====
         erros = Validador.validarAdmin(adminDTO.getNome(), adminDTO.getEmail(), senhaDigitada);

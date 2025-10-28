@@ -2,16 +2,20 @@ package com.example.servletsvireya.controller;
 
 import com.example.servletsvireya.dao.AdminDAO;
 import com.example.servletsvireya.model.Admin;
+import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/ServletLogin", "/logar", "/logarAdmin"}, name = "ServletLogin")
 public class ServletLogin extends HttpServlet {
+    private static final Dotenv dotenv = Dotenv.load();
+    private static final String TOKEN = dotenv.get("TOKEN");
 
     AdminDAO adminDAO = new AdminDAO();
     List<String> erros = new ArrayList<>();
@@ -88,9 +92,20 @@ public class ServletLogin extends HttpServlet {
 
         if (idAdmin != null) {
             // Redireciona para página principal do dashboard
-            resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta"); //////////////////////////////PAGINA DE EL VITOR
+            System.out.println("conectiouyy");
+            System.out.println(idAdmin);
+
+            // constrói a URL de destino
+            String url = "https://rendervireyaweb/login-externo"
+                    + "?funcionarioId=" + idAdmin
+                    + "&token=" + URLEncoder.encode(TOKEN, "UTF-8");
+
+            // redireciona o navegador
+            resp.sendRedirect(url);
+            return;
         } else {
             erros.add("E-mail ou senha incorretos.");
+            System.out.println("erro");
             req.setAttribute("erros", erros);
             RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/erroLogin.jsp");
             rd.forward(req, resp);

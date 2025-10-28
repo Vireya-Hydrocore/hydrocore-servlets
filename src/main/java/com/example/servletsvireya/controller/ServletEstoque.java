@@ -152,15 +152,12 @@ public class ServletEstoque extends HttpServlet {
         estoqueDTO.setMinPossivelEstocado(Integer.parseInt(req.getParameter("minPossivelEstocado")));
 
         ProdutoDAO produtoDAO = new ProdutoDAO(); //Para realizar a busca do nome do produto
-        String nomeProduto = req.getParameter("nomeProduto");
-        int idProduto = produtoDAO.buscarIdPorNome(nomeProduto);
+        int idProduto = Integer.parseInt(req.getParameter("nomeProduto"));
         estoqueDTO.setIdProduto(idProduto);
-        estoqueDTO.setNomeProduto(nomeProduto);
 
         EtaDAO etaDAO = new EtaDAO(); //Realizar a busca do id da ETA
-        String nomeEta= req.getParameter("nomeEta");
-        estoqueDTO.setIdEta(etaDAO.buscarIdPorNome(nomeEta));
-        estoqueDTO.setNomeEta(nomeEta);
+        int idEta= Integer.parseInt(req.getParameter("nomeEta"));
+        estoqueDTO.setIdEta(idEta);
 
         //===== Validação de dados usando a classe Validador ======
         erros = new ArrayList<>();
