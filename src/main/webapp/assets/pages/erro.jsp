@@ -7,27 +7,30 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
+<!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styleErro.css">
-    <title>Erro</title>
+    <title>Erro de Validação</title>
 </head>
 
 <body>
 <main id="principal">
-    <div>
-        <h1>❌ Erro de Validação</h1>
-    </div>
+    <header>
+        <h1>Erro de Validação</h1>
+    </header>
 
     <%
         // Recupera a lista de erros enviada pelos Servlets
         List<String> erros = (List<String>) request.getAttribute("erros");
         if (erros != null && !erros.isEmpty()) {
     %>
-    <p>Os seguintes problemas foram encontrados nos dados enviados:</p>
+    <!-- <div style="display: flex;"> -->
+    <img src="${pageContext.request.contextPath}/assets/imgs/image_erro.png">
+    <p>Problemas Encontrados: </p>
     <ul class="lista-erros">
         <% for (String erro : erros) { %>
         <li><%= erro %></li>
@@ -40,9 +43,12 @@
     <%
         }
     %>
-    <a href="${pageContext.request.contextPath}/index.jsp" class="botao-voltar">Sair</a>
-    <a href="javascript: history.go(-1)" class="botao-voltar">Voltar à Página Anterior</a>
-
+    <!-- </div> -->
+    <div class="botoes">
+        <a href="${pageContext.request.contextPath}/index.jsp" class="botao-voltar">Sair</a>
+        <a href="javascript: history.go(-1)" class="botao-voltar">Voltar à Página Anterior</a>
+    </div>
 </main>
 </body>
+
 </html>
