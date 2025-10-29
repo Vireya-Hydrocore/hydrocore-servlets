@@ -1,6 +1,7 @@
 package com.example.servletsvireya.model;
 
 public class Cargo {
+    //Variaveis
     private int id;
     private String nome;
     private int acesso;
@@ -13,26 +14,30 @@ public class Cargo {
         this.acesso = acesso;
     }
 
-    //Getters e setters
+    //Getters
     public int getId(){
         return this.id;
     }
-    public void setId(int id){
-        this.id = id;
-    }
-
     public String getNome(){
         return this.nome;
     }
-    public void setNome(String nome){
-        this.nome = nome;
-    }
-
     public int getAcesso() {
         return acesso;
     }
 
+    //Setters
+    public void setNome(String nome){
+        this.nome = nome;
+    }
+    public void setId(int id){
+        this.id = id;
+    }
     public void setAcesso(int acesso) {
         this.acesso = acesso;
+    }
+
+    //toString
+    public String toString(){
+        return "Id: "+this.getId()+" Nome: "+this.getNome()+" Acesso: "+this.getAcesso();
     }
 }

@@ -25,54 +25,54 @@ public class EstoqueDTO {
         this.nomeProduto = nomeProduto;
     }
 
-    //Getters e Setters
+    //Getters
     public int getId() {
         return this.id;
     }
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getQuantidade() {
         return this.quantidade;
+    }
+    public Date getDataValidade() {
+        return dataValidade;
+    }
+    public Integer getMinPossivelEstocado() {
+        return this.minPossivelEstocado;
+    }
+    public int getIdProduto() {
+        return this.idProduto;
+    }
+    public int getIdEta() { return this.idEta; }
+    public String getNomeEta() { return nomeEta; }
+    public String getNomeProduto() {
+        return this.nomeProduto;
+    }
+
+    //Setters
+    public void setId(int id) {
+        this.id = id;
     }
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
-
-    public Date getDataValidade() {
-        return dataValidade;
-    }
-
     public void setDataValidade(java.sql.Date dataValidade) {
         this.dataValidade = dataValidade;
-    }
-
-
-    public Integer getMinPossivelEstocado() {
-        return this.minPossivelEstocado;
     }
     public void setMinPossivelEstocado(Integer minPossivelEstocado) {
         this.minPossivelEstocado = minPossivelEstocado;
     }
-
-    public int getIdProduto() {
-        return this.idProduto;
-    }
     public void setIdProduto(int idProduto) {
         this.idProduto = idProduto;
     }
-
-    public int getIdEta() { return this.idEta; }
-    public void setIdEta(int idEta) { this.idEta = idEta; }
-
-    public String getNomeEta() { return nomeEta; }
     public void setNomeEta(String nomeEta) { this.nomeEta = nomeEta; }
-
-    public String getNomeProduto() {
-        return this.nomeProduto;
-    }
+    public void setIdEta(int idEta) { this.idEta = idEta; }
     public void setNomeProduto(String nomeProduto) {
         this.nomeProduto = nomeProduto;
+    }
+
+    //toString
+    public String toString(){
+        return "Id: "+this.getId()+" Quantidade: "+this.getQuantidade()+" Data de validade: "+this.getDataValidade()+" Mínimo possível estocado: "
+                +this.getMinPossivelEstocado()+" Id da eta: "+this.getIdEta()+" Id do produto: "+ this.getIdProduto()+ " Nome da eta: "+this.nomeEta
+                +" Nome do produto: "+this.getNomeProduto();
     }
 }
