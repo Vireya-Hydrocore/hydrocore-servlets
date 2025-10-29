@@ -1,34 +1,52 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: eriksilva-ieg
+  Date: 06/10/2025
+  Time: 16:56
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styleErro.css">--%>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styleErro.css">
     <title>Erro</title>
 </head>
+
 <body>
-    <h1>Erro</h1>
+<main id="principal">
+    <header>
+        <h1>Erro de <b>login</b></h1>
+    </header>
+
     <%
+        // Recupera a lista de erros enviada pelos Servlets
         List<String> erros = (List<String>) request.getAttribute("erros");
-        if (erros != null) {
+        if (erros != null && !erros.isEmpty()) {
     %>
-    <div class="alert alert-danger">
-        <% for (int i=0; i < erros.size(); i++) { %>
-        <ul>
-            <li><%= erros.get(i) %></li>
-        </ul>
+    <img src="${pageContext.request.contextPath}/assets/imgs/Reset%20password-pana.png">
+    <p>Problemas Encontrados: </p>
+    <ul class="lista-erros">
+        <% for (String erro : erros) { %>
+        <li><%= erro %></li>
         <% } %>
-    </div>
+    </ul>
     <%
-    } else if (request.getAttribute("erros") != null) {
+    } else {
     %>
-    <div class="alert alert-danger">
-        <p><%= request.getAttribute("erros") %></p>
+    <p>Houve algum erro inesperado no sistema.</p>
+    <%
+        }
+    %>
+    <div class="botoes">
+        <a href="${pageContext.request.contextPath}/index.jsp" class="botao-voltar  ">Sair</a>
+        <a href="javascript: history.go(-1)" class="botao-voltar">Voltar à Página Anterior</a>
     </div>
-    <% } %>
+</main>
 </body>
+
 </html>

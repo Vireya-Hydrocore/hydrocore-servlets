@@ -10,7 +10,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Página de Login</title>
+  <title>Login</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -19,6 +19,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      overflow-y: hidden;
     }
     .login-container {
       background-color: #fff;

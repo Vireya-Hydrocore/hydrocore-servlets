@@ -132,10 +132,6 @@ public class ServletEta extends HttpServlet {
         String cnpj= (String) session.getAttribute("cnpj");
         String telefone = (String) session.getAttribute("telefone");
         int capacidade = (Integer) session.getAttribute("capacidade");
-        System.out.println(telefone);
-        System.out.println(capacidade);
-
-        System.out.println(nome+ email+ senhaDigitada+ cnpj+ telefone+ capacidade);
 
         //Criando um DTO de ETA para armazenar os valores inseridos
         EtaDTO etaDTO = new EtaDTO();

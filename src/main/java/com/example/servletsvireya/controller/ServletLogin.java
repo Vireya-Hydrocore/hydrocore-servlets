@@ -50,6 +50,7 @@ public class ServletLogin extends HttpServlet {
                     break;
             }
         } catch (Exception e) {
+            erros.clear();
             erros.add("Ocorreu um erro inesperado ao processar a solicitação de login");
             req.setAttribute("erros", erros);
             req.getRequestDispatcher("assets/pages/erroLogin.jsp");
@@ -72,6 +73,7 @@ public class ServletLogin extends HttpServlet {
             // Redireciona para página inicial do admin
             resp.sendRedirect(req.getContextPath() + "/ServletDashboard");
         } else {
+            erros.clear();
             erros.add("E-mail ou senha incorretos.");
             req.setAttribute("erros", erros); //Setta um atributo erro para o JSP tratar
             RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/erroLogin.jsp"); //Vai para a pagina de erro
@@ -92,9 +94,6 @@ public class ServletLogin extends HttpServlet {
 
         if (idAdmin != null) {
             // Redireciona para página principal do dashboard
-            System.out.println("conectiouyy");
-            System.out.println(idAdmin);
-
             // constrói a URL de destino
             String url = "https://hydrocore-gerente.onrender.com/"
                     + "?funcionarioId=" + idAdmin
@@ -104,8 +103,8 @@ public class ServletLogin extends HttpServlet {
             resp.sendRedirect(url);
             return;
         } else {
+            erros.clear();
             erros.add("E-mail ou senha incorretos.");
-            System.out.println("erro");
             req.setAttribute("erros", erros);
             RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/erroLogin.jsp");
             rd.forward(req, resp);
