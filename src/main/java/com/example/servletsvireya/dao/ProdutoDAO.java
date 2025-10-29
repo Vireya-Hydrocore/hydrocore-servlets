@@ -27,8 +27,10 @@ public class ProdutoDAO {
         comandoEstoque = "INSERT INTO estoque (quantidade, data_validade, min_possivel_estocado, id_produto, id_eta) " +
                 "VALUES (0, '2100-01-01', 100, ?, ?)"; //Insere um estoque predefinido
 
-        try (PreparedStatement pstmtProduto = conn.prepareStatement(comandoProduto, Statement.RETURN_GENERATED_KEYS); //Retorna o id gerado
-             PreparedStatement pstmtEstoque = conn.prepareStatement(comandoEstoque)){
+        try {
+            PreparedStatement pstmtProduto,pstmtEstoque;
+            pstmtProduto = conn.prepareStatement(comandoProduto, Statement.RETURN_GENERATED_KEYS); //Retorna o id gerado
+            pstmtEstoque= conn.prepareStatement(comandoEstoque);
             //Settando os valores da instrução SQL
             pstmtProduto.setString(1, produtoDTO.getNome());
             pstmtProduto.setString(2, produtoDTO.getTipo());
@@ -91,14 +93,15 @@ public class ProdutoDAO {
 
         try {
             conn.setAutoCommit(false); // Caso de erro em algum comando, é possível voltar
-
-            try (PreparedStatement pstmtEstoque = conn.prepareStatement(comandoEstoque);
-                 PreparedStatement pstmtProduto = conn.prepareStatement(comandoProduto);
-                 PreparedStatement pstmtUso = conn.prepareStatement(comandoUso_produto_processo)) {
+            try {
+                PreparedStatement pstmtEstoque, pstmtProduto, pstmtUso;
+                pstmtEstoque = conn.prepareStatement(comandoEstoque);
+                pstmtProduto = conn.prepareStatement(comandoProduto);
+                pstmtUso = conn.prepareStatement(comandoUso_produto_processo);
 
                 pstmtEstoque.setInt(1, idProduto); //No primeiro comando
                 pstmtProduto.setInt(1, idProduto); //Segundo comando
-                pstmtUso.setInt(1,idProduto);
+                pstmtUso.setInt(1, idProduto);
 
                 pstmtEstoque.executeUpdate(); //Primeiro: remove primeiro o estoque
                 pstmtUso.executeUpdate();
@@ -113,6 +116,9 @@ public class ProdutoDAO {
                     conn.rollback(); //Reverte a exclusão do estoque
                     return 0;
                 }
+            }catch (SQLException sqle){
+                sqle.printStackTrace();
+                return -1;
             }
         } catch (SQLException sqle) {
             try{
@@ -141,7 +147,9 @@ public class ProdutoDAO {
         String comando;
         comando = "UPDATE produto SET nome = ?, tipo = ?, unidade_medida = ?, concentracao = ? WHERE id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             //Settando valores da instrução SQL
             pstmt.setString(1, produtoDTO.getNome());
             pstmt.setString(2, produtoDTO.getTipo());
@@ -184,7 +192,9 @@ public class ProdutoDAO {
                 "JOIN eta ON eta.id = e.id_eta " +
                 "ORDER BY p.id;"; //ordena por id
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             rset = pstmt.executeQuery(); //Executa a consulta SQL
 
             //Armazena os valores em um List<>
@@ -242,7 +252,9 @@ public class ProdutoDAO {
         String comando;
         comando = "SELECT * FROM produto WHERE id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             pstmt.setInt(1, produtoDTO.getId());
             rset = pstmt.executeQuery(); //Executa a consulta
 
@@ -359,7 +371,9 @@ public class ProdutoDAO {
                 "JOIN ETA ON ETA.id = ESTOQUE.id_eta " +
                 "WHERE LOWER(" + tabela + "." + coluna + ") " + operador + " LOWER(?)";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             //Define o tipo de dado corretamente
             if (numero) {
                 int valorInt;

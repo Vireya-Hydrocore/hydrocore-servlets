@@ -20,7 +20,9 @@ public class CargoDAO {
         String comando;
         comando = "INSERT INTO cargo (nome, acesso, id_eta) VALUES (?, ?, ?)";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             //Settando nos parâmetros do comando
             pstmt.setString(1, cargo.getNome());
             pstmt.setInt(2, cargo.getAcesso());
@@ -55,9 +57,10 @@ public class CargoDAO {
         comando2 = "UPDATE FUNCIONARIO SET ID_CARGO=NULL WHERE id_cargo = ?";
 
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando);
-             PreparedStatement pstmt2 = conn.prepareStatement(comando2)) {
-
+        try {
+            PreparedStatement pstmt,pstmt2;
+            pstmt = conn.prepareStatement(comando);
+            pstmt2 = conn.prepareStatement(comando2);
             pstmt.setInt(1, cargo.getId());
             pstmt2.setInt(1, cargo.getId());
 
@@ -131,7 +134,9 @@ public class CargoDAO {
         String comando;
         comando = "SELECT id FROM cargo WHERE LOWER(nome) = LOWER(?)";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             pstmt.setString(1, nomeCargo);
 
             ResultSet rs;
@@ -191,7 +196,9 @@ public class CargoDAO {
                 "JOIN eta e ON e.id = c.id_eta " +
                 "ORDER BY c.acesso DESC";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)){
+        try {
+            PreparedStatement pstmt;
+             pstmt = conn.prepareStatement(comando);
             ResultSet rs;
             rs = pstmt.executeQuery();
 
@@ -266,7 +273,9 @@ public class CargoDAO {
                 "JOIN ETA ON ETA.id = CARGO.id_eta " +
                 "WHERE " + tabela + "." + coluna + " " + operador + " ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
 
             // Define o tipo de dado corretamente
             if (coluna.equalsIgnoreCase("acesso")) {

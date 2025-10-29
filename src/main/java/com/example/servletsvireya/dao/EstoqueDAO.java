@@ -24,7 +24,10 @@ public class EstoqueDAO {
         comando = "INSERT INTO estoque(quantidade, data_validade, " +
                 "min_possivel_estocado, id_eta, id_produto) VALUES(?, ?, ?, ?, ?)";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
+
             //Settando valores usando a classe model
             pstmt.setInt(1, estoqueDTO.getQuantidade());
 
@@ -61,7 +64,8 @@ public class EstoqueDAO {
         String comando;
         comando = "DELETE FROM estoque WHERE id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(comando);
             pstmt.setInt(1, estoqueDTO.getId());
 
             int resultado;
@@ -89,7 +93,9 @@ public class EstoqueDAO {
         String comando;
         comando = "UPDATE estoque SET quantidade = ?, data_validade = ?, min_possivel_estocado = ? WHERE id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try  {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             pstmt.setInt(1, estoqueDTO.getQuantidade());
 
             Date sqlDate;
@@ -134,7 +140,9 @@ public class EstoqueDAO {
                 "JOIN eta et ON et.id= e.id_eta " +
                 "ORDER BY nome_produto";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try  {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             rset = pstmt.executeQuery(); //Executa a query
 
             //Armazenar os valores em um List<>
@@ -200,7 +208,9 @@ public class EstoqueDAO {
                 "JOIN produto p ON p.id = e.id_produto " +
                 "WHERE e.id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             pstmt.setInt(1, estoqueDTO.getId());
             rset = pstmt.executeQuery(); //Executa a query
 
@@ -297,7 +307,9 @@ public class EstoqueDAO {
                 ? "ESTOQUE." + coluna + " = ?"   // comparação direta com DATE
                 : tabela + "." + coluna + " ILIKE ?"); // comparação textual
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             // Define o tipo de dado corretamente
             if (numero) {
                 int valorNumerico;

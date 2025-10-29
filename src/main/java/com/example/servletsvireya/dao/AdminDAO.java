@@ -33,7 +33,9 @@ public class AdminDAO {
         Connection conn = conexao.conectar();
         comando = "INSERT INTO admin (nome, email, senha, id_eta) VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             //Settando os valores no comando/pstmt
             pstmt.setString(1, adminDTO.getNome());
             pstmt.setString(2, adminDTO.getEmail());
@@ -84,7 +86,9 @@ public class AdminDAO {
         Connection conn = conexao.conectar();
         comando = "UPDATE admin SET nome = ?, email = ?, senha = ? WHERE id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             pstmt.setString(1, adminDTO.getNome());
             pstmt.setString(2, adminDTO.getEmail());
             pstmt.setString(3, adminDTO.getSenha());
@@ -134,7 +138,9 @@ public class AdminDAO {
         comando = "SELECT a.*, e.nome AS nome_eta FROM admin a " +
                 "JOIN eta e ON e.id = a.id_eta";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
@@ -185,7 +191,9 @@ public class AdminDAO {
         Connection conn = conexao.conectar();
         comando = "SELECT id, senha FROM admin WHERE email = ?"; // busca id do admin e senha
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             pstmt.setString(1, email);
             ResultSet rs = pstmt.executeQuery();
 
@@ -292,7 +300,9 @@ public class AdminDAO {
                         "JOIN ETA ON ETA.id = ADMIN.id_eta " +
                         "WHERE "+tabela+"." + coluna + " LIKE ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             pstmt.setString(1, "%" + pesquisa + "%");
             ResultSet rs = pstmt.executeQuery();
 

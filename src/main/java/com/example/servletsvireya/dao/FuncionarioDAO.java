@@ -25,7 +25,9 @@ public class FuncionarioDAO {
         comando = "INSERT INTO funcionario (nome, email, senha, data_admissao, data_nascimento, id_cargo, id_eta) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             //Settando os valores no comando
             pstmt.setString(1, funcionarioDTO.getNome());
             pstmt.setString(2, funcionarioDTO.getEmail());
@@ -71,8 +73,10 @@ public class FuncionarioDAO {
         String comandoTarefa;
         comandoTarefa = "DELETE FROM tarefa WHERE id_funcionario= ?"; //Para deletar qualquer tarefa relacionada
 
-        try(PreparedStatement pstmtFuncionario = conn.prepareStatement(comandoFuncionario);
-            PreparedStatement pstmtTarefa = conn.prepareStatement(comandoTarefa)) {
+        try {
+            PreparedStatement pstmtFuncionario,pstmtTarefa;
+            pstmtFuncionario = conn.prepareStatement(comandoFuncionario);
+            pstmtTarefa = conn.prepareStatement(comandoTarefa);
 
             pstmtTarefa.setInt(1, funcionario.getId());
             pstmtTarefa.executeUpdate();
@@ -154,7 +158,9 @@ public class FuncionarioDAO {
         String comandoSQL;
         comandoSQL = " DELETE FROM funcionario WHERE id NOT IN ( SELECT MIN(id) FROM funcionario GROUP BY nome, email, data_admissao, data_nascimento, id_eta, id_cargo";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comandoSQL)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comandoSQL);
             int resultado;
             resultado = pstmt.executeUpdate();
 
@@ -183,7 +189,9 @@ public class FuncionarioDAO {
                 "LEFT JOIN eta e ON e.id = f.id_eta " +
                 "WHERE f.id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try  {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             pstmt.setInt(1, funcionarioDTO.getId()); //WHERE id = ?
             rset = pstmt.executeQuery(); //Executa e armazena a query
 
@@ -362,7 +370,9 @@ public class FuncionarioDAO {
                 ? "FUNCIONARIO." + coluna + " = ?"   // comparação direta com DATE
                 : tabela + "." + coluna + " ILIKE ?"); // comparação textual
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             ResultSet rs;
 
             if (isData) {

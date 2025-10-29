@@ -139,7 +139,9 @@ public class EtaDAO {
                 "JOIN endereco en ON en.id = e.id_endereco " +
                 "ORDER BY id"; //Ordena por ID
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             rset = pstmt.executeQuery(); //Executa e retorna a query
 
             while (rset.next()) {
@@ -194,9 +196,11 @@ public class EtaDAO {
         String comandoEndereco;
         comandoEndereco = "UPDATE endereco SET rua = ?, bairro = ?, cidade = ?, estado = ?, numero = ?, cep = ? WHERE id = ?";
 
-        try (PreparedStatement pstmtEndereco = conn.prepareStatement(comandoEndereco);
-             PreparedStatement pstmtEta = conn.prepareStatement(comandoEta)) {
-
+        try  {
+            PreparedStatement pstmtEndereco;
+            PreparedStatement pstmtEta;
+            pstmtEndereco = conn.prepareStatement(comandoEndereco);
+            pstmtEta = conn.prepareStatement(comandoEta);
             conn.setAutoCommit(false); //Tem que verificar se os dois atualizaram
 
             //Primeiro: altera endereço
@@ -262,7 +266,10 @@ public class EtaDAO {
         String comando;
         comando = "DELETE FROM eta WHERE id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try  {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
+
             pstmt.setInt(1, etaDTO.getId());
 
             int resultado;
@@ -296,7 +303,9 @@ public class EtaDAO {
                 "JOIN endereco on endereco.id = eta.id_endereco" +
                 " WHERE eta.id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             pstmt.setInt(1, etaDTO.getId());
             rset = pstmt.executeQuery(); //Executa a consulta com Query
 
@@ -368,7 +377,9 @@ public class EtaDAO {
         String sql;
         sql = "SELECT id FROM eta WHERE LOWER(nome) = LOWER(?)";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, nome);
 
             ResultSet rs;
@@ -430,8 +441,9 @@ public class EtaDAO {
                 "JOIN endereco ON endereco.id = eta.id_endereco " +
                 "WHERE " + tabela + "." + coluna + " " + operador + " ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
-
+        try  {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             // Define o tipo de dado corretamente
             if (numero) {
                 int valorNumerico;
