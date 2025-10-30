@@ -269,7 +269,7 @@ public class EstoqueDAO {
                         "JOIN ETA ON ETA.id = ESTOQUE.id_eta " +
                         "WHERE " + (isData
                         ? "ESTOQUE." + coluna + " = ?"   // comparação direta com DATE
-                        : tabela + "." + coluna + " ILIKE ?"); // comparação textual
+                        : tabela + "." + coluna + " "+ operador+ " ?"); // comparação textual
         try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
             // Define o tipo de dado corretamente
             if (numero) {

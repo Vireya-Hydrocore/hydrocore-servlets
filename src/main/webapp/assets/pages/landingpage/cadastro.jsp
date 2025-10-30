@@ -5,13 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastre-se</title>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/imgs/vireya%20icon.png" type="image/x-icon">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/cadastro.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Cadastre-se</title>
 </head>
 
 <body>
+
 <main>
     <div class="container-esquerdo">
         <div class="logo">
@@ -37,7 +38,6 @@
 
             <label for="senha">Senha</label>
             <div class="parametros-senha">
-                <p>Sua senha deve conter pelo menos:</p>
                 <ul>
                     <li id="length" class="invalid">8 caracteres</li>
                     <li id="uppercase" class="invalid">1 letra maiúscula</li>
@@ -89,5 +89,6 @@
     <script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/mostrarSenha.js"></script>
 </main>
+
 </body>
 </html>

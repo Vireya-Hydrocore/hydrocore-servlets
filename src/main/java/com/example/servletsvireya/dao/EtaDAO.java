@@ -327,7 +327,6 @@ public class EtaDAO {
             case "cep":
                 tabela = "endereco";
                 operador = "LIKE";
-                numero = true;
                 break;
             default:
                 tabela = "eta";
@@ -359,6 +358,7 @@ public class EtaDAO {
                 eta.setTelefone(rs.getString("telefone"));
                 eta.setCnpj(rs.getString("cnpj"));
                 eta.setCep(rs.getString("cep")); //endereço
+                eta.setCapacidade(rs.getInt("capacidade"));
                 lista.add(eta);
             }
         } catch (SQLException sqle) {

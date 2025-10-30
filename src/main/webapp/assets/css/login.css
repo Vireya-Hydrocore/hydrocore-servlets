@@ -197,3 +197,7 @@ input {
     z-index: 2;
     position: relative;
 }
+
+.login-text {
+    text-align: center;
+}

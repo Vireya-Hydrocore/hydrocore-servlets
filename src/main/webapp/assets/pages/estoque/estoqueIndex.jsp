@@ -151,6 +151,7 @@
                         </select>
                     </div>
 
+
                     <div class="campos">
                         <label>Pesquisa</label>
                         <input type="text" name="pesquisa" id="pesquisa" placeholder="Digite o termo de busca...">
@@ -163,6 +164,27 @@
                     </div>
                 </form>
             </div>
+
+            <script>
+                const colunaSelect = document.getElementById('colunaSelect');
+                const inputPesquisa = document.getElementById('pesquisa');
+
+                colunaSelect.addEventListener('change', function() {
+                    const valor = colunaSelect.value;
+
+                    // Se for uma das opções de data, muda o tipo para "date"
+                    if (valor === 'data_validade') {
+                        inputPesquisa.type = 'date';
+                        inputPesquisa.value = ''; // limpa o campo para evitar erro de formato
+                    } else {
+                        inputPesquisa.type = 'text';
+                        inputPesquisa.value = '';
+                    }
+                });
+            </script>
+
+
+            <!-- LISTA -->
 
             <div class="tabela-container">
                 <table>
@@ -192,6 +214,7 @@
                                href="${pageContext.request.contextPath}/ServletEstoque?action=selectEstoque&id=<%= lista.get(i).getId() %>">
                                 Editar
                             </a>
+
                             &nbsp;|&nbsp;
                             <form action="${pageContext.request.contextPath}/ServletEstoque" method="post" style="display:inline;">
                                 <input type="hidden" name="action" value="deleteEstoque">
@@ -214,6 +237,7 @@
         </section>
     </main>
 </div>
+
 <script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
 </body>
 

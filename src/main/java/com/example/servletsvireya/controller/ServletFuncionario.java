@@ -136,7 +136,6 @@ public class ServletFuncionario extends HttpServlet {
         funcionarioDTO.setIdCargo(idCargo);//tira
 
         int idEta = Integer.parseInt(req.getParameter("nomeEta")); // valor do select (ID)
-        System.out.println(idEta);//.
         funcionarioDTO.setIdEta(idEta);
 
         funcionarioDTO.setNome(req.getParameter("nome"));
