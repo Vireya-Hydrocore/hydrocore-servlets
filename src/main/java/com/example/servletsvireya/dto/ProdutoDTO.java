@@ -19,53 +19,37 @@ public class ProdutoDTO {
         this.unidadeMedida = unidadeMedida;
         this.concentracao = concentracao;
     }
-
+    //Getters
     public int getId() {
         return id;
     }
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getNome() {
         return nome;
     }
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public String getTipo() {
         return tipo;
     }
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
     public String getUnidadeMedida() {
         return unidadeMedida;
     }
-    public void setUnidadeMedida(String unidadeMedida) {
-        this.unidadeMedida = unidadeMedida;
-    }
-
     public double getConcentracao() {
         return concentracao;
     }
-    public void setConcentracao(double concentracao) {
-        this.concentracao = concentracao;
-    }
+    public int getIdEta() {return idEta;}
+    public String getNomeEta() {return nomeEta;}
 
-    public int getIdEta() {
-        return idEta;
-    }
-    public void setIdEta(int idEta) {
-        this.idEta = idEta;
-    }
+    //Setters
+    public void setId(int id) {this.id = id;}
+    public void setNome(String nome) {this.nome = nome;}
+    public void setTipo(String tipo) {this.tipo = tipo;}
+    public void setUnidadeMedida(String unidadeMedida) {this.unidadeMedida = unidadeMedida;}
+    public void setConcentracao(double concentracao) {this.concentracao = concentracao;}
+    public void setIdEta(int idEta) {this.idEta = idEta;}
+    public void setNomeEta(String nomeEta) {this.nomeEta = nomeEta;}
 
-    public String getNomeEta() {
-        return nomeEta;
-    }
-    public void setNomeEta(String nomeEta) {
-        this.nomeEta = nomeEta;
+    //toString
+    public String toString(){
+        return "Id: "+this.getId()+" Nome: "+this.getNome()+" Tipo: "+this.getTipo()+" Concentração: "+this.getConcentracao()
+                +" Unidade de medida: "+this.getUnidadeMedida()+" Id eta: "+this.getIdEta()+" Nome da eta: "+this.getNomeEta();
     }
 }

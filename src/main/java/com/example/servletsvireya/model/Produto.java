@@ -49,4 +49,10 @@ public class Produto {
     public void setConcentracao(double concentracao) {
         this.concentracao = concentracao;
     }
+
+    //toString
+    public String toString(){
+        return "Id: "+this.getId()+" Nome: "+this.getNome()+" Tipo: "+this.getTipo()+" Concentração: "+this.getConcentracao()
+                +" Unidade de medida: "+this.getUnidadeMedida();
+    }
 }

@@ -17,8 +17,15 @@ import java.util.List;
 public class ServletAdmin extends HttpServlet {
 
     private AdminDAO adminDAO = new AdminDAO();
+    private EtaDAO etaDAO = new EtaDAO(); // Instanciado no topo
     List<String> erros = new ArrayList<>();
 
+    // Variáveis de escopo de método movidas para o topo (declaradas)
+    private String action;
+    private AdminDTO adminDTO;
+    private List<AdminDTO> lista;
+    private RequestDispatcher rd;
+    private int resultado;
 
 
     // ===============================================================
@@ -28,7 +35,7 @@ public class ServletAdmin extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String action = req.getParameter("action"); //Vem com a ação do usuário
+        action = req.getParameter("action"); //Vem com a ação do usuário
 
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
@@ -66,7 +73,7 @@ public class ServletAdmin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String action = req.getParameter("action");
+        action = req.getParameter("action");
 
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
@@ -106,11 +113,11 @@ public class ServletAdmin extends HttpServlet {
 
     protected void listarAdmins(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<AdminDTO> lista = adminDAO.listarAdmin(); //Lista de objetos retornados na query
+        lista = adminDAO.listarAdmin(); //Lista de objetos retornados na query
 
         req.setAttribute("admins", lista); //Devolve a lista de Admins encontrados em um novo atributo, para a pagina JSP
 
-        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/admin/adminIndex.jsp"); //Envia para a página principal
+        rd = req.getRequestDispatcher("/assets/pages/admin/adminIndex.jsp"); //Envia para a página principal
         rd.forward(req, resp);
     }
 
@@ -121,7 +128,7 @@ public class ServletAdmin extends HttpServlet {
 
     protected void buscarAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Recebimento do id do admin que será editado
-        AdminDTO adminDTO = new AdminDTO();
+        adminDTO = new AdminDTO();
         adminDTO.setId(Integer.parseInt(req.getParameter("id")));
 
         //Executando o método buscarPorId
@@ -131,7 +138,7 @@ public class ServletAdmin extends HttpServlet {
         req.setAttribute("admin", adminDTO);
 
         //Encaminhando ao documento adminAlterar.jsp
-        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/admin/adminAlterar.jsp");
+        rd = req.getRequestDispatcher("/assets/pages/admin/adminAlterar.jsp");
         rd.forward(req, resp);
     }
 
@@ -142,13 +149,12 @@ public class ServletAdmin extends HttpServlet {
 
     protected void inserirAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Criado um DTO para armazenar os valores inseridos
-        AdminDTO adminDTO = new AdminDTO();
+        adminDTO = new AdminDTO();
         adminDTO.setNome(req.getParameter("nome"));
         adminDTO.setEmail(req.getParameter("email"));
         String senhaDigitada = req.getParameter("senha");
         int idEta = Integer.parseInt(req.getParameter("nomeEta")); // valor do select (ID)
 
-        System.out.println(idEta);//.
         adminDTO.setIdEta(idEta);
 
         // ===== VALIDAÇÃO =====
@@ -164,7 +170,7 @@ public class ServletAdmin extends HttpServlet {
         String senhacrip = SenhaHash.hashSenha(senhaDigitada);
         adminDTO.setSenha(senhacrip);
 
-        int resultado = adminDAO.inserirAdmin(adminDTO);
+        resultado = adminDAO.inserirAdmin(adminDTO);
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin"); //Lista novamente os admins se der certo
@@ -182,7 +188,7 @@ public class ServletAdmin extends HttpServlet {
 
     protected void alterarAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Settando os valores no adminDTO
-        AdminDTO adminDTO = new AdminDTO();
+        adminDTO = new AdminDTO();
         adminDTO.setId(Integer.parseInt(req.getParameter("id")));
         adminDTO.setNome(req.getParameter("nome"));
         adminDTO.setEmail(req.getParameter("email"));
@@ -201,7 +207,7 @@ public class ServletAdmin extends HttpServlet {
         adminDTO.setSenha(SenhaHash.hashSenha(senhaDigitada));
 
         // Chamar o método do DAO
-        int resultado = adminDAO.alterarAdmin(adminDTO);
+        resultado = adminDAO.alterarAdmin(adminDTO);
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin");
@@ -219,10 +225,10 @@ public class ServletAdmin extends HttpServlet {
 
     protected void removerAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Instanciando objeto DTO e settando o id para remoção
-        AdminDTO adminDTO = new AdminDTO();
+        adminDTO = new AdminDTO();
         adminDTO.setId(Integer.parseInt(req.getParameter("id")));
 
-        int resultado = adminDAO.removerAdmin(adminDTO);
+        resultado = adminDAO.removerAdmin(adminDTO);
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletAdmin?action=mainAdmin");
@@ -241,10 +247,10 @@ public class ServletAdmin extends HttpServlet {
 
     protected void filtrarAdmin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Armazena a query filtrada em um novo List
-        List<AdminDTO> lista = adminDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa")); //Armazena numa lista
+        lista = adminDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa")); //Armazena numa lista
 
         req.setAttribute("admins", lista); //Setta a lista em um novo atributo
-        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/admin/adminIndex.jsp");
+        rd = req.getRequestDispatcher("/assets/pages/admin/adminIndex.jsp");
         rd.forward(req, resp);
     }
 }

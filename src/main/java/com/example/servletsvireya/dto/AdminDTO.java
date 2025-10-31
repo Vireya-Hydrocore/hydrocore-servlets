@@ -22,34 +22,36 @@ public class AdminDTO {
         this.nomeEta = nomeEta;
     }
 
-    //Getters e Setters
+    //Getters
     public int getId() {
         return id;
     }
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getNome() {
         return nome;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public String getSenha() { return senha; }
+    public int getIdEta() { return idEta; }
+    public String getNomeEta() { return nomeEta; }
+
+    //Setters
+    public void setId(int id) {
+        this.id = id;
     }
     public void setNome(String nome) {
         this.nome = nome;
     }
-
-    public String getEmail() {
-        return email;
-    }
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public String getSenha() { return senha; }
     public void setSenha(String senha) { this.senha = senha; }
-
-    public int getIdEta() { return idEta; }
     public void setIdEta(int idEta) { this.idEta = idEta; }
-
-    public String getNomeEta() { return nomeEta; }
     public void setNomeEta(String nomeEta) { this.nomeEta = nomeEta; }
+
+    public String toString(){
+        return "Id: "+this.getId()+" Nome: "+this.getNome()+" Senha: "+this.getSenha()+" Email: "+this.getEmail()
+                +" Id da eta: "+this.getIdEta()+" Nome eta: "+this.getNomeEta();
+    }
 }

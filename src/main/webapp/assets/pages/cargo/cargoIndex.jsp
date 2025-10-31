@@ -40,7 +40,7 @@
 
 <aside class="sidebar" id="sidebar">
     <ul>
-        <a href="${pageContext.request.contextPath}/dashAnalise">
+        <a href="${pageContext.request.contextPath}/ServletDashboard">
             <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-painel-de-controle-16.png"> Dashboard</li>
         </a>
         <a href="${pageContext.request.contextPath}/ServletEta?action=mainEta">

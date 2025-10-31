@@ -25,7 +25,24 @@ import java.util.List;
 public class ServletEta extends HttpServlet {
 
     private EtaDAO etaDAO = new EtaDAO();
-    List<String> erros = new ArrayList<>();
+    private List<String> erros = new ArrayList<>();
+
+    // Variáveis de escopo de método movidas para o topo (declaradas)
+    private String action;
+    private List<EtaDTO> listEtas;
+    private RequestDispatcher rd;
+    private EtaDTO etaDTO;
+    private AdminDTO adminDTO;
+    private int resultado;
+
+    // Variáveis da sessão do método cadastrarEta, movidas para o topo (declaradas)
+    private HttpSession session;
+    private String nome;
+    private String email;
+    private String senhaDigitada;
+    private String cnpj;
+    private String telefone;
+    private int capacidade;
 
 
     // ===============================================================
@@ -35,7 +52,7 @@ public class ServletEta extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String action = req.getParameter("action"); //Vem com a ação do usuário
+        action = req.getParameter("action"); //Vem com a ação do usuário
 
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
@@ -73,7 +90,7 @@ public class ServletEta extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String action = req.getParameter("action");
+        action = req.getParameter("action");
 
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
@@ -111,11 +128,11 @@ public class ServletEta extends HttpServlet {
 
     protected void listarEtas(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<EtaDTO> listEtas = etaDAO.listarEtas(); //List de objetos retornados na query
+        listEtas = etaDAO.listarEtas(); //List de objetos retornados na query
 
         req.setAttribute("etas", listEtas); //Devolve a lista de ETAs encontradas em um novo atributo, para a pagina JSP
 
-        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/eta/etaIndex.jsp"); //Envia para a página principal
+        rd = req.getRequestDispatcher("/assets/pages/eta/etaIndex.jsp"); //Envia para a página principal
         rd.forward(req, resp);
     }
 
@@ -125,16 +142,16 @@ public class ServletEta extends HttpServlet {
     // ===============================================================
 
     private void cadastrarEta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String nome = (String) session.getAttribute("nome");
-        String email = (String) session.getAttribute("email");
-        String senhaDigitada = (String) session.getAttribute("senha");
-        String cnpj= (String) session.getAttribute("cnpj");
-        String telefone = (String) session.getAttribute("telefone");
-        int capacidade = (Integer) session.getAttribute("capacidade");
+        session = request.getSession();
+        nome = (String) session.getAttribute("nome");
+        email = (String) session.getAttribute("email");
+        senhaDigitada = (String) session.getAttribute("senha");
+        cnpj= (String) session.getAttribute("cnpj");
+        telefone = (String) session.getAttribute("telefone");
+        capacidade = (Integer) session.getAttribute("capacidade");
 
         //Criando um DTO de ETA para armazenar os valores inseridos
-        EtaDTO etaDTO = new EtaDTO();
+        etaDTO = new EtaDTO();
         etaDTO.setNome(nome); //Nome da ETA
         etaDTO.setCapacidade(capacidade);
         etaDTO.setRua(request.getParameter("rua"));
@@ -152,16 +169,16 @@ public class ServletEta extends HttpServlet {
         etaDTO.setTelefone(telefoneFormatado);
 
         // ===== VALIDAÇÃO ETA =====
-        List<String> erros = Validador.validarEta(nome, capacidade, telefoneFormatado, cnpjFormatado);
+        erros = Validador.validarEta(nome, capacidade, telefoneFormatado, cnpjFormatado);
         if (!erros.isEmpty()) {
             request.setAttribute("erros", erros);
-            RequestDispatcher rd = request.getRequestDispatcher("/assets/pages/erroLogin.jsp");
+            rd = request.getRequestDispatcher("/assets/pages/erroLogin.jsp");
             rd.forward(request, response);
             return; // Interrompe execução se houver erros
         }
 
         //Criando DTO do Admin vinculado à ETA
-        AdminDTO adminDTO = new AdminDTO();
+        adminDTO = new AdminDTO();
         adminDTO.setNome(nome);
         adminDTO.setEmail(email);
 
@@ -169,7 +186,7 @@ public class ServletEta extends HttpServlet {
         erros = Validador.validarSenha(senhaDigitada);
         if (!erros.isEmpty()) {
             request.setAttribute("erros", erros);
-            RequestDispatcher rd = request.getRequestDispatcher("/assets/pages/erroLogin.jsp");
+            rd = request.getRequestDispatcher("/assets/pages/erroLogin.jsp");
             rd.forward(request, response);
             return;
         }
@@ -179,16 +196,16 @@ public class ServletEta extends HttpServlet {
         adminDTO.setSenha(senhaCrip);
 
         //Chama DAO
-        EtaDAO etaDAO = new EtaDAO();
-        int idEta = etaDAO.cadastrarEta(etaDTO, adminDTO);
+        // EtaDAO etaDAO = new EtaDAO(); // Removido por já estar instanciado no topo
+        resultado = etaDAO.cadastrarEta(etaDTO, adminDTO);
 
         //Se o cadastro estiver correto, manda para a pagina de login
-        if (idEta > 0) {
+        if (resultado > 0) {
             response.sendRedirect(request.getContextPath() + "/assets/pages/landingpage/login.jsp");
         } else {
             erros.add("Não foi possível cadastrar esta ETA, verifique os campos e tente novamente.");
             request.setAttribute("erros", erros);
-            RequestDispatcher rd = request.getRequestDispatcher("/assets/pages/erroLogin.jsp");
+            rd = request.getRequestDispatcher("/assets/pages/erroLogin.jsp");
             rd.forward(request, response);
         }
     }
@@ -200,7 +217,7 @@ public class ServletEta extends HttpServlet {
 
     protected void alterarEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Settando os valores no etaDTO
-        EtaDTO etaDTO = new EtaDTO();
+        etaDTO = new EtaDTO();
         etaDTO.setId(Integer.parseInt(req.getParameter("id")));
         etaDTO.setNome(req.getParameter("nome"));
         etaDTO.setCapacidade(Integer.parseInt(req.getParameter("capacidade")));
@@ -216,7 +233,7 @@ public class ServletEta extends HttpServlet {
         etaDTO.setCep(req.getParameter("cep"));
 
         // ===== VALIDAÇÃO ETA =====
-        List<String> erros = Validador.validarEta(
+        erros = Validador.validarEta(
                 etaDTO.getNome(),
                 etaDTO.getCapacidade(),
                 etaDTO.getTelefone(),
@@ -230,7 +247,7 @@ public class ServletEta extends HttpServlet {
         }
 
         //Chamando o DAO
-        int resultado = etaDAO.alterarEta(etaDTO);
+        resultado = etaDAO.alterarEta(etaDTO);
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta");
@@ -248,7 +265,7 @@ public class ServletEta extends HttpServlet {
 
     protected void buscarEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Settando o id na etaDTO
-        EtaDTO etaDTO = new EtaDTO();
+        etaDTO = new EtaDTO();
         etaDTO.setId(Integer.parseInt(req.getParameter("id")));
 
         etaDAO.buscarPorId(etaDTO); //No mesmo objeto, setta os valores encontrados
@@ -256,7 +273,7 @@ public class ServletEta extends HttpServlet {
         req.setAttribute("eta", etaDTO); //Setta em um novo atributo para o JSP pegar os valores
 
         //Encaminhar ao documento alterarEta.jsp
-        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/eta/etaAlterar.jsp");
+        rd = req.getRequestDispatcher("/assets/pages/eta/etaAlterar.jsp");
         rd.forward(req, resp);
     }
 
@@ -265,6 +282,7 @@ public class ServletEta extends HttpServlet {
     //          Método para REMOVER a ETA (pelo ID pego)
     // ===============================================================
 
+    // Não há método de remoção neste Servlet.
 
     // ===============================================================
     //        Método para FILTRAR a ETA (por coluna e valor)
@@ -272,10 +290,10 @@ public class ServletEta extends HttpServlet {
 
     protected void filtrarEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Armazena a query filtrada em um novo List
-        List<EtaDTO> lista = etaDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
+        listEtas = etaDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
 
-        req.setAttribute("etas", lista); //Devolve a lista de ETAs encontradas em um novo atributo
-        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/eta/etaIndex.jsp");
+        req.setAttribute("etas", listEtas); //Devolve a lista de ETAs encontradas em um novo atributo
+        rd = req.getRequestDispatcher("/assets/pages/eta/etaIndex.jsp");
         rd.forward(req, resp);
     }
 }

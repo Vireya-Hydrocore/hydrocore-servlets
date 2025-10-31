@@ -2,6 +2,7 @@ package com.example.servletsvireya.model;
 import java.time.LocalDate;
 
 public class Estoque {
+    //Variáveis
     private int id;                  // Identificador único
     private int quantidade;          // Quantidade estocada de tal produto
     private LocalDate dataValidade; // Data de validade de tal produto
@@ -25,42 +26,45 @@ public class Estoque {
     public int getId() {
         return id;
     }
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getQuantidade() {
         return this.quantidade;
+    }
+    public LocalDate getDataValidade() {
+        return this.dataValidade;
+    }
+    public int getMinPossivEstocado() {
+        return this.minPossivEstocado;
+    }
+    public int getIdEta() {
+        return this.idEta;
+    }
+    public int getIdProduto() {
+        return this.idProduto;
+    }
+
+    //Setters
+    public void setId(int id) {
+        this.id = id;
     }
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
-
-    public LocalDate getDataValidade() {
-        return this.dataValidade;
-    }
     public void setDataValidade(LocalDate dataValidade) {
         this.dataValidade = dataValidade;
-    }
-
-    public int getMinPossivEstocado() {
-        return this.minPossivEstocado;
     }
     public void setMinPossivEstocado(int minPossivEstocado) {
         this.minPossivEstocado = minPossivEstocado;
     }
-
-    public int getIdEta() {
-        return this.idEta;
-    }
     public void setIdEta(int idEta) {
         this.idEta = idEta;
     }
-
-    public int getIdProduto() {
-        return this.idProduto;
-    }
     public void setIdProduto(int idProduto) {
         this.idProduto = idProduto;
+    }
+
+    //toString
+    public String toString(){
+        return "Id: "+this.getId()+" Quantidade: "+this.getQuantidade()+" Data de validade: "+this.getDataValidade()+" Mínimo possível estocado: "
+                +this.getMinPossivEstocado()+" Id da eta: "+this.getIdEta()+" Id do produto: "+this.getIdProduto();
     }
 }

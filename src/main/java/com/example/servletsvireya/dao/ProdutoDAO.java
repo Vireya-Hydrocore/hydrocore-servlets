@@ -1,31 +1,33 @@
 package com.example.servletsvireya.dao;
 
-import com.example.servletsvireya.dto.EstoqueDTO;
 import com.example.servletsvireya.dto.ProdutoDTO;
-import com.example.servletsvireya.model.Produto;
 import com.example.servletsvireya.util.Conexao;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProdutoDAO {
-    private final Conexao conexao = new Conexao(); //Para os métodos de conectar() e desconectar()
+    Conexao conexao = new Conexao(); //Para os métodos de conectar() e desconectar()
 
 
     // ========== Método para cadastrar um produto no sistema ========== //
     public int cadastrarProduto(ProdutoDTO produtoDTO) {
-        Connection conn = conexao.conectar(); //Cria conexão com o banco
-        ResultSet rset = null; //Para pegar o id do produto
+        Connection conn;
+        conn = conexao.conectar(); //Cria conexão com o banco
+
+        ResultSet rset; //Para pegar o id do produto
+        rset = null;
 
         //Prepara a instrução SQL para inserir o produto e estoque
         String comandoProduto = "INSERT INTO produto (nome, tipo, unidade_medida, concentracao) VALUES (?, ?, ?, ?)";
         String comandoEstoque = "INSERT INTO estoque (quantidade, data_validade, min_possivel_estocado, id_produto, id_eta) " +
                 "VALUES (0, '2100-01-01', 100, ?, ?)"; //Insere um estoque predefinido
 
-        try (PreparedStatement pstmtProduto = conn.prepareStatement(comandoProduto, Statement.RETURN_GENERATED_KEYS); //Retorna o id gerado
-             PreparedStatement pstmtEstoque = conn.prepareStatement(comandoEstoque)){
+        try {
+            PreparedStatement pstmtProduto,pstmtEstoque;
+            pstmtProduto = conn.prepareStatement(comandoProduto, Statement.RETURN_GENERATED_KEYS); //Retorna o id gerado
+            pstmtEstoque= conn.prepareStatement(comandoEstoque);
             //Settando os valores da instrução SQL
             pstmtProduto.setString(1, produtoDTO.getNome());
             pstmtProduto.setString(2, produtoDTO.getTipo());
@@ -72,13 +74,14 @@ public class ProdutoDAO {
 
         try {
             conn.setAutoCommit(false); // Caso de erro em algum comando, é possível voltar
+            try {
+                PreparedStatement pstmtEstoque, pstmtProduto, pstmtUso;
+                pstmtEstoque = conn.prepareStatement(comandoEstoque);
+                pstmtProduto = conn.prepareStatement(comandoProduto);
+                pstmtUso = conn.prepareStatement(comandoUso_produto_processo);
 
-            try (PreparedStatement pstmtEstoque = conn.prepareStatement(comandoEstoque);
-                 PreparedStatement pstmtProduto = conn.prepareStatement(comandoProduto);
-                 PreparedStatement pstmtUso = conn.prepareStatement(comandoUso_produto_processo)) {
                 pstmtEstoque.setInt(1, idProduto); //No primeiro comando
                 pstmtProduto.setInt(1, idProduto); //Segundo comando
-                pstmtUso.setInt(1,idProduto);
 
                 pstmtEstoque.executeUpdate(); //Primeiro: remove primeiro o estoque
                 pstmtUso.executeUpdate();
@@ -89,10 +92,13 @@ public class ProdutoDAO {
                     conn.rollback(); //Reverte a exclusão do estoque
                     return 0;
                 }
+            }catch (SQLException sqle){
+                sqle.printStackTrace();
+                return -1;
             }
         } catch (SQLException sqle) {
             try{
-                conn.rollback(); //Reverte se der erro
+                if (conn != null) conn.rollback(); //Reverte se der erro
             } catch (SQLException e){
                 e.printStackTrace();
             }
@@ -111,10 +117,14 @@ public class ProdutoDAO {
 
     // ========== Método para alterar um produto do sistema ========== //
     public int alterarProduto(ProdutoDTO produtoDTO) {
-        Connection conn = conexao.conectar();
+        Connection conn;
+        conn = conexao.conectar();
+
         String comando = "UPDATE produto SET nome = ?, tipo = ?, unidade_medida = ?, concentracao = ? WHERE id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             //Settando valores da instrução SQL
             pstmt.setString(1, produtoDTO.getNome());
             pstmt.setString(2, produtoDTO.getTipo());
@@ -138,16 +148,25 @@ public class ProdutoDAO {
 
     // ========== Método para listar os produto do sistema ========== //
     public List<ProdutoDTO> listarProdutos() {
-        ResultSet rset = null; //Consulta da tabela
-        List<ProdutoDTO> produtos = new ArrayList<>();
-        Connection conn = conexao.conectar();
-        String comando = "SELECT DISTINCT ON (p.id) p.id, p.nome, p.tipo, p.unidade_medida, p.concentracao, eta.nome AS nome_eta " +
+        ResultSet rset; //Consulta da tabela
+        rset = null;
+
+        List<ProdutoDTO> produtos;
+        produtos = new ArrayList<>();
+
+        Connection conn;
+        conn = conexao.conectar();
+
+        String comando;
+        comando = "SELECT DISTINCT ON (p.id) p.id, p.nome, p.tipo, p.unidade_medida, p.concentracao, eta.nome AS nome_eta " +
                 "FROM produto p " +
                 "JOIN estoque e ON p.id = e.id_produto " +
                 "JOIN eta ON eta.id = e.id_eta " +
                 "ORDER BY p.id;"; //ordena por id
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             rset = pstmt.executeQuery(); //Executa a consulta SQL
 
             //Armazena os valores em um List<>
@@ -175,15 +194,21 @@ public class ProdutoDAO {
 
     // ========== Método para buscar um produto pelo id ========== // ---------------------precisa settar o nome_eta?
     public ProdutoDTO buscarPorId(ProdutoDTO produtoDTO) {
-        ResultSet rset = null; //Consulta da tabela
-        Connection conn = conexao.conectar();
+        ResultSet rset; //Consulta da tabela
+        rset = null;
+
+        Connection conn;
+        conn = conexao.conectar();
+
         //Prepara a consulta SQL para selecionar os produtos pelo ID
         String comando = "SELECT p.*, et.nome AS nome_eta FROM produto p " +
                 "JOIN estoque es ON p.id = es.id_produto " +
                 "JOIN eta et ON et.id = es.id_eta " +
                 "WHERE p.id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             pstmt.setInt(1, produtoDTO.getId());
             rset = pstmt.executeQuery(); //Executa a consulta
 
@@ -207,47 +232,24 @@ public class ProdutoDAO {
         }
     }
 
-//    public List<ProdutoDTO> listarProdutoPorEta(int idEta) {
-//        List<ProdutoDTO> produtos = new ArrayList<>();
-//        Connection conn = conexao.conectar();
-//        String sql = "SELECT DISTINCT p.* " +
-//                "FROM produto p\n" +
-//                "JOIN estoque e ON p.id = e.id_produto " +
-//                "WHERE e.id_eta = ?";
-//
-//        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-//            pstmt.setInt(1, idEta);
-//            ResultSet rs = pstmt.executeQuery();
-//
-//            while (rs.next()) {
-//                ProdutoDTO dto = new ProdutoDTO();
-//                dto.setId(rs.getInt("id"));
-//                dto.setNome(rs.getString("nome"));
-//                dto.setTipo(rs.getString("tipo"));
-//                dto.setUnidadeMedida(rs.getString("unidade_medida"));
-//                dto.setConcentracao(rs.getDouble("concentracao"));
-//                produtos.add(dto);
-//            }
-//            return produtos; //Populando o list
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return new ArrayList<>();
-//        } finally {
-//            conexao.desconectar();
-//        }
-//    }
-
 
     // ========== Método para buscar o id de um produto pelo seu nome ========== //
     public Integer buscarIdPorNome(String nome) { //------------------- pode juntar com o metodo de baixo
-        Connection conn = conexao.conectar();
-        Integer id = 0; //Valor padrão caso não encontre
+        Connection conn;
+        conn = conexao.conectar();
+
+        Integer id; //Valor padrão caso não encontre
+        id = 0;
+
         String comando = "SELECT id FROM produto WHERE LOWER(nome) = LOWER(?)";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             pstmt.setString(1, nome); // busca exata
-            ResultSet rs = pstmt.executeQuery();
+
+            ResultSet rs;
+            rs = pstmt.executeQuery();
 
             if (rs.next()) {
                 id = rs.getInt("id");
@@ -263,45 +265,19 @@ public class ProdutoDAO {
     }
 
 
-    // ========== Método para buscar um produto pelo seu nome ========== //
-//    public List<ProdutoDTO> buscarPorNome(String nome) {
-//        List<ProdutoDTO> lista = new ArrayList<>();
-//        Connection conn = conexao.conectar();
-//        String sql = "SELECT p.*, e.nome AS nome_eta FROM produto p " +
-//                "JOIN estoque ON p.id = estoque.id_produto " +
-//                "JOIN eta e ON e.id = estoque.id_eta " +
-//                "WHERE LOWER(nome) = LOWER(?)";
-//
-//        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-//
-//            pstmt.setString(1, nome);
-//            ResultSet rs = pstmt.executeQuery();
-//
-//            while (rs.next()) {
-//                ProdutoDTO dto = new ProdutoDTO();
-//                dto.setId(rs.getInt("id"));
-//                dto.setNome(rs.getString("nome"));
-//                dto.setTipo(rs.getString("tipo"));
-//                dto.setUnidadeMedida(rs.getString("unidade_medida"));
-//                dto.setConcentracao(rs.getDouble("concentracao"));
-//                dto.setNomeEta(rs.getString("nome_eta")); //Faz JOIN com estoque e eta
-//                lista.add(dto);
-//            }
-//           return lista;
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return new ArrayList<>();
-//        }
-//    }
-
-
     // ========== Método para filtrar um produto ========== //
     public List<ProdutoDTO> filtroBuscaPorColuna(String coluna, String pesquisa) {
         String tabela;
-        String operador = "LIKE";
-        boolean numero = false;
-        boolean Double = false;
+        tabela = null;
+
+        String operador;
+        operador = "LIKE";
+
+        boolean numero;
+        numero = false;
+
+        boolean Double;
+        Double = false;
 
         // Define de qual tabela e tipo de dado vem a coluna
         switch (coluna.toLowerCase()) {
@@ -326,17 +302,23 @@ public class ProdutoDAO {
                 tabela = "PRODUTO";
         }
 
-        Connection conn = conexao.conectar();
-        List<ProdutoDTO> lista = new ArrayList<>(); //Para armazenar os dados da query
-        //SQL com join para trazer nome da ETA
-        String comando =
-                "SELECT PRODUTO.*, ETA.NOME AS nome_eta " +
-                        "FROM PRODUTO " +
-                        "JOIN ESTOQUE ON ESTOQUE.id_produto = PRODUTO.id " +
-                        "JOIN ETA ON ETA.id = ESTOQUE.id_eta " +
-                        "WHERE LOWER(" + tabela + "." + coluna + ") " + operador + " LOWER(?)";
+        Connection conn;
+        conn = conexao.conectar();
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        List<ProdutoDTO> lista; //Para armazenar os dados da query
+        lista = new ArrayList<>();
+
+        //SQL com join para trazer nome da ETA
+        String comando;
+        comando = "SELECT PRODUTO.*, ETA.NOME AS nome_eta " +
+                "FROM PRODUTO " +
+                "JOIN ESTOQUE ON ESTOQUE.id_produto = PRODUTO.id " +
+                "JOIN ETA ON ETA.id = ESTOQUE.id_eta " +
+                "WHERE LOWER(" + tabela + "." + coluna + ") " + operador + " LOWER(?)";
+
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             //Define o tipo de dado corretamente
             if (numero) {
                 pstmt.setInt(1, Integer.parseInt(pesquisa));
@@ -346,7 +328,8 @@ public class ProdutoDAO {
                 pstmt.setString(1, "%" + pesquisa + "%");
             }
 
-            ResultSet rs = pstmt.executeQuery();
+            ResultSet rs;
+            rs = pstmt.executeQuery();
 
             while (rs.next()) {
                 ProdutoDTO dto = new ProdutoDTO();

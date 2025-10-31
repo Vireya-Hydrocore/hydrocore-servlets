@@ -32,74 +32,71 @@ public class FuncionarioDTO {
         this.nomeEta = nomeEta;
     }
 
-    //Getters e Setters
+    //Getters
     public int getId() {
         return this.id;
     }
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getNome() {
         return this.nome;
+    }
+    public String getEmail() {
+        return this.email;
+    }
+    public Date getDataAdmissao() {
+        return dataAdmissao;
+    }
+    public Date getDataNascimento() {
+        return dataNascimento;
+    }
+    public String getSenha() {
+        return senha;
+    }
+    public int getIdCargo() {
+        return idCargo;
+    }
+    public String getNomeCargo() {return this.nomeCargo;}
+    public int getIdEta() {
+        return idEta;
+    }
+    public String getNomeEta() {
+        return this.nomeEta;
+    }
+
+    //Setters
+    public void setId(int id) {
+        this.id = id;
     }
     public void setNome(String nome) {
         this.nome = nome;
     }
-
-    public String getEmail() {
-        return this.email;
-    }
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Date getDataAdmissao() {
-        return dataAdmissao;
     }
     public void setDataAdmissao(java.sql.Date dataAdmissao) {
         this.dataAdmissao = dataAdmissao;
     }
-
-    public Date getDataNascimento() {
-        return dataNascimento;
-    }
     public void setDataNascimento(java.sql.Date dataNascimento) {
         this.dataNascimento = dataNascimento;
-    }
-
-    public String getSenha() {
-        return senha;
     }
     public void setSenha(String senha) {
         this.senha = senha;
     }
-
-    public int getIdCargo() {
-        return idCargo;
-    }
-    public void setIdCargo(int idCargo) {
-        this.idCargo = idCargo;
-    }
-
-    public String getNomeCargo() {
-        return this.nomeCargo;
-    }
+    public void setIdCargo(int idCargo) {this.idCargo = idCargo;}
     public void setNomeCargo(String nomeCargo) {
         this.nomeCargo = nomeCargo;
-    }
-
-    public int getIdEta() {
-        return idEta;
     }
     public void setIdEta(int idEta) {
         this.idEta = idEta;
     }
-
-    public String getNomeEta() {
-        return this.nomeEta;
-    }
     public void setNomeEta(String nomeEta) {
         this.nomeEta = nomeEta;
+    }
+
+    //toString
+    public String toString(){
+        return "Id: "+this.getId()+" Nome: "+this.getNome()+" Email: "+this.getEmail()+" Data de admissão: "+this.getDataAdmissao()+
+                " Data de nascimento: "+this.getDataNascimento()+" Senha: "+this.senha+
+                " ID do Cargo: "+this.getIdCargo()+" Nome do cargo: "+this.nomeCargo+
+                " ID da eta: "+this.getIdEta()+"Nome da eta: "+this.getNomeEta();
     }
 }

@@ -6,44 +6,53 @@ public class CargoDTO {
     private Integer acesso;
     private Integer idEta;
     private String nomeEta;
+    //Contrutores
+    public CargoDTO() {}
+    public CargoDTO(int id, String nome, Integer acesso, Integer idEta, String nomeEta) {
+        this.id = id;
+        this.nome = nome;
+        this.acesso = acesso;
+        this.idEta = idEta;
+        this.nomeEta = nomeEta;
+    }
 
+    //Gettters
     public Integer getIdEta() {
         return idEta;
     }
-
-    public void setIdEta(Integer idEta) {
-        this.idEta = idEta;
-    }
-
     public int getId() {
         return id;
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getNome() {
         return nome;
     }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public Integer getAcesso() {
         return acesso;
     }
-
-    public void setAcesso(Integer acesso) {
-        this.acesso = acesso;
-    }
-
     public String getNomeEta() {
         return nomeEta;
     }
 
+    //Setters
+    public void setIdEta(Integer idEta) {
+        this.idEta = idEta;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+    public void setAcesso(Integer acesso) {
+        this.acesso = acesso;
+    }
     public void setNomeEta(String nomeEta) {
         this.nomeEta = nomeEta;
+    }
+
+    //toString
+    public String toString(){
+        return "Id: "+this.getId()+" Nome: "+this.getNome()+" Acesso: "+this.getAcesso()+
+                " IdEta: "+this.getIdEta()+" NomeEta: "+this.getNomeEta();
     }
 }

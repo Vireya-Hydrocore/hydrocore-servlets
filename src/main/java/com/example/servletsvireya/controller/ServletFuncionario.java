@@ -26,7 +26,19 @@ import java.util.List;
 public class ServletFuncionario extends HttpServlet {
 
     private FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+    private CargoDAO cargoDAO = new CargoDAO(); // Instanciado no topo
+    private EtaDAO etaDAO = new EtaDAO(); // Instanciado no topo
     List<String> erros = new ArrayList<>();
+
+    // Variáveis de escopo de método movidas para o topo (declaradas)
+    private String action;
+    private List<FuncionarioDTO> lista;
+    private FuncionarioDTO funcionarioDTO;
+    private RequestDispatcher rd;
+    private int resultado;
+    private String dataStr;
+    private String dataStr2;
+    private String senhaDigitada;
 
 
     // ===============================================================
@@ -36,7 +48,7 @@ public class ServletFuncionario extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String action = req.getParameter("action"); //Vem com a ação do usuário
+        action = req.getParameter("action"); //Vem com a ação do usuário
 
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
@@ -74,7 +86,7 @@ public class ServletFuncionario extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String action = req.getParameter("action");
+        action = req.getParameter("action");
 
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
@@ -114,11 +126,11 @@ public class ServletFuncionario extends HttpServlet {
 
     protected void listarFuncionarios(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<FuncionarioDTO> lista = funcionarioDAO.listarFuncionarios(); //List de objetos retornados na query
+        lista = funcionarioDAO.listarFuncionarios(); //List de objetos retornados na query
 
         req.setAttribute("funcionarios", lista); //Devolve a lista de funcionarios encontrados em um novo atributo, para a pagina JSP
 
-        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/funcionario/funcionarioIndex.jsp"); //Envia para a página principal
+        rd = req.getRequestDispatcher("/assets/pages/funcionario/funcionarioIndex.jsp"); //Envia para a página principal
         rd.forward(req, resp);
     }
 
@@ -129,7 +141,7 @@ public class ServletFuncionario extends HttpServlet {
 
     protected void inserirFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Criando um DTO para armazenar os valores inseridos
-        FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
+        funcionarioDTO = new FuncionarioDTO();
 
         CargoDAO cargoDAO = new CargoDAO(); //Para realizar a busca do id do cargo
         int idCargo = Integer.parseInt(req.getParameter("cargo"));
@@ -140,18 +152,18 @@ public class ServletFuncionario extends HttpServlet {
 
         funcionarioDTO.setNome(req.getParameter("nome"));
         funcionarioDTO.setEmail(req.getParameter("email"));
-        String dataStr = req.getParameter("dataNascimento");
+        dataStr = req.getParameter("dataNascimento");
 
         if (dataStr != null && !dataStr.isEmpty()) {
             funcionarioDTO.setDataNascimento(java.sql.Date.valueOf(dataStr));
         }
-        String dataStr2 = req.getParameter("dataAdmissao");
+        dataStr2 = req.getParameter("dataAdmissao");
         if (dataStr2 != null && !dataStr2.isEmpty()) {
             funcionarioDTO.setDataAdmissao(java.sql.Date.valueOf(dataStr2)); // Corrigido dataStr2
         }
 
         // ===== Validação com classe Validador =====
-        erros = new ArrayList<>();
+        erros = new ArrayList<>(); // Reinstanciando para limpar erros
 
         if (!Validador.naoVazio(funcionarioDTO.getNome())) {
             erros.add("O nome do funcionário não pode estar vazio.");
@@ -169,7 +181,7 @@ public class ServletFuncionario extends HttpServlet {
             erros.add("A data de admissão deve ser hoje ou anterior.");
         }
 
-        String senhaDigitada = req.getParameter("senha");
+        senhaDigitada = req.getParameter("senha");
         List<String> errosSenha = Validador.validarSenha(senhaDigitada);
         erros.addAll(errosSenha);
 
@@ -183,7 +195,7 @@ public class ServletFuncionario extends HttpServlet {
         String senhaCrip = SenhaHash.hashSenha(senhaDigitada);
         funcionarioDTO.setSenha(senhaCrip);
 
-        int resultado = funcionarioDAO.inserirFuncionario(funcionarioDTO);
+        resultado = funcionarioDAO.inserirFuncionario(funcionarioDTO);
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario"); //Lista novamente os funcionarios se der certo
@@ -201,7 +213,7 @@ public class ServletFuncionario extends HttpServlet {
 
     protected void buscarFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Settando o id no FuncionarioDTO
-        FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
+        funcionarioDTO = new FuncionarioDTO();
         funcionarioDTO.setId(Integer.parseInt(req.getParameter("id")));
 
         funcionarioDAO.buscarPorId(funcionarioDTO); //No mesmo objeto, setta os valores encontrados
@@ -209,7 +221,7 @@ public class ServletFuncionario extends HttpServlet {
         req.setAttribute("funcionario", funcionarioDTO); //Setta em um novo atributo para o JSP pegar os valores
 
         //Encaminhar ao documento alterarFuncionario.jsp
-        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/funcionario/funcionarioAlterar.jsp");
+        rd = req.getRequestDispatcher("/assets/pages/funcionario/funcionarioAlterar.jsp");
         rd.forward(req, resp);
     }
 
@@ -220,7 +232,7 @@ public class ServletFuncionario extends HttpServlet {
 
     protected void alterarFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // Settando os valores no funcionarioDTO ---> ---> --> usuário não pode mudar a eta
-        FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
+        funcionarioDTO = new FuncionarioDTO();
         funcionarioDTO.setId(Integer.parseInt(req.getParameter("id")));
         funcionarioDTO.setNome(req.getParameter("nome"));
         funcionarioDTO.setEmail(req.getParameter("email"));
@@ -236,7 +248,7 @@ public class ServletFuncionario extends HttpServlet {
         funcionarioDTO.setIdCargo(cargoDAO.buscarIdPorNome(nomeCargo)); //Nesse método é retornado o id do cargo
 
         // ===== Validação com classe Validador =====
-        List<String> erros = new ArrayList<>();
+        erros = new ArrayList<>(); // Reinstanciando para limpar erros
 
         if (!Validador.naoVazio(funcionarioDTO.getNome())) {
             erros.add("O nome do funcionário não pode estar vazio.");
@@ -268,7 +280,7 @@ public class ServletFuncionario extends HttpServlet {
         funcionarioDTO.setSenha(SenhaHash.hashSenha(funcionarioDTO.getSenha()));
 
         // Chamar o DAO para alterar
-        int resultado = funcionarioDAO.alterarFuncionario(funcionarioDTO);
+        resultado = funcionarioDAO.alterarFuncionario(funcionarioDTO);
 
         // Tratar o resultado
         if (resultado == 1) {
@@ -288,7 +300,7 @@ public class ServletFuncionario extends HttpServlet {
     protected void removerFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
 
-        int resultado = funcionarioDAO.removerFuncionario(id);
+        resultado = funcionarioDAO.removerFuncionario(id);
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletFuncionario?action=mainFuncionario");
@@ -305,10 +317,10 @@ public class ServletFuncionario extends HttpServlet {
     // ===============================================================
 
     protected void filtrarFuncionario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<FuncionarioDTO> lista = funcionarioDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
+        lista = funcionarioDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
 
         req.setAttribute("funcionarios", lista);
-        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/funcionario/funcionarioIndex.jsp");
+        rd = req.getRequestDispatcher("/assets/pages/funcionario/funcionarioIndex.jsp");
         rd.forward(req, resp);
     }
 }

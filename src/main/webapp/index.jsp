@@ -281,10 +281,10 @@
             <nav class="nav-footer">
                 <p class="title-points">Contatos</p>
                 <ul>
-                    <li>(11) 95795-9848</li>
+                    <li>(11) 99286-4575</li>
                     <li>Instituto J&F</li>
                     <li>@vireyabrasil</li>
-                    <li>Rua Dolore Duran 38, Rochdale - SP</li>
+                    <li>R. Irineu José Bordon, 335 - Parque Anhanguera, São Paulo - SP, 05120-060</li>
                 </ul>
             </nav>
 

@@ -18,8 +18,16 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/ServletCargo", "/mainCargo", "/createCargo", "/selectCargo", "/updateCargo", "/deleteCargo", "/filtroCargo"}, name = "ServletCargo")
 public class ServletCargo extends HttpServlet {
 
-    CargoDAO cargoDAO = new CargoDAO();
-    List<String> erros = new ArrayList<>();
+    private CargoDAO cargoDAO = new CargoDAO();
+    private EtaDAO etaDAO = new EtaDAO(); // Instanciado no topo
+    private List<String> erros = new ArrayList<>();
+
+    // Variáveis de escopo de método movidas para o topo (declaradas)
+    private String action;
+    private List<CargoDTO> lista;
+    private RequestDispatcher rd;
+    private CargoDTO cargoDTO;
+    private int resultado;
 
 
     // ===============================================================
@@ -29,7 +37,7 @@ public class ServletCargo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String action = req.getParameter("action"); //Vem com a ação do usuário
+        action = req.getParameter("action"); //Vem com a ação do usuário
 
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
@@ -67,7 +75,7 @@ public class ServletCargo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String action = req.getParameter("action");
+        action = req.getParameter("action");
 
         // Proteção contra NullPointerException em switch de String
         if (action == null) {
@@ -107,11 +115,11 @@ public class ServletCargo extends HttpServlet {
 
     protected void listarCargos(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<CargoDTO> lista = cargoDAO.listarCargos(); //List de objetos retornados na query
+        lista = cargoDAO.listarCargos(); //List de objetos retornados na query
 
         req.setAttribute("cargos", lista); //Devolve a lista de cargos encontrados em um novo atributo
 
-        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/cargo/cargoIndex.jsp"); //Envia para a página principal
+        rd = req.getRequestDispatcher("/assets/pages/cargo/cargoIndex.jsp"); //Envia para a página principal
         rd.forward(req, resp);
     }
 
@@ -122,7 +130,7 @@ public class ServletCargo extends HttpServlet {
 
     protected void buscarCargo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Settando o id no CargoDTO
-        CargoDTO cargoDTO = new CargoDTO();
+        cargoDTO = new CargoDTO();
         cargoDTO.setId(Integer.parseInt(req.getParameter("id")));
 
         cargoDAO.buscarPorId(cargoDTO); //No mesmo objeto, setta os valores encontrados
@@ -130,7 +138,7 @@ public class ServletCargo extends HttpServlet {
         req.setAttribute("cargo", cargoDTO); //Setta em um novo atributo para o JSP pegar os valores
 
         //Encaminhar ao documento cargoAlterar.jsp
-        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/cargo/cargoAlterar.jsp");
+        rd = req.getRequestDispatcher("/assets/pages/cargo/cargoAlterar.jsp");
         rd.forward(req, resp);
     }
 
@@ -141,7 +149,7 @@ public class ServletCargo extends HttpServlet {
 
     protected void inserirCargo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Criado um DTO para armazenar os valores inseridos
-        CargoDTO cargoDTO = new CargoDTO();
+        cargoDTO = new CargoDTO();
         cargoDTO.setNome(req.getParameter("nome"));
         cargoDTO.setAcesso(Integer.parseInt(req.getParameter("acesso")));
 
@@ -151,7 +159,8 @@ public class ServletCargo extends HttpServlet {
         cargoDTO.setNomeEta(nomeEta);
 
         // VALIDAÇÃO
-        List<String> erros = Validador.validarCargo(cargoDTO.getNome(), cargoDTO.getAcesso());
+        // (Ajustado para usar a lista de erros da classe, como em 'alterarCargo')
+        erros = Validador.validarCargo(cargoDTO.getNome(), cargoDTO.getAcesso());
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
@@ -160,7 +169,7 @@ public class ServletCargo extends HttpServlet {
         }
 
         // Chamando o DAO
-        int resultado = cargoDAO.inserirCargo(cargoDTO);
+        resultado = cargoDAO.inserirCargo(cargoDTO);
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletCargo?action=mainCargo"); //Lista novamente os cargos se der certo
@@ -178,7 +187,7 @@ public class ServletCargo extends HttpServlet {
 
     protected void alterarCargo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Settando os valores no cargoDTO
-        CargoDTO cargoDTO = new CargoDTO();
+        cargoDTO = new CargoDTO();
         cargoDTO.setId(Integer.parseInt(req.getParameter("id")));
         cargoDTO.setNome(req.getParameter("nome"));
         cargoDTO.setAcesso(Integer.parseInt(req.getParameter("acesso")));
@@ -192,7 +201,7 @@ public class ServletCargo extends HttpServlet {
             return;
         }
 
-        int resultado = cargoDAO.alterarCargo(cargoDTO);
+        resultado = cargoDAO.alterarCargo(cargoDTO);
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletCargo?action=mainCargo");
@@ -210,10 +219,10 @@ public class ServletCargo extends HttpServlet {
 
     protected void removerCargo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Instanciando objeto DTO e settando o id para remoção
-        CargoDTO cargoDTO = new CargoDTO();
+        cargoDTO = new CargoDTO();
         cargoDTO.setId(Integer.parseInt(req.getParameter("id")));
 
-        int resultado = cargoDAO.removerCargo(cargoDTO);
+        resultado = cargoDAO.removerCargo(cargoDTO);
 
         if (resultado == 1) {
             resp.sendRedirect(req.getContextPath() + "/ServletCargo?action=mainCargo");
@@ -231,10 +240,10 @@ public class ServletCargo extends HttpServlet {
 
     protected void filtrarCargo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Armazena a query filtrada em um novo List
-        List<CargoDTO> lista = cargoDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
+        lista = cargoDAO.filtroBuscaPorColuna(req.getParameter("nome_coluna"), req.getParameter("pesquisa"));
 
         req.setAttribute("cargos", lista);
-        RequestDispatcher rd = req.getRequestDispatcher("/assets/pages/cargo/cargoIndex.jsp");
+        rd = req.getRequestDispatcher("/assets/pages/cargo/cargoIndex.jsp");
         rd.forward(req, resp);
     }
 }

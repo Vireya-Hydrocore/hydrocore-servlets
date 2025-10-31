@@ -1,11 +1,7 @@
 package com.example.servletsvireya.dao;
 
-
-
 import com.example.servletsvireya.dto.AdminDTO;
 import com.example.servletsvireya.dto.EtaDTO;
-import com.example.servletsvireya.dto.ProdutoDTO;
-import com.example.servletsvireya.model.Eta;
 import com.example.servletsvireya.util.Conexao;
 
 import java.sql.Connection;
@@ -16,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EtaDAO {
-    private Conexao conexao = new Conexao(); //Para os métodos de conectar() e desconectar()
+    Conexao conexao = new Conexao(); //Para os métodos de conectar() e desconectar()
 
 
     // ========== Método para cadastrar uma ETA no sistema ========== //
@@ -35,7 +31,8 @@ public class EtaDAO {
             conn.setAutoCommit(false);
 
             // Inserir endereço
-            String sqlEnd = "INSERT INTO endereco (rua, numero, bairro, cidade, estado, cep) " +
+            String sqlEnd;
+            sqlEnd = "INSERT INTO endereco (rua, numero, bairro, cidade, estado, cep) " +
                     "VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
             pstmtEnd = conn.prepareStatement(sqlEnd);
             pstmtEnd.setString(1, dto.getRua());
@@ -48,13 +45,17 @@ public class EtaDAO {
 
             //pego o id de endereco para colocar na eta
             rsEnd = pstmtEnd.executeQuery();
-            int idEndereco = 0;
+
+            int idEndereco;
+            idEndereco = 0;
             if (rsEnd.next()) {
                 idEndereco = rsEnd.getInt("id");
             }
 
             // Inserir ETA e pegar o id gerado
-            String sqlEta = "INSERT INTO eta (nome, capacidade, cnpj, id_endereco, telefone) VALUES (?, ?, ?, ?, ?) RETURNING id";
+            String sqlEta;
+            sqlEta = "INSERT INTO eta (nome, capacidade, cnpj, id_endereco, telefone) VALUES (?, ?, ?, ?, ?) RETURNING id";
+
             pstmtEta = conn.prepareStatement(sqlEta);
             pstmtEta.setString(1, dto.getNome());
             pstmtEta.setDouble(2, dto.getCapacidade());
@@ -69,7 +70,9 @@ public class EtaDAO {
             }
 
             // Inserir admin vinculado à ETA
-            String sqlAdmin = "INSERT INTO admin (nome, senha, email, id_eta) VALUES (?, ?, ?, ?)";
+            String sqlAdmin;
+            sqlAdmin = "INSERT INTO admin (nome, senha, email, id_eta) VALUES (?, ?, ?, ?)";
+
             pstmtAdmin = conn.prepareStatement(sqlAdmin);
             pstmtAdmin.setString(1, adminDTO.getNome());
             pstmtAdmin.setString(2, adminDTO.getSenha());
@@ -105,8 +108,6 @@ public class EtaDAO {
     }
 
 
-
-
     // ========== Método para listar as ETAs ========== //
     public List<EtaDTO> listarEtas() {
         Connection conn = conexao.conectar(); //Criando conexão com o banco
@@ -117,7 +118,9 @@ public class EtaDAO {
                 "JOIN endereco en ON en.id = e.id_endereco " +
                 "ORDER BY id"; //Ordena por ID
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             rset = pstmt.executeQuery(); //Executa e retorna a query
 
             while (rset.next()) {
@@ -145,12 +148,18 @@ public class EtaDAO {
     // ========== Método para alterar alguma ETA ========== //
     public int alterarEta(EtaDTO etaDTO) {
         Connection conn = conexao.conectar();
-        String comandoEta = "UPDATE eta SET nome = ?, capacidade = ?, telefone = ? WHERE id = ?"; //Não pode mudar CNPJ
-        String comandoEndereco = "UPDATE endereco SET rua = ?, bairro = ?, cidade = ?, estado = ?, numero = ?, cep = ? WHERE id = ?";
 
-        try (PreparedStatement pstmtEndereco = conn.prepareStatement(comandoEndereco);
-             PreparedStatement pstmtEta = conn.prepareStatement(comandoEta)) {
+        String comandoEta;
+        comandoEta = "UPDATE eta SET nome = ?, capacidade = ?, telefone = ? WHERE id = ?"; //Não pode mudar CNPJ
 
+        String comandoEndereco;
+        comandoEndereco = "UPDATE endereco SET rua = ?, bairro = ?, cidade = ?, estado = ?, numero = ?, cep = ? WHERE id = ?";
+
+        try  {
+            PreparedStatement pstmtEndereco;
+            PreparedStatement pstmtEta;
+            pstmtEndereco = conn.prepareStatement(comandoEndereco);
+            pstmtEta = conn.prepareStatement(comandoEta);
             conn.setAutoCommit(false); //Tem que verificar se os dois atualizaram
 
             //Primeiro: altera endereço
@@ -204,7 +213,10 @@ public class EtaDAO {
         Connection conn = conexao.conectar();
         String comando = "DELETE FROM eta WHERE id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try  {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
+
             pstmt.setInt(1, etaDTO.getId());
 
             if (pstmt.executeUpdate() > 0) {
@@ -230,7 +242,9 @@ public class EtaDAO {
                 "JOIN endereco on endereco.id = eta.id_endereco" +
                 " WHERE eta.id = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             pstmt.setInt(1, etaDTO.getId());
             rset = pstmt.executeQuery(); //Executa a consulta com Query
 
@@ -263,11 +277,17 @@ public class EtaDAO {
     public Integer buscarIdPorNome(String nome) {
         Connection conn = conexao.conectar();
         Integer idEta = 0; //Valor padrão caso não encontre
-        String sql = "SELECT id FROM eta WHERE LOWER(nome) = LOWER(?)";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        String sql;
+        sql = "SELECT id FROM eta WHERE LOWER(nome) = LOWER(?)";
+
+        try {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, nome);
-            ResultSet rs = pstmt.executeQuery();
+
+            ResultSet rs;
+            rs = pstmt.executeQuery();
 
             if (rs.next()) {
                 idEta = rs.getInt("id");
@@ -275,47 +295,27 @@ public class EtaDAO {
         } catch (SQLException sqle) {
             sqle.printStackTrace();
             idEta = 0;
+        } finally {
+            conexao.desconectar();
         }
 
         return idEta; //Retorna o id ou 0
     }
 
 
-    // ========== Método para buscar uma ETA pelo nome ========== //
-//    public EtaDTO buscarPorNome(String nome) {
-//        EtaDTO eta = null;
-//        String sql = "SELECT * FROM eta WHERE LOWER(nome) = LOWER(?)";
-//
-//        try (Connection conn = conexao.conectar();
-//             PreparedStatement stmt = conn.prepareStatement(sql)) {
-//
-//            stmt.setString(1, nome);
-//            ResultSet rs = stmt.executeQuery();
-//
-//            if (rs.next()) {
-//                eta = new EtaDTO();
-//                eta.setId(rs.getInt("id"));
-//                eta.setNome(rs.getString("nome"));
-//                eta.setCapacidade(rs.getInt("capacidade"));
-//                eta.setTelefone(rs.getString("telefone"));
-//                eta.setCnpj(rs.getString("cnpj"));
-//                eta.setIdEndereco(rs.getInt("id_endereco"));
-//            }
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return eta;
-//    }
-
-
     // ========== Método para filtrar uma ETA ========== //
     public List<EtaDTO> filtroBuscaPorColuna(String coluna, String pesquisa) {
         String tabela;
-        String operador = "LIKE";
-        boolean numero = false; //Inteiro
-        boolean Double = false;
+        tabela = null;
+
+        String operador;
+        operador = "LIKE";
+
+        boolean numero;
+        numero = false; //Inteiro
+
+        boolean Double;
+        Double = false; // Variável não usada, mas mantida a declaração
 
         // Define de qual tabela e tipo de dado vem a coluna
         switch (coluna.toLowerCase()) {
@@ -327,21 +327,27 @@ public class EtaDAO {
             case "cep":
                 tabela = "endereco";
                 operador = "LIKE";
+                numero = true;
                 break;
             default:
                 tabela = "eta";
         }
 
-        Connection conn = conexao.conectar();
-        List<EtaDTO> lista = new ArrayList<>();
+        Connection conn;
+        conn = conexao.conectar();
+
+        List<EtaDTO> lista;
+        lista = new ArrayList<>();
+
         // SQL com join para trazer o CEP de endereço
-        String comando =
-                "SELECT eta.*, endereco.cep FROM eta " +
-                        "JOIN endereco ON endereco.id = eta.id_endereco " +
-                        "WHERE " + tabela + "." + coluna + " " + operador + " ?";
+        String comando;
+        comando = "SELECT eta.*, endereco.cep FROM eta " +
+                "JOIN endereco ON endereco.id = eta.id_endereco " +
+                "WHERE " + tabela + "." + coluna + " " + operador + " ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(comando)) {
-
+        try  {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(comando);
             // Define o tipo de dado corretamente
             if (numero) {
                 pstmt.setInt(1, Integer.parseInt(pesquisa));
@@ -349,7 +355,8 @@ public class EtaDAO {
                 pstmt.setString(1, "%" + pesquisa + "%");
             }
 
-            ResultSet rs = pstmt.executeQuery();
+            ResultSet rs;
+            rs = pstmt.executeQuery();
 
             while (rs.next()) {
                 EtaDTO eta = new EtaDTO();
@@ -373,22 +380,3 @@ public class EtaDAO {
         return lista; //Preenchida ou vazia
     }
 }
-
-    // Método removerDuplicadas() ---> É necessário??????
-
-//    public int removerDuplicadas(){
-//        Connection conn = conexao.conectar();
-//        String comando = "DELETE FROM ETA WHERE id NOT IN (SELECT MIN(id) FROM ETA GROUP BY nome, capacidade)";
-//
-//        try(PreparedStatement pstmt = conn.prepareStatement(comando)){
-//
-//            int qtdRemovida = pstmt.executeUpdate()
-//            return qtdRemovida;
-//        }
-//        catch (SQLException sqle){
-//            sqle.printStackTrace();
-//            return -1;
-//        }
-//        finally {
-//            conexao.desconectar();
-//        }

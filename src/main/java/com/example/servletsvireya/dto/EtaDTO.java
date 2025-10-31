@@ -41,78 +41,64 @@ public class EtaDTO{
         this.estado = estado;
         this.numero = numero;
     }
-// Getters e Setters
 
+    // Getters
     public int getId(){ return this.id; }
-    public void setId(int id){ this.id = id; }
-
     public String getNome(){ return this.nome; }
-    public void setNome(String nome){ this.nome = nome; }
-
     public int getCapacidade(){ return this.capacidade; }
-    public void setCapacidade(int capacidade){ this.capacidade = capacidade; }
-
     public String getTelefone(){ return this.telefone; }
-    public void setTelefone(String telefone){ this.telefone = telefone; }
-
     public int getIdEndereco() { return idEndereco; }
-    public void setIdEndereco(int idEndereco) { this.idEndereco = idEndereco; }
-
     public String getCnpj() {
         return cnpj;
     }
-
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
-    }
-
     public String getBairro() {
         return bairro;
     }
-
-    public void setBairro(String bairro) {
-        this.bairro = bairro;
-    }
-
     public String getCep() {
         return cep;
     }
-
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
-
-    public String getRua() {
-        return rua;
-    }
-
-    public void setRua(String rua) {
-        this.rua = rua;
-    }
-
+    public String getRua() {return rua;}
     public String getCidade() {
         return cidade;
     }
-
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
+    public String getEstado() {return estado;}
     public int getNumero() {
         return numero;
     }
 
+    //Setters
+    public void setId(int id){ this.id = id; }
+    public void setNome(String nome){ this.nome = nome; }
+    public void setCapacidade(int capacidade){ this.capacidade = capacidade; }
+    public void setTelefone(String telefone){ this.telefone = telefone; }
+    public void setIdEndereco(int idEndereco) { this.idEndereco = idEndereco; }
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+    public void setRua(String rua) {
+        this.rua = rua;
+    }
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
     public void setNumero(int numero) {
         this.numero = numero;
     }
 
-
+    //toString
+    public String toString(){
+        return "Id: "+this.getId()+" Nome: "+this.getNome()+" Capacidade: "+this.getCapacidade()+
+                " Id do endereço: "+this.idEndereco+" Telefone: "+this.getTelefone()+" Cnpj: "+this.getCnpj()+
+                " Bairro: "+this.getBairro()+" Cep: "+this.getCep()+
+                " Rua: "+this.getRua()+" Cidade: "+this.getCidade()+" Estado: "+this.getEstado()+" Número: "+this.getNumero();
+    }
 }
