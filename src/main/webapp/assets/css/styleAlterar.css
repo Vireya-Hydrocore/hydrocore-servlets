@@ -6,11 +6,10 @@ body {
      align-items: center;
      height: 100vh;
     overflow: hidden;
- }
+}
 .form-container {
     background: #fff;
     padding: 20px 30px;
-    border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     width: 500px;
 }
@@ -64,8 +63,8 @@ body {
     text-align: center;
     margin-top: 20px;
 }
-.acoes input[type="submit"] {
-    background-color: #4460F6;
+.acoes input[type="submit"] { /* aplica apenas os inputs de submit*/
+    background-color: #0a1a3b;
     color: #fff;
     border: none;
     padding: 10px 15px;
@@ -73,7 +72,7 @@ body {
     cursor: pointer;
 }
 .acoes input[type="submit"]:hover {
-    background-color: #2f45b5;
+    background-color: #0e2454;
 }
 
 
