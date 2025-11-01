@@ -68,7 +68,7 @@ header {
 .sidebar {
     background: #2AA0C4;
     width: 200px;
-    height: 100vh;
+    height: 100%;
     position: fixed;
     top: 60px;
     left: -200px;
@@ -268,7 +268,7 @@ form {
 }
 
 table {
-    width: 100%;
+    width: 100vh;
     border-collapse: collapse;
     margin-top: 20px;
     /* min-width: 1200px; / / Remover ou comentar */
@@ -452,7 +452,7 @@ table th {
 
     .sidebar {
         top: 60px;
-        height: calc(100vh - 60px);
+        height: calc(100% - 60px);
         left: -100%;
         width: 220px;
     }

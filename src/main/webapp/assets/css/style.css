@@ -58,6 +58,16 @@ header {
     display: none;
 }
 
+.title-logo{
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+.title-logo img{
+    height: 50px;
+    width: 50px;
+}
+
 .topics-head ul {
     display: flex;
     gap: 20px;
@@ -97,7 +107,11 @@ header {
     width: 100%;
 }
 
-#bottom-cadastro {
+.topics-head #bottom-login::after {
+    content: none;
+}
+
+#bottom-login {
     background-color: var(--azul-royal);
     color: white;
     border-radius: 5%;
@@ -109,6 +123,10 @@ header {
     align-items: center;
     margin-top: -11px;
     margin-right: 0;
+}
+
+#bottom-login:hover{
+    background-color: #223DCCFF;
 }
 
 @media (max-width: 768px) {
@@ -659,6 +677,11 @@ header {
     grid-template-columns: repeat(5, 1fr);
     padding-bottom: 90px;
     color: rgb(236, 236, 236);
+}
+
+.links-grid img{
+    height: 150px;
+    width: 150px;
 }
 
 .grid-footer {

@@ -1,30 +1,51 @@
+
+
+
+// ===============================
+//        MENU HAMBÚRGUER
+// ===============================
 const menuBtn = document.getElementById("menu-toggle");
 const sidebar = document.getElementById("sidebar");
+
+if (menuBtn && sidebar){ //Se existir na página
+    menuBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+    });
+}
+
+
+
+// ===============================
+//        PERFIL (AVATAR)
+// ===============================
 const avatar = document.getElementById("avatar");
 const dropdown = document.getElementById("dropdown");
 
-// ----- MENU HAMBÚRGUER -----
-menuBtn.addEventListener("click", () => {
-    sidebar.classList.toggle("open");
-});
+if (avatar && dropdown){
+    avatar.addEventListener("click", (e) => {
+        e.stopPropagation(); // evita fechar instantaneamente
+        dropdown.classList.toggle("show");
+    });
 
-// ----- PERFIL (AVATAR) -----
-avatar.addEventListener("click", (e) => {
-    e.stopPropagation(); // evita fechar instantaneamente
-    dropdown.classList.toggle("show");
-});
+    // Fecha o dropdown se clicar fora
+    window.addEventListener("click", (e) => {
+        if (!avatar.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.remove("show");
+        }
+    });
+}
 
-// Fecha o dropdown se clicar fora
-window.addEventListener("click", (e) => {
-    if (!avatar.contains(e.target) && !dropdown.contains(e.target)) {
-        dropdown.classList.remove("show");
-    }
-});
 
-// Alterar o tipo do input do filtro
+
+
+// ===============================
+//       FILTRO DE DATA
+// ===============================
 function dataFiltro(){
     const colunaSelect = document.getElementById('colunaSelect');
     const inputPesquisa = document.getElementById('pesquisa');
+
+    if (!colunaSelect || !inputPesquisa) return;
 
     colunaSelect.addEventListener('change', function() {
         const valor = colunaSelect.value;
@@ -39,49 +60,59 @@ function dataFiltro(){
         }
     });
 }
+dataFiltro(); // Só executa se existir os elementos
 
 
-const senhaInput = document.getElementById("senha");
-const lengthItem = document.getElementById("length");
-const uppercaseItem = document.getElementById("uppercase");
-const specialItem = document.getElementById("special");
-const numberItem = document.getElementById("number");
 
-senhaInput.addEventListener("input", function () {
-    const senha = senhaInput.value;
+// ===============================
+//     VERIFICAÇÃO DE SENHA
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+    const senhaInput = document.getElementById("senha");
+    const lengthItem = document.getElementById("length");
+    const uppercaseItem = document.getElementById("uppercase");
+    const specialItem = document.getElementById("special");
+    const numberItem = document.getElementById("number");
 
-// 1 Verifica comprimento
-    if (senha.length >= 8) {
-        lengthItem.classList.add("valid");
-        lengthItem.classList.remove("invalid");
-    } else {
-        lengthItem.classList.add("invalid");
-        lengthItem.classList.remove("valid");
-    }
+    if (!senhaInput || !lengthItem || !uppercaseItem || !specialItem || !numberItem)
+        return; // não faz nada se não existir os elementos
 
-// 2 Verifica letra maiúscula
-    if (/[A-Z]/.test(senha)) {
-        uppercaseItem.classList.add("valid");
-        uppercaseItem.classList.remove("invalid");
-    } else {
-        uppercaseItem.classList.add("invalid");
-        uppercaseItem.classList.remove("valid");
-    }
+    senhaInput.addEventListener("input", function () {
+        const senha = senhaInput.value;
 
-// 3 Verifica caractere especial
-    if (/[!@#$%]/.test(senha)) {
-        specialItem.classList.add("valid");
-        specialItem.classList.remove("invalid");
-    } else {
-        specialItem.classList.add("invalid");
-        specialItem.classList.remove("valid");
-    }
-// 4 Verifica números
-    if(/[0-9]/.test(senha)){
-        numberItem.classList.add("valid");
-        numberItem.classList.remove("invalid");
-    } else {
-        numberItem.classList.add("invalid");
-        numberItem.classList.remove("valid");
-    }
+        // 1 Verifica comprimento
+        if (senha.length >= 8) {
+            lengthItem.classList.add("valid");
+            lengthItem.classList.remove("invalid");
+        } else {
+            lengthItem.classList.add("invalid");
+            lengthItem.classList.remove("valid");
+        }
+
+        // 2 Verifica letra maiúscula
+        if (/[A-Z]/.test(senha)) {
+            uppercaseItem.classList.add("valid");
+            uppercaseItem.classList.remove("invalid");
+        } else {
+            uppercaseItem.classList.add("invalid");
+            uppercaseItem.classList.remove("valid");
+        }
+
+        // 3 Verifica caractere especial
+        if (/[!@#$%]/.test(senha)) {
+            specialItem.classList.add("valid");
+            specialItem.classList.remove("invalid");
+        } else {
+            specialItem.classList.add("invalid");
+            specialItem.classList.remove("valid");
+        }
+        // 4 Verifica números
+        if (/[0-9]/.test(senha)) {
+            numberItem.classList.add("valid");
+            numberItem.classList.remove("invalid");
+        } else {
+            numberItem.classList.add("invalid");
+            numberItem.classList.remove("valid");
+        }
+    });
 });

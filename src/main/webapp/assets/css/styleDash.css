@@ -71,7 +71,7 @@ header {
 .sidebar {
     background: #2AA0C4;
     width: 200px;
-    height: 100vh;
+    height: 100%;
     position: fixed;
     top: 60px;
     left: -200px;
@@ -118,8 +118,6 @@ header {
 
 /* GRID */
 .container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     justify-items: center;
     flex-wrap: wrap;
@@ -128,6 +126,7 @@ header {
 /* BLOCOS */
 .blocos {
     text-align: center;
+    align-items: center;
     padding: 20px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
@@ -149,20 +148,6 @@ header {
     font-size: 40px;
 }
 
-/* BLOCOS DE GRÁFICO */
-.blocos-grafico {
-    grid-column: 2 / -1;
-    grid-row: 2 / span 2;
-    text-align: center;
-    color: #000;
-    font-weight: bold;
-    width: 50%;
-}
-
-.blocos-grafico img {
-    width: 50%;
-}
-
 /* MAIN */
 main {
     padding: 20px;
@@ -180,4 +165,10 @@ main {
     width: 60px;
     text-decoration: none;
     color: black;
+}
+
+.divisao-cima {
+    display: grid;
+    gap: 60px;
+    grid-template-columns: repeat(3, 1fr);
 }

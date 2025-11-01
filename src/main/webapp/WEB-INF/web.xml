@@ -5,7 +5,7 @@
          version="5.0">
 
     <error-page>
-        <error-code>404</error-code>
-        <location>/assets/pages/erro404.jsp</location>
+        <error-code>404</error-code> <!-- Caso ocorra o erro 404 -->
+        <location>/assets/pages/erro404.jsp</location> <!-- Redireciona para uma página específica -->
     </error-page>
 </web-app>

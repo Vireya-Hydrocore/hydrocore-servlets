@@ -76,6 +76,8 @@ public class ServletEta extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/assets/pages/eta/etaIndex.jsp");
             }
         } catch (Exception e) {
+            e.printStackTrace();
+            erros.clear();
             erros.add("Ocorreu um erro ao processar sua solicitação de ETA.");
             req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
@@ -111,8 +113,8 @@ public class ServletEta extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta");
             }
         } catch (Exception e) {
+            erros.clear();
             erros.add("Erro inesperado ao processar a ação de ETA.");
-            e.printStackTrace();
             req.setAttribute("erros", erros);
             req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
         }
@@ -221,16 +223,26 @@ public class ServletEta extends HttpServlet {
         etaDTO.setId(Integer.parseInt(req.getParameter("id")));
         etaDTO.setNome(req.getParameter("nome"));
         etaDTO.setCapacidade(Integer.parseInt(req.getParameter("capacidade")));
-        etaDTO.setTelefone(req.getParameter("telefone"));
-        etaDTO.setCnpj(req.getParameter("cnpj"));
+        String telefone =req.getParameter("telefone");
+        String cnpj =req.getParameter("cnpj");
 
         //Settando o que tem relação ao endereço
         etaDTO.setRua(req.getParameter("rua"));
         etaDTO.setBairro(req.getParameter("bairro"));
         etaDTO.setCidade(req.getParameter("cidade"));
         etaDTO.setEstado(req.getParameter("estado"));
+        String cep = req.getParameter("cep");
         etaDTO.setNumero(Integer.parseInt(req.getParameter("numero")));
-        etaDTO.setCep(req.getParameter("cep"));
+
+        //Regex
+        cep = cep.replaceAll("-", "");
+        etaDTO.setCep(cep);
+
+        telefone = telefone.replaceAll("\\D", "");
+        etaDTO.setTelefone(telefone);
+
+        cnpj = cnpj.replaceAll("\\D","");
+        etaDTO.setCnpj(cnpj);
 
         // ===== VALIDAÇÃO ETA =====
         erros = Validador.validarEta(
@@ -277,12 +289,6 @@ public class ServletEta extends HttpServlet {
         rd.forward(req, resp);
     }
 
-
-    // ===============================================================
-    //          Método para REMOVER a ETA (pelo ID pego)
-    // ===============================================================
-
-    // Não há método de remoção neste Servlet.
 
     // ===============================================================
     //        Método para FILTRAR a ETA (por coluna e valor)

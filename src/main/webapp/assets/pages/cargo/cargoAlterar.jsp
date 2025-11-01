@@ -18,6 +18,7 @@
     <meta charset="UTF-8">
     <title>Cargo</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styleAlterar.css">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/imgs/vireya_icon.png" type="image/x-icon">
 </head>
 <body>
 

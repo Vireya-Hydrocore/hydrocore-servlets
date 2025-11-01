@@ -5,18 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre Nós</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/stylenos.css">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/imgs/vireya_icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styleSobreNos.css">
 </head>
 <body>
 <header>
     <div class="title-logo">
+        <img src="${pageContext.request.contextPath}/assets/imgs/vireya_icon.png">
         <h1>HydroCore</h1>
     </div>
     <div class="topics-head" id="menu">
         <nav>
             <ul>
                 <li><a href="${pageContext.request.contextPath}/index.jsp">Início</a></li>
-                <li><a id="bottom-cadastro" href="${pageContext.request.contextPath}/assets/pages/landingpage/login.jsp">Login</a></li>
+                <li><a id="bottom-login" href="${pageContext.request.contextPath}/assets/pages/landingpage/login.jsp">Login</a></li>
             </ul>
         </nav>
     </div>
@@ -52,82 +54,82 @@
     <h2>Nossa Equipe</h2>
     <div class="grid-equipe">
         <div class="membro" style="--delay: 0s">
-            <img src="<%=request.getContextPath()%>/assets/imgs/Erik.png" alt="Erik Silva">
-            <h3>Erik Silva</h3>
+            <img src="${pageContext.request.contextPath}/assets/imgs/erik.png" alt="Erik Felipe">
+            <h3>Erik Santos</h3>
             <p>Desenvolvedor do servlet, JSP e funcionalidades de download.</p>
         </div>
         <div class="membro" style="--delay: 0.2s">
-            <img src="<%=request.getContextPath()%>/assets/imgs/Mayumi.png" alt="Mayumi Itikaua">
-            <h3>Mayumi Itikaua</h3>
+            <img src="${pageContext.request.contextPath}/assets/imgs/mayumi.png" alt="Mayumi Itikawa">
+            <h3>Mayumi Kimura</h3>
             <p>Designer de UX, responsável por toda a experiência do usuário.</p>
         </div>
         <div class="membro" style="--delay: 0.4s">
-            <img src="<%=request.getContextPath()%>/assets/imgs/Guilherme.png" alt="Guilherme Guedes">
+            <img src="${pageContext.request.contextPath}/assets/imgs/guilherme.png" alt="Guilherme Guedes">
             <h3>Guilherme Guedes</h3>
             <p>Designer de UX, responsável pela experiência completa do usuário..</p>
         </div>
+        <div class="membro" style="--delay: 0s">
+            <img src="${pageContext.request.contextPath}/assets/imgs/herrera.png" alt="Enzo Herrera">
+            <h3>Enzo Herrera</h3>
+            <p>Designer de front-end, responsável por CSS, HTML e algumas telas..</p>
+        </div>
         <div class="membro" style="--delay: 0.4s">
-            <img src="<%=request.getContextPath()%>/assets/imgs/Caio.png" alt="Caio">
+            <img src="${pageContext.request.contextPath}/assets/imgs/caio.png" alt="Caio">
             <h3>Caio Eiken</h3>
             <p>Especialista em dados, responsável por PROMPT e pseudonimização.</p>
         </div>
         <div class="membro" style="--delay: 0.2s">
-            <img src="<%=request.getContextPath()%>/assets/imgs/Iago.png" alt="Iago">
+            <img src="${pageContext.request.contextPath}/assets/imgs/iago.png" alt="Iago">
             <h3>Iago Balbino</h3>
             <p>Especialista em banco de dados, responsável pelo modelo conceitual, scripts e data loader.</p>
         </div>
         <div class="membro" style="--delay: 0.4s">
-            <img src="<%=request.getContextPath()%>/assets/imgs/Casa.png" alt="Pedro Casarini">
+            <img src="${pageContext.request.contextPath}/assets/imgs/casa.png" alt="Pedro Casarini">
             <h3>Pedro Casarini</h3>
             <p>Criador do modelo lógico e dos fluxogramas do projeto.</p>
         </div>
-        <div class="membro" style="--delay: 0s">
-            <img src="<%=request.getContextPath()%>/assets/imgs/Herrera.png" alt="Enzo Herreira">
-            <h3>Enzo Herreira</h3>
-            <p>Designer de front-end, responsável por CSS, HTML e algumas telas..</p>
-        </div>
         <div class="membro" style="--delay: 0.2s">
-            <img src="<%=request.getContextPath()%>/assets/imgs/Gabriel.png" alt="Gabreil Andozia">
-            <h3>Gabrieil Andozia</h3>
+            <img src="${pageContext.request.contextPath}/assets/imgs/gabriel.png" alt="Gabriel Andozia">
+            <h3>Gabriel Andozia</h3>
             <p>Analista de sistemas operacionais e planilhas, responsável por SOP e Excel.</p>
         </div>
         <div class="membro" style="--delay: 0s">
-            <img src="<%=request.getContextPath()%>/assets/imgs/Clara.png" alt="clara">
+            <img src="${pageContext.request.contextPath}/assets/imgs/clara.png" alt="Clara">
             <h3>Clara Bortoleto</h3>
             <p>Apaixonado por programação e soluções digitais, sempre explorando novas tecnologias e desafios de desenvolvimento.</p>
         </div>
         <div class="membro" style="--delay: 0s">
-            <img src="<%=request.getContextPath()%>/assets/imgs/Vitor.png" alt="Vitor">
+            <img src="${pageContext.request.contextPath}/assets/imgs/vitor.png" alt="Vitor">
             <h3>Vitor Augusto</h3>
             <p>Apaixonado por programação e soluções digitais, sempre explorando novas tecnologias e desafios de desenvolvimento.</p>
         </div>
         <div class="membro" style="--delay: 0.2s">
-            <img src="<%=request.getContextPath()%>/assets/imgs/Lins.png" alt="lins">
+            <img src="${pageContext.request.contextPath}/assets/imgs/lins.png" alt="Leonardo Lins">
             <h3>Leonardo Lins</h3>
             <p>Apaixonado por programação e soluções digitais, sempre explorando novas tecnologias e desafios de desenvolvimento.</p>
         </div>
         <div class="membro" style="--delay: 0.4s">
-            <img src="<%=request.getContextPath()%>/assets/imgs/Rodrigo.png" alt="rodrigo">
+            <img src="${pageContext.request.contextPath}/assets/imgs/rodrigo.png" alt="Rodrigo">
             <h3>Rodrigo Alex</h3>
             <p>Apaixonado por programação e soluções digitais, sempre explorando novas tecnologias e desafios de desenvolvimento.</p>
         </div>
         <div class="membro" style="--delay: 0s">
-            <img src="<%=request.getContextPath()%>/assets/imgs/Trindade.png" alt="Trindade">
+            <img src="${pageContext.request.contextPath}/assets/imgs/trindade.png" alt="Guilherme Trindade">
             <h3>Guilherme Trindade</h3>
             <p>Interessado em análise e interpretação de dados, com foco em transformar informações em insights estratégicos.</p>
         </div>
         <div class="membro" style="--delay: 0s">
-            <img src="<%=request.getContextPath()%>/assets/imgs/Costa.png" alt="costa">
+            <img src="${pageContext.request.contextPath}/assets/imgs/costa.png" alt="Guilherme Costa">
             <h3>Guilherme Costa</h3>
             <p>Interessado em análise e interpretação de dados, com foco em transformar informações em insights estratégicos.</p>
         </div>
         <div class="membro" style="--delay: 0.4s">
-            <img src="<%=request.getContextPath()%>/assets/imgs/Frossard.png" alt="Frossard">
+            <img src="${pageContext.request.contextPath}/assets/imgs/frossard.png" alt="Pedro Frossard">
             <h3>Pedro Frossard</h3>
             <p>Interessado em análise e interpretação de dados, com foco em transformar informações em insights estratégicos.</p>
         </div>
         <div class="membro" style="--delay: 0.4s">
-            <img src="<%=request.getContextPath()%>/assets/imgs/Fernando.png" alt="Fernando">
+            <img src="${pageContext.request.contextPath}/assets/imgs/fernando.png" alt="Fernando">
             <h3>Fernando Henrique</h3>
             <p>Interessado em análise e interpretação de dados, com foco em transformar informações em insights estratégicos.</p>
         </div>
@@ -137,7 +139,7 @@
 <footer>
     <div class="grid-footer">
         <div class="links-grid">
-            <img id="img-foot" src="${pageContext.request.contextPath}/assets/imgs/Group 1.png" alt="foto do Vireya">
+            <img id="img-foot" src="${pageContext.request.contextPath}/assets/imgs/vireya_icon.png" alt="Logo Vireya">
             <nav class="nav-footer">
                 <p class="title-points">Ferramentas</p>
                 <ul>
@@ -153,17 +155,17 @@
             <nav class="nav-footer">
                 <p class="title-points">Contatos</p>
                 <ul>
-                    <li>(11) 95795-9848</li>
-                    <li>Institutuo J&F</li>
+                    <li>(11) 99286-4575</li>
+                    <li>Instituto J&F</li>
                     <li>@vireyabrasil</li>
-                    <li>Rua Dolore Duran 38, Rochdale - SP</li>
+                    <li>R. Irineu José Bordon, 335 - Parque Anhanguera, São Paulo - SP, 05120-060</li>
                 </ul>
             </nav>
 
             <nav class="nav-footer">
                 <p class="title-points">Outros</p>
                 <ul>
-                    <li>Sobre Nós</li>
+                    <li><a href="${pageContext.request.contextPath}/assets/pages/landingpage/sobreNos.jsp">Sobre Nós</a></li>
                     <li><a href="${pageContext.request.contextPath}/assets/pages/landingpage/loginAdmin.jsp">Área Restrita</a></li>
                 </ul>
             </nav>
@@ -173,7 +175,7 @@
 
         <div class="rodape-footer">
             <div id="direitos-cont">
-                <p>© 2025 HydroCore. Todos os direitos reservados.</p>
+                <p>© 2025 Vireya. Todos os direitos reservados.</p>
             </div>
             <div id="icones-midias">
                 <!-- Instagram -->
@@ -215,6 +217,7 @@
         </div>
     </div>
 </footer>
+
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const cards = document.querySelectorAll(".membro");

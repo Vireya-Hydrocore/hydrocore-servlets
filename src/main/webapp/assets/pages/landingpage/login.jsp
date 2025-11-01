@@ -38,7 +38,7 @@
 
   <div class="container-direito">
     <div class="sobreposicao">
-      <img src="${pageContext.request.contextPath}/assets/imgs/Papel-de-parede-degrade-azul-142.webp" alt="Background">
+      <img src="${pageContext.request.contextPath}/assets/imgs/fundoDegrade.webp" alt="Background">
     </div>
     <div class="logo-direita">
       <img src="${pageContext.request.contextPath}/assets/imgs/vireya_icon.png" class="logo-girando" alt="App Preview">

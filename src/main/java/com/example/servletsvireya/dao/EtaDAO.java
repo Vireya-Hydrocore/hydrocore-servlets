@@ -83,7 +83,6 @@ public class EtaDAO {
             conn.commit();//commito no banco
 
         } catch (Exception e) {
-            e.printStackTrace();
             try {
                 if (conn != null) {
                     conn.rollback();// se tirer errado a conexão volta
@@ -253,18 +252,30 @@ public class EtaDAO {
             if (rset.next()) {
                 etaDTO.setNome(rset.getString("nome"));
                 etaDTO.setCapacidade(rset.getInt("capacidade"));
-                etaDTO.setTelefone(rset.getString("telefone"));
-                etaDTO.setCnpj(rset.getString("cnpj"));
+                String telefone = rset.getString("telefone");
+                String cnpj = rset.getString("cnpj");
                 etaDTO.setRua(rset.getString("rua")); //endereço
                 etaDTO.setBairro(rset.getString("bairro"));
                 etaDTO.setCidade(rset.getString("cidade"));
                 etaDTO.setEstado(rset.getString("estado"));
-                etaDTO.setCep(rset.getString("cep"));
+//                System.out.println(rset.getString("cep"));
+//                System.out.println(rset.getString("cnpj"));
+                String cep = (rset.getString("cep"));
                 etaDTO.setNumero(Integer.parseInt(rset.getString("numero")));
+
+                cep = cep.substring(0, 5) + '-' + cep.substring(5);
+                etaDTO.setCep(cep);
+
+                telefone = "(" + telefone.substring(0, 2) + ")" + telefone.substring(2);
+                etaDTO.setTelefone(telefone);
+
+                cnpj = cnpj.substring(0, 2) + "." + cnpj.substring(2, 5) + "." +
+                        cnpj.substring(5, 8) + "/" + cnpj.substring(8, 12) + "-" + cnpj.substring(12, 14);
+                etaDTO.setCnpj(cnpj);
             }
             return etaDTO; //se não encontrar, volta null
 
-        } catch (SQLException sqle) {
+        } catch (SQLException | StringIndexOutOfBoundsException sqle) {
             sqle.printStackTrace();
             return null;
         } finally {

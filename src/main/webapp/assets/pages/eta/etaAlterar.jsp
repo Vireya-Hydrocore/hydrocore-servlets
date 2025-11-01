@@ -19,6 +19,7 @@
     <meta charset="UTF-8">
     <title>ETA</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styleAlterar.css">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/imgs/vireya_icon.png" type="image/x-icon">
 </head>
 <body>
 
@@ -134,8 +135,8 @@
         </div>
     </form>
 </div>
-
 <script src="${pageContext.request.contextPath}/assets/js/regex.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/mascaraCep.js"></script>
 
 </body>
 </html>

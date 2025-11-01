@@ -22,6 +22,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styleCrud.css">
+  <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/imgs/vireya_icon.png" type="image/x-icon">
 </head>
 
 <body>
@@ -41,25 +42,25 @@
 <aside class="sidebar" id="sidebar">
   <ul>
     <a href="${pageContext.request.contextPath}/ServletDashboard">
-      <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-painel-de-controle-16.png"> Dashboard</li>
+      <li><img src="${pageContext.request.contextPath}/assets/imgs/iconeDash.png"> Dashboard</li>
     </a>
     <a href="${pageContext.request.contextPath}/ServletEta?action=mainEta">
-      <li><img src="${pageContext.request.contextPath}/assets/imgs/imagem9.png"> ETAs</li>
+      <li><img src="${pageContext.request.contextPath}/assets/imgs/iconeEtas.png"> ETAs</li>
     </a>
     <a href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">
-      <li><img src="${pageContext.request.contextPath}/assets/imgs/image10.png"> Funcionários</li>
+      <li><img src="${pageContext.request.contextPath}/assets/imgs/iconeFuncionarios.png"> Funcionários</li>
     </a>
     <a href="${pageContext.request.contextPath}/ServletEstoque?action=mainEstoque">
-      <li><img src="${pageContext.request.contextPath}/assets/imgs/image11.png"> Estoque</li>
+      <li><img src="${pageContext.request.contextPath}/assets/imgs/iconeEstoque.png"> Estoque</li>
     </a>
     <a href="${pageContext.request.contextPath}/ServletProduto?action=mainProduto">
-      <li><img src="${pageContext.request.contextPath}/assets/imgs/image12.png"> Produtos</li>
+      <li><img src="${pageContext.request.contextPath}/assets/imgs/iconeProdutos.png"> Produtos</li>
     </a>
     <a href="${pageContext.request.contextPath}/ServletCargo?action=mainCargo">
-      <li><img src="${pageContext.request.contextPath}/assets/imgs/image13.png"> Cargos</li>
+      <li><img src="${pageContext.request.contextPath}/assets/imgs/iconeCargo.png"> Cargos</li>
     </a>
     <a href="${pageContext.request.contextPath}/ServletAdmin?action=mainAdmin">
-      <li><img src="${pageContext.request.contextPath}/assets/imgs/icons8-admin-settings-male-16.png"> Admins</li>
+      <li><img src="${pageContext.request.contextPath}/assets/imgs/iconeAdmins.png"> Admins</li>
     </a>
   </ul>
 </aside>

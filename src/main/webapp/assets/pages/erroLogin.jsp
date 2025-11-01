@@ -14,6 +14,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styleErro.css">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/imgs/vireya_icon.png" type="image/x-icon">
     <title>Erro</title>
 </head>
 
@@ -28,7 +29,7 @@
         List<String> erros = (List<String>) request.getAttribute("erros");
         if (erros != null && !erros.isEmpty()) {
     %>
-    <img src="${pageContext.request.contextPath}/assets/imgs/Reset%20password-pana.png">
+    <img src="${pageContext.request.contextPath}/assets/imgs/erroLogin.png">
     <p>Problemas Encontrados: </p>
     <ul class="lista-erros">
         <% for (String erro : erros) { %>

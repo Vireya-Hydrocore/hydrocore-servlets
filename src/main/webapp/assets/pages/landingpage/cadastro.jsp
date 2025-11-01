@@ -5,10 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/imgs/vireya%20icon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/imgs/vireya_icon.png" type="image/x-icon">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/cadastro.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <title>Cadastre-se</title>
+    <title>Cadastrar-se</title>
 </head>
 
 <body>
@@ -16,7 +16,7 @@
 <main>
     <div class="container-esquerdo">
         <div class="logo">
-            <img src="${pageContext.request.contextPath}/assets/imgs/vireya%20icon.png">
+            <img src="${pageContext.request.contextPath}/assets/imgs/vireya_icon.png">
             <span>HydroCore</span>
         </div>
 
@@ -78,17 +78,18 @@
 
     <div class="container-direito">
         <div class="sobreposicao">
-            <img src="${pageContext.request.contextPath}/assets/imgs/abstract%20geometric.png">
+            <img src="${pageContext.request.contextPath}/assets/imgs/fundoGeometrico.png">
         </div>
         <div class="celular">
             <img src="${pageContext.request.contextPath}/assets/imgs/modelo_frontal.png">
         </div>
     </div>
 
+</main>
+
     <script src="${pageContext.request.contextPath}/assets/js/regex.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/mostrarSenha.js"></script>
-</main>
 
 </body>
 </html>

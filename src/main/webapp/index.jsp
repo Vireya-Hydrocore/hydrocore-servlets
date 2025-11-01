@@ -6,12 +6,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vireya | HydroCore</title>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/imgs/vireya_icon.png" type="image/x-icon">
 </head>
 
 <body>
 <header>
     <div class="title-logo">
+        <img src="${pageContext.request.contextPath}/assets/imgs/vireya_icon.png">
         <h1>Hydrocore</h1>
     </div>
     <div class="topics-head" id="menu">
@@ -21,7 +23,7 @@
                 <li><a href="#funcionalidade-title">Funcionalidades</a></li>
                 <li><a href="#sobre-nos">Sobre nós</a></li>
                 <li><a href="#planos">Planos</a></li>
-                <li><a id="bottom-cadastro" href="${pageContext.request.contextPath}/assets/pages/landingpage/login.jsp">Login</a></li>
+                <li><a id="bottom-login" href="${pageContext.request.contextPath}/assets/pages/landingpage/login.jsp">Login</a></li>
             </ul>
         </nav>
     </div>
@@ -84,7 +86,7 @@
                         qualidade da água.</p>
                 </div>
                 <div class="img">
-                    <img src="${pageContext.request.contextPath}/assets/imgs/6853976-uma-cientista.jpg" alt="mulher fazendo calculos com quimicos">
+                    <img src="${pageContext.request.contextPath}/assets/imgs/imagemCientista.jpg" alt="mulher fazendo calculos com quimicos">
                 </div>
             </div>
             <div class="linha-img reverse">
@@ -98,7 +100,7 @@
                         tratamento.</p>
                 </div>
                 <div class="img">
-                    <img src="${pageContext.request.contextPath}/assets/imgs/Sistema-de-gestao-de-estoque-1024x489.jpg.webp" alt="Homen com tablete em um armazem de estoque">
+                    <img src="${pageContext.request.contextPath}/assets/imgs/imagemEstoque.webp" alt="Homen com tablete em um armazem de estoque">
                 </div>
             </div>
             <div class="linha-img-dir">
@@ -110,7 +112,7 @@
                         tratamento sejam realizadas dentro do prazo, com acompanhamento do gestor em tempo real.</p>
                 </div>
                 <div class="img">
-                    <img src="${pageContext.request.contextPath}/assets/imgs/gestao-de-tarefas-em-telas-diferntes-para-acompanhamento-de-projeto.jpg" alt="pessoa fazendo gestão de atividades">
+                    <img src="${pageContext.request.contextPath}/assets/imgs/imagemGestaoTarefas.jpg" alt="pessoa fazendo gestão de atividades">
                 </div>
             </div>
             <div class="linha-img reverse">
@@ -123,7 +125,7 @@
                         já que os dados podem ser utilizados em auditorias e fiscalizações ambientais.</p>
                 </div>
                 <div class="img">
-                    <img src="${pageContext.request.contextPath}/assets/imgs/analyst-uses-computer-dashboard-data-600nw-2285412737.webp" alt="">
+                    <img src="${pageContext.request.contextPath}/assets/imgs/imagemComputador.webp" alt="">
                 </div>
             </div>
         </div>
@@ -182,14 +184,14 @@
     </section>
 
     <section id="sobre-nos">
-        <img id="img-nos" src="${pageContext.request.contextPath}/assets/imgs/Imagem do WhatsApp de 2025-09-05 à(s) 16.04.10_f34500b8.jpg" alt="">
+        <img id="img-nos" src="${pageContext.request.contextPath}/assets/imgs/equipeVireya.jpg" alt="Desenvolvedores do Vireya">
         <div class="sobrenos-content">
             <h2>Sobre Nós</h2>
-            <p>A HydroCore nasceu da união entre especialistas em tratamento de água e desenvolvedores de
+            <p>O Vireya nasceu da união entre especialistas em tratamento de água e desenvolvedores de
                 tecnologia. Nosso objetivo é oferecer uma solução que realmente atenda às necessidades das ETAs,
                 simplificando processos, aumentando a produtividade e garantindo água de qualidade. Acreditamos que
                 a tecnologia é a chave para preservar os recursos hídricos e construir um futuro sustentável</p>
-            <a id="link-saibamais" href="${pageContext.request.contextPath}/assets/pages/landingpage/sobreNosReal.jsp">Saiba mais</a>
+            <a id="link-saibamais" href="${pageContext.request.contextPath}/assets/pages/landingpage/sobreNos.jsp">Saiba mais</a>
         </div>
     </section>
 
@@ -266,7 +268,7 @@
 <footer>
     <div class="grid-footer">
         <div class="links-grid">
-            <img id="img-foot" src="${pageContext.request.contextPath}/assets/imgs/Group 1.png" alt="">
+            <img id="img-foot" src="${pageContext.request.contextPath}/assets/imgs/vireya_icon.png" alt="Logo Vireya">
             <nav class="nav-footer">
                 <p class="title-points">Ferramentas</p>
                 <ul>
@@ -291,7 +293,7 @@
             <nav class="nav-footer">
                 <p class="title-points">Outros</p>
                 <ul>
-                    <li><a href="${pageContext.request.contextPath}/assets/pages/landingpage/sobreNosReal.jsp">Sobre nós</a></li>
+                    <li><a href="${pageContext.request.contextPath}/assets/pages/landingpage/sobreNos.jsp">Sobre nós</a></li>
                     <li><a href="${pageContext.request.contextPath}/assets/pages/landingpage/loginAdmin.jsp">Área Restrita</a></li>
                 </ul>
             </nav>
@@ -300,7 +302,7 @@
         <hr>
         <div class="rodape-footer">
             <div id="direitos-cont">
-                <p>© 2025 HydroCore. Todos os direitos reservados.</p>
+                <p>© 2025 Vireya. Todos os direitos reservados.</p>
             </div>
             <div id="icones-midias">
                 <div class="dist-icon">
@@ -342,14 +344,8 @@
         </div>
     </div>
 </footer>
+
+    <script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
+
 </body>
-
 </html>
-
-<script>
-    const btn = document.getElementById("btn-hamb");
-    const menu = document.getElementById("menu");
-    btn.addEventListener("click", () => {
-        menu.classList.toggle("mostrar");
-    });
-</script>
