@@ -56,7 +56,7 @@
         <div class="membro" style="--delay: 0s">
             <img src="${pageContext.request.contextPath}/assets/imgs/erik.png" alt="Erik Felipe">
             <h3>Erik Santos</h3>
-            <p>Desenvolvedor do servlet, JSP e funcionalidades de download.</p>
+            <p>Desenvolvedor Back-end, responsável pela conectividade com o banco, tratamento dos dados recebidos pelas páginas utilizando Servlets, e adaptação das telas para o JSP.</p>
         </div>
         <div class="membro" style="--delay: 0.2s">
             <img src="${pageContext.request.contextPath}/assets/imgs/mayumi.png" alt="Mayumi Itikawa">
@@ -66,7 +66,7 @@
         <div class="membro" style="--delay: 0.4s">
             <img src="${pageContext.request.contextPath}/assets/imgs/guilherme.png" alt="Guilherme Guedes">
             <h3>Guilherme Guedes</h3>
-            <p>Designer de UX, responsável pela experiência completa do usuário..</p>
+            <p>Desenvolvedor BackEnd, responsável pelo JDBC, criação de Servlets e validação de dados da aplicação.</p>
         </div>
         <div class="membro" style="--delay: 0s">
             <img src="${pageContext.request.contextPath}/assets/imgs/herrera.png" alt="Enzo Herrera">
@@ -76,7 +76,7 @@
         <div class="membro" style="--delay: 0.4s">
             <img src="${pageContext.request.contextPath}/assets/imgs/caio.png" alt="Caio">
             <h3>Caio Eiken</h3>
-            <p>Especialista em dados, responsável por PROMPT e pseudonimização.</p>
+            <p>Engenheiro de dados, responsável por PROMPT e pseudominização.</p>
         </div>
         <div class="membro" style="--delay: 0.2s">
             <img src="${pageContext.request.contextPath}/assets/imgs/iago.png" alt="Iago">
@@ -95,23 +95,23 @@
         </div>
         <div class="membro" style="--delay: 0s">
             <img src="${pageContext.request.contextPath}/assets/imgs/clara.png" alt="Clara">
-            <h3>Clara Bortoleto</h3>
+            <h3>Clara Bartolin</h3>
             <p>Apaixonado por programação e soluções digitais, sempre explorando novas tecnologias e desafios de desenvolvimento.</p>
         </div>
         <div class="membro" style="--delay: 0s">
             <img src="${pageContext.request.contextPath}/assets/imgs/vitor.png" alt="Vitor">
-            <h3>Vitor Augusto</h3>
-            <p>Apaixonado por programação e soluções digitais, sempre explorando novas tecnologias e desafios de desenvolvimento.</p>
+            <h3>Vitor Ponciano</h3>
+            <p>Desenvolvedor web e responsável pela engenharia da solução.</p>
         </div>
         <div class="membro" style="--delay: 0.2s">
             <img src="${pageContext.request.contextPath}/assets/imgs/lins.png" alt="Leonardo Lins">
             <h3>Leonardo Lins</h3>
-            <p>Apaixonado por programação e soluções digitais, sempre explorando novas tecnologias e desafios de desenvolvimento.</p>
+            <p>Desenvolvedor BackEnd, responsável por tratar informações vindas do banco e devolver para os usuário por meio de APIs</p>
         </div>
         <div class="membro" style="--delay: 0.4s">
             <img src="${pageContext.request.contextPath}/assets/imgs/rodrigo.png" alt="Rodrigo">
-            <h3>Rodrigo Alex</h3>
-            <p>Apaixonado por programação e soluções digitais, sempre explorando novas tecnologias e desafios de desenvolvimento.</p>
+            <h3>Rodrigo</h3>
+            <p>Desenvolvedor mobile e responsável pelo fluxo do aplicativo</p>
         </div>
         <div class="membro" style="--delay: 0s">
             <img src="${pageContext.request.contextPath}/assets/imgs/trindade.png" alt="Guilherme Trindade">
@@ -121,7 +121,7 @@
         <div class="membro" style="--delay: 0s">
             <img src="${pageContext.request.contextPath}/assets/imgs/costa.png" alt="Guilherme Costa">
             <h3>Guilherme Costa</h3>
-            <p>Interessado em análise e interpretação de dados, com foco em transformar informações em insights estratégicos.</p>
+            <p>Cientista de dados do projeto, responsável pelo Robô de coleta de dados e criação do modelo de machine learning para o cálculo de potabilidade da água.</p>
         </div>
         <div class="membro" style="--delay: 0.4s">
             <img src="${pageContext.request.contextPath}/assets/imgs/frossard.png" alt="Pedro Frossard">

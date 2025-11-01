@@ -19,7 +19,7 @@ body {
 }
 
 header h1 {
-    font-size: 2rem;
+    font-size: 32px;
     font-weight: 600;
     color: #d33;
     margin-bottom: 15px;
@@ -33,7 +33,7 @@ img {
 
 p {
     color: #444;
-    font-size: 1.1rem;
+    font-size: 17px;
     margin-bottom: 10px;
 }
 
@@ -50,7 +50,7 @@ p {
     padding: 12px 16px;
     border-radius: 6px;
     color: #a00;
-    font-size: 1rem;
+    font-size: 16px;
 }
 
 .botoes {
@@ -75,17 +75,17 @@ footer {
     position: absolute;
     bottom: 10px;
     color: #999;
-    font-size: 0.85rem;
+    font-size: 14px;
 }
 
 @media (max-width: 480px) {
     header h1 {
-        font-size: 1.6rem;
+        font-size: 25px;
         text-align: center;
     }
 
     .lista-erros li {
-        font-size: 0.95rem;
+        font-size: 15px;
     }
 
     .botao-voltar {

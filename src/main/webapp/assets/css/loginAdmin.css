@@ -22,7 +22,7 @@ body {
     background-color: rgba(255, 255, 255, 0.90);
     padding: 30px 40px;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 320px;
     position: relative;
     z-index: 2;
@@ -33,6 +33,7 @@ h2 {
     margin-bottom: 25px;
     color: #333;
 }
+
 input[type="email"], input[type="password"] {
     width: 100%;
     padding: 10px;
@@ -40,6 +41,7 @@ input[type="email"], input[type="password"] {
     border: 1px solid #2a9fc5;
     border-radius: 5px;
 }
+
 button {
     width: 107%;
     padding: 10px;
@@ -50,17 +52,21 @@ button {
     cursor: pointer;
     font-size: 16px;
 }
+
 button:hover {
     background-color: #1a7f87;
 }
+
 .erro {
     color: red;
     text-align: center;
     margin-bottom: 10px;
 }
-#email:hover{
+
+#email:hover {
     border: #45bada solid 2px;
 }
-#senha:hover{
+
+#senha:hover {
     border: #2a9fc5 solid 2px;
 }

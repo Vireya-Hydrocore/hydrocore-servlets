@@ -8,52 +8,62 @@ body {
     height: 100%;
     overflow: hidden;
 }
+
 .form-container {
     background: #fff;
     padding: 20px 30px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     width: 600px;
 }
+
 .container-maior {
     display: flex;
     gap: 150px;
     align-items: center;
     justify-content: center;
 }
+
 .form-container h2 {
     text-align: center;
     margin-bottom: 20px;
 }
+
 .campos {
     margin-bottom: 15px;
 }
+
 .campos label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
-.campos, .campos-readonly{
+
+.campos, .campos-readonly {
     margin-bottom: 15px;
 }
+
 .campos label, .campos-readonly label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
+
 .campos input {
     width: 100%;
     padding: 8px;
     border: 1px solid #bbb;
     border-radius: 6px;
 }
+
 .campos select {
     width: 104%;
     padding: 8px;
     border: 1px solid #bbb;
     border-radius: 6px;
 }
+
 .campos-readonly input,
-.campos-readonly select{
+.campos-readonly select {
     width: 100%;
     padding: 8px;
     border: 1px solid #e00;
@@ -64,6 +74,7 @@ body {
     text-align: center;
     margin-top: 20px;
 }
+
 .acoes input[type="submit"] { /* aplica apenas os inputs de submit*/
     background-color: #0a1a3b;
     color: #fff;
@@ -72,10 +83,10 @@ body {
     border-radius: 6px;
     cursor: pointer;
 }
+
 .acoes input[type="submit"]:hover {
     background-color: #0e2454;
 }
-
 
 
 .acoes input[type="button"] {
@@ -83,8 +94,8 @@ body {
     color: #000;
     border-radius: 6px;
     padding: 6px 10px;
-    text-decoration: none;
 }
+
 .acoes input[type="button"]:hover {
     cursor: pointer;
     background-color: #b3b3b3;

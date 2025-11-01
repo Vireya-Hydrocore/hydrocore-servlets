@@ -6,9 +6,9 @@ body {
     background-color: #EAF2FF;
     display: flex;
     justify-content: center;
+    align-items: center;
     transform: scale(0.85);
     transform-origin: top;
-    align-items: center;
     overflow-x: hidden;
     overflow-y: hidden;
 }
@@ -19,7 +19,7 @@ main {
     background-color: #fff;
     height: 825px;
     border-radius: 10px;
-    margin-top: 10px;
+    margin-top: 40px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
@@ -226,7 +226,7 @@ input {
 }
 
 .parametros-senha p {
-    margin-left: 2vh;
+    margin-left: 5px;
 }
 
 .parametros-senha ul {
@@ -235,7 +235,6 @@ input {
     gap: 15px;
     margin-top: 15px;
     list-style: none;
-    padding-left: 2vh;
 }
 
 .parametros-senha li {

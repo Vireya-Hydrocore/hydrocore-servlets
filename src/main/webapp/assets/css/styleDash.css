@@ -151,7 +151,7 @@ header {
 /* MAIN */
 main {
     padding: 20px;
-    min-height: calc(100vh - 60px);
+    min-height: calc(100% - 60px);
     margin: 0 auto;
     transition: margin-left 0.3s ease;
     width: 75%;
@@ -161,7 +161,7 @@ main {
     margin-left: 200px;
 }
 
-.logout-btn{
+.logout-btn {
     width: 60px;
     text-decoration: none;
     color: black;

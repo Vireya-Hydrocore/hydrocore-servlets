@@ -37,7 +37,8 @@
     <div class="logout-container">
         <form action="${pageContext.request.contextPath}/ServletAdmin" method="post">
             <input type="hidden" name="action" value="logout">
-            <a href="${pageContext.request.contextPath}/assets/pages/landingpage/loginAdmin.jsp" class="logout-btn" type="submit" title="Sair">Sair</a>
+            <a href="${pageContext.request.contextPath}/assets/pages/landingpage/loginAdmin.jsp" class="logout-btn"
+               type="submit" title="Sair">Sair</a>
         </form>
     </div>
 </header>
@@ -76,7 +77,8 @@
         <section class="cadastro">
             <h2>Cadastro de Funcionários</h2>
             <form name="frmFuncionario" action="${pageContext.request.contextPath}/ServletFuncionario" method="post">
-                <input type="hidden" name="action" value="createFuncionario"> <!-- envia esse parametro para o servlet ver q é create-->
+                <input type="hidden" name="action" value="createFuncionario">
+                <!-- envia esse parametro para o servlet ver q é create-->
 
                 <div class="campos">
                     <label>Nome</label>
@@ -106,13 +108,18 @@
                 <div class="campos">
                     <label for="cargo">Cargo</label>
                     <select id="cargo" name="cargo">
-                        <option value="">Selecione um cargo</option> <%-- Valor inicial vazio --%>
+                        <option value="">Selecione um cargo</option>
+                        <%-- Valor inicial vazio --%>
                         <%-- Listando os cargos disponíveis com cargoDAO --%>
-                        <%CargoDAO cargoDAO = new CargoDAO();
-                        List<CargoDTO> cargosList = cargoDAO.listarCargos();
+                        <%
+                            CargoDAO cargoDAO = new CargoDAO();
+                            List<CargoDTO> cargosList = cargoDAO.listarCargos();
 
-                        for (CargoDTO cargo : cargosList){%>
-                            <option value="<%= cargo.getId() %>"> <%= cargo.getNome() %> </option> <%-- Mostra o nome e pega o id do cargo --%>
+                            for (CargoDTO cargo : cargosList) {
+                        %>
+                        <option value="<%= cargo.getId() %>"><%= cargo.getNome() %>
+                        </option>
+                        <%-- Mostra o nome e pega o id do cargo --%>
                         <%}%>
                     </select>
                 </div>
@@ -120,14 +127,17 @@
                 <div class="campos">
                     <label for="nomeEta">Nome da ETA</label>
                     <select id="nomeEta" name="nomeEta">
-                        <option value="">Selecione uma ETA</option> <%-- Valor inicial vazio --%>
+                        <option value="">Selecione uma ETA</option>
+                        <%-- Valor inicial vazio --%>
                         <%-- Listando os cargos disponíveis com EtaDAO --%>
                         <%
                             EtaDAO etaDAO = new EtaDAO();
                             List<EtaDTO> etaList = etaDAO.listarEtas();
 
-                            for (EtaDTO eta : etaList){%>
-                        <option value="<%= eta.getId() %>"> <%= eta.getNome() %> </option> <%-- Mostra o nome e pega o id da ETA --%>
+                            for (EtaDTO eta : etaList) {%>
+                        <option value="<%= eta.getId() %>"><%= eta.getNome() %>
+                        </option>
+                        <%-- Mostra o nome e pega o id da ETA --%>
                         <%}%>
                     </select>
                 </div>
@@ -145,49 +155,56 @@
 
             <!-- FILTRO DE FUNCIONÁRIOS -->
 
-            <div class="filtro-topo">
-                <h2 class="titulo-lista">Lista de Funcionários</h2>
+            <div class="filtro">
+                <div class="filtro-titulo">
+                    <h2>Lista de Funcionários</h2>
+                </div>
 
                 <form class="filtro-form" action="${pageContext.request.contextPath}/ServletFuncionario" method="get">
                     <input type="hidden" name="action" value="filtroFuncionario">
+                    <div class="campos">
+                        <label for="colunaSelect">Coluna</label>
+                        <select name="nome_coluna" id="colunaSelect">
+                            <option value="nome">Nome</option>
+                            <option value="email">E-mail</option>
+                            <option value="data_admissao">Data de Admissão</option>
+                            <option value="data_nascimento">Data de Nascimento</option>
+                            <option value="nome_cargo">Cargo</option>
+                            <option value="nome_eta">ETA</option>
+                        </select>
+                    </div>
 
-                    <label for="colunaSelect">Coluna</label>
-                    <select name="nome_coluna" id="colunaSelect">
-                        <option value="nome">Nome</option>
-                        <option value="email">E-mail</option>
-                        <option value="data_admissao">Data de Admissão</option>
-                        <option value="data_nascimento">Data de Nascimento</option>
-                        <option value="nome_cargo">Cargo</option>
-                        <option value="nome_eta">ETA</option>
-                    </select>
-
-                    <label for="pesquisa">Pesquisa</label>
-                    <input type="text" id="pesquisa" name="pesquisa" placeholder="Buscar...">
-
-                    <a class="botao-redefinir" href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">
-                        Redefinir filtragem
-                    </a>
-                    <button type="submit" class="botao-salvar">Aplicar Filtro</button>
+                    <div class="campos">
+                        <label for="pesquisa">Pesquisa</label>
+                        <input type="text" id="pesquisa" name="pesquisa" placeholder="Buscar...">
+                    </div>
+                    <div class="acoes">
+                        <a class="botao-redefinir"
+                           href="${pageContext.request.contextPath}/ServletFuncionario?action=mainFuncionario">
+                            Redefinir filtragem
+                        </a>
+                        <button type="submit" class="botao-salvar">Aplicar Filtro</button>
+                    </div>
                 </form>
             </div>
 
             <script>
-                    const colunaSelect = document.getElementById('colunaSelect');
-                    const inputPesquisa = document.getElementById('pesquisa');
+                const colunaSelect = document.getElementById('colunaSelect');
+                const inputPesquisa = document.getElementById('pesquisa');
 
-                    colunaSelect.addEventListener('change', function() {
-                        const valor = colunaSelect.value;
+                colunaSelect.addEventListener('change', function () {
+                    const valor = colunaSelect.value;
 
-                        // Se for uma das opções de data, muda o tipo para "date"
-                        if (valor === 'data_admissao' || valor === 'data_nascimento') {
-                            inputPesquisa.type = 'date';
-                            inputPesquisa.value = ''; // limpa o campo para evitar erro de formato
-                        } else {
-                            inputPesquisa.type = 'text';
-                            inputPesquisa.value = '';
-                        }
-                    });
-                </script>
+                    // Se for uma das opções de data, muda o tipo para "date"
+                    if (valor === 'data_admissao' || valor === 'data_nascimento') {
+                        inputPesquisa.type = 'date';
+                        inputPesquisa.value = ''; // limpa o campo para evitar erro de formato
+                    } else {
+                        inputPesquisa.type = 'text';
+                        inputPesquisa.value = '';
+                    }
+                });
+            </script>
 
             <!--LISTA-->
             <div class="tabela-container">
@@ -206,20 +223,28 @@
                     </thead>
                     <tbody>
                     <% if (lista != null && !lista.isEmpty()) {
-                        for (int i=0; i < lista.size(); i++) { %>
+                        for (int i = 0; i < lista.size(); i++) { %>
                     <tr>
-                        <td><%= lista.get(i).getId() %></td>
-                        <td><%= lista.get(i).getNome() %></td>
-                        <td><%= lista.get(i).getEmail() %></td>
-                        <td><%= lista.get(i).getDataAdmissao()%></td>
-                        <td><%= lista.get(i).getDataNascimento()%></td>
-                        <td><%= lista.get(i).getNomeCargo()%></td>
-                        <td><%= lista.get(i).getNomeEta()%></td>
+                        <td><%= lista.get(i).getId() %>
+                        </td>
+                        <td><%= lista.get(i).getNome() %>
+                        </td>
+                        <td><%= lista.get(i).getEmail() %>
+                        </td>
+                        <td><%= lista.get(i).getDataAdmissao()%>
+                        </td>
+                        <td><%= lista.get(i).getDataNascimento()%>
+                        </td>
+                        <td><%= lista.get(i).getNomeCargo()%>
+                        </td>
+                        <td><%= lista.get(i).getNomeEta()%>
+                        </td>
                         <td>
                             <a class="botao-editar"
                                href="${pageContext.request.contextPath}/ServletFuncionario?action=selectFuncionario&id=<%= lista.get(i).getId() %>">Editar</a>
                             &nbsp;|&nbsp;
-                            <form action="<%= request.getContextPath() %>/ServletFuncionario" method="post" style="display:inline;">
+                            <form action="<%= request.getContextPath() %>/ServletFuncionario" method="post"
+                                  style="display:inline;">
                                 <input type="hidden" name="action" value="deleteFuncionario">
                                 <input type="hidden" name="id" value="<%= lista.get(i).getId() %>">
                                 <button class="botao-excluir" type="submit"

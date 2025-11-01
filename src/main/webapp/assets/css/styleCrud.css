@@ -5,7 +5,8 @@
     font-family: 'Segoe UI', sans-serif;
     white-space: nowrap !important;
 }
-body{
+
+body {
     overflow-x: auto;
 }
 
@@ -112,7 +113,7 @@ main {
     width: 75%;
 }
 
-.sidebar.open~main {
+.sidebar.open ~ main {
     margin-left: 200px;
 }
 
@@ -134,20 +135,12 @@ main {
     margin-bottom: 20px;
 }
 
-.lista{
+.lista {
 
     /* Ativa a barra de rolagem horizontal (só aparece se necessário) */
     overflow-x: auto;
     /* Esconde a barra de rolagem vertical, se houver */
 
-}
-
-.filtro {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    flex-wrap: wrap; /* permite quebrar linha */
-    gap: 10px;
 }
 
 .filtro select,
@@ -233,16 +226,6 @@ form {
     color: black;
 }
 
-.filtro {
-    position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    /* Impede que o texto quebre para a próxima linha */
-    white-space: nowrap;
-}
-
 .filtros {
     text-align: center;
     width: 650px;
@@ -258,6 +241,7 @@ form {
     border-radius: 6px;
     cursor: pointer;
 }
+
 .botao-aplicar {
     background: #2AA0C4;
     color: white;
@@ -268,7 +252,7 @@ form {
 }
 
 table {
-    width: 100vh;
+    width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
     /* min-width: 1200px; / / Remover ou comentar */
@@ -364,12 +348,6 @@ table th {
     justify-content: flex-end;
 }
 
-.avatar-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-}
-
 .avatar {
     width: 36px;
     height: 36px;
@@ -384,7 +362,8 @@ table th {
     transform: scale(1.05);
     background-color: #333;
 }
-.logout-btn{
+
+.logout-btn {
     width: 60px;
     text-decoration: none;
     color: black;
@@ -434,7 +413,7 @@ table th {
 
 /* --- Ajuste para tablets e telas pequenas --- */
 @media (max-width: 768px) {
-    .lista{
+    .lista {
         /* Ativa a barra de rolagem horizontal (só aparece se necessário) */
         overflow-x: auto;
         /* Esconde a barra de rolagem vertical, se houver */
@@ -556,15 +535,12 @@ table th {
 }
 
 
-
-
-
 .lista {
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 15px;
-    max-height: 70vh; /* altura máxima visível */
+    max-height: 70vh;
     overflow: hidden; /* evita que o conteúdo estoure */
     background: #fff;
     border-radius: 8px;
@@ -572,8 +548,14 @@ table th {
     padding: 20px;
 }
 
-/* Mantém o cabeçalho e filtros fixos */
 .filtro {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    flex-direction: column;
+    white-space: nowrap;
     position: sticky;
     top: 0;
     background: #fff;
@@ -588,7 +570,7 @@ table th {
     overflow-y: auto;
     overflow-x: auto;
     border-radius: 8px;
-    max-height: 60vh; /* define até onde a tabela pode crescer */
+    max-height: 60vh;
     border: 1px solid #e0e0e0;
 }
 
@@ -614,8 +596,6 @@ table th {
     text-align: left;
     border-bottom: 1px solid #e8e8e8;
 }
-
-
 
 
 .filtro-topo {
@@ -662,7 +642,6 @@ table th {
 }
 
 
-
 .botao-redefinir {
     background-color: #c4c4c4;
     color: #000;
@@ -670,6 +649,7 @@ table th {
     padding: 6px 10px;
     text-decoration: none;
 }
+
 .botao-redefinir:hover {
     background-color: #b3b3b3;
 }
@@ -682,6 +662,7 @@ table th {
     padding: 6px 12px;
     cursor: pointer;
 }
+
 .botao-salvar:hover {
     background-color: #117ea8;
 }

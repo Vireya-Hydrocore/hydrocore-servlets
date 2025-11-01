@@ -1,7 +1,10 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, sans-serif;
     background-color: #EAF2FF;
     display: flex;
@@ -17,7 +20,7 @@ main {
     background-color: #fff;
     height: 700px;
     border-radius: 10px;
-    margin-top: 10px;
+    margin-top: 40px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
@@ -56,7 +59,7 @@ label {
     color: #333;
 }
 
-input {
+input, .input-senha input {
     padding: 10px;
     border: none;
     border-bottom: 2px solid #d9d9d9;
@@ -118,8 +121,6 @@ input {
 }
 
 .input-senha input {
-    padding: 10px;
-    font-size: 15px;
     flex: 1;
 }
 
@@ -190,8 +191,8 @@ input {
 
 .logo-girando {
     display: block;
-    width: 260px;             /* Aumenta o tamanho geral */
-    height: auto;             /* Mantém a proporção natural */
+    width: 260px; /* Aumenta o tamanho geral */
+    height: auto; /* Mantém a proporção natural */
     animation: girar 6s linear infinite;
     transform-origin: center center;
     z-index: 2;
