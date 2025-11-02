@@ -82,6 +82,7 @@ public class ProdutoDAO {
 
                 pstmtEstoque.setInt(1, idProduto); //No primeiro comando
                 pstmtProduto.setInt(1, idProduto); //Segundo comando
+                pstmtUso.setInt(1, idProduto); //Terceiro comando
 
                 pstmtEstoque.executeUpdate(); //Primeiro: remove primeiro o estoque
                 pstmtUso.executeUpdate();
@@ -233,38 +234,6 @@ public class ProdutoDAO {
     }
 
 
-    // ========== Método para buscar o id de um produto pelo seu nome ========== //
-    public Integer buscarIdPorNome(String nome) { //------------------- pode juntar com o metodo de baixo
-        Connection conn;
-        conn = conexao.conectar();
-
-        Integer id; //Valor padrão caso não encontre
-        id = 0;
-
-        String comando = "SELECT id FROM produto WHERE LOWER(nome) = LOWER(?)";
-
-        try {
-            PreparedStatement pstmt;
-            pstmt = conn.prepareStatement(comando);
-            pstmt.setString(1, nome); // busca exata
-
-            ResultSet rs;
-            rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                id = rs.getInt("id");
-            }
-
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            id = 0;
-        } finally {
-            conexao.desconectar();
-        }
-        return id;
-    }
-
-
     // ========== Método para filtrar um produto ========== //
     public List<ProdutoDTO> filtroBuscaPorColuna(String coluna, String pesquisa) {
         String tabela;
@@ -314,7 +283,7 @@ public class ProdutoDAO {
                 "FROM PRODUTO " +
                 "JOIN ESTOQUE ON ESTOQUE.id_produto = PRODUTO.id " +
                 "JOIN ETA ON ETA.id = ESTOQUE.id_eta " +
-                "WHERE LOWER(" + tabela + "." + coluna + ") " + operador + " LOWER(?)";
+                "WHERE " + tabela + "." + coluna + " " + operador + "?";
 
         try {
             PreparedStatement pstmt;

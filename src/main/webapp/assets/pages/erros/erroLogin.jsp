@@ -44,7 +44,7 @@
         }
     %>
     <div class="botoes">
-        <a href="${pageContext.request.contextPath}/index.jsp" class="botao-voltar  ">Sair</a>
+        <a href="${pageContext.request.contextPath}/index.jsp" class="botao-voltar">Sair</a>
         <a href="javascript: history.go(-1)" class="botao-voltar">Voltar à Página Anterior</a>
     </div>
 </main>

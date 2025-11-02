@@ -164,8 +164,9 @@ public class EstoqueDAO {
         conn = conexao.conectar();
 
         String comando;
-        comando = "SELECT e.*, p.nome AS nome_produto FROM estoque e " +
+        comando = "SELECT e.*, p.nome AS nome_produto, eta.nome AS nome_eta FROM estoque e " +
                 "JOIN produto p ON p.id = e.id_produto " +
+                "JOIN eta ON eta.id = e.id_eta " +
                 "WHERE e.id = ?";
 
         try {
@@ -183,6 +184,7 @@ public class EstoqueDAO {
                 estoqueDTO.setIdEta(rset.getInt("id_eta"));
                 estoqueDTO.setIdProduto(rset.getInt("id_produto"));
                 estoqueDTO.setNomeProduto(rset.getString("nome_produto")); //Campo extra do DTO
+                estoqueDTO.setNomeEta(rset.getString("nome_eta")); //Campo extra do DTO
             }
             return estoqueDTO; //Retorna contendo os produtos NO estoque
 
@@ -246,7 +248,7 @@ public class EstoqueDAO {
                 "JOIN ETA ON ETA.id = ESTOQUE.id_eta " +
                 "WHERE " + (isData
                 ? "ESTOQUE." + coluna + " = ?"   // comparação direta com DATE
-                : tabela + "." + coluna + " ILIKE ?"); // comparação textual
+                : tabela + "." + coluna + operador +" ?"); // comparação textual
 
         try {
             PreparedStatement pstmt;

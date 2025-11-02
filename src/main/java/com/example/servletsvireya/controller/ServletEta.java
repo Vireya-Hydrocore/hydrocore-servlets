@@ -1,5 +1,6 @@
 package com.example.servletsvireya.controller;
 
+import com.example.servletsvireya.dto.EstoqueDTO;
 import com.example.servletsvireya.dto.ProdutoDTO;
 import com.example.servletsvireya.model.Eta;
 import com.example.servletsvireya.util.SenhaHash;
@@ -108,6 +109,9 @@ public class ServletEta extends HttpServlet {
                     break;
                 case "updateEta":
                     alterarEta(req, resp);
+                    break;
+                case "deleteEta":
+                    removerEta(req, resp);
                     break;
                 default:
                     resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta");
@@ -287,6 +291,26 @@ public class ServletEta extends HttpServlet {
         //Encaminhar ao documento alterarEta.jsp
         rd = req.getRequestDispatcher("/assets/pages/eta/etaAlterar.jsp");
         rd.forward(req, resp);
+    }
+
+
+    // ===============================================================
+    //            Método para REMOVER a ETA (por ID)
+    // ===============================================================
+    protected void removerEta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //Instanciando objeto DTO e settando o id para remoção
+        etaDTO = new EtaDTO();
+        etaDTO.setId(Integer.parseInt(req.getParameter("id")));
+
+        resultado = etaDAO.removerEta(etaDTO);
+
+        if (resultado == 1) {
+            resp.sendRedirect(req.getContextPath() + "/ServletEta?action=mainEta");
+        } else {
+            erros.add("Não foi possível remover a ETA."); // Adicionado na lista para consistência
+            req.setAttribute("erros", erros);
+            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+        }
     }
 
 

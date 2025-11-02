@@ -1,5 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.example.servletsvireya.dto.FuncionarioDTO" %>
+<%@ page import="com.example.servletsvireya.dao.CargoDAO" %>
+<%@ page import="com.example.servletsvireya.dto.CargoDTO" %>
+<%@ page import="java.util.List" %>
 
 <%
   FuncionarioDTO funcionario = (FuncionarioDTO) request.getAttribute("funcionario");
@@ -39,6 +42,9 @@
         <input type="email" name="email" maxlength="40" value="${funcionario.email}">
       </div>
 
+      <!-- Senha (escondido) -->
+      <input type="hidden" name="senha" value="${funcionario.senha}">
+
       <!-- Data de Admissão -->
       <div class="campos">
         <label>Data de Admissão</label>
@@ -53,8 +59,22 @@
 
       <!-- Cargo -->
       <div class="campos">
-        <label>Cargo</label>
-        <input type="text" name="nomeCargo" value="${funcionario.nomeCargo}" required>
+        <label for="cargo">Cargo</label>
+        <select id="cargo" name="nomeCargo">
+          <option value="${funcionario.nomeCargo}">${funcionario.nomeCargo}</option>
+          <%-- Valor inicial do cargo --%>
+          <%-- Listando os cargos disponíveis com cargoDAO --%>
+          <%
+            CargoDAO cargoDAO = new CargoDAO();
+            List<CargoDTO> cargosList = cargoDAO.listarCargos();
+
+            for (CargoDTO cargo : cargosList) {
+          %>
+          <option value="<%= cargo.getNome() %>"><%= cargo.getNome() %>
+          </option>
+          <%-- Mostra o nome e pega o id do cargo --%>
+          <%}%>
+        </select>
       </div>
 
       <!-- Nome ETA -->

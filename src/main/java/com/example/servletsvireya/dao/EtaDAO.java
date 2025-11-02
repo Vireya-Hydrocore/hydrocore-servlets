@@ -212,7 +212,7 @@ public class EtaDAO {
         Connection conn = conexao.conectar();
         String comando = "DELETE FROM eta WHERE id = ?";
 
-        try  {
+        try {
             PreparedStatement pstmt;
             pstmt = conn.prepareStatement(comando);
 
@@ -258,8 +258,6 @@ public class EtaDAO {
                 etaDTO.setBairro(rset.getString("bairro"));
                 etaDTO.setCidade(rset.getString("cidade"));
                 etaDTO.setEstado(rset.getString("estado"));
-//                System.out.println(rset.getString("cep"));
-//                System.out.println(rset.getString("cnpj"));
                 String cep = (rset.getString("cep"));
                 etaDTO.setNumero(Integer.parseInt(rset.getString("numero")));
 
@@ -325,9 +323,6 @@ public class EtaDAO {
         boolean numero;
         numero = false; //Inteiro
 
-        boolean Double;
-        Double = false; // Variável não usada, mas mantida a declaração
-
         // Define de qual tabela e tipo de dado vem a coluna
         switch (coluna.toLowerCase()) {
             case "capacidade":
@@ -338,7 +333,6 @@ public class EtaDAO {
             case "cep":
                 tabela = "endereco";
                 operador = "LIKE";
-                numero = true;
                 break;
             default:
                 tabela = "eta";
