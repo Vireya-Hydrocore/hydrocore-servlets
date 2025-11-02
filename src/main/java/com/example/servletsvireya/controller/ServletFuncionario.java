@@ -74,7 +74,7 @@ public class ServletFuncionario extends HttpServlet {
         } catch (Exception e) {
             erros.add("Erro ao processar a solicitação de funcionário.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 
@@ -112,7 +112,7 @@ public class ServletFuncionario extends HttpServlet {
         } catch (Exception e) {
             erros.add("Erro inesperado ao processar a ação do funcionário.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 
@@ -187,7 +187,7 @@ public class ServletFuncionario extends HttpServlet {
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
             return;
         }
 
@@ -202,7 +202,7 @@ public class ServletFuncionario extends HttpServlet {
         } else {
             erros.add("Cargo ou ETA inexistente, verifique os campos e tente novamente!");
             req.setAttribute("erros", erros); //Setta um atributo com o erro
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Vai para a página de erro
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
     }
 
@@ -271,7 +271,7 @@ public class ServletFuncionario extends HttpServlet {
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
             return;
         }
         // ===== Fim da validação =====
@@ -288,7 +288,7 @@ public class ServletFuncionario extends HttpServlet {
         } else {
             erros.add("Cargo ou ETA inexistente, verifique os campos e tente novamente");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 
@@ -307,7 +307,7 @@ public class ServletFuncionario extends HttpServlet {
         } else {
             erros.add("Não foi possível remover o funcionário, tente novamente.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 

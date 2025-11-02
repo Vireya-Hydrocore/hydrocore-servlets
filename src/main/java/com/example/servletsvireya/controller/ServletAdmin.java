@@ -61,7 +61,7 @@ public class ServletAdmin extends HttpServlet {
         } catch (Exception e) {
             erros.add("Ocorreu um erro ao processar sua requisição de administrador.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 
@@ -99,7 +99,7 @@ public class ServletAdmin extends HttpServlet {
         } catch (Exception e) {
             erros.add("Ocorreu um erro ao processar sua requisição de administrador.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 
@@ -162,7 +162,7 @@ public class ServletAdmin extends HttpServlet {
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
             return; // Interrompe execução se houver erros
         }
 
@@ -177,7 +177,7 @@ public class ServletAdmin extends HttpServlet {
         } else {
             erros.add("ETA Inexistente, verifique os campos e tente novamente!");
             req.setAttribute("erros", erros); //Setta um atributo com o erro
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Vai para a página de erro
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
     }
 
@@ -199,7 +199,7 @@ public class ServletAdmin extends HttpServlet {
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
             return; // Interrompe execução se houver erros
         }
 
@@ -214,7 +214,7 @@ public class ServletAdmin extends HttpServlet {
         } else {
             erros.add("ETA inexistente, verifique os campos e tente novamente!");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 
@@ -236,7 +236,7 @@ public class ServletAdmin extends HttpServlet {
             // Página de erro
             erros.add("Não foi possível remover este Admin.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 

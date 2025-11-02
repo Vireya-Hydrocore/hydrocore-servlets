@@ -69,7 +69,7 @@ public class ServletEstoque extends HttpServlet {
         } catch (Exception e) {
             erros.add("Ocorreu um erro ao processar sua requisição de estoque.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 
@@ -107,7 +107,7 @@ public class ServletEstoque extends HttpServlet {
         } catch (Exception e) {
             erros.add("Erro inesperado ao processar a ação de estoque.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 
@@ -187,7 +187,7 @@ public class ServletEstoque extends HttpServlet {
         //Se houver erros, retorna pra página de erro
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
             return;
         }
 
@@ -199,7 +199,7 @@ public class ServletEstoque extends HttpServlet {
         } else {
             erros.add("Produto ou ETA inexistente, verifique os campos e tente novamente!");
             req.setAttribute("erros", erros); //Setta um atributo com o erro generalizado
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Vai para a página de erro
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
     }
 
@@ -249,7 +249,7 @@ public class ServletEstoque extends HttpServlet {
         //Se houver erros, retorna pra página de erro
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
             return;
         }
 
@@ -262,7 +262,7 @@ public class ServletEstoque extends HttpServlet {
         } else {
             erros.add("Produto ou ETA inexistente, verifique os campos e tente novamente!"); //Erro generalizado
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Envia para a página de erro
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp); //Envia para a página de erro
         }
     }
 
@@ -283,7 +283,7 @@ public class ServletEstoque extends HttpServlet {
         } else {
             erros.add("Não foi possível remover o estoque."); // Adicionado na lista para consistência
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 

@@ -63,7 +63,7 @@ public class ServletProduto extends HttpServlet {
         } catch (Exception e) {
             erros.add("Ocorreu um erro ao processar sua solicitação de Produto.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 
@@ -101,7 +101,7 @@ public class ServletProduto extends HttpServlet {
         } catch (Exception e) {
             erros.add("Erro inesperado ao processar a ação de Produto.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 
@@ -149,7 +149,7 @@ public class ServletProduto extends HttpServlet {
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
             return; // Interrompe execução se houver erros
         }
 
@@ -160,7 +160,7 @@ public class ServletProduto extends HttpServlet {
         } else { //Deu erro na inserção
             erros.add("ETA inexistente, verifique os campos e tente novamente!");
             req.setAttribute("erros", erros); //Setta um atributo com o erro
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Vai para a página de erro
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
     }
 
@@ -182,7 +182,7 @@ public class ServletProduto extends HttpServlet {
         erros = Validador.validarProduto(produtoDTO.getNome(), produtoDTO.getTipo(), produtoDTO.getConcentracao());
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
             return; // Interrompe execução se houver erros
         }
 
@@ -194,7 +194,7 @@ public class ServletProduto extends HttpServlet {
         } else {
             erros.add("ETA inexistente, verifique os campos e tente novamente!");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 
@@ -233,7 +233,7 @@ public class ServletProduto extends HttpServlet {
             // Página de erro
             erros.add("Não foi possível remover o produto, tente novamente.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 

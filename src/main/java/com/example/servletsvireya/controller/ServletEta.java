@@ -80,7 +80,7 @@ public class ServletEta extends HttpServlet {
             erros.clear();
             erros.add("Ocorreu um erro ao processar sua solicitação de ETA.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 
@@ -116,7 +116,7 @@ public class ServletEta extends HttpServlet {
             erros.clear();
             erros.add("Erro inesperado ao processar a ação de ETA.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 
@@ -254,7 +254,7 @@ public class ServletEta extends HttpServlet {
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
             return;
         }
 
@@ -266,7 +266,7 @@ public class ServletEta extends HttpServlet {
         } else {
             erros.add("Não foi possível alterar a ETA! Verifique os campos e tente novamente.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 

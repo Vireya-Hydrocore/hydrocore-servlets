@@ -63,7 +63,7 @@ public class ServletCargo extends HttpServlet {
         } catch (Exception e) {
             erros.add("Ocorreu um erro ao processar a requisição.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 
@@ -101,7 +101,7 @@ public class ServletCargo extends HttpServlet {
         } catch (Exception e) {
             erros.add("Erro ao processar requisição no servidor.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 
@@ -164,7 +164,7 @@ public class ServletCargo extends HttpServlet {
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
             return;
         }
 
@@ -176,7 +176,7 @@ public class ServletCargo extends HttpServlet {
         } else {
             erros.add("Não foi possível inserir esse cargo, tente novamente!");
             req.setAttribute("erros", erros); //Setta um atributo com o erro
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp); //Vai para a página de erro
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp); //Vai para a página de erro
         }
     }
 
@@ -197,7 +197,7 @@ public class ServletCargo extends HttpServlet {
 
         if (!erros.isEmpty()) {
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
             return;
         }
 
@@ -208,7 +208,7 @@ public class ServletCargo extends HttpServlet {
         } else {
             erros.add("Não foi possível alterar o cargo! Verifique os campos e tente novamente.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 
@@ -229,7 +229,7 @@ public class ServletCargo extends HttpServlet {
         } else {
             erros.add("Não foi possível remover o cargo, tente novamente mais tarde.");
             req.setAttribute("erros", erros);
-            req.getRequestDispatcher("/assets/pages/erro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erro.jsp").forward(req, resp);
         }
     }
 

@@ -62,7 +62,7 @@ public class ServletLogin extends HttpServlet {
             erros.add("Ocorreu um erro inesperado ao processar a solicitação de login");
             req.setAttribute("erros", erros);
             // Redireciona para página de erro, usando RequestDispatcher
-            req.getRequestDispatcher("/assets/pages/erroLogin.jsp").forward(req, resp);
+            req.getRequestDispatcher("/assets/pages/erros/erroLogin.jsp").forward(req, resp);
         }
     }
 
@@ -85,7 +85,7 @@ public class ServletLogin extends HttpServlet {
             erros.clear();
             erros.add("E-mail ou senha incorretos.");
             req.setAttribute("erros", erros); //Setta um atributo erro para o JSP tratar
-            rd = req.getRequestDispatcher("/assets/pages/erroLogin.jsp"); //Vai para a pagina de erro
+            rd = req.getRequestDispatcher("/assets/pages/erros/erroLogin.jsp"); //Vai para a pagina de erro
             rd.forward(req, resp);
         }
     }
@@ -115,7 +115,7 @@ public class ServletLogin extends HttpServlet {
             erros.clear();
             erros.add("E-mail ou senha incorretos.");
             req.setAttribute("erros", erros);
-            rd = req.getRequestDispatcher("/assets/pages/erroLogin.jsp");
+            rd = req.getRequestDispatcher("/assets/pages/erros/erroLogin.jsp");
             rd.forward(req, resp);
         }
     }

@@ -6,6 +6,6 @@
 
     <error-page>
         <error-code>404</error-code> <!-- Caso ocorra o erro 404 -->
-        <location>/assets/pages/erro404.jsp</location> <!-- Redireciona para uma página específica -->
+        <location>/assets/pages/erros/erro404.jsp</location> <!-- Redireciona para uma página específica -->
     </error-page>
 </web-app>

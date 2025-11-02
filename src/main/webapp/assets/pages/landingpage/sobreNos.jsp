@@ -56,7 +56,7 @@
         <div class="membro" style="--delay: 0s">
             <img src="${pageContext.request.contextPath}/assets/imgs/erik.png" alt="Erik Felipe">
             <h3>Erik Santos</h3>
-            <p>Desenvolvedor Back-end, responsável pela conectividade com o banco, tratamento dos dados recebidos pelas páginas utilizando Servlets, e adaptação das telas para o JSP.</p>
+            <p><p>Desenvolvedor Back-end, responsável pelo tratamento dos dados usando Servlets e das telas para JSP.</p></p>
         </div>
         <div class="membro" style="--delay: 0.2s">
             <img src="${pageContext.request.contextPath}/assets/imgs/mayumi.png" alt="Mayumi Itikawa">
@@ -71,7 +71,7 @@
         <div class="membro" style="--delay: 0s">
             <img src="${pageContext.request.contextPath}/assets/imgs/herrera.png" alt="Enzo Herrera">
             <h3>Enzo Herrera</h3>
-            <p>Designer de front-end, responsável por CSS, HTML e algumas telas..</p>
+            <p>Desenvolvedor front-end, responsável por CSS, HTML e algumas telas no Figma. </p>
         </div>
         <div class="membro" style="--delay: 0.4s">
             <img src="${pageContext.request.contextPath}/assets/imgs/caio.png" alt="Caio">
@@ -95,8 +95,8 @@
         </div>
         <div class="membro" style="--delay: 0s">
             <img src="${pageContext.request.contextPath}/assets/imgs/clara.png" alt="Clara">
-            <h3>Clara Bartolin</h3>
-            <p>Apaixonado por programação e soluções digitais, sempre explorando novas tecnologias e desafios de desenvolvimento.</p>
+            <h3>Clara Bartolini</h3>
+            <p>Desenvolvedora Mobile, Backend, responsável pelo fluxo do aplicativo</p>
         </div>
         <div class="membro" style="--delay: 0s">
             <img src="${pageContext.request.contextPath}/assets/imgs/vitor.png" alt="Vitor">
@@ -116,7 +116,7 @@
         <div class="membro" style="--delay: 0s">
             <img src="${pageContext.request.contextPath}/assets/imgs/trindade.png" alt="Guilherme Trindade">
             <h3>Guilherme Trindade</h3>
-            <p>Interessado em análise e interpretação de dados, com foco em transformar informações em insights estratégicos.</p>
+            <p>Analista de Dados do projeto, responsável por conduzir a análise exploratória dos dados e desenvolver painéis interativos no Power BI.</p>
         </div>
         <div class="membro" style="--delay: 0s">
             <img src="${pageContext.request.contextPath}/assets/imgs/costa.png" alt="Guilherme Costa">
