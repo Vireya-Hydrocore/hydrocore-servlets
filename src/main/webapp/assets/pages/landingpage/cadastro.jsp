@@ -67,10 +67,6 @@
             <input name="capacidade" type="number" id="capacidade" placeholder="1000">
             <div id="erroCapacidade" class="erro"></div>
 
-            <div class="checkbox">
-                <input type="checkbox" id="termos">
-                <label for="termos">Termos e Condições de Uso</label>
-            </div>
             <button class="botao" type="submit">Cadastre-se</button>
             <p class="login-text">Já possui uma conta? <a href="${pageContext.request.contextPath}/assets/pages/landingpage/login.jsp">Clique aqui</a></p>
         </form>

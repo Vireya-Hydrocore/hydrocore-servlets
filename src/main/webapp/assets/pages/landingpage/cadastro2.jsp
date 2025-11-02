@@ -44,7 +44,6 @@
         <form action="${pageContext.request.contextPath}/ServletEta" method="post" id="form-endereco">
             <input type="hidden" name="action" value="createEta">
 
-
             <label for="cep">CEP</label>
             <input type="text" id="cep" name="cep" placeholder="Digite seu CEP" pattern="[0-9]{5}-[0-9]{3}" required>
             <div id="erroCEP" class="erro"></div>

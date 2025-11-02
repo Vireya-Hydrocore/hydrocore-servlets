@@ -178,7 +178,7 @@ public class ServletEta extends HttpServlet {
         erros = Validador.validarEta(nome, capacidade, telefoneFormatado, cnpjFormatado);
         if (!erros.isEmpty()) {
             request.setAttribute("erros", erros);
-            rd = request.getRequestDispatcher("/assets/pages/erroLogin.jsp");
+            rd = request.getRequestDispatcher("/assets/pages/erros/erroLogin.jsp");
             rd.forward(request, response);
             return; // Interrompe execução se houver erros
         }
@@ -192,7 +192,7 @@ public class ServletEta extends HttpServlet {
         erros = Validador.validarSenha(senhaDigitada);
         if (!erros.isEmpty()) {
             request.setAttribute("erros", erros);
-            rd = request.getRequestDispatcher("/assets/pages/erroLogin.jsp");
+            rd = request.getRequestDispatcher("/assets/pages/erros/erroLogin.jsp");
             rd.forward(request, response);
             return;
         }
@@ -211,7 +211,7 @@ public class ServletEta extends HttpServlet {
         } else {
             erros.add("Não foi possível cadastrar esta ETA, verifique os campos e tente novamente.");
             request.setAttribute("erros", erros);
-            rd = request.getRequestDispatcher("/assets/pages/erroLogin.jsp");
+            rd = request.getRequestDispatcher("/assets/pages/erros/erroLogin.jsp");
             rd.forward(request, response);
         }
     }

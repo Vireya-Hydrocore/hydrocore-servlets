@@ -12,6 +12,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100%;
+    overflow: hidden;
 }
 
 main {
@@ -153,7 +154,7 @@ input {
 }
 
 .celular img {
-    width: 300px;
+    width: 400px;
 }
 
 .input-senha {
