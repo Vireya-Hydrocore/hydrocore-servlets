@@ -56,7 +56,7 @@
         <div class="membro" style="--delay: 0s">
             <img src="${pageContext.request.contextPath}/assets/imgs/erik.png" alt="Erik Felipe">
             <h3>Erik Santos</h3>
-            <p>Desenvolvedor Back-end, responsável pela conectividade com o banco, tratamento dos dados recebidos pelas páginas utilizando Servlets, e adaptação das telas para o JSP.</p>
+            <p>Desenvolvedor Back-end, responsável pelo tratamento dos dados recebidos usando Servlets e adaptação das telas para JSP.</p>
         </div>
         <div class="membro" style="--delay: 0.2s">
             <img src="${pageContext.request.contextPath}/assets/imgs/mayumi.png" alt="Mayumi Itikawa">

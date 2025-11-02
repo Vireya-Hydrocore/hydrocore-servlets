@@ -118,7 +118,7 @@
                 <!-- Número -->
                 <div class="campos">
                     <label>Número</label>
-                    <input type="number" name="numero" value="${eta.numero}" required>
+                    <input type="number" name="numero" min="0" value="${eta.numero}" required>
                 </div>
 
                 <!-- CEP -->

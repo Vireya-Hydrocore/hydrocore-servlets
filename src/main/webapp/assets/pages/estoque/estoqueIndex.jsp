@@ -165,20 +165,22 @@
             </div>
 
             <script>
-                const colunaSelect = document.getElementById('colunaSelect');
-                const inputPesquisa = document.getElementById('pesquisa');
+                document.addEventListener('DOMContentLoaded', function () {
+                    const colunaSelect = document.getElementById('colunaSelect');
+                    const inputPesquisa = document.getElementById('pesquisa');
 
-                colunaSelect.addEventListener('change', function() {
-                    const valor = colunaSelect.value;
+                    colunaSelect.addEventListener('change', function () {
+                        const valor = colunaSelect.value;
 
-                    // Se for uma das opções de data, muda o tipo para "date"
-                    if (valor === 'data_validade') {
-                        inputPesquisa.type = 'date';
-                        inputPesquisa.value = ''; // limpa o campo para evitar erro de formato
-                    } else {
-                        inputPesquisa.type = 'text';
-                        inputPesquisa.value = '';
-                    }
+                        // Se for uma das opções de data, muda o tipo para "date"
+                        if (valor === 'data_validade') {
+                            inputPesquisa.type = 'date';
+                            inputPesquisa.value = ''; // limpa o campo para evitar erro de formato
+                        } else {
+                            inputPesquisa.type = 'text';
+                            inputPesquisa.value = '';
+                        }
+                    });
                 });
             </script>
 
